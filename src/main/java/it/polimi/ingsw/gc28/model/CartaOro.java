@@ -1,5 +1,7 @@
 package it.polimi.ingsw.gc28.model;
 
+import java.util.Map;
+
 public class CartaOro extends CartaRisorsa {
     private Map<Risorsa, Integer> giocabilità;
     private Challenge tipoDìChallenge;
