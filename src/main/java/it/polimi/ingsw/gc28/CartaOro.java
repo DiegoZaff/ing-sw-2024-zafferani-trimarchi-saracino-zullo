@@ -1,6 +1,6 @@
 package it.polimi.ingsw.gc28;
 
-class CartaOro extends CartaRisorsa {
+public class CartaOro extends CartaRisorsa {
     private Map<Risorsa, Integer> giocabilità;
     private Challenge tipoDìChallenge;
 
