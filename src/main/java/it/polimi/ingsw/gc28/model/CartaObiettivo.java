@@ -1,6 +1,6 @@
 package it.polimi.ingsw.gc28.model;
 
-public class CartaObiettivo {
+public class CartaObiettivo extends Carta {
     enum Tipo{
         NumeroRisorse,
         PosizioneCarte
