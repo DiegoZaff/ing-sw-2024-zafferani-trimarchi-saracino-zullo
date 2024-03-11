@@ -1,4 +1,4 @@
-package it.polimi.ingsw.gc28;
+package it.polimi.ingsw.gc28.model;
 
 public abstract class CarteDaGioco {
     private Vertice[] verticiFronte;

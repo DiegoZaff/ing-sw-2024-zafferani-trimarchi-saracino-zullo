@@ -1,4 +1,4 @@
-package it.polimi.ingsw.gc28;
+package it.polimi.ingsw.gc28.model;
 
 public class CartaOro extends CartaRisorsa {
     private Map<Risorsa, Integer> giocabilità;

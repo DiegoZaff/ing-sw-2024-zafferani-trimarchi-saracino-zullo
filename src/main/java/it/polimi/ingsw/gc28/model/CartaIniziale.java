@@ -1,4 +1,4 @@
-package it.polimi.ingsw.gc28;
+package it.polimi.ingsw.gc28.model;
 
 public class CartaIniziale extends CarteDaGioco{
     private Vertice[] verticiRetro;
