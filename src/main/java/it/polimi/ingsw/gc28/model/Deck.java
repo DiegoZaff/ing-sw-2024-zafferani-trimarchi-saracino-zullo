@@ -1,12 +1,14 @@
 package it.polimi.ingsw.gc28.model;
+import it.polimi.ingsw.gc28.model.cards.*;
+
 import java.util.ArrayList;
 import java.util.Optional;
 
 /**
  * Class that represents the deck of cards.
  */
-public class Mazzo {
-    private ArrayList<Carta>[] carte;
+public class Deck {
+    private ArrayList<Card>[] carte;
 
     /**
      * This method shuffles the deck randomly.
@@ -20,7 +22,7 @@ public class Mazzo {
      * @return the card on top of the deck, if the array is not empty, removing it from the array.
      * Otherwise, it returns null.
      */
-    public Optional<Carta> next() {
+    public Optional<Card> next() {
         // ! to be implemented.
         return Optional.empty();
 
@@ -29,14 +31,14 @@ public class Mazzo {
     /**
      * This constructor generates a deck of cards
      */
-    public Mazzo(Class<?> type){
-        if(type == CartaIniziale.class){
+    public Deck(Class<?> type){
+        if(type == CardInitial.class){
             // initialize deck of initial cards...
-        }else if (type == CartaObiettivo.class){
+        }else if (type == CardObjective.class){
             // initialize deck of objective cards...
-        } else if (type == CartaOro.class){
+        } else if (type == CardGold.class){
             // initialize deck of gold cards...
-        } else if(type == CartaRisorsa.class){
+        } else if(type == CardResource.class){
             // initialize deck of resource cards...
         }else{
             //throw error
