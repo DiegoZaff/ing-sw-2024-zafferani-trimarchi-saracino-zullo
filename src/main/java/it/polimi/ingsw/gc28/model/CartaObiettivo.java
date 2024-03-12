@@ -1,10 +1,12 @@
 package it.polimi.ingsw.gc28.model;
 
 public class CartaObiettivo extends Carta {
-    enum Tipo{
+
+    private final tipoCartaObiettivo tipo;
+    enum tipoCartaObiettivo{
         NumeroRisorse,
         PosizioneCarte
     }
-    int punti;
+    private final int punti;
 
 }
