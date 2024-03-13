@@ -10,7 +10,13 @@ public class Player {
 
     private int points;
 
+    public int getPoints(){
+        return points;
+    }
+
     private Objective objective;
 
     private ArrayList<CardResource> hand;
+
+    private Table table;
 }

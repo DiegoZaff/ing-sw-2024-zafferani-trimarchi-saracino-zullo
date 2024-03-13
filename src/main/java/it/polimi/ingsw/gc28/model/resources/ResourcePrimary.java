@@ -8,7 +8,7 @@ public class ResourcePrimary extends Resource {
         LEAF,
         BUTTERFLY
     }
-    private final ResourcePrimaryType type;
+    public final ResourcePrimaryType type;
 
     public ResourcePrimary(ResourcePrimaryType type) {
         this.type = type;
