@@ -22,7 +22,7 @@ public class Deck {
         Random random = new Random();
         Card tmp;
         for(int i=card.size()-1; i>0; i--){
-            int j= random.nextInt(i+1);
+            int j= random.nextInt(card.size()+1);
             tmp = card.get(i);
             card.set(i, card.get(j));
             card.set(j, tmp);
