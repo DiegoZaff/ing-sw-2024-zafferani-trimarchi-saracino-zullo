@@ -1,7 +1,6 @@
 package it.polimi.ingsw.gc28.model;
 import it.polimi.ingsw.gc28.model.cards.*;
 
-import java.io.FileNotFoundException;
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -16,38 +15,17 @@ public class Deck {
     private final ArrayList<CardObjective> cardObjective = new ArrayList<CardObjective>();
 
     /**
-     * This method shuffles the deck randomly.
+     * This method shuffles each type of deck randomly.
      */
-    public void shuffle(ArrayList<CardResource> cardResource, ArrayList<CardGold> cardGold,
-                        ArrayList<CardInitial> cardInitial, ArrayList<CardObjective> cardObjective){
+    public void shuffle(ArrayList<Card> card){
 
         Random random = new Random();
-        for(int i=cardResource.size()-1; i>0; i--){
+        Card tmp;
+        for(int i=card.size()-1; i>0; i--){
             int j= random.nextInt(i+1);
-            CardResource tmp = cardResource.get(i);
-            cardResource.set(i, cardResource.get(j));
-            cardResource.set(i, tmp);
-        }
-
-        for(int i=cardGold.size()-1; i>0; i--){
-            int j= random.nextInt(i+1);
-            CardGold tmp = cardGold.get(i);
-            cardGold.set(i, cardGold.get(j));
-            cardGold.set(i, tmp);
-        }
-
-        for(int i=cardInitial.size()-1; i>0; i--){
-            int j= random.nextInt(i+1);
-            CardInitial tmp = cardInitial.get(i);
-            cardInitial.set(i, cardInitial.get(j));
-            cardInitial.set(i, tmp);
-        }
-
-        for(int i=cardObjective.size()-1; i>0; i--){
-            int j= random.nextInt(i+1);
-            CardObjective tmp = cardObjective.get(i);
-            cardObjective.set(i, cardObjective.get(j));
-            cardObjective.set(i, tmp);
+            tmp = card.get(i);
+            card.set(i, card.get(j));
+            card.set(j, tmp);
         }
     };
 
@@ -62,10 +40,10 @@ public class Deck {
 
     };
 
-    /**
-     * This constructor generates a deck of cards
+    /*
+      This constructor generates a deck of cards
      */
-    public Deck(Class<?> type){
+    public Deck(){
         if(type == CardInitial.class){
             // initialize deck of initial cards...
         }else if (type == CardObjective.class){
