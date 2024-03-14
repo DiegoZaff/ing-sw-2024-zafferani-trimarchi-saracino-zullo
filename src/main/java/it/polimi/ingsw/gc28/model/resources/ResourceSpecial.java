@@ -1,15 +1,24 @@
 package it.polimi.ingsw.gc28.model.resources;
 
-public class ResourceSpecial extends Resource {
-    enum ResourceSpecialType {
-        POTION,
-        FEATHER,
-        PARCHMENT
-    }
+import it.polimi.ingsw.gc28.model.resources.utils.ResourceSpecialType;
 
-    private final ResourceSpecialType type;
+public class ResourceSpecial extends Resource {
+
+    public final ResourceSpecialType type;
 
     public ResourceSpecial(ResourceSpecialType type) {
         this.type = type;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        ResourceSpecial other = (ResourceSpecial) obj;
+        return type == other.type;
     }
 }
