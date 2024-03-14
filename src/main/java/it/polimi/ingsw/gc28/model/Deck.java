@@ -8,12 +8,16 @@ import java.util.Optional;
  * Class that represents the deck of cards.
  */
 public class Deck {
-    private ArrayList<Card>[] carte;
+    private final ArrayList<CardResource> cardResource = new ArrayList<CardResource>();
+    private final ArrayList<CardGold> cardGold = new ArrayList<CardGold>();
+    private final ArrayList<CardInitial> cardInitial = new ArrayList<CardInitial>();
+    private final ArrayList<CardObjective> cardObjective = new ArrayList<CardObjective>();
 
     /**
      * This method shuffles the deck randomly.
      */
-    public void shuffle(){
+    public void shuffle(ArrayList<CardResource> cardResource, ArrayList<CardGold> cardGold,
+                        ArrayList<CardInitial> cardInitial, ArrayList<CardObjective> cardObjective){
         // ! to be implemented.
     };
 
