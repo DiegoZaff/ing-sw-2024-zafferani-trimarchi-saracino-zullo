@@ -18,50 +18,6 @@ public class Game {
 
     private ActionType action;
 
-    private void playInitialCard (Player playingPlayer, CardInitial firstCard, boolean isFront, Coordinate coordinates /* 0,0 */) {
-
-
-        /*
-
-        *  firstcard viene aggiunta al tavolo alle coordinate 0,0
-        *  coordinata 0,0 diventa ingiocabile
-        *  coordinate ai vertici liberi diventano giocabili
-        *  coordinate a vertici nulli diventano ingiocabili
-        *  contatori di rosorsa aumentano di 1 per ogni risorsa dello stesso tipo sui vertici o al centro
-        *
-        *
-        *
-        *
-        *
-        *
-        * */
-
-
-
-
-     };
-
-    private void playGameCard (Player playingPlayer, CardGame playedCard, boolean isFront, Coordinate coordinates ) {
-
-
-        playingPlayer.removeCard(playingPlayer.hand, playedCard);
-        /*
-        * playingpPlayer non ha piu carta nella mano la carta
-        * carta viene aggiunta al tavolo alle coordinate coordinates
-        * coordinate del tavolo coordinates diventano ingiocabili
-        * coordinate ai vertici liberi diventano giocabili a meno che non siano già ingiocabili
-        * coordinate ai vertici nulli diventano ingiocabili
-        * contatori delle risorse coperte dai vertici della carta decrementano di 1
-        * contatori delle risorse presenti sulla carta auemtnano di 1 per ogni risorsa
-        * verifica delle challenge se la carta è una cartaoro e calcolo dei punti
-        * aumento del puntegigo se la carta da punti al piazzamento
-        * */
-
-
-
-
-     }
-
     private Player playerOfTurn;
 
     private ArrayList<Objective> globalObjectives;
@@ -95,5 +51,37 @@ public class Game {
 
             roundsLeft = Optional.of(newRoundsLeft);
         }
-    };
+    }
+
+    private void playInitialCard (Player playingPlayer, CardInitial firstCard, boolean isFront, Coordinate coordinates /* 0,0 */) {
+        /*
+         *  firstcard viene aggiunta al tavolo alle coordinate 0,0
+         *  coordinata 0,0 diventa ingiocabile
+         *  coordinate ai vertici liberi diventano giocabili
+         *  coordinate a vertici nulli diventano ingiocabili
+         *  contatori di rosorsa aumentano di 1 per ogni risorsa dello stesso tipo sui vertici o al centro
+         *
+         */
+    }
+
+    private void playGameCard (Player playingPlayer, CardGame playedCard, boolean isFront, Coordinate coordinates ) {
+
+
+        playingPlayer.removeCard(playedCard);  // Removes card from hand
+        /*
+         * playingpPlayer non ha piu carta nella mano la carta
+         * carta viene aggiunta al tavolo alle coordinate coordinates
+         * coordinate del tavolo coordinates diventano ingiocabili
+         * coordinate ai vertici liberi diventano giocabili a meno che non siano già ingiocabili
+         * coordinate ai vertici nulli diventano ingiocabili
+         * contatori delle risorse coperte dai vertici della carta decrementano di 1
+         * contatori delle risorse presenti sulla carta auemtnano di 1 per ogni risorsa
+         * verifica delle challenge se la carta è una cartaoro e calcolo dei punti
+         * aumento del puntegigo se la carta da punti al piazzamento
+         * */
+
+
+
+
+    }
 }

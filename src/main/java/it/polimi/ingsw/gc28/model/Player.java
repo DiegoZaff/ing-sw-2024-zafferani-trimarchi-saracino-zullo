@@ -11,14 +11,24 @@ public class Player {
 
     private int points;
 
-    /*
-    *  rimuove la carta passata come parametro dalla mano
-    *
-    *
-    * */
-    public void removeCard (ArrayList<CardResource> hand, CardGame cardToBeRemoved) {
+
+    private Objective objective;
+
+    private ArrayList<CardResource> hand;
+
+    private Table table;
+
+    public ArrayList<CardResource> gethand (){
+        return hand;
+    }
+
+    public int getPoints(){
+        return points;
+    }
+
+    public void removeCard (CardGame cardToBeRemoved) {
         for (CardResource card : hand) {
-            if (card == cardToBeRemoved) // le carte devono essere cnonfrontate, avranno un codice identificativo? equals? ==?
+            if (card == cardToBeRemoved) // le carte devono essere confrontate, avranno un codice identificativo? equals? ==?
             {
                 hand.remove(card);
             }
@@ -28,13 +38,4 @@ public class Player {
     }
 
 
-    public int getPoints(){
-        return points;
-    }
-
-    private Objective objective;
-
-    public ArrayList<CardResource> hand; //reso pubblico per far funzionare removecard non so se si può
-
-    private Table table;
 }
