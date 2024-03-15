@@ -6,4 +6,9 @@ public class Vertex {
 
     private Resource resource;
 
+    public Resource getResource() {
+        return resource;
+    }
+
+
 }

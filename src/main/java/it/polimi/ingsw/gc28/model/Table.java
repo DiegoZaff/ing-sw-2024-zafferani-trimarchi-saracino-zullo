@@ -33,4 +33,33 @@ public class Table {
     */
 
 
+    public void addUnplayableCoordinate (Coordinate coordinatesToAdd){
+
+        unplayableCoords.add(coordinatesToAdd);
+    }
+
+    public void addPlayableCoordinate (Coordinate coordinatesToAdd){
+
+        playableCoords.add(coordinatesToAdd);
+    }
+
+    public void removePlayableCoordinate (Coordinate coordinatesToRemove){
+
+
+        playableCoords.add(coordinatesToRemove);
+    }
+
+    public boolean alreadyUnplayable (Coordinate coordinateToCheck){
+
+        for ( Coordinate coordinate : unplayableCoords)
+        {
+            if (coordinateToCheck == coordinate)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 }

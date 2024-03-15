@@ -37,5 +37,7 @@ public class Player {
 
     }
 
+    public Table getTable () {return table;}
+
 
 }
