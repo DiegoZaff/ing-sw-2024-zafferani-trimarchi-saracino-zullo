@@ -1,5 +1,7 @@
 package it.polimi.ingsw.gc28.model.cards;
 
+import it.polimi.ingsw.gc28.model.Coordinate;
+import it.polimi.ingsw.gc28.model.Table;
 import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
 import it.polimi.ingsw.gc28.model.Vertex;
 
@@ -19,5 +21,16 @@ public class CardResource extends CardGame {
     public Optional<ResourcePrimary> getObjectiveResource() {
         return Optional.of(resource);
     }
+
+    @Override
+    public  void PlayFront(Table table, Coordinate playCoordinate){
+
+    }
+
+    @Override
+    public void PlayBack(Table table, Coordinate playCoordinate){
+
+    }
+
 }
 

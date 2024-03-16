@@ -1,5 +1,8 @@
 package it.polimi.ingsw.gc28.model.cards;
 
+import it.polimi.ingsw.gc28.model.Cell;
+import it.polimi.ingsw.gc28.model.Coordinate;
+import it.polimi.ingsw.gc28.model.Table;
 import it.polimi.ingsw.gc28.model.Vertex;
 import it.polimi.ingsw.gc28.model.resources.Resource;
 import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
@@ -25,6 +28,20 @@ public abstract class CardGame extends Card {
      * of the position objectives. Its implementation will return Null inside InitialCard.
      */
     public abstract Optional<ResourcePrimary> getObjectiveResource();
+
+    /**
+    * this method play the card in the front verse
+    * @param table indicates the table in which the card is played*
+    * @param playCoordinate indicate the cordinates in which the card should be played
+     */
+    public abstract void PlayFront(Table table, Coordinate playCoordinate);
+
+    /**
+     * this method play the card in the back verse
+     * @param table indicates the table in which the card is played
+     * @param playCoordinate indicate the cordinates in which the card should be played
+     */
+    public abstract void PlayBack(Table table, Coordinate playCoordinate);
 
 
     public Resource getResourceInsideVertex (int value){
