@@ -1,13 +1,15 @@
 package it.polimi.ingsw.gc28.model.resources;
 
 import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
+import it.polimi.ingsw.gc28.model.resources.utils.ResourceType;
 
 public class ResourcePrimary extends Resource {
-    public final ResourcePrimaryType type;
+    public ResourcePrimaryType type;
 
     public ResourcePrimary(ResourcePrimaryType type) {
         this.type = type;
     }
+
 
     @Override
     public boolean equals(Object obj) {

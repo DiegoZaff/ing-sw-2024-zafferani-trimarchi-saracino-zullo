@@ -16,6 +16,7 @@ public abstract class CardGame extends Card {
 
 
     public CardGame(Vertex[] verticesFront){
+
         this.verticesFront = verticesFront;
     }
 

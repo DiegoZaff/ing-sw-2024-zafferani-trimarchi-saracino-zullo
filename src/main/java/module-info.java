@@ -1,6 +1,7 @@
 module it.polimi.ingsw.gc28 {
     requires javafx.controls;
     requires javafx.fxml;
+    requires json.simple;
 
 
     opens it.polimi.ingsw.gc28 to javafx.fxml;
