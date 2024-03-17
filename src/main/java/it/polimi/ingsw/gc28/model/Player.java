@@ -53,7 +53,7 @@ public class Player {
             //se la carta non viene giocata (carta oro non giocabile) possiamo aggiungere una IrregularCardException
             //da controllare se viene usato il metodo corretto
 
-            //da implementare metodo per aggiornare comtatori risorce
+            //da implementare metodo per aggiornare contatori risorce
 
             //da implementare metodo per aumentare punteggio
 

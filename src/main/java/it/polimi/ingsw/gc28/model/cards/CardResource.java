@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc28.model.cards;
 
+import it.polimi.ingsw.gc28.model.Cell;
 import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.model.Table;
 import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
@@ -25,11 +26,17 @@ public class CardResource extends CardGame {
     @Override
     public  void PlayFront(Table table, Coordinate playCoordinate){
 
+        Cell cell = new Cell(this, 0, true);
+        table.AddMapPosition(playCoordinate, cell);
+
+
     }
 
     @Override
     public void PlayBack(Table table, Coordinate playCoordinate){
-
+        Cell cell = new Cell(this, 0, false);
+        //da controllare orderPlay, per ora messo a zero
+        table.AddMapPosition(playCoordinate, cell);
     }
 
 }

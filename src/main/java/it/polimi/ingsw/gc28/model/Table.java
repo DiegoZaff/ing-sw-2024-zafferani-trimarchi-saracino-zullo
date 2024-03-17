@@ -11,11 +11,29 @@ public class Table {
 
     private Map<Coordinate, Cell> mapPositions;
 
+    public ArrayList<Coordinate> getPlayableCoords() {
+        return playableCoords;
+    }
+
     private ArrayList<Coordinate> playableCoords;
 
     private ArrayList<Coordinate> unplayableCoords;
 
     private Map<Resource, Integer> resourceCounters;
+
+
+    public ArrayList<Coordinate> getUnplayableCoords() {
+        return unplayableCoords;
+    }
+
+
+    public Map<Coordinate, Cell> GetMapPositions(){
+        return mapPositions;
+    }
+
+    public Map<Resource, Integer> getResourceCounters() {
+        return resourceCounters;
+    }
 
     public Table(){
         mapPositions = new HashMap<>();
@@ -73,6 +91,10 @@ public class Table {
             return false;
         }
         return true;
+    }
+
+    public  void AddMapPosition(Coordinate playCoordinate, Cell cell){
+        mapPositions.put(playCoordinate, cell);
     }
 
 

@@ -22,11 +22,8 @@ public class CardGold extends CardResource {
 
     @Override
     public  void PlayFront(Table table, Coordinate playCoordinate){
-
+        //come metodo super ma controllando se giocabile
     }
 
-    @Override
-    public void PlayBack(Table table, Coordinate playCoordinate){
 
-    }
 }

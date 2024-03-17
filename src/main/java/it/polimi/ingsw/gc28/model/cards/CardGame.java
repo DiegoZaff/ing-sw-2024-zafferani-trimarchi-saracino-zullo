@@ -8,6 +8,7 @@ import it.polimi.ingsw.gc28.model.resources.Resource;
 import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public abstract class CardGame extends Card {
@@ -48,6 +49,8 @@ public abstract class CardGame extends Card {
 
         return verticesFront[value].getResource();
     }
+
+
 
 
 
