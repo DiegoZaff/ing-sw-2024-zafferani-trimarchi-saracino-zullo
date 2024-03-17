@@ -1,0 +1,100 @@
+{
+  "CardResource": [
+    {
+      "vertexOne": "LEAF",
+      "vertexTwo": "LEAF",
+      "vertexThree": "noResource",
+      "vertexFour": null,
+      "resourcePrimary": "LEAF",
+      "pointsPerPlay": "0"
+    },
+    {
+      "vertexOne": null,
+      "vertexTwo": "LEAF",
+      "vertexThree": "LEAF",
+      "vertexFour": "noResource",
+      "resourcePrimary": "LEAF",
+      "pointsPerPlay": "0"
+    },
+    {
+      "vertexOne": "noResource",
+      "vertexTwo": null,
+      "vertexThree": "LEAF",
+      "vertexFour": "LEAF",
+      "resourcePrimary": "LEAF",
+      "pointsPerPlay": "0"
+    },
+    {
+      "vertexOne": "LEAF",
+      "vertexTwo": "noResource",
+      "vertexThree": null,
+      "vertexFour": "LEAF",
+      "resourcePrimary": "LEAF",
+      "pointsPerPlay": "0"
+    },
+    {
+      "vertexOne": "noResource",
+      "vertexTwo": null,
+      "vertexThree": "LEAF",
+      "vertexFour": "LEAF",
+      "resourcePrimary": "LEAF",
+      "pointsPerPlay": "0"
+    },
+    {
+      "vertexOne": "noResource",
+      "vertexTwo": "noResource",
+      "vertexThree": "LEAF",
+      "vertexFour": null,
+      "resourcePrimary": "LEAF",
+      "pointsPerPlay": "1"
+    },
+    {
+      "vertexOne": null,
+      "vertexTwo": "LEAF",
+      "vertexThree": "noResource",
+      "vertexFour": "noResource",
+      "resourcePrimary": "LEAF",
+      "pointsPerPlay": "1"
+    },
+    {
+      "vertexOne": "noResource",
+      "vertexTwo": "noResource",
+      "vertexThree": null,
+      "vertexFour": "LEAF",
+      "resourcePrimary": "LEAF",
+      "pointsPerPlay": "1"
+    },
+    {
+      "vertexOne": null,
+      "vertexTwo": "LEAF",
+      "vertexThree": "noResource",
+      "vertexFour": "noResource",
+      "resourcePrimary": "LEAF",
+      "pointsPerPlay": "1"
+    },
+    {
+      "vertexOne": null,
+      "vertexTwo": "BUTTERFLY",
+      "vertexThree": "LEAF",
+      "vertexFour": "FEATHER",
+      "resourcePrimary": "LEAF",
+      "pointsPerPlay": "0"
+    },
+    {
+      "vertexOne": "PARCHMENT",
+      "vertexTwo": null,
+      "vertexThree": "FOX",
+      "vertexFour": "LEAF",
+      "resourcePrimary": "LEAF",
+      "pointsPerPlay": "0"
+    },
+    {
+      "vertexOne": "MUSHROOM",
+      "vertexTwo": "LEAF",
+      "vertexThree": "POTION",
+      "vertexFour": null,
+      "resourcePrimary": "LEAF",
+      "pointsPerPlay": "0"
+    }
+  ]
+}

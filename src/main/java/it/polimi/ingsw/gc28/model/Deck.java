@@ -59,13 +59,7 @@ public class Deck {
     /*
       This constructor generates a deck of cards
      */
-    public Deck() throws IOException, ParseException {
-
-        ResourceType[] resourceType;
-        Resource[] resource;
-        Vertex[] vertex;
-        ResourcePrimary resourcePrimary;
-        int pointsPerPlay;
+    public Deck() throws IOException {
 
         JSONParser jsonParser = new JSONParser();
         FileReader reader = new FileReader(".//src//main//java//it.polimi.ingsw.gc28//json//Card.json");
@@ -77,13 +71,22 @@ public class Deck {
             throw new RuntimeException(e);
         }
 
-        JSONObject CardResource = (JSONObject) obj;
-        JSONArray DeckResources =(JSONArray)CardResource.get("CardResources");
+        JSONObject card = (JSONObject) obj;
+        JSONArray deckResources =(JSONArray)card.get("CardResource");
 
-        for (Object deckResource : DeckResources) {
-            JSONObject Card = (JSONObject) deckResource;
 
-            // to be implemented!
+        for(int i = 0; i< deckResources.size(); i++){
+            JSONObject cardResource = (JSONObject) deckResources.get(i);
+
+            String vertexOne = (String) deckResources.get(Integer.parseInt("vertexOne"));
+            String vertexTwo = (String) deckResources.get(Integer.parseInt("vertexTwo"));
+            String vertexThree = (String) deckResources.get(Integer.parseInt("vertexThree"));
+            String vertexFour = (String) deckResources.get(Integer.parseInt("vertexFour"));
+            String resourcePrimary = (String) deckResources.get(Integer.parseInt("resourcePrimary"));
+            String pointsPerPlay = (String) deckResources.get(Integer.parseInt("pointsPerPlay"));
+
+            //now we call a method that create the card using this information
         }
+
     };
 }
