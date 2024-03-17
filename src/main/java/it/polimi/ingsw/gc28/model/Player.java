@@ -10,7 +10,6 @@ public class Player {
 
     private int points;
 
-
     private Objective objective;
 
     private ArrayList<CardGame> hand;
@@ -41,14 +40,15 @@ public class Player {
      * @param isFront indicate how the card has to be played, front if True, back if False
      * @param coordinates indicates the coordinate where the card has to be played
      */
-    public void PlayCard(CardGame playedCard, boolean isFront, Coordinate coordinates){
-        if (!table.CheckPlayabilty(coordinates)){
+    public void playCard(CardGame playedCard, boolean isFront, Coordinate coordinates){
+        if (!table.checkPlayability(coordinates)){
             //potremmo creare una IrregularCordinateException, da aggiungere
+            // ? maybe updates error attribute inside player and returns.
         }else {
             if (isFront){
-                playedCard.PlayFront(table, coordinates);
+                playedCard.playFront(table, coordinates);
             } else {
-                playedCard.PlayBack(table, coordinates);
+                playedCard.playBack(table, coordinates);
             }
             //se la carta non viene giocata (carta oro non giocabile) possiamo aggiungere una IrregularCardException
             //da controllare se viene usato il metodo corretto
@@ -61,6 +61,19 @@ public class Player {
             //rimuove la carta dalla mano
             removeCard(playedCard);
             
+        }
+    }
+
+    /**
+     * This method adds points of the objectives to the player's score at the end of the game
+     * @param objectives globalObjectives (newly created list)
+     */
+    public void calculateObjectivePoints(ArrayList<Objective> objectives){
+        // I can add to this array since we pass a newly created ArrayList.
+        objectives.add(objective);
+
+        for(Objective obj: objectives){
+            points += obj.calculatePoints(table.GetMapPositions(),table.getResourceCounters());
         }
     }
 

@@ -8,6 +8,10 @@ public class CardObjective extends Card {
 
     private final int points;
 
+    public Objective getObjective(){
+        return objective;
+    }
+
     public CardObjective(Objective objective, int points) {
         this.objective = objective;
         this.points = points;

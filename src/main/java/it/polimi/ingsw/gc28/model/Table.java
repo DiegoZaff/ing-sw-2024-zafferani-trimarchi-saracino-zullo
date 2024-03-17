@@ -11,6 +11,9 @@ public class Table {
 
     private Map<Coordinate, Cell> mapPositions;
 
+    // ? I would remove playableCoords and replace it with a function
+    // ? isPlayable(Coordinate coord) which checks if coord is playable based on
+    // ? unplayable coords and mapPositions (so we don't need to update playable coords each time)
     public ArrayList<Coordinate> getPlayableCoords() {
         return playableCoords;
     }
@@ -80,10 +83,12 @@ public class Table {
      * @return true if the coordinate can be played,
      * false if not
      */
-    public boolean CheckPlayabilty(Coordinate coordinate){
-        if (mapPositions.keySet().contains(coordinate)){
+    public boolean checkPlayability(Coordinate coordinate){
+        if (mapPositions.containsKey(coordinate)){
             return false;
         }
+        // ? I would replace this two checks with isPlayable(Coordinate coord).
+        // ? see comment above.
         if (unplayableCoords.contains(coordinate)){
             return false;
         }
@@ -93,7 +98,7 @@ public class Table {
         return true;
     }
 
-    public  void AddMapPosition(Coordinate playCoordinate, Cell cell){
+    public void addMapPosition(Coordinate playCoordinate, Cell cell){
         mapPositions.put(playCoordinate, cell);
     }
 

@@ -30,19 +30,22 @@ public abstract class CardGame extends Card {
      */
     public abstract Optional<ResourcePrimary> getObjectiveResource();
 
+    // ? maybe we can merge playFront and playBack by passing an attribute isFront, since
+    // ? some of their logic is overlapping. let's see if there's a lot of overlap.
+
     /**
     * this method play the card in the front verse
     * @param table indicates the table in which the card is played*
     * @param playCoordinate indicate the cordinates in which the card should be played
      */
-    public abstract void PlayFront(Table table, Coordinate playCoordinate);
+    public abstract void playFront(Table table, Coordinate playCoordinate);
 
     /**
      * this method play the card in the back verse
      * @param table indicates the table in which the card is played
      * @param playCoordinate indicate the cordinates in which the card should be played
      */
-    public abstract void PlayBack(Table table, Coordinate playCoordinate);
+    public abstract void playBack(Table table, Coordinate playCoordinate);
 
 
     public Resource getResourceInsideVertex (int value){

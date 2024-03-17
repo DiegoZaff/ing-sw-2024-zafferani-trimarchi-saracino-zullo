@@ -25,17 +25,17 @@ public class CardInitial extends CardGame {
     }
 
     @Override
-    public  void PlayFront(Table table, Coordinate playCoordinate){
+    public void playFront(Table table, Coordinate playCoordinate){
         Cell cell = new Cell(this, 0, true);
-        table.AddMapPosition(playCoordinate, cell);
+        table.addMapPosition(playCoordinate, cell);
     }
 
-    //potremmo implementare PlayFront e PlayBack in CardGame, e fare override solo in CardGold
+    //potremmo implementare playFront e playBack in CardGame, e fare override solo in CardGold
 
     @Override
-    public void PlayBack(Table table, Coordinate playCoordinate){
+    public void playBack(Table table, Coordinate playCoordinate){
         Cell cell = new Cell(this, 0, false);
-        table.AddMapPosition(playCoordinate, cell);
+        table.addMapPosition(playCoordinate, cell);
     }
 }
 
