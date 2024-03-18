@@ -34,14 +34,6 @@
     },
     {
       "vertexOne": "noResource",
-      "vertexTwo": null,
-      "vertexThree": "LEAF",
-      "vertexFour": "LEAF",
-      "resourcePrimary": "LEAF",
-      "pointsPerPlay": "0"
-    },
-    {
-      "vertexOne": "noResource",
       "vertexTwo": "noResource",
       "vertexThree": "LEAF",
       "vertexFour": null,
@@ -61,14 +53,6 @@
       "vertexTwo": "noResource",
       "vertexThree": null,
       "vertexFour": "LEAF",
-      "resourcePrimary": "LEAF",
-      "pointsPerPlay": "1"
-    },
-    {
-      "vertexOne": null,
-      "vertexTwo": "LEAF",
-      "vertexThree": "noResource",
-      "vertexFour": "noResource",
       "resourcePrimary": "LEAF",
       "pointsPerPlay": "1"
     },
@@ -94,6 +78,246 @@
       "vertexThree": "POTION",
       "vertexFour": null,
       "resourcePrimary": "LEAF",
+      "pointsPerPlay": "0"
+    },
+    {
+      "vertexOne": "MUSHROOM",
+      "vertexTwo": "MUSHROOM",
+      "vertexThree": "noResource",
+      "vertexFour": null,
+      "resourcePrimary": "MUSHROOM",
+      "pointsPerPlay": "0"
+    },
+    {
+      "vertexOne": null,
+      "vertexTwo": "MUSHROOM",
+      "vertexThree": "MUSHROOM",
+      "vertexFour": "noResource",
+      "resourcePrimary": "MUSHROOM",
+      "pointsPerPlay": "0"
+    },
+    {
+      "vertexOne": "noResource",
+      "vertexTwo": null,
+      "vertexThree": "MUSHROOM",
+      "vertexFour": "MUSHROOM",
+      "resourcePrimary": "MUSHROOM",
+      "pointsPerPlay": "0"
+    },
+    {
+      "vertexOne": "MUSHROOM",
+      "vertexTwo": "noResource",
+      "vertexThree": null,
+      "vertexFour": "MUSHROOM",
+      "resourcePrimary": "MUSHROOM",
+      "pointsPerPlay": "0"
+    },
+    {
+      "vertexOne": "MUSHROOM",
+      "vertexTwo": null,
+      "vertexThree": "noResource",
+      "vertexFour": "noResource",
+      "resourcePrimary": "MUSHROOM",
+      "pointsPerPlay": "1"
+    },
+    {
+      "vertexOne": "noResource",
+      "vertexTwo": "MUSHROOM",
+      "vertexThree": null,
+      "vertexFour": "noResource",
+      "resourcePrimary": "MUSHROOM",
+      "pointsPerPlay": "1"
+    },
+    {
+      "vertexOne": null,
+      "vertexTwo": "noResource",
+      "vertexThree": "noResource",
+      "vertexFour": "MUSHROOM",
+      "resourcePrimary": "MUSHROOM",
+      "pointsPerPlay": "1"
+    },
+    {
+      "vertexOne": null,
+      "vertexTwo": "FEATHER",
+      "vertexThree": "MUSHROOM",
+      "vertexFour": "LEAF",
+      "resourcePrimary": "MUSHROOM",
+      "pointsPerPlay": "0"
+    },
+    {
+      "vertexOne": "MUSHROOM",
+      "vertexTwo": "BUTTERFLY",
+      "vertexThree": null,
+      "vertexFour": "PARCHMENT",
+      "resourcePrimary": "MUSHROOM",
+      "pointsPerPlay": "0"
+    },
+    {
+      "vertexOne": "POTION",
+      "vertexTwo": "MUSHROOM",
+      "vertexThree": "FOX",
+      "vertexFour": null,
+      "resourcePrimary": "MUSHROOM",
+      "pointsPerPlay": "0"
+    },
+    {
+      "vertexOne": "BUTTERFLY",
+      "vertexTwo": null,
+      "vertexThree": "noResource",
+      "vertexFour": "BUTTERFLY",
+      "resourcePrimary": "BUTTERFLY",
+      "pointsPerPlay": "0"
+    },
+    {
+      "vertexOne": "BUTTERFLY",
+      "vertexTwo": "BUTTERFLY",
+      "vertexThree": null,
+      "vertexFour": "noResource",
+      "resourcePrimary": "BUTTERFLY",
+      "pointsPerPlay": "0"
+    },
+    {
+      "vertexOne": "noResource",
+      "vertexTwo": "BUTTERFLY",
+      "vertexThree": "BUTTERFLY",
+      "vertexFour": null,
+      "resourcePrimary": "BUTTERFLY",
+      "pointsPerPlay": "0"
+    },
+    {
+      "vertexOne": null,
+      "vertexTwo": "noResource",
+      "vertexThree": "BUTTERFLY",
+      "vertexFour": "BUTTERFLY",
+      "resourcePrimary": "BUTTERFLY",
+      "pointsPerPlay": "0"
+    },
+    {
+      "vertexOne": "BUTTERFLY",
+      "vertexTwo": null,
+      "vertexThree": "noResource",
+      "vertexFour": "noResource",
+      "resourcePrimary": "BUTTERFLY",
+      "pointsPerPlay": "1"
+    },
+    {
+      "vertexOne": null,
+      "vertexTwo": "BUTTERFLY",
+      "vertexThree": "noResource",
+      "vertexFour": "noResource",
+      "resourcePrimary": "BUTTERFLY",
+      "pointsPerPlay": "1"
+    },
+    {
+      "vertexOne": "noResource",
+      "vertexTwo": "noResource",
+      "vertexThree": "BUTTERFLY",
+      "vertexFour": null,
+      "resourcePrimary": "BUTTERFLY",
+      "pointsPerPlay": "1"
+    },
+    {
+      "vertexOne": null,
+      "vertexTwo": "FEATHER",
+      "vertexThree": "BUTTERFLY",
+      "vertexFour": "FOX",
+      "resourcePrimary": "BUTTERFLY",
+      "pointsPerPlay": "0"
+    },
+    {
+      "vertexOne": "PARCHMENT",
+      "vertexTwo": "BUTTERFLY",
+      "vertexThree": "MUSHROOM",
+      "vertexFour": null,
+      "resourcePrimary": "BUTTERFLY",
+      "pointsPerPlay": "0"
+    },
+    {
+      "vertexOne": "BUTTERFLY",
+      "vertexTwo": "LEAF",
+      "vertexThree": null,
+      "vertexFour": "POTION",
+      "resourcePrimary": "BUTTERFLY",
+      "pointsPerPlay": "0"
+    },
+    {
+      "vertexOne": "FOX",
+      "vertexTwo": null,
+      "vertexThree": "noResource",
+      "vertexFour": "FOX",
+      "resourcePrimary": "FOX",
+      "pointsPerPlay": "0"
+    },
+    {
+      "vertexOne": "FOX",
+      "vertexTwo": "FOX",
+      "vertexThree": null,
+      "vertexFour": "noResource",
+      "resourcePrimary": "FOX",
+      "pointsPerPlay": "0"
+    },
+    {
+      "vertexOne": "noResource",
+      "vertexTwo": "FOX",
+      "vertexThree": "FOX",
+      "vertexFour": null,
+      "resourcePrimary": "FOX",
+      "pointsPerPlay": "0"
+    },
+    {
+      "vertexOne": null,
+      "vertexTwo": "noResource",
+      "vertexThree": "FOX",
+      "vertexFour": "FOX",
+      "resourcePrimary": "FOX",
+      "pointsPerPlay": "0"
+    },
+    {
+      "vertexOne": "noResource",
+      "vertexTwo": null,
+      "vertexThree": "FOX",
+      "vertexFour": "noResource",
+      "resourcePrimary": "FOX",
+      "pointsPerPlay": "1"
+    },
+    {
+      "vertexOne": "noResource",
+      "vertexTwo": "FOX",
+      "vertexThree": null,
+      "vertexFour": "noResource",
+      "resourcePrimary": "FOX",
+      "pointsPerPlay": "1"
+    },
+    {
+      "vertexOne": null,
+      "vertexTwo": "noResource",
+      "vertexThree": "noResource",
+      "vertexFour": "FOX",
+      "resourcePrimary": "FOX",
+      "pointsPerPlay": "1"
+    },
+    {
+      "vertexOne": "FEATHER",
+      "vertexTwo": null,
+      "vertexThree": "MUSHROOM",
+      "vertexFour": "FOX",
+      "resourcePrimary": "FOX",
+      "pointsPerPlay": "0"
+    },
+    {
+      "vertexOne": "LEAF",
+      "vertexTwo": "FOX",
+      "vertexThree": "PARCHMENT",
+      "vertexFour": null,
+      "resourcePrimary": "FOX",
+      "pointsPerPlay": "0"
+    },
+    {
+      "vertexOne": null,
+      "vertexTwo": "BUTTERFLY",
+      "vertexThree": "FOX",
+      "vertexFour": "POTION",
+      "resourcePrimary": "FOX",
       "pointsPerPlay": "0"
     }
   ]
