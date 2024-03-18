@@ -14,6 +14,17 @@ public class Table {
     // ? I would remove playableCoords and replace it with a function
     // ? isPlayable(Coordinate coord) which checks if coord is playable based on
     // ? unplayable coords and mapPositions (so we don't need to update playable coords each time)
+
+    //      ^
+    //      |
+    // Mi sembra scomodo, inoltre sapendo map positions e unplayable coords non sai immediatamente
+    // quelle giocabili, dovresti ad ogni iterazione controllare tutte le carte esterne con i vertici e
+    // vedere se possono accettare una carta. Poi è anche utile nella comunicazione avere un elenco di
+    // posizioni giocabili al momento, es da CLI puo dire posizioni giocabili: (0,1) ; (2,1), (1,-3) senza passare
+    // per funzioni ulteriori
+
+
+
     public ArrayList<Coordinate> getPlayableCoords() {
         return playableCoords;
     }
@@ -94,7 +105,7 @@ public class Table {
         }
         if (!playableCoords.contains(coordinate)){
             return false;
-        }
+        }   // a questo punto non basta fare if (!playableCoords.contains(coordinate)){return true} e toglier ela riga sotto
         return true;
     }
 

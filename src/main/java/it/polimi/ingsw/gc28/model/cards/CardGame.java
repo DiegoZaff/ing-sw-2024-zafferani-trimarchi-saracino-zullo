@@ -39,6 +39,8 @@ public abstract class CardGame extends Card {
     * @param playCoordinate indicate the cordinates in which the card should be played
      */
     public abstract void playFront(Table table, Coordinate playCoordinate);
+        // serve per forz aoverride perche il front differisc ela giocabilità tra risorsa e oro
+
 
     /**
      * this method play the card in the back verse
@@ -46,7 +48,7 @@ public abstract class CardGame extends Card {
      * @param playCoordinate indicate the cordinates in which the card should be played
      */
     public abstract void playBack(Table table, Coordinate playCoordinate);
-
+        // credo si possa implementare gia da qui dato che non c'è differenza di giocabilità dei retri
 
     public Resource getResourceInsideVertex (int value){
 
