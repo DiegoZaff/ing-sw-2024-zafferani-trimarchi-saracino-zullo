@@ -24,13 +24,11 @@ public class ObjectivePosition extends Objective {
      */
     public final PositionType positionType;
 
-    public final ResourcePrimary resource;
 
-    public ObjectivePosition(PositionType positionType, ResourcePrimary resource, int points, ResourcePrimary[] patternPosition) {
+    public ObjectivePosition(PositionType positionType, int points, ResourcePrimary[] patternPosition) {
         this.patternPosition = patternPosition;
         this.points = points;
         this.positionType = positionType;
-        this.resource = resource;
     }
 
     @Override
