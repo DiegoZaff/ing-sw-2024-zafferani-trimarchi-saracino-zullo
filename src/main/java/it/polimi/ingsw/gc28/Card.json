@@ -320,5 +320,13 @@
       "resourcePrimary": "FOX",
       "pointsPerPlay": "0"
     }
+  ],
+  "CardGold" : [
+    {
+      vertici
+      punti per giocata
+      risorse necessarie per giocarla
+      challenge
+    }
   ]
 }

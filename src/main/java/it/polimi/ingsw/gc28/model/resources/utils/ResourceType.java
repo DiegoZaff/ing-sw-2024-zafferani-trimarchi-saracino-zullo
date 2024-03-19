@@ -7,10 +7,6 @@ public enum ResourceType {
     BUTTERFLY,
     POTION,
     FEATHER,
-    PARCHMENT
-
-    //NORESOURCE
-
-    //necessità di una risorsa vuota per indicicare vertice senza risorse
-    //vertice occupato ha null, non è risorsa
+    PARCHMENT,
+    noResource
 }
