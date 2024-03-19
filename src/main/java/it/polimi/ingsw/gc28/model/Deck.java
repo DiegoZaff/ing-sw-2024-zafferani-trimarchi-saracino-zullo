@@ -24,7 +24,7 @@ import static java.lang.Integer.parseInt;
  * Class that represents the deck of cards.
  */
 public class Deck {
-    private final ArrayList<CardResource> cardResource = new ArrayList<CardResource>();
+    private final ArrayList<CardResource> cardResourceDeck = new ArrayList<CardResource>();
     private final ArrayList<CardGold> cardGold = new ArrayList<CardGold>();
     private final ArrayList<CardInitial> cardInitial = new ArrayList<CardInitial>();
     private final ArrayList<CardObjective> cardObjective = new ArrayList<CardObjective>();
@@ -74,18 +74,32 @@ public class Deck {
         JSONObject card = (JSONObject) obj;
         JSONArray deckResources =(JSONArray)card.get("CardResource");
 
-
         for(int i = 0; i< deckResources.size(); i++){
             JSONObject cardResource = (JSONObject) deckResources.get(i);
 
-            String vertexOne = (String) deckResources.get(Integer.parseInt("vertexOne"));
-            String vertexTwo = (String) deckResources.get(Integer.parseInt("vertexTwo"));
-            String vertexThree = (String) deckResources.get(Integer.parseInt("vertexThree"));
-            String vertexFour = (String) deckResources.get(Integer.parseInt("vertexFour"));
-            String resourcePrimary = (String) deckResources.get(Integer.parseInt("resourcePrimary"));
-            String pointsPerPlay = (String) deckResources.get(Integer.parseInt("pointsPerPlay"));
+            ResourceType[] resourceCard = new ResourceType[];
+            resourceCard[0] = (ResourceType) cardResource.get("vertexOne");
+            resourceCard[1] = (ResourceType) cardResource.get("vertexTwo");
+            resourceCard[2] = (ResourceType) cardResource.get("vertexThree");
+            resourceCard[3] = (ResourceType) cardResource.get("vertexFour");
+            ResourcePrimaryType resourcePrimary = (ResourcePrimaryType) cardResource.get("resourcePrimary");
+            int pointsPerPlay = (int) cardResource.get("pointsPerPlay");
 
-            //now we call a method that create the card using this information
+            cardResourceDeck.add(new CardResource(resourceCard, resourcePrimary, pointsPerPlay));
+        }
+
+        JSONArray deckGold = (JSONArray)card.get("CardGold");
+
+        for(int i; i< deckGold.size(); i++) {
+            JSONObject cardGold = (JSONObject) deckResources.get(i);
+
+            ResourceType[] resourceCard = new ResourceType[];
+            resourceCard[0] = (ResourceType) cardGold.get("vertexOne");
+            resourceCard[1] = (ResourceType) cardGold.get("vertexTwo");
+            resourceCard[2] = (ResourceType) cardGold.get("vertexThree");
+            resourceCard[3] = (ResourceType) cardGold.get("vertexFour");
+            ResourcePrimaryType resourcePrimary = (ResourcePrimaryType) cardGold.get("resourcePrimary");
+            int pointsPerPlay = (int) cardGold.get("pointsPerPlay");
         }
 
     };

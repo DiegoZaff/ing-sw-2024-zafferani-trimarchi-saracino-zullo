@@ -6,6 +6,10 @@ import it.polimi.ingsw.gc28.model.Table;
 import it.polimi.ingsw.gc28.model.resources.Resource;
 import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
 import it.polimi.ingsw.gc28.model.Vertex;
+import it.polimi.ingsw.gc28.model.resources.ResourceSpecial;
+import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
+import it.polimi.ingsw.gc28.model.resources.utils.ResourceSpecialType;
+import it.polimi.ingsw.gc28.model.resources.utils.ResourceType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,10 +18,10 @@ import java.util.Optional;
 public class CardResource extends CardGame {
     private ResourcePrimary resource;
     private int pointsPerPlay;
-    public CardResource(Vertex[] verticesFront, ResourcePrimary resource, int pointsPerPlay){
-        super(verticesFront);
+    public CardResource(ResourceType[] resourceCard, ResourcePrimaryType resource, int pointsPerPlay){
+        super(resourceCard);
         this.pointsPerPlay = pointsPerPlay;
-        this.resource = resource;
+        this.resource = new ResourcePrimary(resource);
 
     }
 

@@ -6,6 +6,10 @@ import it.polimi.ingsw.gc28.model.Table;
 import it.polimi.ingsw.gc28.model.Vertex;
 import it.polimi.ingsw.gc28.model.resources.Resource;
 import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
+import it.polimi.ingsw.gc28.model.resources.ResourceSpecial;
+import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
+import it.polimi.ingsw.gc28.model.resources.utils.ResourceSpecialType;
+import it.polimi.ingsw.gc28.model.resources.utils.ResourceType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,15 +17,34 @@ import java.util.Optional;
 
 public abstract class CardGame extends Card {
     private Vertex[] verticesFront;
+    private Resource[] resourcesFront;
 
 
+    public CardGame(ResourceType[] resourcesFront){
 
+        Resource[] resourceInCard = new Resource[];
+        Vertex[] vertices = new Vertex[];
+        /*for(int i = 0; i< resourceCard.length; i++){
+            if(resourceCard[i] == ResourceType.FOX) {
+                resourceInCard[i] = new ResourcePrimary(ResourcePrimaryType.FOX);
+            } else if (resourceCard[i] == ResourceType.LEAF) {
+                resourceInCard[i] = new ResourcePrimary(ResourcePrimaryType.LEAF);
+            } else if (resourceCard[i] == ResourceType.BUTTERFLY) {
+                resourceInCard[i] = new ResourcePrimary(ResourcePrimaryType.BUTTERFLY);
+            } else if (resourceCard[i] == ResourceType.MUSHROOM) {
+                resourceInCard[i] = new ResourcePrimary(ResourcePrimaryType.MUSHROOM);
+            } else if (resourceCard[i] == ResourceType.FEATHER) {
+                resourceInCard[i] = new ResourceSpecial(ResourceSpecialType.FEATHER);
+            } else if (resourceCard[i] == ResourceType.PARCHMENT) {
+                resourceInCard[i] = new ResourceSpecial(ResourceSpecialType.PARCHMENT);
+            } else if (resourceCard[i] == ResourceType.POTION) {
+                resourceInCard[i] = new ResourceSpecial(ResourceSpecialType.POTION);
+            } else
+            // funzione che mi dice se risorsa primaria o no*/
 
+            // metodo con for che crea i quattro vertici e li collega al this.verticesFront
+                e le carte risorsa sono pronte, valutare null e o risorsa//
 
-
-    public CardGame(Vertex[] verticesFront){
-
-        this.verticesFront = verticesFront;
     }
 
     /**
