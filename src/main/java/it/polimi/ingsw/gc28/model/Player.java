@@ -4,11 +4,15 @@ import it.polimi.ingsw.gc28.model.cards.CardGame;
 import it.polimi.ingsw.gc28.model.objectives.Objective;
 
 import java.util.ArrayList;
+import java.util.OptionalInt;
+
 
 public class Player {
     private int completedObjectives;
 
     private int points, objectivePoints;
+    private int winner = 0;
+
 
     private Objective objective;
 
@@ -23,6 +27,12 @@ public class Player {
     public int getPoints(){
         return points;
     }
+
+    public void setWinner(){winner = 1;}
+
+    public int getWinner() {return winner;}
+
+    public int getObjectivePoints() {return objectivePoints;}
 
     public void removeCard (CardGame cardToBeRemoved) {
         hand.remove(cardToBeRemoved);

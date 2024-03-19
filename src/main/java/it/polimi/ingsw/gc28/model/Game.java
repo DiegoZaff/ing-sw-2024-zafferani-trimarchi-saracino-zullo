@@ -66,7 +66,7 @@ public class Game {
     private void endGame(int currRoundsLefts){
         if(currRoundsLefts == 0){
             calculateObjectivePoints();
-            getWinner();
+            calculateWinner();
         }else{
             roundsLeft = Optional.of(currRoundsLefts - 1);
         }
@@ -116,8 +116,61 @@ public class Game {
      * This method calculates who's the winner at the end of the game.
      * ? maybe add a winner attribute Optional<Player> and set winner player.
      */
-    private void getWinner(){
-        // ! to be implemented
+    private void calculateWinner(){
+
+
+        int maxPoints = 0;
+        ArrayList<Player> winners = new ArrayList<>();
+        ArrayList<Player> winnersAfterObjectivePointsCheck = new ArrayList<>();
+
+        for (Player player : players ) {
+            if (player.getPoints() > maxPoints) {
+                maxPoints = player.getPoints();
+                winners.clear();
+                winners.add(player);
+            } else if (player.getPoints() == maxPoints) {
+                winners.add(player);
+            }
+        }
+
+
+        if (winners.size() > 1)
+        {
+            int maxObjectivePoints = 0;
+            for (Player player : winners)
+            {
+                if (player.getObjectivePoints() > maxObjectivePoints)
+                {
+                    maxObjectivePoints = player.getObjectivePoints();
+                    winnersAfterObjectivePointsCheck.clear();
+                    winnersAfterObjectivePointsCheck.add(player);
+                }
+                else if (player.getObjectivePoints() == maxObjectivePoints)
+                {
+                    winnersAfterObjectivePointsCheck.add(player);
+                }
+            }
+        }
+
+        for (Player player : winnersAfterObjectivePointsCheck)
+        {
+            player.setWinner();
+        }
+
+        for (Player player : players)
+        {
+            if (player.getWinner() == 1)
+            {
+                //print hai vinto
+            }
+            else
+            {
+                //print hai perso
+            }
+        }
+
+        //posso farlo con functional
+
     }
 
 
