@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Player {
     private int completedObjectives;
 
-    private int points;
+    private int points, objectivePoints;
 
     private Objective objective;
 
@@ -29,6 +29,17 @@ public class Player {
     }
 
     public Table getTable () {return table;}
+
+
+    /**
+     * this method update the points when a card is played
+     * @param coordinate the coordinate of the played card
+     */
+    public void updatePoints(Coordinate coordinate){
+        points += table.getCell(coordinate).Points();
+    }
+
+
 
     /**
      * this method play a card in the table of a player, checking if the coordinate and the card can be played.
@@ -53,9 +64,9 @@ public class Player {
             //se la carta non viene giocata (carta oro non giocabile) possiamo aggiungere una IrregularCardException
             //da controllare se viene usato il metodo corretto
 
-            //da implementare metodo per aggiornare contatori risorse
+            table.updateCounters(coordinates);
 
-            //da implementare metodo per aumentare punteggio
+            this.updatePoints(coordinates);
 
 
             // manca update di playablePositions e unplayablePositions?
@@ -76,7 +87,7 @@ public class Player {
         objectives.add(objective);
 
         for(Objective obj: objectives){
-            points += obj.calculatePoints(table.GetMapPositions(),table.getResourceCounters());
+            objectivePoints += obj.calculatePoints(table.GetMapPositions(),table.getResourceCounters());
         }
     }
 

@@ -55,8 +55,36 @@ public abstract class CardGame extends Card {
         return verticesFront[value].getResource();
     }
 
+    /**
+     * this method provides a map that contains the number of resource in the vertex in the front of the card
+     * @return  Map<Resource, Integer> Integer: the number of a resource in a card
+     */
+    public Map<Resource,Integer> getFrontCardVertexResource (){
+        Map<Resource,Integer> mapResource = new HashMap<>();
+        int temp;
+        for (Vertex v : verticesFront){
+            if (v.isExists()){
+                if (v.getResource().isPresent()){
+                    if (!mapResource.containsKey(v.getResource().get())){
+                        mapResource.put(v.getResource().get(), 1);
+                    }else {
+                        temp = mapResource.get(v.getResource().get()) +1;
+                        mapResource.replace(v.getResource().get(), temp);
+                    }
+                }
+            }
+        }
+        return mapResource;
+    }
+
+    public abstract int getPoints();
 
 
+    /**
+     * this method return a map with the central resources of the card
+     * @return a map <Resource, Integer><the resource/ the numeber of that resource>
+     */
+    public abstract Map<Resource,Integer> getMapCentralResource();
 
 
 }

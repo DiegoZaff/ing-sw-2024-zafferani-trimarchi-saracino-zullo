@@ -3,9 +3,12 @@ package it.polimi.ingsw.gc28.model.cards;
 import it.polimi.ingsw.gc28.model.Cell;
 import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.model.Table;
+import it.polimi.ingsw.gc28.model.resources.Resource;
 import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
 import it.polimi.ingsw.gc28.model.Vertex;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public class CardResource extends CardGame {
@@ -42,6 +45,18 @@ public class CardResource extends CardGame {
         Cell cell = new Cell(this, 0, false);
         //da controllare orderPlay, per ora messo a zero
         table.addMapPosition(playCoordinate, cell);
+    }
+
+    @Override
+    public int getPoints(){
+        return pointsPerPlay;
+    }
+
+    @Override
+    public Map<Resource,Integer> getMapCentralResource(){
+        Map<Resource, Integer> m = new HashMap<>();
+        m.put(resource, 1);
+        return m;
     }
 
 }

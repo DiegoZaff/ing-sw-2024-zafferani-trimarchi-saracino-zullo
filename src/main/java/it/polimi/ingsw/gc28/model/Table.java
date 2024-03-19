@@ -113,5 +113,53 @@ public class Table {
         mapPositions.put(playCoordinate, cell);
     }
 
+    /**
+     *
+     * @param coordinate the coordinate of the cell
+     * @return the cell, or null if the coordinate are not mapped
+     */
+    public Cell getCell(Coordinate coordinate){
+        return mapPositions.get(coordinate);
+    }
+
+    /**
+     * this method add the resources of a played card
+     * @param coordinate the coordinate of the played card
+     */
+    private void sumResources(Coordinate coordinate){
+        Map<Resource, Integer> mapResource = new HashMap<>();
+        int temp;
+
+        mapResource = getCell(coordinate).getResources();
+
+        for (Resource key : mapResource.keySet()){
+            temp = resourceCounters.get(key) + mapResource.get(key);
+
+            resourceCounters.replace(key, temp);
+        }
+    }
+
+
+    /**
+     * this method removes from the counter the covered vertex
+     * @param coordinate the cordinate of the played card
+     */
+    private void subResources (Coordinate coordinate){
+        //da implementare
+    }
+
+    public void updateCounters (Coordinate coordinate){
+
+        sumResources(coordinate);
+
+        subResources(coordinate);
+
+    }
+
+    public void updateCoordinate (Coordinate coordinate){
+        //da implementare
+    }
+
+
 
 }
