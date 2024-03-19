@@ -8,4 +8,9 @@ public enum ResourceType {
     POTION,
     FEATHER,
     PARCHMENT
+
+    //NORESOURCE
+
+    //necessità di una risorsa vuota per indicicare vertice senza risorse
+    //vertice occupato ha null, non è risorsa
 }

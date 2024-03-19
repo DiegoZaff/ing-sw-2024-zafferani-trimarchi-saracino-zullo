@@ -5,4 +5,6 @@ public enum ResourcePrimaryType {
     FOX,
     LEAF,
     BUTTERFLY
+
+    //Doppio?
 }

@@ -4,4 +4,6 @@ public enum ResourceSpecialType {
     POTION,
     FEATHER,
     PARCHMENT
+
+    //Doppio?
 }
