@@ -1,9 +1,10 @@
 package it.polimi.ingsw.gc28.model;
 
+import it.polimi.ingsw.gc28.model.actions.ActionManager;
+import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.model.cards.CardGame;
-import it.polimi.ingsw.gc28.model.cards.CardInitial;
 import it.polimi.ingsw.gc28.model.cards.CardObjective;
-import it.polimi.ingsw.gc28.model.objectives.Objective;
+import it.polimi.ingsw.gc28.model.errors.ErrorManager;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -11,17 +12,9 @@ import java.util.stream.Collectors;
 
 public class Game {
 
-    enum ActionType{
-        PLAY_INITIAL_CARD,
-        PLAY_CARD,
-        DRAW_CARD,
-        CHOOSE_OBJ,
-    }
+    private ErrorManager errorManager;
 
-    private ActionType action;
-
-    private Player playerOfTurn;
-
+    private ActionManager actionManager;
     private ArrayList<CardObjective> globalObjectives;
 
     private Deck deck;
@@ -42,6 +35,8 @@ public class Game {
      * which counts the rounds left.
      */
     private void checkEndGame() {
+
+        Player playerOfTurn = actionManager.getPlayerOfTurn();
 
         boolean has20points = playerOfTurn.getPoints() >= 20;
 
@@ -85,9 +80,10 @@ public class Game {
         // ? maybe let's have an attribute error inside player which stores possible
         // ? errors for the player, which will be reflected in the ui with appropriate error messages.
         // ? (other kinds of errors are for illegal moves, playing when it's another player's turn, etc...)
+        ActionType actionRequested = ActionType.PLAY_CARD;
 
-        if(!validatesMove(playingPlayer, ActionType.PLAY_CARD)){
-            // ... check for different kinds of errors and update error attribute inside player
+        if(!actionManager.validatesMove(playingPlayer, actionRequested)){
+            errorManager.fromWrongMove(playingPlayer, actionRequested, actionManager);
         };
 
         playingPlayer.playCard(playedCard, isFront, coordinates);
@@ -139,20 +135,7 @@ public class Game {
             return;
         }
 
-        // updates stuff...
-    }
-
-
-    /**
-     * This method checks weather player 'p' can perform action 'a'.
-     * This method will be called to validate playGameCard, drawCardFromDeck, drawCardFromTable.
-     * @param p is the player that wants to do something
-     * @param a is the action that 'p' wants to perform
-     * @return true is it is the expected action from the expected player.
-     */
-    private boolean validatesMove(Player p, ActionType a){
-        // ! to be implemented
-
-        return true;
+        // update for next move
+        actionManager.nextMove();
     }
 }

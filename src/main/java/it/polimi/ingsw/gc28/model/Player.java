@@ -1,9 +1,11 @@
 package it.polimi.ingsw.gc28.model;
 
 import it.polimi.ingsw.gc28.model.cards.CardGame;
+import it.polimi.ingsw.gc28.model.errors.PlayerActionError;
 import it.polimi.ingsw.gc28.model.objectives.Objective;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class Player {
     private int completedObjectives;
@@ -15,6 +17,12 @@ public class Player {
     private ArrayList<CardGame> hand;
 
     private Table table;
+
+    private Optional<PlayerActionError> error;
+
+    public void setError(PlayerActionError err){
+        error = Optional.of(err);
+    }
 
     public ArrayList<CardGame> gethand (){
         return hand;
