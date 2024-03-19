@@ -48,7 +48,7 @@ public abstract class CardGame extends Card {
     public abstract void playBack(Table table, Coordinate playCoordinate);
 
 
-    public Resource getResourceInsideVertex (int value){
+    public Optional<Resource> getResourceInsideVertex (int value){
 
         return verticesFront[value].getResource();
     }
