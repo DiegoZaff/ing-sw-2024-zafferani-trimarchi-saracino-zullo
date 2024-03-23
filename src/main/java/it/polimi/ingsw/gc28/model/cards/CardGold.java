@@ -24,15 +24,21 @@ public class CardGold extends CardResource {
         super(resourceCard, resourcePrimary, pointsPerPlay);
         playability = new HashMap<>();
         createPlayabilityMap(playability, resourceNeeded);
+        this.challenge = Optional.ofNullable(challenge);
+        this.resourceChallenge = Optional.ofNullable(resourceChallenge);
         }
 
+    /**
+     * this method create the hashMap to keep information about card's playability
+     * @param playability is the hashMap's name
+     * @param resourceNeeded is the array related to the json file
+     */
     public void createPlayabilityMap(Map<ResourcePrimaryType, Integer> playability, ResourcePrimaryType[] resourceNeeded){
         for(ResourcePrimaryType resource : resourceNeeded){
             if(playability.containsKey(resource)) {
                 playability.put(resource, playability.get(resource) + 1);
             }
-            else
-            playability.put(resource, 1);
+            else playability.put(resource, 1);
         }
     }
 
