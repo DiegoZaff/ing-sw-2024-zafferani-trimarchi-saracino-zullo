@@ -10,6 +10,10 @@ public class ResourceSpecial extends Resource {
         this.type = type;
     }
 
+    public ResourceSpecialType getType(){
+        return type;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

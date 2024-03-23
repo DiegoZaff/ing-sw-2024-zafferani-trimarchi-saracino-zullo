@@ -24,4 +24,8 @@ module it.polimi.ingsw.gc28 {
     opens it.polimi.ingsw.gc28.model.actions to javafx.fxml;
     exports it.polimi.ingsw.gc28.model.errors;
     opens it.polimi.ingsw.gc28.model.errors to javafx.fxml;
+    exports it.polimi.ingsw.gc28.model.challenge;
+    opens it.polimi.ingsw.gc28.model.challenge to javafx.fxml;
+    exports it.polimi.ingsw.gc28.model.challenge.utils;
+    opens it.polimi.ingsw.gc28.model.challenge.utils to javafx.fxml;
 }

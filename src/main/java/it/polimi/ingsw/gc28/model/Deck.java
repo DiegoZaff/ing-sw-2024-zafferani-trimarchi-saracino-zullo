@@ -1,31 +1,28 @@
 package it.polimi.ingsw.gc28.model;
 import it.polimi.ingsw.gc28.model.cards.*;
-import it.polimi.ingsw.gc28.model.resources.Resource;
-import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import it.polimi.ingsw.gc28.model.challenge.Challenge;
+import it.polimi.ingsw.gc28.model.challenge.utils.ChallengeType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
+import it.polimi.ingsw.gc28.model.resources.utils.ResourceSpecialType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceType;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import static java.lang.Integer.parseInt;
-
-
 /**
  * Class that represents the deck of cards.
  */
 public class Deck {
     private final ArrayList<CardResource> cardResourceDeck = new ArrayList<CardResource>();
-    private final ArrayList<CardGold> cardGold = new ArrayList<CardGold>();
+    private final ArrayList<CardGold> cardGoldDeck = new ArrayList<CardGold>();
     private final ArrayList<CardInitial> cardInitial = new ArrayList<CardInitial>();
     private final ArrayList<CardObjective> cardObjective = new ArrayList<CardObjective>();
 
@@ -56,7 +53,7 @@ public class Deck {
 
     };
 
-    /*
+    /**
       This constructor generates a deck of cards
      */
     public Deck() throws IOException {
@@ -76,8 +73,8 @@ public class Deck {
 
         for(int i = 0; i< deckResources.size(); i++){
             JSONObject cardResource = (JSONObject) deckResources.get(i);
+            ResourceType[] resourceCard = new ResourceType[3];
 
-            ResourceType[] resourceCard = new ResourceType[];
             resourceCard[0] = (ResourceType) cardResource.get("vertexOne");
             resourceCard[1] = (ResourceType) cardResource.get("vertexTwo");
             resourceCard[2] = (ResourceType) cardResource.get("vertexThree");
@@ -90,16 +87,26 @@ public class Deck {
 
         JSONArray deckGold = (JSONArray)card.get("CardGold");
 
-        for(int i; i< deckGold.size(); i++) {
+        for(int i = 0; i< deckGold.size(); i++) {
             JSONObject cardGold = (JSONObject) deckResources.get(i);
 
-            ResourceType[] resourceCard = new ResourceType[];
+            ResourceType[] resourceCard = new ResourceType[3];
             resourceCard[0] = (ResourceType) cardGold.get("vertexOne");
             resourceCard[1] = (ResourceType) cardGold.get("vertexTwo");
             resourceCard[2] = (ResourceType) cardGold.get("vertexThree");
             resourceCard[3] = (ResourceType) cardGold.get("vertexFour");
             ResourcePrimaryType resourcePrimary = (ResourcePrimaryType) cardGold.get("resourcePrimary");
             int pointsPerPlay = (int) cardGold.get("pointsPerPlay");
+            ResourcePrimaryType[] resourceNeeded = new ResourcePrimaryType[4];
+            resourceNeeded[0] = (ResourcePrimaryType) cardGold.get("resourceNeededOne");
+            resourceNeeded[1] = (ResourcePrimaryType) cardGold.get("resourceNeededTwo");
+            resourceNeeded[2] = (ResourcePrimaryType) cardGold.get("resourceNeededThree");
+            resourceNeeded[3] = (ResourcePrimaryType) cardGold.get("resourceNeededFour");
+            resourceNeeded[4] = (ResourcePrimaryType) cardGold.get("resourceNeededFive");
+            ChallengeType challenge= (ChallengeType) cardGold.get("challenge");
+            ResourceSpecialType resourceChallenge = (ResourceSpecialType) cardGold.get("resourceChallenge");
+
+            cardGoldDeck.add(new CardGold(resourceCard, resourcePrimary, pointsPerPlay, resourceNeeded, challenge, resourceChallenge));
         }
 
     };

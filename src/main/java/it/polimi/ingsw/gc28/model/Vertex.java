@@ -6,13 +6,11 @@ import java.util.Optional;
 
 public class Vertex {
     private final Optional<Resource> resource;
+    private final boolean exists;
 
     public boolean isExists() {
         return exists;
     }
-
-    private final boolean exists;
-
 
     public Vertex(boolean exists){
         this.resource = Optional.empty();

@@ -16,36 +16,54 @@ import java.util.Map;
 import java.util.Optional;
 
 public abstract class CardGame extends Card {
-    private Vertex[] verticesFront;
-    private Resource[] resourcesFront;
+    private final Vertex[] verticesFront;
+    private final Resource[] resourcesFront;
 
 
     public CardGame(ResourceType[] resourcesFront){
 
-        Resource[] resourceInCard = new Resource[];
-        Vertex[] vertices = new Vertex[];
-        /*for(int i = 0; i< resourceCard.length; i++){
-            if(resourceCard[i] == ResourceType.FOX) {
+        Resource[] resourceInCard = new Resource[3];
+        Vertex[] vertices = new Vertex[3];
+        int[] hasVertex = new int[3];
+
+        for (int i=0; i<resourcesFront.length; i++) {
+            hasVertex[i] = 0;
+            if(resourcesFront[i] == ResourceType.FOX) {
                 resourceInCard[i] = new ResourcePrimary(ResourcePrimaryType.FOX);
-            } else if (resourceCard[i] == ResourceType.LEAF) {
+            } else if (resourcesFront[i] == ResourceType.LEAF) {
                 resourceInCard[i] = new ResourcePrimary(ResourcePrimaryType.LEAF);
-            } else if (resourceCard[i] == ResourceType.BUTTERFLY) {
+            } else if (resourcesFront[i] == ResourceType.BUTTERFLY) {
                 resourceInCard[i] = new ResourcePrimary(ResourcePrimaryType.BUTTERFLY);
-            } else if (resourceCard[i] == ResourceType.MUSHROOM) {
+            } else if (resourcesFront[i] == ResourceType.MUSHROOM) {
                 resourceInCard[i] = new ResourcePrimary(ResourcePrimaryType.MUSHROOM);
-            } else if (resourceCard[i] == ResourceType.FEATHER) {
+            } else if (resourcesFront[i] == ResourceType.FEATHER) {
                 resourceInCard[i] = new ResourceSpecial(ResourceSpecialType.FEATHER);
-            } else if (resourceCard[i] == ResourceType.PARCHMENT) {
+            } else if (resourcesFront[i] == ResourceType.PARCHMENT) {
                 resourceInCard[i] = new ResourceSpecial(ResourceSpecialType.PARCHMENT);
-            } else if (resourceCard[i] == ResourceType.POTION) {
+            } else if (resourcesFront[i] == ResourceType.POTION) {
                 resourceInCard[i] = new ResourceSpecial(ResourceSpecialType.POTION);
-            } else
-            // funzione che mi dice se risorsa primaria o no*/
+            } else if (resourcesFront[i] == ResourceType.noResource) {
+                resourceInCard[i] = null;
+                hasVertex[i] = 1;
+            } else {
+                resourceInCard[i] = null;
+                hasVertex[i] = 2;
+            }
+        }
 
-            // metodo con for che crea i quattro vertici e li collega al this.verticesFront
-                e le carte risorsa sono pronte, valutare null e o risorsa//
-
+        for (int i=0; i< resourceInCard.length; i++){
+            if(hasVertex[i] == 0) {
+                vertices[i] = new Vertex(resourceInCard[i]);
+            }
+            else if(hasVertex[i] == 1){
+                vertices[i] = new Vertex(true);
+            }
+            else vertices[i] = new Vertex(false);
+        }
+        this.verticesFront = vertices;
+        this.resourcesFront = resourceInCard;
     }
+
 
     /**
      * This method provides the resource primary of the card for counting the points
