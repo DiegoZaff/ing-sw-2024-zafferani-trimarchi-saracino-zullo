@@ -13,8 +13,6 @@ import java.util.ArrayList;
  */
 public class ActionManager {
 
-    private ErrorManager errorManager;
-
     private ArrayList<Player> players;
 
     private Player playerOfTurn;
@@ -25,38 +23,29 @@ public class ActionManager {
 
     private ActionType type;
 
+    public ActionType getActionType(){
+        return type;
+    }
+
     /**
      * Initialize first Action.
      * @param players must be of length > 0
      */
-    public ActionManager(ErrorManager errorManager, ArrayList<Player> players){
-        this.errorManager = errorManager;
+    public ActionManager(ArrayList<Player> players){
         this.players = players;
         this.type = ActionType.CHOOSE_OBJ;
         playerOfTurn = players.getFirst();
     }
 
-    public ActionManager(ErrorManager errorManager, ArrayList<Player> players, Player playerOfTurn, ActionType type) {
-        this.errorManager = errorManager;
-        this.players = players;
-        this.playerOfTurn = playerOfTurn;
-        this.type = type;
-    }
 
     /**
      * This method checks weather player 'p' can perform action 'a'.
-     * This method will be called to validate playGameCard, drawCardFromDeck, drawCardFromTable.
      * @param p is the player that wants to do something
      * @param a is the action that 'p' wants to perform
      * @return true is it is the expected action from the expected player.
      */
     public boolean validatesMove(Player p, ActionType a){
-        if(playerOfTurn.equals(p) && a.equals(type)){
-            return true;
-        }else{
-
-        }
-        return true;
+        return playerOfTurn.equals(p) && a.equals(type);
     }
 
     /**
@@ -93,5 +82,13 @@ public class ActionManager {
         int indexOfCurr = players.indexOf(playerOfTurn);
 
         return players.get((indexOfCurr + 1) % players.size());
+    }
+
+    /**
+     * This will signal the end of the game. No more moves will be validated.
+     */
+    public void gameFinished(){
+        type = ActionType.GAME_ENDED;
+        playerOfTurn = getNextPlayer();
     }
 }

@@ -15,7 +15,7 @@ public abstract class Objective {
     protected boolean areCombinationsOverlapping(ArrayList<Coordinate> comb1, ArrayList<Coordinate> comb2){
         for(Coordinate coord1 : comb1){
             for(Coordinate coord2 : comb2){
-                if(coord1.x == coord2.x && coord1.y == coord2.y){
+                if(coord1.x() == coord2.x() && coord1.y() == coord2.y()){
                     return true;
                 }
             }

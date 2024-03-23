@@ -5,4 +5,5 @@ public enum ActionType{
     PLAY_CARD,
     DRAW_CARD,
     CHOOSE_OBJ,
+    GAME_ENDED
 }

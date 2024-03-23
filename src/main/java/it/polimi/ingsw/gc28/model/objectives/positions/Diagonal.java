@@ -16,13 +16,13 @@ public class Diagonal extends PositionType{
         ArrayList<Coordinate> coords = new ArrayList<Coordinate>();
 
         if(diagonalType == DiagonalType.MAIN_DIAGONAL){
-            coords.add(new Coordinate(coord.x - 1, coord.y - 1));
+            coords.add(new Coordinate(coord.x() - 1, coord.y() - 1));
             coords.add(coord);
-            coords.add(new Coordinate(coord.x + 1, coord.y + 1));
+            coords.add(new Coordinate(coord.x() + 1, coord.y() + 1));
         }else{
-            coords.add(new Coordinate(coord.x - 1, coord.y + 1));
+            coords.add(new Coordinate(coord.x() - 1, coord.y() + 1));
             coords.add(coord);
-            coords.add(new Coordinate(coord.x + 1, coord.y -1));
+            coords.add(new Coordinate(coord.x() + 1, coord.y() -1));
         }
         return coords;
 

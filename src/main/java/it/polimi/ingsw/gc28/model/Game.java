@@ -6,20 +6,21 @@ import it.polimi.ingsw.gc28.model.cards.CardGame;
 import it.polimi.ingsw.gc28.model.cards.CardObjective;
 import it.polimi.ingsw.gc28.model.errors.ErrorManager;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class Game {
 
-    private ErrorManager errorManager;
+    private final ErrorManager errorManager;
 
-    private ActionManager actionManager;
+    private final ActionManager actionManager;
     private ArrayList<CardObjective> globalObjectives;
 
-    private Deck deck;
+    private final Deck deck;
 
-    private ArrayList<Player> players;
+    private final ArrayList<Player> players;
 
     /**
      * This attribute is null until a player reaches 20 points, counting
@@ -27,6 +28,20 @@ public class Game {
      * the cards).
      */
     private Optional<Integer> roundsLeft;
+
+    public Game(ArrayList<String> nicknames) throws IOException, IllegalArgumentException {
+        if(nicknames == null || nicknames.size() < 2){
+            throw new IllegalArgumentException();
+        }
+        this.deck = new Deck();
+        this.players = nicknames.stream().map(Player::new)
+                .collect(Collectors.toCollection(ArrayList::new));
+        this.errorManager = new ErrorManager(this.players);
+        this.actionManager = new ActionManager(this.players);
+        this.roundsLeft = Optional.empty();
+
+        // ! TODO: initialize globalObjectives
+    }
 
 
     /**
@@ -58,12 +73,15 @@ public class Game {
      *
      * @param currRoundsLefts rounds left to be played.
      */
-    private void endGame(int currRoundsLefts){
+    private boolean endGame(int currRoundsLefts){
         if(currRoundsLefts == 0){
             calculateObjectivePoints();
             calculateWinner();
+            // game ended
+            return true;
         }else{
             roundsLeft = Optional.of(currRoundsLefts - 1);
+            return false;
         }
     }
 
@@ -76,20 +94,17 @@ public class Game {
      * @param coordinates indicates the coordinate where the card has to be played
      */
     private void playGameCard (Player playingPlayer, CardGame playedCard, boolean isFront, Coordinate coordinates ) {
-        //illegal coordinates exception?
-        // ? maybe let's have an attribute error inside player which stores possible
-        // ? errors for the player, which will be reflected in the ui with appropriate error messages.
-        // ? (other kinds of errors are for illegal moves, playing when it's another player's turn, etc...)
         ActionType actionRequested = ActionType.PLAY_CARD;
 
         if(!actionManager.validatesMove(playingPlayer, actionRequested)){
             errorManager.fromWrongMove(playingPlayer, actionRequested, actionManager);
+            return;
         };
 
         playingPlayer.playCard(playedCard, isFront, coordinates);
 
-        // ? maybe clean up all players' errors when a move is successful.
-        // ? cleanUpAllPlayersErrors();
+        // clean up all errors after a move is done successfully.
+        errorManager.cleanUpAllErrors();
 
         // set up attributes for next turn.
         setupNextMove();
@@ -171,21 +186,23 @@ public class Game {
 
 
     /**
-     * This method updates the attributes 'action' and 'playerOfTurn' preparing for
-     * the next round, it updates also the roundsLeft attribute if it is set.
-     * Moreover, it calls the 'checkEndGame' method to check if a player has reached 20 points, which
-     * also sets the 'roundsLeft' attribute.
+     * This method sets everything up for the next turn by calling checkEndGame() if
+     * roundsLeft has not been set, or endGame() if roundsLeft has been set. At the end
+     * it calls actionManager.nextMove() which updates the next turn's expected action and
+     * playerOfTurn.
      */
     private void setupNextMove(){
-        // ! to be implemented
-
         // if roundsLeft is not set check for endgame
         if(roundsLeft.isEmpty()) {
             checkEndGame();
         }else{
             // check if 0 rounds left and
-            endGame(roundsLeft.get());
-            return;
+            boolean hasEnded = endGame(roundsLeft.get());
+
+            if(hasEnded){
+                actionManager.gameFinished();
+                return;
+            }
         }
 
         // update for next move

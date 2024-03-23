@@ -15,21 +15,21 @@ public class Stack extends PositionType{
         ArrayList<Coordinate> coords = new ArrayList<Coordinate>();
 
         if (type == PositionStackType.S_E_STACK){
-            coords.add(new Coordinate(coord.x + 1, coord.y - 1));
+            coords.add(new Coordinate(coord.x() + 1, coord.y() - 1));
             coords.add(coord);
-            coords.add(new Coordinate(coord.x, coord.y + 1));
+            coords.add(new Coordinate(coord.x(), coord.y() + 1));
         }else if (type == PositionStackType.S_W_STACK){
-            coords.add(new Coordinate(coord.x - 1, coord.y - 1));
+            coords.add(new Coordinate(coord.x() - 1, coord.y() - 1));
             coords.add(coord);
-            coords.add(new Coordinate(coord.x, coord.y + 1));
+            coords.add(new Coordinate(coord.x(), coord.y() + 1));
         }else if (type == PositionStackType.N_E_STACK){
-            coords.add(new Coordinate(coord.x, coord.y - 1));
+            coords.add(new Coordinate(coord.x(), coord.y() - 1));
             coords.add(coord);
-            coords.add(new Coordinate(coord.x + 1, coord.y + 1));
+            coords.add(new Coordinate(coord.x() + 1, coord.y() + 1));
         }else if (type == PositionStackType.N_W_STACK){
-            coords.add(new Coordinate(coord.x, coord.y - 1));
+            coords.add(new Coordinate(coord.x(), coord.y() - 1));
             coords.add(coord);
-            coords.add(new Coordinate(coord.x - 1, coord.y + 1));
+            coords.add(new Coordinate(coord.x() - 1, coord.y() + 1));
         }
 
         return coords;

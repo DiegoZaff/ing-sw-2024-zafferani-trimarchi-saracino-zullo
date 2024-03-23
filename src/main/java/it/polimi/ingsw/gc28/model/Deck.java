@@ -46,6 +46,8 @@ public class Deck {
      * This method is responsible for drawing the card.
      * @return the card on top of the deck, if the array is not empty, removing it from the array.
      * Otherwise, it returns null.
+     *
+     * //TODO : change and make a next() method for each type of deck
      */
     public Optional<Card> next() {
         // ! to be implemented.
@@ -73,7 +75,7 @@ public class Deck {
 
         for(int i = 0; i< deckResources.size(); i++){
             JSONObject cardResource = (JSONObject) deckResources.get(i);
-            ResourceType[] resourceCard = new ResourceType[3];
+            ResourceType[] resourceCard = new ResourceType[4];
 
             resourceCard[0] = (ResourceType) cardResource.get("vertexOne");
             resourceCard[1] = (ResourceType) cardResource.get("vertexTwo");
@@ -90,14 +92,14 @@ public class Deck {
         for(int i = 0; i< deckGold.size(); i++) {
             JSONObject cardGold = (JSONObject) deckResources.get(i);
 
-            ResourceType[] resourceCard = new ResourceType[3];
+            ResourceType[] resourceCard = new ResourceType[4];
             resourceCard[0] = (ResourceType) cardGold.get("vertexOne");
             resourceCard[1] = (ResourceType) cardGold.get("vertexTwo");
             resourceCard[2] = (ResourceType) cardGold.get("vertexThree");
             resourceCard[3] = (ResourceType) cardGold.get("vertexFour");
             ResourcePrimaryType resourcePrimary = (ResourcePrimaryType) cardGold.get("resourcePrimary");
             int pointsPerPlay = (int) cardGold.get("pointsPerPlay");
-            ResourcePrimaryType[] resourceNeeded = new ResourcePrimaryType[4];
+            ResourcePrimaryType[] resourceNeeded = new ResourcePrimaryType[5];
             resourceNeeded[0] = (ResourcePrimaryType) cardGold.get("resourceNeededOne");
             resourceNeeded[1] = (ResourcePrimaryType) cardGold.get("resourceNeededTwo");
             resourceNeeded[2] = (ResourcePrimaryType) cardGold.get("resourceNeededThree");

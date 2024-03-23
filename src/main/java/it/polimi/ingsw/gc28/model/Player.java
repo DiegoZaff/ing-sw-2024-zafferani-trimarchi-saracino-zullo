@@ -1,9 +1,11 @@
 package it.polimi.ingsw.gc28.model;
 
 import it.polimi.ingsw.gc28.model.cards.CardGame;
+import it.polimi.ingsw.gc28.model.errors.PlayerActionError;
 import it.polimi.ingsw.gc28.model.objectives.Objective;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.OptionalInt;
 
 
@@ -13,12 +15,28 @@ public class Player {
     private int points, objectivePoints;
     private int winner = 0;
 
-
+    private final String name;
     private Objective objective;
 
     private ArrayList<CardGame> hand;
 
     private Table table;
+
+    private Optional<PlayerActionError> error;
+
+    public Player(String name) {
+        this.name = name;
+        this.points = 0;
+        this.objectivePoints = 0;
+        this.hand = new ArrayList<>();
+        this.table = new Table();
+        this.error = Optional.empty();
+        this.completedObjectives = 0;
+    }
+
+    public void setError(Optional<PlayerActionError> error) {
+        this.error = error;
+    }
 
     public ArrayList<CardGame> gethand (){
         return hand;
@@ -100,6 +118,8 @@ public class Player {
             objectivePoints += obj.calculatePoints(table.GetMapPositions(),table.getResourceCounters());
         }
     }
+
+
 
 
 }
