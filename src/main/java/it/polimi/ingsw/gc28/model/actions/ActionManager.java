@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gc28.model.actions;
 
-import it.polimi.ingsw.gc28.model.errors.ErrorManager;
 import it.polimi.ingsw.gc28.model.Player;
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 
@@ -21,10 +20,10 @@ public class ActionManager {
         return  playerOfTurn;
     }
 
-    private ActionType type;
+    private ActionType actionType;
 
     public ActionType getActionType(){
-        return type;
+        return actionType;
     }
 
     /**
@@ -33,7 +32,7 @@ public class ActionManager {
      */
     public ActionManager(ArrayList<Player> players){
         this.players = players;
-        this.type = ActionType.CHOOSE_OBJ;
+        this.actionType = ActionType.CHOOSE_OBJ;
         playerOfTurn = players.getFirst();
     }
 
@@ -45,7 +44,7 @@ public class ActionManager {
      * @return true is it is the expected action from the expected player.
      */
     public boolean validatesMove(Player p, ActionType a){
-        return playerOfTurn.equals(p) && a.equals(type);
+        return playerOfTurn.equals(p) && a.equals(actionType);
     }
 
     /**
@@ -54,21 +53,21 @@ public class ActionManager {
      */
     public void nextMove(){
         int indexOfCurr = players.indexOf(playerOfTurn);
-        switch (type){
+        switch (actionType){
             case CHOOSE_OBJ -> {
                 if(indexOfCurr ==  players.size() - 1){
-                    type = ActionType.PLAY_INITIAL_CARD;
+                    actionType = ActionType.PLAY_INITIAL_CARD;
                 }
                 playerOfTurn = getNextPlayer();
             }
             case PLAY_INITIAL_CARD -> {
-                type = ActionType.PLAY_CARD;
+                actionType = ActionType.PLAY_CARD;
             }
             case PLAY_CARD -> {
-                type = ActionType.DRAW_CARD;
+                actionType = ActionType.DRAW_CARD;
             }
             case DRAW_CARD -> {
-                type = ActionType.PLAY_CARD;
+                actionType = ActionType.PLAY_CARD;
                 playerOfTurn = getNextPlayer();
             }
         }
@@ -88,7 +87,7 @@ public class ActionManager {
      * This will signal the end of the game. No more moves will be validated.
      */
     public void gameFinished(){
-        type = ActionType.GAME_ENDED;
+        actionType = ActionType.GAME_ENDED;
         playerOfTurn = getNextPlayer();
     }
 }

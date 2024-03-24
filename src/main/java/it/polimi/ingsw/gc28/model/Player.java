@@ -10,7 +10,6 @@ import java.util.OptionalInt;
 
 
 public class Player {
-    private int completedObjectives;
 
     private int points, objectivePoints;
     private int winner = 0;
@@ -31,7 +30,6 @@ public class Player {
         this.hand = new ArrayList<>();
         this.table = new Table();
         this.error = Optional.empty();
-        this.completedObjectives = 0;
     }
 
     public void setError(Optional<PlayerActionError> error) {
