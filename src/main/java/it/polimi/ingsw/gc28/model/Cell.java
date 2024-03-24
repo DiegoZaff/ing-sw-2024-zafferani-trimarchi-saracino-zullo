@@ -13,8 +13,6 @@ public class Cell {
 
     public final CardGame card;
 
-    private ArrayList<Objective> objectivesSatisfied;
-
     private final int orderPlay;
 
     private final boolean isPlayedFront;
