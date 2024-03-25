@@ -62,7 +62,7 @@ public class Player {
      * @param coordinate the coordinate of the played card
      */
     public void updatePoints(Coordinate coordinate){
-        points += table.getCell(coordinate).Points();
+        points += table.getCell(coordinate).Points(table, coordinate);
     }
 
 

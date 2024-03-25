@@ -8,6 +8,7 @@ import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceSpecialType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceType;
+import javafx.scene.control.Tab;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -46,6 +47,8 @@ public class CardGold extends CardResource {
     public void playFront(Table table, Coordinate playCoordinate){
         //come metodo super ma controllando se giocabile
     }
+
+
 }
 
 

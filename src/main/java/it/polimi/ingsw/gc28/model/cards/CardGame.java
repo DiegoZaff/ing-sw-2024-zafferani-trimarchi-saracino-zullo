@@ -118,7 +118,7 @@ public abstract class CardGame extends Card {
         return mapResource;
     }
 
-    public abstract int getPoints();
+    public abstract int getPoints(Table table, Coordinate coordinate);
 
 
     /**

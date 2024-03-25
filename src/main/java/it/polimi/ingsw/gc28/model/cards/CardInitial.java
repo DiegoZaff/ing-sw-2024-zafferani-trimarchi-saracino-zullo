@@ -63,7 +63,7 @@ public class CardInitial extends CardGame {
     }
 
     @Override
-    public int getPoints(){
+    public int getPoints(Table table, Coordinate coordinate){
         return 0;
     }
 

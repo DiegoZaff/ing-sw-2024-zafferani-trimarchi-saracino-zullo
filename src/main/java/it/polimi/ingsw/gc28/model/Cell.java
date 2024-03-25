@@ -26,12 +26,12 @@ public class Cell {
 
 
     /**
-     * this method provides the points gained whe ìn a card is played
+     * this method provides the points gained when a card is played
      * @return the points if the card is played front, 0 if the card is played back
      */
-    public int Points(){
+    public int Points(Table table, Coordinate coordinate){
         if (isPlayedFront){
-            return card.getPoints();
+            return card.getPoints(table,coordinate);
         }else{
             return 0;
         }
