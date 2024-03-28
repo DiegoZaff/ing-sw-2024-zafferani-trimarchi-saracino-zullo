@@ -38,8 +38,6 @@ public class ObjectiveTest {
 
     /**
      * This test checks the behaviour of objectivePosition's calculatePoints.
-     * A simple table is set up consisting of three cards of the correct resource
-     * positioned diagonally.
      */
     @Test
     public void objectivePositionDiagonal_calculatePoints(){
@@ -115,8 +113,6 @@ public class ObjectiveTest {
 
     /**
      * This test checks the behaviour of objectiveResource's calculatePoints.
-     * A resourceCounters is set up with 7 Potions. The objective requires 2 points to
-     * score 2 points.
      */
     @Test
     public void objectiveResources_calculatePoints(){
