@@ -22,9 +22,9 @@ public abstract class CardGame extends Card {
 
     public CardGame(ResourceType[] resourcesFront){
 
-        Resource[] resourceInCard = new Resource[3];
-        Vertex[] vertices = new Vertex[3];
-        int[] hasVertex = new int[3];
+        Resource[] resourceInCard = new Resource[4];
+        Vertex[] vertices = new Vertex[4];
+        int[] hasVertex = new int[4];
 
         for (int i=0; i<resourcesFront.length; i++) {
             hasVertex[i] = 0;

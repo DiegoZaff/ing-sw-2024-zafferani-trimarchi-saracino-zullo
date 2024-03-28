@@ -120,18 +120,18 @@ public class Deck {
 
             int points = (int) cardObjective.get("pointsPerPlay");
             resourceNeeded[0] = (ResourceType) cardObjective.get("resourceNeededOne");
-            resourceNeeded[1] = (ResourceType) CardObjective.get("resourceNeededTwo");
+            resourceNeeded[1] = (ResourceType) cardObjective.get("resourceNeededTwo");
             resourceNeeded[2] = (ResourceType) cardObjective.get("resourceNeededThree");
 
             //metto un if se c'e almeno una risorsa creo la mappa//
 
             ResourcePrimaryType[] patternPosition = new ResourcePrimaryType[3];
             patternPosition[0] = (ResourcePrimaryType) cardObjective.get("resourcePatternPositionOne");
-            patternPosition[1] = (ResourcePrimaryType) CardObjective.get("resourcePatternPositionTwo");
+            patternPosition[1] = (ResourcePrimaryType) cardObjective.get("resourcePatternPositionTwo");
             patternPosition[2] = (ResourcePrimaryType) cardObjective.get("resourcePatternPositionThree");
 
-            DiagonalType;
-            PositionStackType;
+//            DiagonalType;
+//            PositionStackType;
 
             JSONArray deckInitial = (JSONArray)card.get("CardInitial");
 
