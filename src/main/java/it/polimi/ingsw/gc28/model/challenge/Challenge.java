@@ -10,7 +10,8 @@ public class Challenge {
     public ChallengeType type;
     private final Optional<ResourceSpecialType> resourceChallenge;
 
-    public Challenge(ResourceSpecialType resourceChallenge) {
+    public Challenge(ChallengeType type, ResourceSpecialType resourceChallenge) {
         this.resourceChallenge = Optional.ofNullable(resourceChallenge);
+        this.type=type;
     }
 }

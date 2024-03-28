@@ -2,13 +2,11 @@ package it.polimi.ingsw.gc28.model.cards;
 
 import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.model.Table;
+import it.polimi.ingsw.gc28.model.challenge.Challenge;
 import it.polimi.ingsw.gc28.model.challenge.utils.ChallengeType;
-import it.polimi.ingsw.gc28.model.resources.Resource;
-import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceSpecialType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceType;
-import javafx.scene.control.Tab;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +15,7 @@ import java.util.Optional;
 
 public class CardGold extends CardResource {
     private Map<ResourcePrimaryType, Integer> playability;
-    private Optional<ChallengeType> challenge;
+    private Challenge challenge;
     private Optional<ResourceSpecialType> resourceChallenge;
 
     public CardGold(ResourceType[] resourceCard, ResourcePrimaryType resourcePrimary, int pointsPerPlay,
@@ -25,8 +23,7 @@ public class CardGold extends CardResource {
         super(resourceCard, resourcePrimary, pointsPerPlay);
         playability = new HashMap<>();
         createPlayabilityMap(playability, resourceNeeded);
-        this.challenge = Optional.ofNullable(challenge);
-        this.resourceChallenge = Optional.ofNullable(resourceChallenge);
+        this.challenge = new Challenge(challenge, resourceChallenge);
         }
 
     /**

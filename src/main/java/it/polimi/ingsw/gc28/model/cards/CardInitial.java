@@ -6,20 +6,66 @@ import it.polimi.ingsw.gc28.model.Table;
 import it.polimi.ingsw.gc28.model.resources.Resource;
 import it.polimi.ingsw.gc28.model.Vertex;
 import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
+import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
+import it.polimi.ingsw.gc28.model.resources.utils.ResourceType;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 public class CardInitial extends CardGame {
-    private Vertex[] verticesBack;
+    private final Resource[] resourcesBack;
+    //private final ResourceType[] resourcesFront;
+    private final Vertex[] verticesBack;
     private Map<Resource, Integer> centralResources;
-    public CardInitial(Vertex[] verticesFront, Vertex[] verticesBack, Map<Resource,Integer> centralResources){
-        super(verticesFront);
-        this.verticesBack = verticesBack;
-        this.centralResources = centralResources;
+    public CardInitial(ResourceType[] resourcesFront, ResourceType[] resourcesBack, ResourceType[] primaryResources){
+        super(resourcesFront);
 
+        Vertex[] vertexBack = new Vertex[3];
+        Resource[] resBack = new Resource[3];
+
+        for (int i=0; i<resourcesBack.length; i++) {
+            if(resourcesBack[i] == ResourceType.FOX) {
+                resBack[i] = new ResourcePrimary(ResourcePrimaryType.FOX);
+            } else if (resourcesBack[i] == ResourceType.LEAF) {
+                resBack[i] = new ResourcePrimary(ResourcePrimaryType.LEAF);
+            } else if (resourcesBack[i] == ResourceType.BUTTERFLY) {
+                resBack[i] = new ResourcePrimary(ResourcePrimaryType.BUTTERFLY);
+            } else if (resourcesBack[i] == ResourceType.MUSHROOM) {
+                resBack[i] = new ResourcePrimary(ResourcePrimaryType.MUSHROOM);
+            }
+        }
+
+        for (int i=0; i< resBack.length; i++) {
+            vertexBack[i] = new Vertex(resBack[i]);
+        }
+        this.verticesBack=vertexBack;
+        this.resourcesBack =resBack;
+
+        Resource[] resCenter = new Resource[3];
+        for (int i=0; i<primaryResources.length; i++) {
+            if (primaryResources[i] == ResourceType.FOX) {
+                resCenter[i] = new ResourcePrimary(ResourcePrimaryType.FOX);
+            } else if (primaryResources[i] == ResourceType.LEAF) {
+                resCenter[i] = new ResourcePrimary(ResourcePrimaryType.LEAF);
+            } else if (primaryResources[i] == ResourceType.BUTTERFLY) {
+                resCenter[i] = new ResourcePrimary(ResourcePrimaryType.BUTTERFLY);
+            } else if (primaryResources[i] == ResourceType.MUSHROOM) {
+                resCenter[i] = new ResourcePrimary(ResourcePrimaryType.MUSHROOM);
+            } else {
+                resCenter[i] = null;
+            }
+        }
+        centralResources = new HashMap<>();
+        createCentralResources(centralResources, resCenter);
     }
+
+    public void createCentralResources(Map<Resource, Integer> centralResources, Resource[] Resources){
+        for(Resource resource: Resources){
+            centralResources.put(resource, 1);
+        }
+    }
+
 
     @Override
     public Optional<ResourcePrimary> getObjectiveResource() {

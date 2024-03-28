@@ -922,5 +922,93 @@
       "challenge" : "POINTS_PER_RESOURCE",
       "resourceChallenge" : "PARCHMENT"
     }
+  ],
+  "CardInitial" : [
+    {
+      "vertexBackOne": "MUSHROOM",
+      "vertexBackTwo": "FOX",
+      "vertexBackThree": "BUTTERFLY",
+      "vertexBackFour": "LEAF",
+      "vertexFrontOne": "noResource",
+      "vertexFrontTwo": "noResource",
+      "vertexFrontThree": null,
+      "vertexFrontFour": null,
+      "centralResourceOne": "LEAF",
+      "centralResourceTwo": "FOX",
+      "centralResourceThree": "MUSHROOM"
+    },
+    {
+      "vertexBackOne": "MUSHROOM",
+      "vertexBackTwo": "LEAF",
+      "vertexBackThree": "FOX",
+      "vertexBackFour": "BUTTERFLY",
+      "vertexFrontOne": "noResource",
+      "vertexFrontTwo": "LEAF",
+      "vertexFrontThree": "noResource",
+      "vertexFrontFour": "BUTTERFLY",
+      "centralResourceOne": "BUTTERFLY",
+      "centralResourceTwo": null,
+      "centralResourceThree": null
+    },
+    {
+      "vertexBackOne": "BUTTERFLY",
+      "vertexBackTwo": "MUSHROOM",
+      "vertexBackThree": "FOX",
+      "vertexBackFour": "LEAF",
+      "vertexFrontOne": "noResource",
+      "vertexFrontTwo": "noResource",
+      "vertexFrontThree": null,
+      "vertexFrontFour": null,
+      "centralResourceOne": "FOX",
+      "centralResourceTwo": "BUTTERFLY",
+      "centralResourceThree": "LEAF"
+    },
+    {
+      "vertexBackOne": "LEAF",
+      "vertexBackTwo": "FOX",
+      "vertexBackThree": "BUTTERFLY",
+      "vertexBackFour": "MUSHROOM",
+      "vertexFrontOne": "FOX",
+      "vertexFrontTwo": "noResource",
+      "vertexFrontThree": "MUSHROOM",
+      "vertexFrontFour": "noResource",
+      "centralResourceOne": "MUSHROOM",
+      "centralResourceTwo": null,
+      "centralResourceThree": null
+    },
+    {
+      "vertexBackOne": "BUTTERFLY",
+      "vertexBackTwo": "FOX",
+      "vertexBackThree": "LEAF",
+      "vertexBackFour": "MUSHROOM",
+      "vertexFrontOne": "noResource",
+      "vertexFrontTwo": "noResource",
+      "vertexFrontThree": "noResource",
+      "vertexFrontFour": "noResource",
+      "centralResourceOne": "LEAF",
+      "centralResourceTwo": "MUSHROOM",
+      "centralResourceThree": null
+    },
+    {
+      "vertexBackOne": "LEAF",
+      "vertexBackTwo": "BUTTERFLY",
+      "vertexBackThree": "MUSHROOM",
+      "vertexBackFour": "FOX",
+      "vertexFrontOne": "noResource",
+      "vertexFrontTwo": "noResource",
+      "vertexFrontThree": "noResource",
+      "vertexFrontFour": "noResource",
+      "centralResourceOne": "FOX",
+      "centralResourceTwo": "BUTTERFLY",
+      "centralResourceThree": null
+    }
+  ],
+  "CardObjective" : [
+    {
+
+    },
+    {
+
+    }
   ]
 }

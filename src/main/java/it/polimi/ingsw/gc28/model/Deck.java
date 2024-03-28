@@ -23,8 +23,8 @@ import org.json.simple.parser.ParseException;
 public class Deck {
     private final ArrayList<CardResource> cardResourceDeck = new ArrayList<CardResource>();
     private final ArrayList<CardGold> cardGoldDeck = new ArrayList<CardGold>();
-    private final ArrayList<CardInitial> cardInitial = new ArrayList<CardInitial>();
-    private final ArrayList<CardObjective> cardObjective = new ArrayList<CardObjective>();
+    private final ArrayList<CardInitial> cardInitialDeck = new ArrayList<CardInitial>();
+    private final ArrayList<CardObjective> cardObjectiveDeck = new ArrayList<CardObjective>();
 
     /**
      * This method shuffles each type of deck randomly.
@@ -90,7 +90,7 @@ public class Deck {
         JSONArray deckGold = (JSONArray)card.get("CardGold");
 
         for(int i = 0; i< deckGold.size(); i++) {
-            JSONObject cardGold = (JSONObject) deckResources.get(i);
+            JSONObject cardGold = (JSONObject) deckGold.get(i);
 
             ResourceType[] resourceCard = new ResourceType[4];
             resourceCard[0] = (ResourceType) cardGold.get("vertexOne");
@@ -109,6 +109,42 @@ public class Deck {
             ResourceSpecialType resourceChallenge = (ResourceSpecialType) cardGold.get("resourceChallenge");
 
             cardGoldDeck.add(new CardGold(resourceCard, resourcePrimary, pointsPerPlay, resourceNeeded, challenge, resourceChallenge));
+        }
+
+        JSONArray deckObjective = (JSONArray)card.get("CardObjective");
+
+        for(int i = 0; i< deckObjective.size(); i++){
+            JSONObject cardObjective = (JSONObject) deckObjective.get(i);
+            ResourceType[] resourceCard = new ResourceType[4];
+            ResourceType[] resourceNeeded = new ResourceType[3];
+
+            int points = (int) cardObjective.get("pointsPerPlay");
+            resourceNeeded[0] = (ResourceType) cardObjective.get("resourceNeededOne");
+            resourceNeeded[1] = (ResourceType) CardObjective.get("resourceNeededTwo");
+            resourceNeeded[2] = (ResourceType) cardObjective.get("resourceNeededThree");
+
+            //metto un if se c'e almeno una risorsa creo la mappa//
+
+            ResourcePrimaryType[] patternPosition = new ResourcePrimaryType[3];
+            patternPosition[0] = (ResourcePrimaryType) cardObjective.get("resourcePatternPositionOne");
+            patternPosition[1] = (ResourcePrimaryType) CardObjective.get("resourcePatternPositionTwo");
+            patternPosition[2] = (ResourcePrimaryType) cardObjective.get("resourcePatternPositionThree");
+
+            DiagonalType;
+            PositionStackType;
+
+            JSONArray deckInitial = (JSONArray)card.get("CardInitial");
+
+        }
+
+        JSONArray deckInitial = (JSONArray)card.get("CardInitial");
+        for(int i = 0; i< deckObjective.size(); i++){
+            JSONObject cardInitial = (JSONObject) deckInitial.get(i);
+            ResourcePrimaryType[] resourceBack = new ResourcePrimaryType[4];
+            resourceBack[0] = (ResourcePrimaryType) cardInitial.get("resourceBackOne");
+            resourceBack[1] = (ResourcePrimaryType) cardInitial.get("resourceBackTwo");
+            resourceBack[2] = (ResourcePrimaryType) cardInitial.get("resourceBackThree");
+            resourceBack[3] = (ResourcePrimaryType) cardInitial.get("resourceBackFour");
         }
 
     };
