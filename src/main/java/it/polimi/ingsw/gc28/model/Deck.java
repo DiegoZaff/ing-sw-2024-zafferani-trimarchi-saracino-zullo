@@ -125,11 +125,10 @@ public class Deck {
             resourceFront[0] = (ResourceType) cardInitial.get("resourceFrontOne");
             resourceFront[1] = (ResourceType) cardInitial.get("resourceFrontTwo");
             resourceFront[2] = (ResourceType) cardInitial.get("resourceFrontThree");
-            resourceFront[3] = (ResourceType) cardInitial.get("resourceFrontThree");
-            resourceFront[4] = (ResourceType) cardInitial.get("resourceFrontFour");
+            resourceFront[3] = (ResourceType) cardInitial.get("resourceFrontFour");
             resourceCenter[0] = (ResourceType) cardInitial.get("centralResourceOne");
             resourceCenter[1] = (ResourceType) cardInitial.get("centralResourceTwo");
-            resourceCenter[3] = (ResourceType) cardInitial.get("centralResourceThree");
+            resourceCenter[2] = (ResourceType) cardInitial.get("centralResourceThree");
 
             cardInitialDeck.add(new CardInitial(resourceFront, resourceBack, resourceCenter));
         }
@@ -158,6 +157,5 @@ public class Deck {
             cardObjectiveDeck.add(new CardObjective(positionType, points, resourcePosition));
 
         }
-
     };
 }
