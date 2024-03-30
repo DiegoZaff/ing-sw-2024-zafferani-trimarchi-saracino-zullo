@@ -127,6 +127,10 @@ public abstract class CardGame extends Card {
      */
     public abstract Map<Resource,Integer> getMapCentralResource();
 
+    public Vertex[] getVerticesFront() {
+        return verticesFront;
+    }
 
+    public abstract Vertex[] getVerticesBack();
 }
 

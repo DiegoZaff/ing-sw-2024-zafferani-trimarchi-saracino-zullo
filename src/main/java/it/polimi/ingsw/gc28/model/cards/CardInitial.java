@@ -117,6 +117,11 @@ public class CardInitial extends CardGame {
     public Map<Resource,Integer> getMapCentralResource(){
         return centralResources;
     }
+
+    @Override
+    public Vertex[] getVerticesBack() {
+        return verticesBack;
+    }
 }
 
 

@@ -8,6 +8,7 @@ import it.polimi.ingsw.gc28.model.resources.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class Cell {
 
@@ -44,4 +45,42 @@ public class Cell {
             return card.getMapCentralResource();
         }
     }
+
+    public Optional<Resource> getNWResource (){
+        Vertex []v;
+        if (isPlayedFront){
+            v = card.getVerticesFront();
+        } else {
+            v = card.getVerticesBack();
+        }
+        return v[0].getResource();
+    }
+    public Optional<Resource> getNEResource (){
+        Vertex []v;
+        if (isPlayedFront){
+            v = card.getVerticesFront();
+        } else {
+            v = card.getVerticesBack();
+        }
+        return v[1].getResource();
+    }
+    public Optional<Resource> getSEResource (){
+        Vertex []v;
+        if (isPlayedFront){
+            v = card.getVerticesFront();
+        } else {
+            v = card.getVerticesBack();
+        }
+        return v[2].getResource();
+    }
+    public Optional<Resource> getSWResource (){
+        Vertex []v;
+        if (isPlayedFront){
+            v = card.getVerticesFront();
+        } else {
+            v = card.getVerticesBack();
+        }
+        return v[3].getResource();
+    }
+    //potremmo modificare questi quattro metodi, da rivedere
 }

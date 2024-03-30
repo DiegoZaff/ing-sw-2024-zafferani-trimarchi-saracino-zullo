@@ -5,6 +5,7 @@ import it.polimi.ingsw.gc28.model.resources.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class Table {
 
@@ -122,12 +123,81 @@ public class Table {
         return mapPositions.get(coordinate);
     }
 
+    private Optional<Cell> getNWCell (Coordinate coordinate) {
+        Coordinate x = new Coordinate(coordinate.getX() - 1, coordinate.getY() + 1);
+        return Optional.ofNullable(getCell(coordinate));
+    }
+
+    private Optional<Resource> getNWCoveredResource(Coordinate coordinate){
+        if (this.getNWCell(coordinate).isPresent()){
+            return this.getNWCell(coordinate).get().getSEResource();
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    private Optional<Cell> getNECell (Coordinate coordinate) {
+        Coordinate x = new Coordinate(coordinate.getX() + 1, coordinate.getY() + 1);
+        return Optional.ofNullable(getCell(coordinate));
+    }
+
+    private Optional<Resource> getNECoveredResource(Coordinate coordinate){
+        if (this.getNECell(coordinate).isPresent()){
+            return this.getNECell(coordinate).get().getSWResource();
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    private Optional<Cell> getSECell (Coordinate coordinate) {
+        Coordinate x = new Coordinate(coordinate.getX() + 1, coordinate.getY() - 1);
+        return Optional.ofNullable(getCell(coordinate));
+    }
+
+    private Optional<Resource> getSECoveredResource(Coordinate coordinate){
+        if (this.getSECell(coordinate).isPresent()){
+            return this.getSECell(coordinate).get().getNWResource();
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    private Optional<Cell> getSWCell (Coordinate coordinate) {
+        Coordinate x = new Coordinate(coordinate.getX() - 1, coordinate.getY() - 1);
+        return Optional.ofNullable(getCell(coordinate));
+    }
+
+    private Optional<Resource> getSWCoveredResource(Coordinate coordinate){
+        if (this.getSWCell(coordinate).isPresent()){
+            return this.getSWCell(coordinate).get().getNEResource();
+        } else {
+            return Optional.empty();
+        }
+    }
+    //potremmo compattare questi metodi, da rivedere
+
+
+    /**
+     * this method return the resource that are covered when a card is played
+     * @param coordinate te coordinate where the card is played
+     * @return an ArrayList of Optional resource, containing the covered resources
+     */
+    public ArrayList<Optional<Resource>>  getCoveredResource (Coordinate coordinate){
+        ArrayList<Optional<Resource>> a = new ArrayList<>();
+        a.add(getNWCoveredResource(coordinate));
+        a.add(getNECoveredResource(coordinate));
+        a.add(getSECoveredResource(coordinate));
+        a.add(getSWCoveredResource(coordinate));
+
+        return a;
+    }
+
     /**
      * this method add the resources of a played card
      * @param coordinate the coordinate of the played card
      */
     private void sumResources(Coordinate coordinate){
-        Map<Resource, Integer> mapResource = new HashMap<>();
+        Map<Resource, Integer> mapResource;
         int temp;
 
         mapResource = getCell(coordinate).getResources();
@@ -145,7 +215,13 @@ public class Table {
      * @param coordinate the cordinate of the played card
      */
     private void subResources (Coordinate coordinate){
-        //da implementare
+        int temp;
+        for (Optional<Resource> a : this.getCoveredResource(coordinate)){
+            if (a.isPresent()){
+                temp = resourceCounters.get(a.get()) - 1;
+                resourceCounters.replace(a.get(), temp);
+            }
+        }
     }
 
     public void updateCounters (Coordinate coordinate){

@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc28.model.cards;
 import it.polimi.ingsw.gc28.model.Cell;
 import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.model.Table;
+import it.polimi.ingsw.gc28.model.Vertex;
 import it.polimi.ingsw.gc28.model.resources.Resource;
 import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
@@ -59,6 +60,16 @@ public class CardResource extends CardGame {
         Map<Resource, Integer> m = new HashMap<>();
         m.put(resource, 1);
         return m;
+    }
+
+    @Override
+    public Vertex[] getVerticesBack(){
+        Vertex[] verticesBack = new Vertex[4];
+        Vertex v = new Vertex(true);
+        for (int i = 0; i<= 3; i++){
+            verticesBack[i] = v;
+        }
+        return verticesBack;
     }
 
 }
