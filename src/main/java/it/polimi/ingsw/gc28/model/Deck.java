@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import it.polimi.ingsw.gc28.model.challenge.Challenge;
 import it.polimi.ingsw.gc28.model.challenge.utils.ChallengeType;
+import it.polimi.ingsw.gc28.model.objectives.positions.PositionType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceSpecialType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceType;
@@ -134,26 +135,27 @@ public class Deck {
         }
 
         JSONArray deckObjective = (JSONArray)card.get("CardObjective");
-        for(int i = 0; i< deckObjective.size(); i++){
+        int j = 2;
+        for(int i = 0; i< deckObjective.size()/j; i++) {
             JSONObject cardObjective = (JSONObject) deckObjective.get(i);
-            ResourceType[] resourceCard = new ResourceType[4];
             ResourceType[] resourceNeeded = new ResourceType[3];
-
             int points = (int) cardObjective.get("pointsPerPlay");
             resourceNeeded[0] = (ResourceType) cardObjective.get("resourceNeededOne");
-            resourceNeeded[1] = (ResourceType) CardObjective.get("resourceNeededTwo");
+            resourceNeeded[1] = (ResourceType) cardObjective.get("resourceNeededTwo");
             resourceNeeded[2] = (ResourceType) cardObjective.get("resourceNeededThree");
 
-            //metto un if se c'e almeno una risorsa creo la mappa//
+            cardObjectiveDeck.add(new CardObjective(points, resourceNeeded));
+        }
+        for(int i = deckObjective.size()/j; i<deckObjective.size(); i++) {
+            JSONObject cardObjective = (JSONObject) deckObjective.get(i);
+            ResourcePrimaryType[] resourcePosition = new ResourcePrimaryType[3];
+            int points = (int) cardObjective.get("pointsPerPlay");
+            PositionType positionType = (PositionType) cardObjective.get("positionType");
+            resourcePosition[0] = (ResourcePrimaryType) cardObjective.get("resourceNeededOne");
+            resourcePosition[1] = (ResourcePrimaryType) cardObjective.get("resourceNeededTwo");
+            resourcePosition[2] = (ResourcePrimaryType) cardObjective.get("resourceNeededThree");
 
-            ResourcePrimaryType[] patternPosition = new ResourcePrimaryType[3];
-            patternPosition[0] = (ResourcePrimaryType) cardObjective.get("resourcePatternPositionOne");
-            patternPosition[1] = (ResourcePrimaryType) CardObjective.get("resourcePatternPositionTwo");
-            patternPosition[2] = (ResourcePrimaryType) cardObjective.get("resourcePatternPositionThree");
-
-            DiagonalType;
-            PositionStackType;
-
+            cardObjectiveDeck.add(new CardObjective(positionType, points, resourcePosition));
 
         }
 

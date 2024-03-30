@@ -1,7 +1,9 @@
 package it.polimi.ingsw.gc28.model.cards;
 
 import it.polimi.ingsw.gc28.model.objectives.Objective;
+import it.polimi.ingsw.gc28.model.objectives.ObjectivePosition;
 import it.polimi.ingsw.gc28.model.objectives.ObjectiveResources;
+import it.polimi.ingsw.gc28.model.objectives.positions.PositionType;
 import it.polimi.ingsw.gc28.model.resources.Resource;
 import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
 import it.polimi.ingsw.gc28.model.resources.ResourceSpecial;
@@ -55,7 +57,24 @@ public class CardObjective extends Card {
         }
     }
 
-    public CardObjective(int points, ResourcePrimaryType[] resourceN){
+    public CardObjective(PositionType positionType, int points, ResourcePrimaryType[] resourcePosition){
+        Objective objective2;
+        ResourcePrimary[] resourceCard = new ResourcePrimary[3];
 
+        for (int i=0; i<resourcePosition.length; i++) {
+            if (resourcePosition[i] == ResourcePrimaryType.FOX) {
+                resourceCard[i] = new ResourcePrimary(ResourcePrimaryType.FOX);
+            } else if (resourcePosition[i] == ResourcePrimaryType.LEAF) {
+                resourceCard[i] = new ResourcePrimary(ResourcePrimaryType.LEAF);
+            } else if (resourcePosition[i] == ResourcePrimaryType.BUTTERFLY) {
+                resourceCard[i] = new ResourcePrimary(ResourcePrimaryType.BUTTERFLY);
+            } else if (resourcePosition[i] == ResourcePrimaryType.MUSHROOM) {
+                resourceCard[i] = new ResourcePrimary(ResourcePrimaryType.MUSHROOM);
+            } else {
+                resourceCard[i] = null;
+            }
+        }
+        objective2 = new ObjectivePosition(positionType, points, resourceCard);
+        this.objective = objective2;
     }
 }
