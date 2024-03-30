@@ -46,41 +46,27 @@ public class Cell {
         }
     }
 
-    public Optional<Resource> getNWResource (){
-        Vertex []v;
+
+    private Vertex [] getVertex (){
+        Vertex [] v;
         if (isPlayedFront){
             v = card.getVerticesFront();
         } else {
             v = card.getVerticesBack();
         }
-        return v[0].getResource();
+        return v;
+    }
+    public Optional<Resource> getNWResource (){
+        return getVertex()[0].getResource();
     }
     public Optional<Resource> getNEResource (){
-        Vertex []v;
-        if (isPlayedFront){
-            v = card.getVerticesFront();
-        } else {
-            v = card.getVerticesBack();
-        }
-        return v[1].getResource();
+        return getVertex()[1].getResource();
     }
     public Optional<Resource> getSEResource (){
-        Vertex []v;
-        if (isPlayedFront){
-            v = card.getVerticesFront();
-        } else {
-            v = card.getVerticesBack();
-        }
-        return v[2].getResource();
+        return getVertex()[2].getResource();
     }
     public Optional<Resource> getSWResource (){
-        Vertex []v;
-        if (isPlayedFront){
-            v = card.getVerticesFront();
-        } else {
-            v = card.getVerticesBack();
-        }
-        return v[3].getResource();
+        return getVertex()[3].getResource();
     }
-    //potremmo modificare questi quattro metodi, da rivedere
+
 }
