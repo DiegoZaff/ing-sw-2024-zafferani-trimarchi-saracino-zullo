@@ -12,9 +12,8 @@ public class ObjectiveResources extends Objective{
      */
     public final Map<Resource, Integer> resourcesNeeded;
 
-    public ObjectiveResources(Map<Resource, Integer> resourcesNeeded, Integer points) {
+    public ObjectiveResources(Map<Resource, Integer> resourcesNeeded) {
         this.resourcesNeeded = resourcesNeeded;
-        this.points = points;
     }
 
     @Override

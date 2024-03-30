@@ -71,8 +71,8 @@ public class Deck {
         }
 
         JSONObject card = (JSONObject) obj;
-        JSONArray deckResources =(JSONArray)card.get("CardResource");
 
+        JSONArray deckResources =(JSONArray)card.get("CardResource");
         for(int i = 0; i< deckResources.size(); i++){
             JSONObject cardResource = (JSONObject) deckResources.get(i);
             ResourceType[] resourceCard = new ResourceType[4];
@@ -88,7 +88,6 @@ public class Deck {
         }
 
         JSONArray deckGold = (JSONArray)card.get("CardGold");
-
         for(int i = 0; i< deckGold.size(); i++) {
             JSONObject cardGold = (JSONObject) deckGold.get(i);
 
@@ -111,8 +110,30 @@ public class Deck {
             cardGoldDeck.add(new CardGold(resourceCard, resourcePrimary, pointsPerPlay, resourceNeeded, challenge, resourceChallenge));
         }
 
-        JSONArray deckObjective = (JSONArray)card.get("CardObjective");
+        JSONArray deckInitial = (JSONArray)card.get("CardInitial");
+        for(int i = 0; i< deckInitial.size(); i++){
+            JSONObject cardInitial = (JSONObject) deckInitial.get(i);
+            ResourceType[] resourceBack = new ResourceType[4];
+            ResourceType[] resourceFront = new ResourceType[4];
+            ResourceType[] resourceCenter = new ResourceType[3];
 
+            resourceBack[0] = (ResourceType) cardInitial.get("resourceBackOne");
+            resourceBack[1] = (ResourceType) cardInitial.get("resourceBackTwo");
+            resourceBack[2] = (ResourceType) cardInitial.get("resourceBackThree");
+            resourceBack[3] = (ResourceType) cardInitial.get("resourceBackFour");
+            resourceFront[0] = (ResourceType) cardInitial.get("resourceFrontOne");
+            resourceFront[1] = (ResourceType) cardInitial.get("resourceFrontTwo");
+            resourceFront[2] = (ResourceType) cardInitial.get("resourceFrontThree");
+            resourceFront[3] = (ResourceType) cardInitial.get("resourceFrontThree");
+            resourceFront[4] = (ResourceType) cardInitial.get("resourceFrontFour");
+            resourceCenter[0] = (ResourceType) cardInitial.get("centralResourceOne");
+            resourceCenter[1] = (ResourceType) cardInitial.get("centralResourceTwo");
+            resourceCenter[3] = (ResourceType) cardInitial.get("centralResourceThree");
+
+            cardInitialDeck.add(new CardInitial(resourceFront, resourceBack, resourceCenter));
+        }
+
+        JSONArray deckObjective = (JSONArray)card.get("CardObjective");
         for(int i = 0; i< deckObjective.size(); i++){
             JSONObject cardObjective = (JSONObject) deckObjective.get(i);
             ResourceType[] resourceCard = new ResourceType[4];
@@ -120,31 +141,20 @@ public class Deck {
 
             int points = (int) cardObjective.get("pointsPerPlay");
             resourceNeeded[0] = (ResourceType) cardObjective.get("resourceNeededOne");
-            resourceNeeded[1] = (ResourceType) cardObjective.get("resourceNeededTwo");
+            resourceNeeded[1] = (ResourceType) CardObjective.get("resourceNeededTwo");
             resourceNeeded[2] = (ResourceType) cardObjective.get("resourceNeededThree");
 
             //metto un if se c'e almeno una risorsa creo la mappa//
 
             ResourcePrimaryType[] patternPosition = new ResourcePrimaryType[3];
             patternPosition[0] = (ResourcePrimaryType) cardObjective.get("resourcePatternPositionOne");
-            patternPosition[1] = (ResourcePrimaryType) cardObjective.get("resourcePatternPositionTwo");
+            patternPosition[1] = (ResourcePrimaryType) CardObjective.get("resourcePatternPositionTwo");
             patternPosition[2] = (ResourcePrimaryType) cardObjective.get("resourcePatternPositionThree");
 
-//            DiagonalType;
-//            PositionStackType;
+            DiagonalType;
+            PositionStackType;
 
-            JSONArray deckInitial = (JSONArray)card.get("CardInitial");
 
-        }
-
-        JSONArray deckInitial = (JSONArray)card.get("CardInitial");
-        for(int i = 0; i< deckObjective.size(); i++){
-            JSONObject cardInitial = (JSONObject) deckInitial.get(i);
-            ResourcePrimaryType[] resourceBack = new ResourcePrimaryType[4];
-            resourceBack[0] = (ResourcePrimaryType) cardInitial.get("resourceBackOne");
-            resourceBack[1] = (ResourcePrimaryType) cardInitial.get("resourceBackTwo");
-            resourceBack[2] = (ResourcePrimaryType) cardInitial.get("resourceBackThree");
-            resourceBack[3] = (ResourcePrimaryType) cardInitial.get("resourceBackFour");
         }
 
     };
