@@ -232,7 +232,7 @@ public class Table {
         }
     }
 
-    private void updateNWCordinate (Coordinate coordinate){
+    private void updateNWCoordinate(Coordinate coordinate){
         Coordinate c = new Coordinate(coordinate.getX()-1, coordinate.getY()+1);
         if(getCell(coordinate).getNWExists()){
             //se ha angolo
@@ -243,7 +243,7 @@ public class Table {
         }
     }
 
-    private void updateNECordinate (Coordinate coordinate){
+    private void updateNECoordinate(Coordinate coordinate){
         Coordinate c = new Coordinate(coordinate.getX()+1, coordinate.getY()+1);
         if(getCell(coordinate).getNEExists()){
             //se ha angolo
@@ -254,7 +254,7 @@ public class Table {
         }
     }
 
-    private void updateSECordinate (Coordinate coordinate){
+    private void updateSECoordinate(Coordinate coordinate){
         Coordinate c = new Coordinate(coordinate.getX()+1, coordinate.getY()-1);
         if(getCell(coordinate).getSEExists()){
             //se ha angolo
@@ -265,7 +265,7 @@ public class Table {
         }
     }
 
-    private void updateSWCordinate (Coordinate coordinate){
+    private void updateSWCoordinate(Coordinate coordinate){
         Coordinate c = new Coordinate(coordinate.getX()-1, coordinate.getY()-1);
         if(getCell(coordinate).getSWExists()){
             //se ha angolo
@@ -281,10 +281,10 @@ public class Table {
      * @param coordinate the coordinate where the card has been played
      */
     public void updateCoordinate (Coordinate coordinate){
-        updateNWCordinate(coordinate);
-        updateNECordinate(coordinate);
-        updateSECordinate(coordinate);
-        updateSWCordinate(coordinate);
+        updateNWCoordinate(coordinate);
+        updateNECoordinate(coordinate);
+        updateSECoordinate(coordinate);
+        updateSWCoordinate(coordinate);
     }
 
 
