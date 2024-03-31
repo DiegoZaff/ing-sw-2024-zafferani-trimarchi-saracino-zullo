@@ -1005,10 +1005,108 @@
   ],
   "CardObjective" : [
     {
-
+      "points": "2",
+      "resourceNeededOne" : "LEAF",
+      "resourceNeededTwo" : "LEAF",
+      "resourceNeededThree" : "LEAF"
     },
     {
-
+      "points": "2",
+      "resourceNeededOne" : "BUTTERFLY",
+      "resourceNeededTwo" : "BUTTERFLY",
+      "resourceNeededThree" : "BUTTERFLY"
+    },
+    {
+      "points": "2",
+      "resourceNeededOne" : "FOX",
+      "resourceNeededTwo" : "FOX",
+      "resourceNeededThree" : "FOX"
+    },
+    {
+      "points": "2",
+      "resourceNeededOne" : "MUSHROOM",
+      "resourceNeededTwo" : "MUSHROOM",
+      "resourceNeededThree" : "MUSHROOM"
+    },
+    {
+      "points": "2",
+      "resourceNeededOne" : "PARCHMENT",
+      "resourceNeededTwo" : "PARCHMENT",
+      "resourceNeededThree" : null
+    },
+    {
+      "points": "2",
+      "resourceNeededOne" : "POTION",
+      "resourceNeededTwo" : "POTION",
+      "resourceNeededThree" : null
+    },
+    {
+      "points": "2",
+      "resourceNeededOne" : "FEATHER",
+      "resourceNeededTwo" : "FEATHER",
+      "resourceNeededThree" : null
+    },
+    {
+      "points": "3",
+      "resourceNeededOne" : "PARCHMENT",
+      "resourceNeededTwo" : "POTION",
+      "resourceNeededThree" : "FEATHER"
+    },
+    {
+      "points": "2",
+      "positionType" : "MAIN_DIAGONAL",
+      "resourcePrimaryOne" : "LEAF",
+      "resourcePrimaryTwo" : "LEAF",
+      "resourcePrimaryThree" : "LEAF"
+    },
+    {
+      "points": "2",
+      "positionType" : "MAIN_DIAGONAL",
+      "resourcePrimaryOne" : "BUTTERFLY",
+      "resourcePrimaryTwo" : "BUTTERFLY",
+      "resourcePrimaryThree" : "BUTTERFLY"
+    },
+    {
+      "points": "2",
+      "positionType" : "SECONDARY_DIAGONAL",
+      "resourcePrimaryOne" : "MUSHROOM",
+      "resourcePrimaryTwo" : "MUSHROOM",
+      "resourcePrimaryThree" : "MUSHROOM"
+    },
+    {
+      "points": "2",
+      "positionType" : "SECONDARY_DIAGONAL",
+      "resourcePrimaryOne" : "FOX",
+      "resourcePrimaryTwo" : "FOX",
+      "resourcePrimaryThree" : "FOX"
+    },
+    {
+      "points": "3",
+      "positionType" : "N_E_STACK",
+      "resourcePrimaryOne" : "FOX",
+      "resourcePrimaryTwo" : "FOX",
+      "resourcePrimaryThree" : "MUSHROOM"
+    },
+    {
+      "points": "3",
+      "positionType" : "S_E_STACK",
+      "resourcePrimaryOne" : "MUSHROOM",
+      "resourcePrimaryTwo" : "MUSHROOM",
+      "resourcePrimaryThree" : "LEAF"
+    },
+    {
+    "points": "3",
+    "positionType" : "S_W_STACK",
+    "resourcePrimaryOne" : "BUTTERFLY",
+    "resourcePrimaryTwo" : "LEAF",
+    "resourcePrimaryThree" : "LEAF"
+    },
+    {
+      "points": "3",
+      "positionType" : "N_W_STACK",
+      "resourcePrimaryOne" : "FOX",
+      "resourcePrimaryTwo" : "BUTTERFLY",
+      "resourcePrimaryThree" : "BUTTERFLY"
     }
   ]
 }
