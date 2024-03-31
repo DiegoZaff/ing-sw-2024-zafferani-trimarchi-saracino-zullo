@@ -40,9 +40,27 @@ public class CardGold extends CardResource {
         }
     }
 
+    private  boolean checkCardPlayability(Table table){
+        for (ResourcePrimaryType r : playability.keySet()){
+            if (playability.get(r) < table.getResourceCounters().get(r)){
+                return false;
+            }
+        }
+        return true;
+    }
+
     @Override
     public void playFront(Table table, Coordinate playCoordinate){
-        //come metodo super ma controllando se giocabile
+        if (checkCardPlayability(table)){
+            super.playFront(table, playCoordinate);
+        } else {
+            //messaggio di errore
+        }
+    }
+
+    @Override
+    public int getPoints(Table table, Coordinate coordinate){
+        return challenge.challengePoints(table, coordinate);
     }
 
 

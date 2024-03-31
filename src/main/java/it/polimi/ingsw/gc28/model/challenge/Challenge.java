@@ -1,8 +1,11 @@
 package it.polimi.ingsw.gc28.model.challenge;
 
+import it.polimi.ingsw.gc28.model.Coordinate;
+import it.polimi.ingsw.gc28.model.Table;
 import it.polimi.ingsw.gc28.model.challenge.utils.ChallengeType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceSpecialType;
 
+import java.util.Collection;
 import java.util.Optional;
 
 public class Challenge {
@@ -14,4 +17,9 @@ public class Challenge {
         this.resourceChallenge = Optional.ofNullable(resourceChallenge);
         this.type=type;
     }
+
+    public int challengePoints (Table table, Coordinate coordinate){
+        return 0;
+    }
+
 }
