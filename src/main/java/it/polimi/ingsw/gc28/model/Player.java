@@ -94,11 +94,8 @@ public class Player {
 
             this.updatePoints(coordinates);
 
+            table.updateCoordinate(coordinates);
 
-            // manca update di playablePositions e unplayablePositions?
-
-
-            //rimuove la carta dalla mano
             removeCard(playedCard);
             
         }

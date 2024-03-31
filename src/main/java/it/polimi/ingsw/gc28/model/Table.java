@@ -61,33 +61,17 @@ public class Table {
 
 
     public void addUnplayableCoordinate (Coordinate coordinatesToAdd){
-
         unplayableCoords.add(coordinatesToAdd);
     }
 
     public void addPlayableCoordinate (Coordinate coordinatesToAdd){
-
         playableCoords.add(coordinatesToAdd);
     }
 
     public void removePlayableCoordinate (Coordinate coordinatesToRemove){
-
-
         playableCoords.remove(coordinatesToRemove);
     }
 
-
-    public boolean alreadyUnplayable (Coordinate coordinateToCheck){
-
-        for ( Coordinate coordinate : unplayableCoords)
-        {
-            if (coordinateToCheck == coordinate)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
 
     /**
      * this method checks if the given coordinate can be played
@@ -224,6 +208,10 @@ public class Table {
         }
     }
 
+    /**
+     * this method updates resource counter, based on how and where the card has been played
+     * @param coordinate the coordinate where the card has been played
+     */
     public void updateCounters (Coordinate coordinate){
 
         sumResources(coordinate);
@@ -231,9 +219,72 @@ public class Table {
         subResources(coordinate);
 
     }
+    private void hasCornerUpdate(Coordinate c){
+        if (!mapPositions.containsKey(c) && !unplayableCoords.contains(c)){
+            addPlayableCoordinate(c);
+        }
+    }
 
+    private void hasNotCornerUpdate(Coordinate c){
+        addUnplayableCoordinate(c);
+        if (playableCoords.contains(c)){
+            removePlayableCoordinate(c);
+        }
+    }
+
+    private void updateNWCordinate (Coordinate coordinate){
+        Coordinate c = new Coordinate(coordinate.getX()-1, coordinate.getY()+1);
+        if(getCell(coordinate).getNWExists()){
+            //se ha angolo
+            hasCornerUpdate(c);
+        } else {
+            //se non ha angolo
+            hasNotCornerUpdate(c);
+        }
+    }
+
+    private void updateNECordinate (Coordinate coordinate){
+        Coordinate c = new Coordinate(coordinate.getX()+1, coordinate.getY()+1);
+        if(getCell(coordinate).getNEExists()){
+            //se ha angolo
+            hasCornerUpdate(c);
+        } else {
+            //se non ha angolo
+            hasNotCornerUpdate(c);
+        }
+    }
+
+    private void updateSECordinate (Coordinate coordinate){
+        Coordinate c = new Coordinate(coordinate.getX()+1, coordinate.getY()-1);
+        if(getCell(coordinate).getSEExists()){
+            //se ha angolo
+            hasCornerUpdate(c);
+        } else {
+            //se non ha angolo
+            hasNotCornerUpdate(c);
+        }
+    }
+
+    private void updateSWCordinate (Coordinate coordinate){
+        Coordinate c = new Coordinate(coordinate.getX()-1, coordinate.getY()-1);
+        if(getCell(coordinate).getSWExists()){
+            //se ha angolo
+            hasCornerUpdate(c);
+        } else {
+            //se non ha angolo
+            hasNotCornerUpdate(c);
+        }
+    }
+
+    /**
+     * this method updates playable and unplayable coordinate in table, based on how and where the card is played
+     * @param coordinate the coordinate where the card has been played
+     */
     public void updateCoordinate (Coordinate coordinate){
-        //da implementare
+        updateNWCordinate(coordinate);
+        updateNECordinate(coordinate);
+        updateSECordinate(coordinate);
+        updateSWCordinate(coordinate);
     }
 
 

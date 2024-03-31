@@ -59,14 +59,32 @@ public class Cell {
     public Optional<Resource> getNWResource (){
         return getVertex()[0].getResource();
     }
+
+    public boolean getNWExists(){
+        return getVertex()[0].isExists();
+    }
+
     public Optional<Resource> getNEResource (){
         return getVertex()[1].getResource();
     }
+
+    public boolean getNEExists(){
+        return getVertex()[1].isExists();
+    }
+
     public Optional<Resource> getSEResource (){
         return getVertex()[2].getResource();
     }
+
+    public boolean getSEExists(){
+        return getVertex()[2].isExists();
+    }
     public Optional<Resource> getSWResource (){
         return getVertex()[3].getResource();
+    }
+
+    public boolean getSWExists(){
+        return getVertex()[3].isExists();
     }
 
 }
