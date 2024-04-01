@@ -45,15 +45,38 @@ public class Deck {
 
     /**
      * This method is responsible for drawing the card.
-     * @return the card on top of the deck, if the array is not empty, removing it from the array.
+     * @return the card on top of the card resource deck, if the array is not empty, removing it from the array.
      * Otherwise, it returns null.
-     *
-     * //TODO : change and make a next() method for each type of deck
      */
-    public Optional<Card> next() {
-        // ! to be implemented.
-        return Optional.empty();
+    public Optional<CardResource> nextResource() {
+        return Optional.ofNullable(cardResourceDeck.removeFirst());
+    };
 
+    /**
+     * This method is responsible for drawing the card.
+     * @return the card on top of the card gold deck, if the array is not empty, removing it from the array.
+     * Otherwise, it returns null.
+     * */
+    public Optional<CardGold> nextGold() {
+        return Optional.ofNullable(cardGoldDeck.removeFirst());
+    };
+
+    /**
+     * This method is responsible for drawing the card.
+     * @return the card on top of the card objective deck, if the array is not empty, removing it from the array.
+     * Otherwise, it returns null.
+     */
+    public Optional<CardObjective> nextObjective() {
+        return Optional.ofNullable(cardObjectiveDeck.removeFirst());
+    };
+
+    /**
+     * This method is responsible for drawing the card.
+     * @return the card on top of the card initial deck, if the array is not empty, removing it from the array.
+     * Otherwise, it returns null.
+     */
+    public Optional<CardInitial> nextInitial() {
+        return Optional.ofNullable(cardInitialDeck.removeFirst());
     };
 
     /**
@@ -155,7 +178,6 @@ public class Deck {
             resourcePosition[2] = (ResourcePrimaryType) cardObjective.get("resourceNeededThree");
 
             cardObjectiveDeck.add(new CardObjective(positionType, points, resourcePosition));
-
         }
     };
 }
