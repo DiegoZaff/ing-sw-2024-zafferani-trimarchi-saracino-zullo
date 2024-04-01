@@ -76,6 +76,7 @@ public class CardInitial extends CardGame {
     public void playFront(Table table, Coordinate playCoordinate){
         Cell cell = new Cell(this, 0, true);
         table.addMapPosition(playCoordinate, cell);
+        table.removePlayableCoordinate(playCoordinate);
     }
 
     //potremmo implementare playFront e playBack in CardGame, e fare override solo in CardGold
@@ -84,6 +85,7 @@ public class CardInitial extends CardGame {
     public void playBack(Table table, Coordinate playCoordinate){
         Cell cell = new Cell(this, 0, false);
         table.addMapPosition(playCoordinate, cell);
+        table.removePlayableCoordinate(playCoordinate);
     }
 
     /**
