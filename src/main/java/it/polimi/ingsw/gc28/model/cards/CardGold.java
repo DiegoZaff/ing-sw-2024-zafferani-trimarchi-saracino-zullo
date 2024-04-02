@@ -4,6 +4,8 @@ import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.model.Table;
 import it.polimi.ingsw.gc28.model.challenge.Challenge;
 import it.polimi.ingsw.gc28.model.challenge.utils.ChallengeType;
+import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
+import it.polimi.ingsw.gc28.model.resources.ResourceSpecial;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceSpecialType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceType;
@@ -14,34 +16,35 @@ import java.util.Optional;
 
 
 public class CardGold extends CardResource {
-    private Map<ResourcePrimaryType, Integer> playability;
+    private Map<ResourcePrimary, Integer> playability;
     private Challenge challenge;
-    private Optional<ResourceSpecialType> resourceChallenge;
+    private Optional<ResourceSpecial> resourceChallenge;
 
     public CardGold(ResourceType[] resourceCard, ResourcePrimaryType resourcePrimary, int pointsPerPlay,
                     ResourcePrimaryType[] resourceNeeded, ChallengeType challenge, ResourceSpecialType resourceChallenge){
         super(resourceCard, resourcePrimary, pointsPerPlay);
-        playability = new HashMap<>();
-        createPlayabilityMap(playability, resourceNeeded);
+        createPlayabilityMap(resourceNeeded);
+        this.resourceChallenge =Optional.of(new ResourceSpecial(resourceChallenge));
         this.challenge = new Challenge(challenge, resourceChallenge);
         }
 
     /**
      * this method create the hashMap to keep information about card's playability
-     * @param playability is the hashMap's name
      * @param resourceNeeded is the array related to the json file
      */
-    public void createPlayabilityMap(Map<ResourcePrimaryType, Integer> playability, ResourcePrimaryType[] resourceNeeded){
-        for(ResourcePrimaryType resource : resourceNeeded){
-            if(playability.containsKey(resource)) {
-                playability.put(resource, playability.get(resource) + 1);
+    public void createPlayabilityMap(ResourcePrimaryType[] resourceNeeded){
+        playability = new HashMap<>();
+        for(ResourcePrimaryType resourceType : resourceNeeded){
+            ResourcePrimary res = new ResourcePrimary(resourceType);
+            if(playability.containsKey(res)) {
+                playability.put(res, playability.get(res) + 1);
             }
-            else playability.put(resource, 1);
+            else playability.put(res, 1);
         }
     }
 
     private  boolean checkCardPlayability(Table table){
-        for (ResourcePrimaryType r : playability.keySet()){
+        for (ResourcePrimary r : playability.keySet()){
             if (playability.get(r) < table.getResourceCounters().get(r)){
                 return false;
             }

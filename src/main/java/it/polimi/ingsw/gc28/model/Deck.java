@@ -7,7 +7,6 @@ import java.util.Random;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import it.polimi.ingsw.gc28.model.challenge.Challenge;
 import it.polimi.ingsw.gc28.model.challenge.utils.ChallengeType;
 import it.polimi.ingsw.gc28.model.objectives.positions.PositionType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
@@ -181,4 +180,37 @@ public class Deck {
             cardObjectiveDeck.add(new CardObjective(positionType, points, resourcePosition));
         }
     };
+
+    /**
+     * This method is used for testing purposes to make decks with known ordered cards
+     * due to applied permutations.
+     */
+    public Deck(ArrayList<Integer> deckCardResourcesPermutations,
+                ArrayList<Integer> deckCardGoldPermutations,
+                ArrayList<Integer> deckCardInitialPermutations,
+                ArrayList<Integer> deckCardObjectivePermutations) throws  IOException{
+        this();
+        this.mixFromPermutation(cardInitialDeck, deckCardInitialPermutations);
+        this.mixFromPermutation(cardGoldDeck, deckCardGoldPermutations);
+        this.mixFromPermutation(cardObjectiveDeck, deckCardObjectivePermutations);
+        this.mixFromPermutation(cardResourceDeck, deckCardResourcesPermutations);
+    }
+
+    /**
+     * This method applies a permutation to the deck of cards.
+     * Used only for testing purposes inside the special constructor.
+     */
+    private <T> void mixFromPermutation(ArrayList<T> deck, ArrayList<Integer> permutation) throws  IllegalArgumentException{
+        if (deck.size() != permutation.size()){
+            throw new IllegalArgumentException();
+        }
+        T substitute = deck.getFirst();
+        int nextIndex = 0;
+        for(int i = 0; i < 40; i++){
+            nextIndex = permutation.get(nextIndex);
+            T tmp = deck.get(nextIndex);
+            deck.set(nextIndex, substitute);
+            substitute = tmp;
+        }
+    }
 }

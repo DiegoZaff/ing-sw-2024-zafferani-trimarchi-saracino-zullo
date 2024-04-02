@@ -1,6 +1,5 @@
-package it.polimi.ingsw.gc28;
+package it.polimi.ingsw.gc28.model;
 
-import it.polimi.ingsw.gc28.model.Deck;
 import it.polimi.ingsw.gc28.model.cards.CardGold;
 import it.polimi.ingsw.gc28.model.cards.CardInitial;
 import it.polimi.ingsw.gc28.model.cards.CardObjective;

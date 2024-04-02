@@ -1,4 +1,4 @@
-package it.polimi.ingsw.gc28;
+package it.polimi.ingsw.gc28.model;
 
 import it.polimi.ingsw.gc28.model.Cell;
 import it.polimi.ingsw.gc28.model.Coordinate;

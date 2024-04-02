@@ -6,7 +6,6 @@ import it.polimi.ingsw.gc28.model.objectives.Objective;
 
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.OptionalInt;
 
 
 public class Player {
@@ -64,7 +63,7 @@ public class Player {
      * @param coordinate the coordinate of the played card
      */
     public void updatePoints(Coordinate coordinate){
-        points += table.getCell(coordinate).Points(table, coordinate);
+        points += table.getCell(coordinate).points(table, coordinate);
     }
 
 
@@ -81,7 +80,7 @@ public class Player {
      */
     public void playCard(CardGame playedCard, boolean isFront, Coordinate coordinates){
         if (!table.checkPlayability(coordinates)){
-            //potremmo creare una IrregularCordinateException, da aggiungere
+            //potremmo creare una IrregularCoordinateException, da aggiungere
             // ? maybe updates error attribute inside player and returns.
         }else {
             if (isFront){

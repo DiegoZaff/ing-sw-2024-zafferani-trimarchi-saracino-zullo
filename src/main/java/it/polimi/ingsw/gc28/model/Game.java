@@ -43,6 +43,22 @@ public class Game {
         // ! TODO: initialize globalObjectives
     }
 
+    /**
+     * This constructor is used only for testing purposes, because a know deck
+     * is passed as a parameter.
+     */
+    public Game(ArrayList<String> nicknames, Deck deck){
+        if(nicknames == null || nicknames.size() < 2){
+            throw new IllegalArgumentException();
+        }
+        this.deck = deck;
+        this.players = nicknames.stream().map(Player::new)
+                .collect(Collectors.toCollection(ArrayList::new));
+        this.errorManager = new ErrorManager(this.players);
+        this.actionManager = new ActionManager(this.players);
+        this.roundsLeft = Optional.empty();
+    }
+
 
     /**
      * This method is responsible for checking if the player who has just
@@ -93,7 +109,7 @@ public class Game {
      * @param isFront indicate how the card has to be played, front if True, back if False
      * @param coordinates indicates the coordinate where the card has to be played
      */
-    private void playGameCard (Player playingPlayer, CardGame playedCard, boolean isFront, Coordinate coordinates ) {
+    public void playGameCard (Player playingPlayer, CardGame playedCard, boolean isFront, Coordinate coordinates ) {
         ActionType actionRequested = ActionType.PLAY_CARD;
 
         if(!actionManager.validatesMove(playingPlayer, actionRequested)){
