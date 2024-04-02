@@ -53,7 +53,9 @@ public class Player {
     public void removeCard (CardGame cardToBeRemoved) {
         hand.remove(cardToBeRemoved);
     }
-
+    public void getCard(CardGame drawnCard){
+        hand.add(drawnCard);
+    }
     public Table getTable () {return table;}
 
 

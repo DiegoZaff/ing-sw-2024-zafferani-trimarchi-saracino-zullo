@@ -208,4 +208,12 @@ public class Game {
         // update for next move
         actionManager.nextMove();
     }
+
+    /**
+     * This method take the card from the top of the deck and add that card to the player's hand
+     * @param playingPlayer
+     * @param drawnCard
+     */
+    private void drawGameCard(Player playingPlayer, CardGame drawnCard){
+    }
 }
