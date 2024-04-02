@@ -85,7 +85,8 @@ public class Deck {
     public Deck() throws IOException {
 
         JSONParser jsonParser = new JSONParser();
-        FileReader reader = new FileReader(".//src//main//java//it.polimi.ingsw.gc28//json//Card.json");
+        String path = "./src/main/java/it/polimi/ingsw/gc28/Card.json";
+        FileReader reader = new FileReader(path);
 
         Object obj;
         try {

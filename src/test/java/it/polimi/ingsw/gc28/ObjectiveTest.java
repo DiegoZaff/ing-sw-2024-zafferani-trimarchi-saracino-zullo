@@ -24,8 +24,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This class is for unit-testing the different kinds of Objective, namely ObjectivePosition
- * ObjectiveResource and making sure points are calculated correctly given proper mapPositions
+ * This class is for unit-testing the different kinds of Objective, namely ObjectivePosition an
+ * ObjectiveResource and also making sure points are calculated correctly, given proper mapPositions
  * and resourceCounters.
  */
 public class ObjectiveTest {
