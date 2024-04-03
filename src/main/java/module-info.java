@@ -2,6 +2,7 @@ module it.polimi.ingsw.gc28 {
     requires javafx.controls;
     requires javafx.fxml;
     requires json.simple;
+    requires org.jetbrains.annotations;
 
 
     opens it.polimi.ingsw.gc28 to javafx.fxml;

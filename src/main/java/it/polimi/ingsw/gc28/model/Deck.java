@@ -1,12 +1,6 @@
 package it.polimi.ingsw.gc28.model;
+
 import it.polimi.ingsw.gc28.model.cards.*;
-
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Random;
-import java.util.ArrayList;
-import java.util.Optional;
-
 import it.polimi.ingsw.gc28.model.challenge.utils.ChallengeType;
 import it.polimi.ingsw.gc28.model.objectives.positions.PositionType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
@@ -16,6 +10,12 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Optional;
+import java.util.Random;
 
 /**
  * Class that represents the deck of cards.
@@ -95,7 +95,7 @@ public class Deck {
      */
     public Deck() throws IOException {
         JSONParser jsonParser = new JSONParser();
-        String path = "./src/main/java/it/polimi/ingsw/gc28/Deck.json";
+        String path = "./src/main/java/it/polimi/ingsw/gc28/Cards.json";
         FileReader reader = new FileReader(path);
 
         Object obj;
@@ -103,102 +103,135 @@ public class Deck {
             obj = jsonParser.parse(reader);
             JSONObject card = (JSONObject) obj;
 
-        JSONArray deckResources =(JSONArray)card.get("CardResource");
-        for(int i = 0; i< deckResources.size(); i++){
-            JSONObject cardResource = (JSONObject) deckResources.get(i);
-            String[] resourceCard = new String[4];
-            ResourceType[] resources = new ResourceType[4];
+            JSONArray deckResources =(JSONArray)card.get("CardResource");
+            for(int i = 0; i< deckResources.size(); i++){
+                JSONObject cardResource = (JSONObject) deckResources.get(i);
+                String[] resourceCard = new String[4];
+                ResourceType[] resources = new ResourceType[4];
 
-            resourceCard[0] = (String) cardResource.get("vertexOne");
-            resourceCard[1] = (String) cardResource.get("vertexTwo");
-            resourceCard[2] = (String) cardResource.get("vertexThree");
-            resourceCard[3] = (String) cardResource.get("vertexFour");
-            String resourcePrimary = (String) cardResource.get("resourcePrimary");
-            String pointsPerPlay = (String) cardResource.get("pointsPerPlay");
+                resourceCard[0] = (String) cardResource.get("vertexOne");
+                resourceCard[1] = (String) cardResource.get("vertexTwo");
+                resourceCard[2] = (String) cardResource.get("vertexThree");
+                resourceCard[3] = (String) cardResource.get("vertexFour");
+                String resourcePrimary = (String) cardResource.get("resourcePrimary");
+                String pointsPerPlay = (String) cardResource.get("pointsPerPlay");
 
-            //inserire funzione di conversione un po di tutti i tipi cosi sono aposto//
-            for(int a=0; a<resources.length;a++){
-                if(resourceCard[a]!= null){
-                resources[a] = ResourceType.valueOf(resourceCard[a]);
+                StringToResourceType(resourceCard, resources);
+                ResourcePrimaryType resPrimary = ResourcePrimaryType.valueOf(resourcePrimary);
+                int points = Integer.parseInt(pointsPerPlay);
+
+                cardResourceDeck.add(new CardResource(resources, resPrimary, points));
+            }
+
+            JSONArray deckGold = (JSONArray)card.get("CardGold");
+            for(int i = 0; i< deckGold.size(); i++) {
+                JSONObject cardGold = (JSONObject) deckGold.get(i);
+                String[] resourceCard = new String[4];
+                String[] resourceNeeded = new String[5];
+                ResourceType[] resources = new ResourceType[4];
+                ResourcePrimaryType[] resNeeded = new ResourcePrimaryType[5];
+                ChallengeType cha;
+                ResourceSpecialType resChallenge;
+
+                resourceCard[0] = (String) cardGold.get("vertexOne");
+                resourceCard[1] = (String) cardGold.get("vertexTwo");
+                resourceCard[2] = (String) cardGold.get("vertexThree");
+                resourceCard[3] = (String) cardGold.get("vertexFour");
+                String resourcePrimary = (String) cardGold.get("resourcePrimary");
+                String pointsPerPlay = (String) cardGold.get("pointsPerPlay");
+                resourceNeeded[0] = (String) cardGold.get("resourceNeededOne");
+                resourceNeeded[1] = (String) cardGold.get("resourceNeededTwo");
+                resourceNeeded[2] = (String) cardGold.get("resourceNeededThree");
+                resourceNeeded[3] = (String) cardGold.get("resourceNeededFour");
+                resourceNeeded[4] = (String) cardGold.get("resourceNeededFive");
+                String challenge= (String) cardGold.get("challenge");
+                String resourceChallenge = (String) cardGold.get("resourceChallenge");
+
+                StringToResourceType(resourceCard, resources);
+                ResourcePrimaryType resPrimary = ResourcePrimaryType.valueOf(resourcePrimary);
+                int points = Integer.parseInt(pointsPerPlay);
+                StringToResourcePrimaryType(resourceNeeded, resNeeded);
+                if(challenge!= null){
+                    cha = ChallengeType.valueOf(challenge);
                 }
                 else{
-                    resources[a]=null;
+                    cha = null;
                 }
+                if(resourceChallenge!= null){
+                    resChallenge = ResourceSpecialType.valueOf(resourceChallenge);
+                }
+                else{
+                    resChallenge = null;
+                }
+
+                cardGoldDeck.add(new CardGold(resources, resPrimary, points, resNeeded, cha, resChallenge));
             }
-            ResourcePrimaryType resPrimary = ResourcePrimaryType.valueOf(resourcePrimary);
-            int points = Integer.parseInt(pointsPerPlay);
 
-            cardResourceDeck.add(new CardResource(resources, resPrimary, points));
-        }
+            JSONArray deckInitial = (JSONArray)card.get("CardInitial");
+            for(int i = 0; i<deckInitial.size(); i++){
+                JSONObject cardInitial = (JSONObject) deckInitial.get(i);
+                String[] resourceBack = new String[4];
+                String[] resourceFront = new String[4];
+                String[] resourceCenter = new String[3];
 
-        /*JSONArray deckGold = (JSONArray)card.get("CardGold");
-        for(int i = 0; i< deckGold.size(); i++) {
-            JSONObject cardGold = (JSONObject) deckGold.get(i);
+                ResourceType[] resBack = new ResourceType[4];
+                ResourceType[] resFront = new ResourceType[4];
+                ResourceType[] resCenter = new ResourceType[3];
 
-            ResourceType[] resourceCard = new ResourceType[4];
-            resourceCard[0] = (ResourceType) cardGold.get("vertexOne");
-            resourceCard[1] = (ResourceType) cardGold.get("vertexTwo");
-            resourceCard[2] = (ResourceType) cardGold.get("vertexThree");
-            resourceCard[3] = (ResourceType) cardGold.get("vertexFour");
-            ResourcePrimaryType resourcePrimary = (ResourcePrimaryType) cardGold.get("resourcePrimary");
-            int pointsPerPlay = (int) cardGold.get("pointsPerPlay");
-            ResourcePrimaryType[] resourceNeeded = new ResourcePrimaryType[5];
-            resourceNeeded[0] = (ResourcePrimaryType) cardGold.get("resourceNeededOne");
-            resourceNeeded[1] = (ResourcePrimaryType) cardGold.get("resourceNeededTwo");
-            resourceNeeded[2] = (ResourcePrimaryType) cardGold.get("resourceNeededThree");
-            resourceNeeded[3] = (ResourcePrimaryType) cardGold.get("resourceNeededFour");
-            resourceNeeded[4] = (ResourcePrimaryType) cardGold.get("resourceNeededFive");
-            ChallengeType challenge= (ChallengeType) cardGold.get("challenge");
-            ResourceSpecialType resourceChallenge = (ResourceSpecialType) cardGold.get("resourceChallenge");
+                resourceBack[0] = (String) cardInitial.get("resourceBackOne");
+                resourceBack[1] = (String) cardInitial.get("resourceBackTwo");
+                resourceBack[2] = (String) cardInitial.get("resourceBackThree");
+                resourceBack[3] = (String) cardInitial.get("resourceBackFour");
+                resourceFront[0] = (String) cardInitial.get("resourceFrontOne");
+                resourceFront[1] = (String) cardInitial.get("resourceFrontTwo");
+                resourceFront[2] = (String) cardInitial.get("resourceFrontThree");
+                resourceFront[3] = (String) cardInitial.get("resourceFrontFour");
+                resourceCenter[0] = (String) cardInitial.get("centralResourceOne");
+                resourceCenter[1] = (String) cardInitial.get("centralResourceTwo");
+                resourceCenter[2] = (String) cardInitial.get("centralResourceThree");
 
-            cardGoldDeck.add(new CardGold(resourceCard, resourcePrimary, pointsPerPlay, resourceNeeded, challenge, resourceChallenge));
-        }
+                StringToResourceType(resourceBack, resBack);
+                StringToResourceType(resourceFront, resFront);
+                StringToResourceType(resourceCenter, resCenter);
 
-        JSONArray deckInitial = (JSONArray)card.get("CardInitial");
-        for(int i = 0; i< deckInitial.size(); i++){
-            JSONObject cardInitial = (JSONObject) deckInitial.get(i);
-            ResourceType[] resourceBack = new ResourceType[4];
-            ResourceType[] resourceFront = new ResourceType[4];
-            ResourceType[] resourceCenter = new ResourceType[3];
+                //cardInitialDeck.add(new CardInitial(resFront, resBack, resCenter));
 
-            resourceBack[0] = (ResourceType) cardInitial.get("resourceBackOne");
-            resourceBack[1] = (ResourceType) cardInitial.get("resourceBackTwo");
-            resourceBack[2] = (ResourceType) cardInitial.get("resourceBackThree");
-            resourceBack[3] = (ResourceType) cardInitial.get("resourceBackFour");
-            resourceFront[0] = (ResourceType) cardInitial.get("resourceFrontOne");
-            resourceFront[1] = (ResourceType) cardInitial.get("resourceFrontTwo");
-            resourceFront[2] = (ResourceType) cardInitial.get("resourceFrontThree");
-            resourceFront[3] = (ResourceType) cardInitial.get("resourceFrontFour");
-            resourceCenter[0] = (ResourceType) cardInitial.get("centralResourceOne");
-            resourceCenter[1] = (ResourceType) cardInitial.get("centralResourceTwo");
-            resourceCenter[2] = (ResourceType) cardInitial.get("centralResourceThree");
+            }
 
-            cardInitialDeck.add(new CardInitial(resourceFront, resourceBack, resourceCenter));
-        }
+            JSONArray deckObjective = (JSONArray)card.get("CardObjective");
+            int j = 2;
+            for(int i = 0; i< deckObjective.size()/j; i++) {
+                JSONObject cardObjective = (JSONObject) deckObjective.get(i);
+                String[] resourceNeeded = new String[3];
+                ResourceType[] resNeeded = new ResourceType[3];
 
-        JSONArray deckObjective = (JSONArray)card.get("CardObjective");
-        int j = 2;
-        for(int i = 0; i< deckObjective.size()/j; i++) {
-            JSONObject cardObjective = (JSONObject) deckObjective.get(i);
-            ResourceType[] resourceNeeded = new ResourceType[3];
-            int points = (int) cardObjective.get("pointsPerPlay");
-            resourceNeeded[0] = (ResourceType) cardObjective.get("resourceNeededOne");
-            resourceNeeded[1] = (ResourceType) cardObjective.get("resourceNeededTwo");
-            resourceNeeded[2] = (ResourceType) cardObjective.get("resourceNeededThree");
+                String pointsCard = (String) cardObjective.get("points");
+                resourceNeeded[0] = (String) cardObjective.get("resourceNeededOne");
+                resourceNeeded[1] = (String) cardObjective.get("resourceNeededTwo");
+                resourceNeeded[2] = (String) cardObjective.get("resourceNeededThree");
 
-            cardObjectiveDeck.add(new CardObjective(points, resourceNeeded));
-        }
-        for(int i = deckObjective.size()/j; i<deckObjective.size(); i++) {
-            JSONObject cardObjective = (JSONObject) deckObjective.get(i);
-            ResourcePrimaryType[] resourcePosition = new ResourcePrimaryType[3];
-            int points = (int) cardObjective.get("pointsPerPlay");
-            PositionType positionType = (PositionType) cardObjective.get("positionType");
-            resourcePosition[0] = (ResourcePrimaryType) cardObjective.get("resourceNeededOne");
-            resourcePosition[1] = (ResourcePrimaryType) cardObjective.get("resourceNeededTwo");
-            resourcePosition[2] = (ResourcePrimaryType) cardObjective.get("resourceNeededThree");
+                int points = Integer.parseInt(pointsCard);
+                StringToResourceType(resourceNeeded, resNeeded);
 
-            cardObjectiveDeck.add(new CardObjective(positionType, points, resourcePosition));
-        }*/
+                cardObjectiveDeck.add(new CardObjective(points, resNeeded));
+            }
+            for(int i = deckObjective.size()/j; i<deckObjective.size(); i++) {
+                JSONObject cardObjective = (JSONObject) deckObjective.get(i);
+                String[] resourcePosition = new String[3];
+                ResourcePrimaryType[] resPosition = new ResourcePrimaryType[3];
+
+                String pointsCard = (String) cardObjective.get("points");
+                String positionType = (String) cardObjective.get("positionType");
+                resourcePosition[0] = (String) cardObjective.get("resourceNeededOne");
+                resourcePosition[1] = (String) cardObjective.get("resourceNeededTwo");
+                resourcePosition[2] = (String) cardObjective.get("resourceNeededThree");
+
+                int points = Integer.parseInt(pointsCard);
+
+                StringToResourcePrimaryType(resourcePosition, resPosition);
+
+                cardObjectiveDeck.add(new CardObjective(posType, points, resPosition));
+            }
         } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
         }
@@ -234,6 +267,27 @@ public class Deck {
             T tmp = deck.get(nextIndex);
             deck.set(nextIndex, substitute);
             substitute = tmp;
+        }
+    }
+
+    public void StringToResourceType(String[] str, ResourceType[] res){
+        for(int a=0; a<res.length;a++){
+            if(str[a]!= null){
+                res[a] = ResourceType.valueOf(str[a]);
+            }
+            else{
+                res[a]=null;
+            }
+        }
+    }
+    public void StringToResourcePrimaryType(String[] str, ResourcePrimaryType[] res){
+        for(int a=0; a<res.length;a++){
+            if(str[a]!= null){
+                res[a] = ResourcePrimaryType.valueOf(str[a]);
+            }
+            else{
+                res[a]=null;
+            }
         }
     }
 }

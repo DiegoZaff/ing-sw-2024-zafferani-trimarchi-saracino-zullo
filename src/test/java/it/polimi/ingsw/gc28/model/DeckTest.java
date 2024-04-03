@@ -41,9 +41,9 @@ public class DeckTest {
 
         //assertTrue(cardObj.isPresent(), "card objective drawn");
 
-        //Optional<CardGold> cardGold = deck.nextGold();
+        Optional<CardGold> cardGold = deck.nextGold();
 
-        //assertTrue(cardGold.isPresent(), "card gold drawn");
+        assertTrue(cardGold.isPresent(), "card gold drawn");
 
         //Optional<CardInitial> cardInitial = deck.nextInitial();
 
