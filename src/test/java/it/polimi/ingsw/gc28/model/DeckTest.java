@@ -45,9 +45,9 @@ public class DeckTest {
 
         assertTrue(cardGold.isPresent(), "card gold drawn");
 
-        //Optional<CardInitial> cardInitial = deck.nextInitial();
+        Optional<CardInitial> cardInitial = deck.nextInitial();
 
-        //assertTrue(cardInitial.isPresent(), "card initial drawn");
+        assertTrue(cardInitial.isPresent(), "card initial drawn");
 
         Optional<CardResource> cardResource = deck.nextResource();
 

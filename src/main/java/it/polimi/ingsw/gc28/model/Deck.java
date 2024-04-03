@@ -2,7 +2,6 @@ package it.polimi.ingsw.gc28.model;
 
 import it.polimi.ingsw.gc28.model.cards.*;
 import it.polimi.ingsw.gc28.model.challenge.utils.ChallengeType;
-import it.polimi.ingsw.gc28.model.objectives.positions.PositionType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceSpecialType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceType;
@@ -194,7 +193,7 @@ public class Deck {
                 StringToResourceType(resourceFront, resFront);
                 StringToResourceType(resourceCenter, resCenter);
 
-                //cardInitialDeck.add(new CardInitial(resFront, resBack, resCenter));
+                cardInitialDeck.add(new CardInitial(resBack, resFront, resCenter));
 
             }
 
@@ -227,10 +226,10 @@ public class Deck {
                 resourcePosition[2] = (String) cardObjective.get("resourceNeededThree");
 
                 int points = Integer.parseInt(pointsCard);
-
+                //PositionType posType = PositionType.valueOf(positionType);
                 StringToResourcePrimaryType(resourcePosition, resPosition);
 
-                cardObjectiveDeck.add(new CardObjective(posType, points, resPosition));
+                //cardObjectiveDeck.add(new CardObjective(posType, points, resPosition));
             }
         } catch (IOException | ParseException e) {
             throw new RuntimeException(e);

@@ -21,8 +21,8 @@ public class CardInitial extends CardGame {
     public CardInitial(ResourceType[] resourcesFront, ResourceType[] resourcesBack, ResourceType[] primaryResources){
         super(resourcesFront);
 
-        Vertex[] vertexBack = new Vertex[3];
-        Resource[] resBack = new Resource[3];
+        Vertex[] vertexBack = new Vertex[4];
+        Resource[] resBack = new Resource[4];
 
         for (int i=0; i<resourcesBack.length; i++) {
             if(resourcesBack[i] == ResourceType.FOX) {
@@ -33,11 +33,15 @@ public class CardInitial extends CardGame {
                 resBack[i] = new ResourcePrimary(ResourcePrimaryType.BUTTERFLY);
             } else if (resourcesBack[i] == ResourceType.MUSHROOM) {
                 resBack[i] = new ResourcePrimary(ResourcePrimaryType.MUSHROOM);
+            } else {
+                resBack[i] = null;
             }
         }
 
         for (int i=0; i< resBack.length; i++) {
-            vertexBack[i] = new Vertex(resBack[i]);
+            if(resBack[i]!=null) {
+                vertexBack[i] = new Vertex(resBack[i]);
+            }
         }
         this.verticesBack=vertexBack;
         this.resourcesBack =resBack;
