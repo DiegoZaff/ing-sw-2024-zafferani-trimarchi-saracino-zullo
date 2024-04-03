@@ -1095,11 +1095,11 @@
       "resourcePrimaryThree" : "LEAF"
     },
     {
-    "points": "3",
-    "positionType" : "S_W_STACK",
-    "resourcePrimaryOne" : "BUTTERFLY",
-    "resourcePrimaryTwo" : "LEAF",
-    "resourcePrimaryThree" : "LEAF"
+      "points": "3",
+      "positionType" : "S_W_STACK",
+      "resourcePrimaryOne" : "BUTTERFLY",
+      "resourcePrimaryTwo" : "LEAF",
+      "resourcePrimaryThree" : "LEAF"
     },
     {
       "points": "3",
