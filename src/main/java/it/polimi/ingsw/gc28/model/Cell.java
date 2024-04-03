@@ -36,9 +36,9 @@ public class Cell {
 
     public Map<Resource, Integer> getResources (){
         if (isPlayedFront){
-            return card.getFrontCardVertexResource();
+            return card.getFrontCardResource();
         } else {
-            return card.getMapCentralResource();
+            return card.getBackCardResource();
         }
     }
 

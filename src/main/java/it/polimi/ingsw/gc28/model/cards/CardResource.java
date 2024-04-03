@@ -58,7 +58,7 @@ public class CardResource extends CardGame {
     }
 
     @Override
-    public Map<Resource,Integer> getMapCentralResource(){
+    public Map<Resource,Integer> getBackCardResource(){
         Map<Resource, Integer> m = new HashMap<>();
         m.put(resource, 1);
         return m;
