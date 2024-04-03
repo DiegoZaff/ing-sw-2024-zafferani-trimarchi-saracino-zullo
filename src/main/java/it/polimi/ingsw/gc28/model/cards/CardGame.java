@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gc28.model.cards;
 
-import it.polimi.ingsw.gc28.model.Cell;
 import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.model.Table;
 import it.polimi.ingsw.gc28.model.Vertex;
@@ -100,7 +99,7 @@ public abstract class CardGame extends Card {
      * this method provides a map that contains the number of resource in the vertex in the front of the card
      * @return  Map<Resource, Integer> Integer: the number of a resource in a card
      */
-    public Map<Resource,Integer> getFrontCardVertexResource (){
+    public Map<Resource,Integer> getFrontCardResource(){
         Map<Resource,Integer> mapResource = new HashMap<>();
         int temp;
         for (Vertex v : verticesFront){
@@ -125,7 +124,7 @@ public abstract class CardGame extends Card {
      * this method return a map with the central resources of the card
      * @return a map <Resource, Integer><the resource/ the numeber of that resource>
      */
-    public abstract Map<Resource,Integer> getMapCentralResource();
+    public abstract Map<Resource,Integer> getBackCardResource();
 
     public Vertex[] getVerticesFront() {
         return verticesFront;

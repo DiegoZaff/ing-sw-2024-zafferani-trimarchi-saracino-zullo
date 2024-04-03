@@ -92,7 +92,28 @@ public class CardInitial extends CardGame {
      * this method provides a map that contains the number of resource in the vertex in the back of the card
      * @return  Map<Resource, Integer> Integer: the number of a resource in a card
      */
-    public Map<Resource,Integer> getBackCardVertexResource (){
+    @Override
+    public Map<Resource,Integer> getFrontCardResource (){
+        Map<Resource,Integer> mapResource = super.getFrontCardResource();
+        int temp;
+        for (Resource r : centralResources.keySet()){
+            if (!mapResource.containsKey(r)){
+                mapResource.put(r, 1);
+            }else {
+                temp = mapResource.get(r) +1;
+                mapResource.replace(r, temp);
+            }
+        }
+        return mapResource;
+    }
+
+    @Override
+    public int getPoints(Table table, Coordinate coordinate){
+        return 0;
+    }
+
+    @Override
+    public Map<Resource,Integer> getBackCardResource(){
         Map<Resource,Integer> mapResource = new HashMap<>();
         int temp;
         for (Vertex v : verticesBack){
@@ -108,16 +129,6 @@ public class CardInitial extends CardGame {
             }
         }
         return mapResource;
-    }
-
-    @Override
-    public int getPoints(Table table, Coordinate coordinate){
-        return 0;
-    }
-
-    @Override
-    public Map<Resource,Integer> getMapCentralResource(){
-        return centralResources;
     }
 
     @Override
