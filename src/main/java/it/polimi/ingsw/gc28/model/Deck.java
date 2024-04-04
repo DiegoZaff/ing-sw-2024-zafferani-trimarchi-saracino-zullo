@@ -102,8 +102,8 @@ public class Deck {
             obj = jsonParser.parse(reader);
             JSONObject card = (JSONObject) obj;
 
-            JSONArray deckResources =(JSONArray)card.get("CardResource");
-            for(int i = 0; i< deckResources.size(); i++){
+            /*JSONArray deckResources =(JSONArray)card.get("CardResource");
+            for(int i = 0; i<deckResources.size(); i++){
                 JSONObject cardResource = (JSONObject) deckResources.get(i);
                 String[] resourceCard = new String[4];
                 ResourceType[] resources = new ResourceType[4];
@@ -164,7 +164,7 @@ public class Deck {
                 }
 
                 cardGoldDeck.add(new CardGold(resources, resPrimary, points, resNeeded, cha, resChallenge));
-            }
+            }*/
 
             JSONArray deckInitial = (JSONArray)card.get("CardInitial");
             for(int i = 0; i<deckInitial.size(); i++){
@@ -177,14 +177,14 @@ public class Deck {
                 ResourceType[] resFront = new ResourceType[4];
                 ResourceType[] resCenter = new ResourceType[3];
 
-                resourceBack[0] = (String) cardInitial.get("resourceBackOne");
-                resourceBack[1] = (String) cardInitial.get("resourceBackTwo");
-                resourceBack[2] = (String) cardInitial.get("resourceBackThree");
-                resourceBack[3] = (String) cardInitial.get("resourceBackFour");
-                resourceFront[0] = (String) cardInitial.get("resourceFrontOne");
-                resourceFront[1] = (String) cardInitial.get("resourceFrontTwo");
-                resourceFront[2] = (String) cardInitial.get("resourceFrontThree");
-                resourceFront[3] = (String) cardInitial.get("resourceFrontFour");
+                resourceBack[0] = (String) cardInitial.get("vertexBackOne");
+                resourceBack[1] = (String) cardInitial.get("vertexBackTwo");
+                resourceBack[2] = (String) cardInitial.get("vertexBackThree");
+                resourceBack[3] = (String) cardInitial.get("vertexBackFour");
+                resourceFront[0] = (String) cardInitial.get("vertexFrontOne");
+                resourceFront[1] = (String) cardInitial.get("vertexFrontTwo");
+                resourceFront[2] = (String) cardInitial.get("vertexFrontThree");
+                resourceFront[3] = (String) cardInitial.get("vertexFrontFour");
                 resourceCenter[0] = (String) cardInitial.get("centralResourceOne");
                 resourceCenter[1] = (String) cardInitial.get("centralResourceTwo");
                 resourceCenter[2] = (String) cardInitial.get("centralResourceThree");
@@ -197,7 +197,7 @@ public class Deck {
 
             }
 
-            JSONArray deckObjective = (JSONArray)card.get("CardObjective");
+            /*JSONArray deckObjective = (JSONArray)card.get("CardObjective");
             int j = 2;
             for(int i = 0; i< deckObjective.size()/j; i++) {
                 JSONObject cardObjective = (JSONObject) deckObjective.get(i);
@@ -230,7 +230,7 @@ public class Deck {
                 StringToResourcePrimaryType(resourcePosition, resPosition);
 
                 //cardObjectiveDeck.add(new CardObjective(posType, points, resPosition));
-            }
+            }*/
         } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
         }

@@ -25,8 +25,10 @@ public class CardGold extends CardResource {
         super(resourceCard, resourcePrimary, pointsPerPlay);
         createPlayabilityMap(resourceNeeded);
         this.resourceChallenge =Optional.of(new ResourceSpecial(resourceChallenge));
-        this.challenge = new Challenge(challenge, resourceChallenge);
+        if(challenge!=null){
+            this.challenge = new Challenge(challenge, resourceChallenge);
         }
+    }
 
     /**
      * this method create the hashMap to keep information about card's playability

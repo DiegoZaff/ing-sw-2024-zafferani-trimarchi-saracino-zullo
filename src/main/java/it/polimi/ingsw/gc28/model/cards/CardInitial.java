@@ -18,7 +18,7 @@ public class CardInitial extends CardGame {
     //private final ResourceType[] resourcesFront;
     private final Vertex[] verticesBack;
     private Map<Resource, Integer> centralResources;
-    public CardInitial(ResourceType[] resourcesFront, ResourceType[] resourcesBack, ResourceType[] primaryResources){
+    public CardInitial(ResourceType[] resourcesBack, ResourceType[] resourcesFront, ResourceType[] primaryResources){
         super(resourcesFront);
 
         Vertex[] vertexBack = new Vertex[4];
