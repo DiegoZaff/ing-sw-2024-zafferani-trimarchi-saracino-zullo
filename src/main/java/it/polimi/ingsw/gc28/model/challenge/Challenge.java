@@ -11,10 +11,14 @@ import java.util.Optional;
 public class Challenge {
 
     public ChallengeType type;
-    private final Optional<ResourceSpecialType> resourceChallenge;
+    private final ResourceSpecialType resourceChallenge;
+
+    public Optional<ResourceSpecialType> getResourceChallenge(){
+        return Optional.ofNullable(resourceChallenge);
+    }
 
     public Challenge(ChallengeType type, ResourceSpecialType resourceChallenge) {
-        this.resourceChallenge = Optional.ofNullable(resourceChallenge);
+        this.resourceChallenge = resourceChallenge;
         this.type=type;
     }
 

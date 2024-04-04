@@ -27,30 +27,30 @@ public class ErrorManager {
         // one or the other.
         if(expectedAction.equals(ActionType.CHOOSE_OBJ)){
             if(!action.equals(ActionType.CHOOSE_OBJ)){
-                player.setError(Optional.of(new NotYourTurnError()));
+                player.setError(new NotYourTurnError());
             }else if(player.getObjectiveChosen().isPresent()){
-                player.setError(Optional.of(new AlreadyChoseObjectiveError()));
+                player.setError(new AlreadyChoseObjectiveError());
             }
         }
         if(player != expectedPlayer){
-            player.setError(Optional.of(new NotYourTurnError()));
+            player.setError(new NotYourTurnError());
         }else if(expectedAction != action){
-            player.setError(Optional.of(new UnexpectedMoveError()));
+            player.setError(new UnexpectedMoveError());
         }
 
     }
 
     public void fromInvalidObjectiveChoice(Player player){
-        player.setError(Optional.of(new InvalidObjectiveChoiceError()));
+        player.setError(new InvalidObjectiveChoiceError());
     }
 
     private void setErrorPlayer(Player player, PlayerActionError err){
-        player.setError(Optional.of(err));
+        player.setError(err);
     }
 
     public void cleanUpAllErrors(){
         for (Player p : players){
-            p.setError(Optional.empty());
+            p.setError(null);
         }
     }
 }

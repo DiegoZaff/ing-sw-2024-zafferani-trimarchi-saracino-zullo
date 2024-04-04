@@ -15,7 +15,7 @@ public class Player {
     private int winner = 0;
 
     private final String name;
-    private Optional<CardObjective> objectiveChosen;
+    private CardObjective objectiveChosen;
 
     private final ArrayList<CardObjective> objectivesToChoose;
 
@@ -23,7 +23,7 @@ public class Player {
 
     private Table table;
 
-    private Optional<PlayerActionError> error;
+    private PlayerActionError error;
 
     public Player(String name, ArrayList<CardObjective> objectivesToChoose) {
         this.name = name;
@@ -32,8 +32,7 @@ public class Player {
         this.objectivePoints = 0;
         this.hand = new ArrayList<>();
         this.table = new Table();
-        this.error = Optional.empty();
-        this.objectiveChosen = Optional.empty();
+
     }
 
     public ArrayList<CardObjective> getObjectivesToChoose(){
@@ -41,15 +40,19 @@ public class Player {
     }
 
     public void setObjectiveChosen(CardObjective card){
-        objectiveChosen = Optional.of(card);
+        objectiveChosen = card;
     }
 
     public Optional<CardObjective> getObjectiveChosen(){
-        return objectiveChosen;
+        return Optional.ofNullable(objectiveChosen) ;
     }
 
-    public void setError(Optional<PlayerActionError> error) {
+    public void setError(PlayerActionError error) {
         this.error = error;
+    }
+
+    public Optional<PlayerActionError> getError(){
+        return Optional.ofNullable(error);
     }
 
     public ArrayList<CardGame> gethand (){
@@ -125,9 +128,11 @@ public class Player {
      * @requires objective.isPresent()
      */
     public void calculateObjectivePoints(ArrayList<Objective> objectives){
-        if(objectiveChosen.isPresent()){
+        Optional<CardObjective> objChosen = getObjectiveChosen();
+
+        if(objChosen.isPresent()){
             // I can add to this array since we pass a newly created ArrayList.
-            objectives.add(objectiveChosen.get().getObjective());
+            objectives.add(objChosen.get().getObjective());
         }else{
             System.err.println("Objective not set");
         }

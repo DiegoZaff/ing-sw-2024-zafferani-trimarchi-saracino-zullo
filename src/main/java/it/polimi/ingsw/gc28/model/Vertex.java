@@ -5,7 +5,7 @@ import it.polimi.ingsw.gc28.model.resources.Resource;
 import java.util.Optional;
 
 public class Vertex {
-    private final Optional<Resource> resource;
+    private final Resource resource;
     private final boolean exists;
 
     public boolean isExists() {
@@ -13,17 +13,17 @@ public class Vertex {
     }
 
     public Vertex(boolean exists){
-        this.resource = Optional.empty();
+        this.resource = null;
         this.exists = exists;
     }
 
     public Vertex(Resource res){
-        this.resource = Optional.of(res);
+        this.resource = res;
         this.exists = true;
     }
 
 
     public Optional<Resource> getResource() {
-        return resource;
+        return Optional.ofNullable(resource);
     }
 }

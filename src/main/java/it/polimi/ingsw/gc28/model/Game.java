@@ -27,7 +27,11 @@ public class Game {
      * the number of rounds left to play. (it could be less if the deck finishes
      * the cards).
      */
-    private Optional<Integer> roundsLeft;
+    private Integer roundsLeft;
+
+    public Optional<Integer> getRoundsLeft(){
+        return Optional.ofNullable(roundsLeft);
+    }
 
     public Game(ArrayList<String> nicknames) throws IOException, IllegalArgumentException, IllegalStateException {
         if(nicknames == null || nicknames.size() < 2){
@@ -41,7 +45,6 @@ public class Game {
 
         this.errorManager = new ErrorManager(this.players);
         this.actionManager = new ActionManager(this.players, this.errorManager);
-        this.roundsLeft = Optional.empty();
 
         this.initGlobalObjectives();
     }
@@ -61,7 +64,6 @@ public class Game {
 
         this.errorManager = new ErrorManager(this.players);
         this.actionManager = new ActionManager(this.players, this.errorManager);
-        this.roundsLeft = Optional.empty();
 
         this.initGlobalObjectives();
     }
@@ -120,9 +122,8 @@ public class Game {
             int indexOfPlayerOfTurn = players.indexOf(playerOfTurn);
 
             // same number of plays + 1 additional round each
-            int newRoundsLeft = 2 * players.size() - (indexOfPlayerOfTurn + 1);
 
-            roundsLeft = Optional.of(newRoundsLeft);
+            roundsLeft = 2 * players.size() - (indexOfPlayerOfTurn + 1);
         }
     }
 
@@ -140,7 +141,7 @@ public class Game {
             // game ended
             return true;
         }else{
-            roundsLeft = Optional.of(currRoundsLefts - 1);
+            roundsLeft = currRoundsLefts - 1;
             return false;
         }
     }
@@ -251,6 +252,7 @@ public class Game {
      * playerOfTurn.
      */
     private void setupNextMove(){
+        Optional<Integer> roundsLeft = getRoundsLeft();
         // if roundsLeft is not set check for endgame
         if(roundsLeft.isEmpty()) {
             checkEndGame();

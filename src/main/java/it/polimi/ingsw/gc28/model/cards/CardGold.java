@@ -17,7 +17,11 @@ import java.util.Optional;
 
 public class CardGold extends CardResource {
     private Map<ResourcePrimary, Integer> playability;
-    private Optional<Challenge> challenge;
+    private Challenge challenge;
+
+    public Optional<Challenge> getChallenge(){
+        return Optional.ofNullable(challenge);
+    }
 
 
     public CardGold(ResourceType[] resourceCard, ResourcePrimaryType resourcePrimary, int pointsPerPlay,
@@ -30,8 +34,6 @@ public class CardGold extends CardResource {
             }else{
                 //challenge = new costruttore points per resource
             }
-        }else {
-            this.challenge = Optional.empty();
         }
         //this.resourceChallenge =Optional.of(new ResourceSpecial(resourceChallenge));
         //this.challenge = new Challenge(challenge, resourceChallenge);
@@ -72,7 +74,7 @@ public class CardGold extends CardResource {
 
     @Override
     public int getPoints(Table table, Coordinate coordinate){
-        return challenge.map(value -> value.challengePoints(table, coordinate)).orElseGet(() -> super.getPoints(table, coordinate));
+        return getChallenge().map(value -> value.challengePoints(table, coordinate)).orElseGet(() -> super.getPoints(table, coordinate));
     }
 
 
