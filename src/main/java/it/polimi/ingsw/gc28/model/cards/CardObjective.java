@@ -3,7 +3,12 @@ package it.polimi.ingsw.gc28.model.cards;
 import it.polimi.ingsw.gc28.model.objectives.Objective;
 import it.polimi.ingsw.gc28.model.objectives.ObjectivePosition;
 import it.polimi.ingsw.gc28.model.objectives.ObjectiveResources;
+import it.polimi.ingsw.gc28.model.objectives.positions.Diagonal;
 import it.polimi.ingsw.gc28.model.objectives.positions.PositionType;
+import it.polimi.ingsw.gc28.model.objectives.positions.Stack;
+import it.polimi.ingsw.gc28.model.objectives.positions.utils.DiagonalType;
+import it.polimi.ingsw.gc28.model.objectives.positions.utils.GeneralPositionType;
+import it.polimi.ingsw.gc28.model.objectives.positions.utils.PositionStackType;
 import it.polimi.ingsw.gc28.model.resources.Resource;
 import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
 import it.polimi.ingsw.gc28.model.resources.ResourceSpecial;
@@ -20,7 +25,6 @@ public class CardObjective extends Card {
         return objective;
     }
     public CardObjective(int points, ResourceType[] resourceNeeded) {
-        Objective objective1;
         Resource[] resourceCard = new Resource[3];
 
         for (int i=0; i<resourceNeeded.length; i++) {
@@ -44,8 +48,7 @@ public class CardObjective extends Card {
         }
         HashMap<Resource, Integer> FinalResources = new HashMap<>();
         createMap(FinalResources, resourceCard);
-        objective1 = new ObjectiveResources(FinalResources,points);
-        this.objective = objective1;
+        this.objective = new ObjectiveResources(FinalResources,points);
     }
 
     public void createMap(Map<Resource, Integer> TableResources, Resource[] Resources){
@@ -57,9 +60,9 @@ public class CardObjective extends Card {
         }
     }
 
-    public CardObjective(PositionType positionType, int points, ResourcePrimaryType[] resourcePosition){
-        Objective objective2;
+    public CardObjective(GeneralPositionType positionType, int points, ResourcePrimaryType[] resourcePosition){
         ResourcePrimary[] resourceCard = new ResourcePrimary[3];
+        PositionType posType = null;
 
         for (int i=0; i<resourcePosition.length; i++) {
             if (resourcePosition[i] == ResourcePrimaryType.FOX) {
@@ -74,7 +77,20 @@ public class CardObjective extends Card {
                 resourceCard[i] = null;
             }
         }
-        objective2 = new ObjectivePosition(positionType, points, resourceCard);
-        this.objective = objective2;
+
+        if(positionType == GeneralPositionType.MAIN_DIAGONAL){
+            posType = new Diagonal(DiagonalType.MAIN_DIAGONAL);
+        } else if (positionType == GeneralPositionType.SECONDARY_DIAGONAL) {
+            posType = new Diagonal(DiagonalType.SECONDARY_DIAGONAL);
+        } else if (positionType == GeneralPositionType.N_E_STACK) {
+            posType = new Stack(PositionStackType.N_E_STACK);
+        } else if (positionType == GeneralPositionType.N_W_STACK) {
+            posType = new Stack(PositionStackType.N_W_STACK);
+        } else if (positionType == GeneralPositionType.S_E_STACK) {
+            posType = new Stack(PositionStackType.S_E_STACK);
+        } else if (positionType == GeneralPositionType.S_W_STACK) {
+            posType = new Stack(PositionStackType.S_W_STACK);
+        }
+        this.objective = new ObjectivePosition(posType, points, resourceCard);
     }
 }

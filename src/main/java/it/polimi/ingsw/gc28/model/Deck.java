@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc28.model;
 
 import it.polimi.ingsw.gc28.model.cards.*;
 import it.polimi.ingsw.gc28.model.challenge.utils.ChallengeType;
+import it.polimi.ingsw.gc28.model.objectives.positions.utils.GeneralPositionType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceSpecialType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceType;
@@ -102,7 +103,7 @@ public class Deck {
             obj = jsonParser.parse(reader);
             JSONObject card = (JSONObject) obj;
 
-            /*JSONArray deckResources =(JSONArray)card.get("CardResource");
+            JSONArray deckResources =(JSONArray)card.get("CardResource");
             for(int i = 0; i<deckResources.size(); i++){
                 JSONObject cardResource = (JSONObject) deckResources.get(i);
                 String[] resourceCard = new String[4];
@@ -164,7 +165,7 @@ public class Deck {
                 }
 
                 cardGoldDeck.add(new CardGold(resources, resPrimary, points, resNeeded, cha, resChallenge));
-            }*/
+            }
 
             JSONArray deckInitial = (JSONArray)card.get("CardInitial");
             for(int i = 0; i<deckInitial.size(); i++){
@@ -197,7 +198,7 @@ public class Deck {
 
             }
 
-            /*JSONArray deckObjective = (JSONArray)card.get("CardObjective");
+            JSONArray deckObjective = (JSONArray)card.get("CardObjective");
             int j = 2;
             for(int i = 0; i< deckObjective.size()/j; i++) {
                 JSONObject cardObjective = (JSONObject) deckObjective.get(i);
@@ -221,16 +222,16 @@ public class Deck {
 
                 String pointsCard = (String) cardObjective.get("points");
                 String positionType = (String) cardObjective.get("positionType");
-                resourcePosition[0] = (String) cardObjective.get("resourceNeededOne");
-                resourcePosition[1] = (String) cardObjective.get("resourceNeededTwo");
-                resourcePosition[2] = (String) cardObjective.get("resourceNeededThree");
+                resourcePosition[0] = (String) cardObjective.get("resourcePrimaryOne");
+                resourcePosition[1] = (String) cardObjective.get("resourcePrimaryTwo");
+                resourcePosition[2] = (String) cardObjective.get("resourcePrimaryThree");
 
                 int points = Integer.parseInt(pointsCard);
-                //PositionType posType = PositionType.valueOf(positionType);
+                GeneralPositionType posType = GeneralPositionType.valueOf(positionType);
                 StringToResourcePrimaryType(resourcePosition, resPosition);
 
-                //cardObjectiveDeck.add(new CardObjective(posType, points, resPosition));
-            }*/
+                cardObjectiveDeck.add(new CardObjective(posType, points, resPosition));
+            }
         } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
         }
