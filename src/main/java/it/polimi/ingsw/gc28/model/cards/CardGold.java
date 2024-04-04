@@ -21,11 +21,11 @@ public class CardGold extends CardResource {
 
 
     public CardGold(ResourceType[] resourceCard, ResourcePrimaryType resourcePrimary, int pointsPerPlay,
-                    ResourcePrimaryType[] resourceNeeded, Optional<ChallengeType> challenge, ResourceSpecialType resourceChallenge){
+                    ResourcePrimaryType[] resourceNeeded, ChallengeType challenge, ResourceSpecialType resourceChallenge){
         super(resourceCard, resourcePrimary, pointsPerPlay);
         createPlayabilityMap(resourceNeeded);
-        if(challenge.isPresent()){
-            if(challenge.get().equals(ChallengeType.POINTS_PER_COVER)){
+        if(challenge != null){
+            if(challenge.equals(ChallengeType.POINTS_PER_COVER)){
                 //challege = new costruttore points per cover
             }else{
                 //challenge = new costruttore points per resource
