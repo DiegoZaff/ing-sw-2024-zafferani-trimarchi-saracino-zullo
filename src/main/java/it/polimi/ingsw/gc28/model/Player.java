@@ -1,7 +1,8 @@
 package it.polimi.ingsw.gc28.model;
 
 import it.polimi.ingsw.gc28.model.cards.CardGame;
-import it.polimi.ingsw.gc28.model.errors.PlayerActionError;
+import it.polimi.ingsw.gc28.model.cards.CardObjective;
+import it.polimi.ingsw.gc28.model.errors.types.PlayerActionError;
 import it.polimi.ingsw.gc28.model.objectives.Objective;
 
 import java.util.ArrayList;
@@ -14,7 +15,9 @@ public class Player {
     private int winner = 0;
 
     private final String name;
-    private Objective objective;
+    private Optional<CardObjective> objectiveChosen;
+
+    private final ArrayList<CardObjective> objectivesToChoose;
 
     private ArrayList<CardGame> hand;
 
@@ -22,13 +25,27 @@ public class Player {
 
     private Optional<PlayerActionError> error;
 
-    public Player(String name) {
+    public Player(String name, ArrayList<CardObjective> objectivesToChoose) {
         this.name = name;
+        this.objectivesToChoose = objectivesToChoose;
         this.points = 0;
         this.objectivePoints = 0;
         this.hand = new ArrayList<>();
         this.table = new Table();
         this.error = Optional.empty();
+        this.objectiveChosen = Optional.empty();
+    }
+
+    public ArrayList<CardObjective> getObjectivesToChoose(){
+        return objectivesToChoose;
+    }
+
+    public void setObjectiveChosen(CardObjective card){
+        objectiveChosen = Optional.of(card);
+    }
+
+    public Optional<CardObjective> getObjectiveChosen(){
+        return objectiveChosen;
     }
 
     public void setError(Optional<PlayerActionError> error) {
@@ -105,10 +122,15 @@ public class Player {
     /**
      * This method adds points of the objectives to the player's score at the end of the game
      * @param objectives globalObjectives (newly created list)
+     * @requires objective.isPresent()
      */
     public void calculateObjectivePoints(ArrayList<Objective> objectives){
-        // I can add to this array since we pass a newly created ArrayList.
-        objectives.add(objective);
+        if(objectiveChosen.isPresent()){
+            // I can add to this array since we pass a newly created ArrayList.
+            objectives.add(objectiveChosen.get().getObjective());
+        }else{
+            System.err.println("Objective not set");
+        }
 
         for(Objective obj: objectives){
             objectivePoints += obj.calculatePoints(table.GetMapPositions(),table.getResourceCounters());

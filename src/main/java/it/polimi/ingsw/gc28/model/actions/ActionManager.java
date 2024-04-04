@@ -2,8 +2,11 @@ package it.polimi.ingsw.gc28.model.actions;
 
 import it.polimi.ingsw.gc28.model.Player;
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
+import it.polimi.ingsw.gc28.model.errors.ErrorManager;
 
 import java.util.ArrayList;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * This class manages the playerOfTurn and actionType lifecycle.
@@ -16,6 +19,8 @@ public class ActionManager {
 
     private Player playerOfTurn;
 
+    private final ErrorManager errorManager;
+
     public Player getPlayerOfTurn(){
         return  playerOfTurn;
     }
@@ -26,12 +31,14 @@ public class ActionManager {
         return actionType;
     }
 
+
     /**
      * Initialize first Action.
      * @param players must be of length > 0
      */
-    public ActionManager(ArrayList<Player> players){
+    public ActionManager(ArrayList<Player> players, ErrorManager errorManager){
         this.players = players;
+        this.errorManager = errorManager;
         this.actionType = ActionType.CHOOSE_OBJ;
         playerOfTurn = players.getFirst();
     }
@@ -44,7 +51,27 @@ public class ActionManager {
      * @return true is it is the expected action from the expected player.
      */
     public boolean validatesMove(Player p, ActionType a){
-        return playerOfTurn.equals(p) && a.equals(actionType);
+
+        // when actionType is CHOOSE_OBJ check is different.
+        if(actionType == ActionType.CHOOSE_OBJ ){
+            if (a.equals(ActionType.CHOOSE_OBJ) && p.getObjectiveChosen().isEmpty()){
+                return true;
+            }else{
+                errorManager.fromWrongMove(p, a, this);
+                return false;
+            }
+
+        }
+
+        if(playerOfTurn.equals(p) && a.equals(actionType)){
+            return true;
+        }else{
+            errorManager.fromWrongMove(p, a, this);
+            return false;
+        }
+
+
+
     }
 
     /**
@@ -52,20 +79,21 @@ public class ActionManager {
      * on the current ones.
      */
     public void nextMove(){
-        int indexOfCurr = players.indexOf(playerOfTurn);
         switch (actionType){
             case CHOOSE_OBJ -> {
-                if(indexOfCurr ==  players.size() - 1){
+                int numberOfPlayers = players.size();
+
+                int numbersOfPlayersWithObjective = players.stream().map(Player::getObjectiveChosen)
+                        .filter(Optional::isPresent)
+                        .collect(Collectors.toCollection(ArrayList::new))
+                        .size();
+
+                if(numbersOfPlayersWithObjective == numberOfPlayers){
                     actionType = ActionType.PLAY_INITIAL_CARD;
                 }
-                playerOfTurn = getNextPlayer();
             }
-            case PLAY_INITIAL_CARD -> {
-                actionType = ActionType.PLAY_CARD;
-            }
-            case PLAY_CARD -> {
-                actionType = ActionType.DRAW_CARD;
-            }
+            case PLAY_INITIAL_CARD -> actionType = ActionType.PLAY_CARD;
+            case PLAY_CARD -> actionType = ActionType.DRAW_CARD;
             case DRAW_CARD -> {
                 actionType = ActionType.PLAY_CARD;
                 playerOfTurn = getNextPlayer();

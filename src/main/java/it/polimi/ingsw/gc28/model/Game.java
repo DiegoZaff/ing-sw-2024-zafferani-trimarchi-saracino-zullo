@@ -20,7 +20,7 @@ public class Game {
 
     private final Deck deck;
 
-    private final ArrayList<Player> players;
+    private ArrayList<Player> players;
 
     /**
      * This attribute is null until a player reaches 20 points, counting
@@ -29,34 +29,78 @@ public class Game {
      */
     private Optional<Integer> roundsLeft;
 
-    public Game(ArrayList<String> nicknames) throws IOException, IllegalArgumentException {
+    public Game(ArrayList<String> nicknames) throws IOException, IllegalArgumentException, IllegalStateException {
         if(nicknames == null || nicknames.size() < 2){
             throw new IllegalArgumentException();
         }
         this.deck = new Deck();
-        this.players = nicknames.stream().map(Player::new)
-                .collect(Collectors.toCollection(ArrayList::new));
+
+        this.deck.shuffleAll();
+
+        this.initPlayers(nicknames);
+
         this.errorManager = new ErrorManager(this.players);
-        this.actionManager = new ActionManager(this.players);
+        this.actionManager = new ActionManager(this.players, this.errorManager);
         this.roundsLeft = Optional.empty();
 
-        // ! TODO: initialize globalObjectives
+        this.initGlobalObjectives();
     }
 
     /**
      * This constructor is used only for testing purposes, because a know deck
      * is passed as a parameter.
      */
-    public Game(ArrayList<String> nicknames, Deck deck){
+    public Game(ArrayList<String> nicknames, Deck deck) throws IllegalStateException{
+
         if(nicknames == null || nicknames.size() < 2){
             throw new IllegalArgumentException();
         }
         this.deck = deck;
-        this.players = nicknames.stream().map(Player::new)
-                .collect(Collectors.toCollection(ArrayList::new));
+
+        this.initPlayers(nicknames);
+
         this.errorManager = new ErrorManager(this.players);
-        this.actionManager = new ActionManager(this.players);
+        this.actionManager = new ActionManager(this.players, this.errorManager);
         this.roundsLeft = Optional.empty();
+
+        this.initGlobalObjectives();
+    }
+
+    /**
+     * This method initializes the players array.
+     */
+    private void initPlayers(ArrayList<String> nicknames){
+        this.players = nicknames.stream()
+                .map(nickname -> {
+                    Optional<CardObjective>  obj1 = deck.nextObjective();
+                    Optional<CardObjective> obj2 = deck.nextObjective();
+                    ArrayList<CardObjective> objs = new ArrayList<>();
+                    if(obj1.isPresent() && obj2.isPresent()){
+                        objs.add(obj1.get());
+                        objs.add(obj2.get());
+                    }else{
+                        // I wished streams and lambdas supported checked exceptions :(
+                        System.err.println("not enough objectives");
+                    }
+                    return  new Player(nickname, objs);
+                })
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    /**
+     * This method initializes the global objectives
+     */
+    private void initGlobalObjectives() throws IllegalStateException{
+        Optional<CardObjective> globObj1 = this.deck.nextObjective();
+        Optional<CardObjective> globObj2 = this.deck.nextObjective();
+
+        if(globObj1.isEmpty() || globObj2.isEmpty()){
+            throw new IllegalStateException();
+        }
+
+        this.globalObjectives = new ArrayList<>();
+        this.globalObjectives.add(globObj1.get());
+        this.globalObjectives.add(globObj2.get());
     }
 
 
@@ -113,9 +157,8 @@ public class Game {
         ActionType actionRequested = ActionType.PLAY_CARD;
 
         if(!actionManager.validatesMove(playingPlayer, actionRequested)){
-            errorManager.fromWrongMove(playingPlayer, actionRequested, actionManager);
             return;
-        };
+        }
 
         playingPlayer.playCard(playedCard, isFront, coordinates);
 
@@ -231,5 +274,29 @@ public class Game {
      * @param drawnCard
      */
     private void drawGameCard(Player playingPlayer, CardGame drawnCard){
+    }
+
+
+    /**
+     * This method is called when the user selects a personal objective card.
+     */
+    public void chooseObjective(Player player, CardObjective card){
+        ActionType actionRequested = ActionType.CHOOSE_OBJ;
+
+        if(!actionManager.validatesMove(player, actionRequested)){
+            return;
+        }
+
+        ArrayList<CardObjective> options = player.getObjectivesToChoose();
+
+        //check that player has that card
+        if(options.contains(card)){
+            player.setObjectiveChosen(card);
+        }else{
+            errorManager.fromInvalidObjectiveChoice(player);
+            return;
+        }
+
+        actionManager.nextMove();
     }
 }

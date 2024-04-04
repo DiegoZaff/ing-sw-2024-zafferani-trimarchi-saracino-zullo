@@ -1,4 +1,4 @@
-package it.polimi.ingsw.gc28.model.errors;
+package it.polimi.ingsw.gc28.model.errors.types;
 
 public abstract class PlayerActionError {
     private final String error;
