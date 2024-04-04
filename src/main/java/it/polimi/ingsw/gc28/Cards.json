@@ -1000,7 +1000,7 @@
       "vertexFrontFour": "noResource",
       "centralResourceOne": "FOX",
       "centralResourceTwo": "BUTTERFLY",
-      "centralResourceThree": "LEAF"
+      "centralResourceThree": null
     }
   ],
   "CardObjective" : [

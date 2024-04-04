@@ -21,7 +21,6 @@ public class CardResource extends CardGame {
         super(resourceCard);
         this.pointsPerPlay = pointsPerPlay;
         this.resource = new ResourcePrimary(resource);
-
     }
 
     @Override
