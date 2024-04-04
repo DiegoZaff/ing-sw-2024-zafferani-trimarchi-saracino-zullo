@@ -266,13 +266,17 @@ public class Deck {
         if (deck.size() != permutation.size()){
             throw new IllegalArgumentException();
         }
-        T substitute = deck.getFirst();
-        int nextIndex = 0;
-        for(int i = 0; i < 40; i++){
-            nextIndex = permutation.get(nextIndex);
-            T tmp = deck.get(nextIndex);
-            deck.set(nextIndex, substitute);
-            substitute = tmp;
+
+        ArrayList<T> newDeck = new ArrayList<>(deck);
+
+        for(int i = 0; i < deck.size(); i++){
+            int nextIndex = permutation.get(i);
+            newDeck.set(nextIndex, deck.get(i));
+        }
+
+        for (int i = 0; i < deck.size(); i++) {
+            int nextIndex = permutation.get(i);
+            deck.set(nextIndex, newDeck.get(i));
         }
     }
 

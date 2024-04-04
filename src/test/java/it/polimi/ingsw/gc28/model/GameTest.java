@@ -43,7 +43,7 @@ public class GameTest {
         FileReader reader = new FileReader(path);
 
         try {
-            Object obj = jsonParser.parse(new FileReader("your_json_file.json"));
+            Object obj = jsonParser.parse(reader);
 
             JSONObject jsonObject = (JSONObject) obj;
 
@@ -69,6 +69,8 @@ public class GameTest {
                     deckCardObjectivesPermutationArray);
 
             JSONArray moves = (JSONArray) jsonObject.get("moves");
+
+            this.moveList = new ArrayList<>();
 
             for (Object move : moves) {
                 JSONObject moveObj = (JSONObject) move;
