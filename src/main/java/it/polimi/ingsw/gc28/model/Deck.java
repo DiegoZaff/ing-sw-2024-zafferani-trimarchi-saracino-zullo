@@ -29,10 +29,9 @@ public class Deck {
     /**
      * This method shuffles each type of deck randomly.
      */
-    public void shuffle(ArrayList<Card> card){
-
+    public <T extends Card> void shuffle(ArrayList<T > card){
         Random random = new Random();
-        Card tmp;
+        T tmp;
         int j;
         for(int i=card.size()-1; i>0; i--){
             j= random.nextInt(card.size()+1);
@@ -41,6 +40,13 @@ public class Deck {
             card.set(j, tmp);
         }
     };
+
+    public void shuffleAll(){
+       shuffle(this.cardResourceDeck);
+       shuffle((this.cardGoldDeck));
+       shuffle(this.cardObjectiveDeck);
+       shuffle(this.cardInitialDeck);
+    }
 
     /**
      * This method is responsible for drawing the card.
