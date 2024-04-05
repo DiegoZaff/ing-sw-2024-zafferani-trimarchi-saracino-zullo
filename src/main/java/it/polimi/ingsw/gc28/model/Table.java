@@ -109,7 +109,7 @@ public class Table {
 
     private Optional<Cell> getNWCell (Coordinate coordinate) {
         Coordinate x = new Coordinate(coordinate.getX() - 1, coordinate.getY() + 1);
-        return Optional.ofNullable(getCell(coordinate));
+        return Optional.ofNullable(getCell(x));
     }
 
     public boolean CellNWPresent(Coordinate coordinate){
@@ -126,7 +126,7 @@ public class Table {
 
     private Optional<Cell> getNECell (Coordinate coordinate) {
         Coordinate x = new Coordinate(coordinate.getX() + 1, coordinate.getY() + 1);
-        return Optional.ofNullable(getCell(coordinate));
+        return Optional.ofNullable(getCell(x));
     }
 
     public boolean CellNEPresent(Coordinate coordinate){
@@ -144,7 +144,7 @@ public class Table {
 
     private Optional<Cell> getSECell (Coordinate coordinate) {
         Coordinate x = new Coordinate(coordinate.getX() + 1, coordinate.getY() - 1);
-        return Optional.ofNullable(getCell(coordinate));
+        return Optional.ofNullable(getCell(x));
     }
 
     public boolean CellSEPresent(Coordinate coordinate){
@@ -161,7 +161,7 @@ public class Table {
 
     private Optional<Cell> getSWCell (Coordinate coordinate) {
         Coordinate x = new Coordinate(coordinate.getX() - 1, coordinate.getY() - 1);
-        return Optional.ofNullable(getCell(coordinate));
+        return Optional.ofNullable(getCell(x));
     }
 
     public boolean CellSWPresent(Coordinate coordinate){
