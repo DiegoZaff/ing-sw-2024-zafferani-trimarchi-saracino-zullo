@@ -112,6 +112,10 @@ public class Table {
         return Optional.ofNullable(getCell(coordinate));
     }
 
+    public boolean CellNWPresent(Coordinate coordinate){
+        return this.getNWCell(coordinate).isPresent();
+    }
+
     private Optional<Resource> getNWCoveredResource(Coordinate coordinate){
         if (this.getNWCell(coordinate).isPresent()){
             return this.getNWCell(coordinate).get().getSEResource();
@@ -124,6 +128,11 @@ public class Table {
         Coordinate x = new Coordinate(coordinate.getX() + 1, coordinate.getY() + 1);
         return Optional.ofNullable(getCell(coordinate));
     }
+
+    public boolean CellNEPresent(Coordinate coordinate){
+        return this.getNECell(coordinate).isPresent();
+    }
+
 
     private Optional<Resource> getNECoveredResource(Coordinate coordinate){
         if (this.getNECell(coordinate).isPresent()){
@@ -138,6 +147,10 @@ public class Table {
         return Optional.ofNullable(getCell(coordinate));
     }
 
+    public boolean CellSEPresent(Coordinate coordinate){
+        return this.getSECell(coordinate).isPresent();
+    }
+
     private Optional<Resource> getSECoveredResource(Coordinate coordinate){
         if (this.getSECell(coordinate).isPresent()){
             return this.getSECell(coordinate).get().getNWResource();
@@ -149,6 +162,10 @@ public class Table {
     private Optional<Cell> getSWCell (Coordinate coordinate) {
         Coordinate x = new Coordinate(coordinate.getX() - 1, coordinate.getY() - 1);
         return Optional.ofNullable(getCell(coordinate));
+    }
+
+    public boolean CellSWPresent(Coordinate coordinate){
+        return this.getSWCell(coordinate).isPresent();
     }
 
     private Optional<Resource> getSWCoveredResource(Coordinate coordinate){

@@ -3,6 +3,8 @@ package it.polimi.ingsw.gc28.model.cards;
 import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.model.Table;
 import it.polimi.ingsw.gc28.model.challenge.Challenge;
+import it.polimi.ingsw.gc28.model.challenge.PositionChallenge;
+import it.polimi.ingsw.gc28.model.challenge.ResourceChallenge;
 import it.polimi.ingsw.gc28.model.challenge.utils.ChallengeType;
 import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
 import it.polimi.ingsw.gc28.model.resources.ResourceSpecial;
@@ -30,9 +32,9 @@ public class CardGold extends CardResource {
         createPlayabilityMap(resourceNeeded);
         if(challenge != null){
             if(challenge.equals(ChallengeType.POINTS_PER_COVER)){
-                //challege = new costruttore points per cover
+                this.challenge = new PositionChallenge(challenge);
             }else{
-                //challenge = new costruttore points per resource
+                this.challenge = new ResourceChallenge(challenge, new ResourceSpecial(resourceChallenge));
             }
         }
         //this.resourceChallenge =Optional.of(new ResourceSpecial(resourceChallenge));

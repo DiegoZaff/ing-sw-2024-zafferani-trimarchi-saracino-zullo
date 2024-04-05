@@ -8,22 +8,14 @@ import it.polimi.ingsw.gc28.model.resources.utils.ResourceSpecialType;
 import java.util.Collection;
 import java.util.Optional;
 
-public class Challenge {
-
+public abstract class Challenge {
     public ChallengeType type;
-    private final ResourceSpecialType resourceChallenge;
+    //per ora lo lascio, ma si può eliminare
 
-    public Optional<ResourceSpecialType> getResourceChallenge(){
-        return Optional.ofNullable(resourceChallenge);
-    }
-
-    public Challenge(ChallengeType type, ResourceSpecialType resourceChallenge) {
-        this.resourceChallenge = resourceChallenge;
+    public Challenge(ChallengeType type) {
         this.type=type;
     }
 
-    public int challengePoints (Table table, Coordinate coordinate){
-        return 0;
-    }
+    public abstract int challengePoints (Table table, Coordinate coordinate);
 
 }
