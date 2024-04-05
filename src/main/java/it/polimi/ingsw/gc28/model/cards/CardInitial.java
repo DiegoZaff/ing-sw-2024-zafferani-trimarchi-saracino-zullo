@@ -14,10 +14,9 @@ import java.util.Map;
 import java.util.Optional;
 
 public class CardInitial extends CardGame {
-    private final Resource[] resourcesBack;
-    //private final ResourceType[] resourcesFront;
+
     private final Vertex[] verticesBack;
-    private Map<Resource, Integer> centralResources;
+    private final Map<Resource, Integer> centralResources;
     public CardInitial(ResourceType[] resourcesBack, ResourceType[] resourcesFront, ResourceType[] primaryResources){
         super(resourcesFront);
 
@@ -44,7 +43,6 @@ public class CardInitial extends CardGame {
             }
         }
         this.verticesBack=vertexBack;
-        this.resourcesBack =resBack;
 
         Resource[] resCenter = new Resource[3];
         for (int i=0; i<primaryResources.length; i++) {
@@ -118,21 +116,7 @@ public class CardInitial extends CardGame {
 
     @Override
     public Map<Resource,Integer> getBackCardResource(){
-        Map<Resource,Integer> mapResource = new HashMap<>();
-        int temp;
-        for (Vertex v : verticesBack){
-            if (v.isExists()){
-                if (v.getResource().isPresent()){
-                    if (!mapResource.containsKey(v.getResource().get())){
-                        mapResource.put(v.getResource().get(), 1);
-                    }else {
-                        temp = mapResource.get(v.getResource().get()) +1;
-                        mapResource.replace(v.getResource().get(), temp);
-                    }
-                }
-            }
-        }
-        return mapResource;
+        return getResourceIntegerMap(verticesBack);
     }
 
     @Override

@@ -14,8 +14,8 @@ import java.util.Map;
 import java.util.Optional;
 
 public class CardResource extends CardGame {
-    private ResourcePrimary resource;
-    private int pointsPerPlay;
+    private final ResourcePrimary resource;
+    private final int pointsPerPlay;
 
     public CardResource(ResourceType[] resourceCard, ResourcePrimaryType resource, int pointsPerPlay){
         super(resourceCard);

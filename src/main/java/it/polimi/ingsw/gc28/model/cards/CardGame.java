@@ -9,6 +9,7 @@ import it.polimi.ingsw.gc28.model.resources.ResourceSpecial;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceSpecialType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceType;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +17,6 @@ import java.util.Optional;
 
 public abstract class CardGame extends Card {
     private final Vertex[] verticesFront;
-    private final Resource[] resourcesFront;
 
 
     public CardGame(ResourceType[] resourcesFront){
@@ -60,7 +60,6 @@ public abstract class CardGame extends Card {
             else vertices[i] = new Vertex(false);
         }
         this.verticesFront = vertices;
-        this.resourcesFront = resourceInCard;
     }
 
 
@@ -90,16 +89,17 @@ public abstract class CardGame extends Card {
     public abstract void playBack(Table table, Coordinate playCoordinate);
         // credo si possa implementare gia da qui dato che non c'è differenza di giocabilità dei retri
 
-    public Optional<Resource> getResourceInsideVertex (int value){
-
-        return verticesFront[value].getResource();
-    }
 
     /**
      * this method provides a map that contains the number of resource in the vertex in the front of the card
      * @return  Map<Resource, Integer> Integer: the number of a resource in a card
      */
     public Map<Resource,Integer> getFrontCardResource(){
+        return getResourceIntegerMap(verticesFront);
+    }
+
+    @NotNull
+    protected static Map<Resource, Integer> getResourceIntegerMap(Vertex[] verticesFront) {
         Map<Resource,Integer> mapResource = new HashMap<>();
         int temp;
         for (Vertex v : verticesFront){
