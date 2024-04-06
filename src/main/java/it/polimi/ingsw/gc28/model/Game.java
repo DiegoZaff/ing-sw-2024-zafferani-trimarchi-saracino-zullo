@@ -303,8 +303,7 @@ public class Game {
             }
         }
 
-        // set up attributes for next turn.
-        setupNextMove();
+        actionManager.nextMove();
     }
 
     public void drawGameCard(Player playingPlayer, CardGame CardToDraw){
