@@ -249,6 +249,8 @@ public class GameTest {
                 }
 
                 game.drawGameCard(playingPlayer.get(), cardToDraw.get());
+                // ho lasciato in game anche il metodo con i parametri vecchi se serve per testare game, ma va messo come
+                //secondo parametro qui un boolean
             }
 
             // verify assertions after the move

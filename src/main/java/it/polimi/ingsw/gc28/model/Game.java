@@ -2,8 +2,7 @@ package it.polimi.ingsw.gc28.model;
 
 import it.polimi.ingsw.gc28.model.actions.ActionManager;
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
-import it.polimi.ingsw.gc28.model.cards.CardGame;
-import it.polimi.ingsw.gc28.model.cards.CardObjective;
+import it.polimi.ingsw.gc28.model.cards.*;
 import it.polimi.ingsw.gc28.model.errors.ErrorManager;
 
 import java.io.IOException;
@@ -277,9 +276,39 @@ public class Game {
     /**
      * This method take the card from the top of the deck and add that card to the player's hand
      * @param playingPlayer
-     * @param drawnCard
      */
-    public void drawGameCard(Player playingPlayer, CardGame drawnCard){
+    public void drawGameCard(Player playingPlayer, boolean fromGoldDeck){
+        ActionType actionRequested = ActionType.DRAW_CARD;
+        Optional<CardResource> cardResourceOptional;
+        CardResource cardResource;
+        Optional<CardGold> cardGoldOptional;
+        CardGold cardGold;
+
+        if(!actionManager.validatesMove(playingPlayer, actionRequested)){
+            return;
+        }
+
+        if(fromGoldDeck) {
+            cardGoldOptional = deck.nextGold();
+            if(cardGoldOptional.isPresent()){
+                cardGold = cardGoldOptional.get();
+                playingPlayer.getCard(cardGold);
+            }
+        }
+        else {
+            cardResourceOptional = deck.nextResource();
+            if(cardResourceOptional.isPresent()){
+                cardResource = cardResourceOptional.get();
+                playingPlayer.getCard(cardResource);
+            }
+        }
+
+        // set up attributes for next turn.
+        setupNextMove();
+    }
+
+    public void drawGameCard(Player playingPlayer, CardGame CardToDraw){
+
     }
 
 

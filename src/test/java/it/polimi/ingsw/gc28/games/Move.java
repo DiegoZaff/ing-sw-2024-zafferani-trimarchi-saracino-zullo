@@ -13,6 +13,7 @@ public class Move {
     private final String player;
     private final ActionType action;
     private final Boolean isFront;
+    //private final Boolean fromGoldDeck;
 
     private final CardGame card;
 
@@ -27,6 +28,7 @@ public class Move {
         this.player = player;
         this.action = action;
         this.isFront = isFront;
+        //this.fromGoldDeck = fromGoldDeck;
         this.card = card;
         this.cardObjective = cardObjective;
         this.coord = coord;
@@ -72,4 +74,5 @@ public class Move {
     public ArrayList<GameAssertion> getAssertions() {
         return assertions;
     }
+
 }
