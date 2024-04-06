@@ -12,7 +12,7 @@ import java.util.Optional;
 public class Player {
 
     private int points, objectivePoints;
-    private int winner = 0;
+    private boolean winner = false;
 
     private final String name;
     private CardObjective objectiveChosen;
@@ -63,9 +63,9 @@ public class Player {
         return points;
     }
 
-    public void setWinner(){winner = 1;}
+    public void setWinner(){winner = true;}
 
-    public int getWinner() {return winner;}
+    public boolean isWinner() {return winner;}
 
     public int getObjectivePoints() {return objectivePoints;}
 
@@ -143,6 +143,7 @@ public class Player {
     }
 
 
-
-
+    public String getName() {
+        return name;
+    }
 }

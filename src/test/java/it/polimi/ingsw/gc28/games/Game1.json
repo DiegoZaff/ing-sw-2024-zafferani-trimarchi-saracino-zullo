@@ -7,33 +7,72 @@
   "moves" : [
     {
       "player":  "Luca",
+      "action" : "CHOOSE_OBJ",
+      "cardIndex" : 0
+    },
+    {
+      "player":  "Giovanni",
+      "action" : "CHOOSE_OBJ",
+      "cardIndex" : 2
+    },
+    {
+      "player":  "Claudio",
+      "action" : "CHOOSE_OBJ",
+      "cardIndex" : 4
+    },
+    {
+      "player":  "Amanda",
+      "action" : "CHOOSE_OBJ",
+      "cardIndex" : 6
+    },
+    {
+      "player":  "Luca",
       "action" : "PLAY_INITIAL_CARD",
+      "cardIndex" : 0,
       "isFront" : true,
       "assertions" : [
         {
           "type": "POINTS_OF_PLAYER",
+          "nick": "Luca",
           "value": 0
         }
       ]
     },
     {
+      "player":  "Luca",
+      "action" : "PLAY_CARD",
+      "cardIndex" : 0,
+      "isGold" : false,
+      "isFront" : true,
+      "x" : 1,
+      "y" : 1
+    },
+    {
+      "player":  "Luca",
+      "action" : "DRAW_CARD",
+      "cardIndex" : 8,
+      "isGold" : false
+    },
+    {
       "player":  "Giovanni",
       "action" : "PLAY_INITIAL_CARD",
+      "cardIndex" : 1,
       "isFront" : false,
       "assertions" :[
         {
-          "type" : "NEXT_PLAYER",
-          "value" : "Claudio"
+          "type" : "NEXT_TURN_PLAYER",
+          "value" : "Giovanni"
         }
       ]
     },
     {
       "player":  "Claudio",
       "action" : "PLAY_INITIAL_CARD",
+      "cardIndex" : 2,
       "isFront" : true,
       "assertions" :[
         {
-          "type" : "NEXT_PLAYER",
+          "type" : "NEXT_TURN_PLAYER",
           "value" : "Amanda"
         }
       ]
@@ -41,17 +80,34 @@
     {
       "player":  "Amanda",
       "action" : "PLAY_INITIAL_CARD",
+      "cardIndex" : 3,
       "isFront" : false,
       "assertions" :[
         {
-          "type" : "NEXT_PLAYER",
+          "type" : "NEXT_TURN_PLAYER",
           "value" : "Luca"
         },
         {
           "type": "POINTS_OF_PLAYER",
+          "nick" : "Amanda",
           "value": 0
         }
       ]
+    },
+    {
+      "player":  "Amanda",
+      "action" : "PLAY_CARD",
+      "cardIndex" : 5,
+      "isGold" : false,
+      "isFront" : false,
+      "x" : 1,
+      "y" : 1
+    },
+    {
+      "player":  "Amanda",
+      "action" : "DRAW_CARD",
+      "cardIndex" : 10,
+      "isGold" : false
     }
   ]
 }

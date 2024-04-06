@@ -22,6 +22,10 @@ public class Game {
 
     private ArrayList<Player> players;
 
+    public ArrayList<Player> getPlayers(){
+        return players;
+    }
+
     /**
      * This attribute is null until a player reaches 20 points, counting
      * the number of rounds left to play. (it could be less if the deck finishes
@@ -230,7 +234,7 @@ public class Game {
 
         for (Player player : players)
         {
-            if (player.getWinner() == 1)
+            if (player.isWinner())
             {
                 //print hai vinto
             }
@@ -275,7 +279,7 @@ public class Game {
      * @param playingPlayer
      * @param drawnCard
      */
-    private void drawGameCard(Player playingPlayer, CardGame drawnCard){
+    public void drawGameCard(Player playingPlayer, CardGame drawnCard){
     }
 
 
@@ -300,5 +304,28 @@ public class Game {
         }
 
         actionManager.nextMove();
+    }
+
+    /**
+     * this method is used to inform clients whose turn is it.
+     */
+    public Player playerToPlay(){
+        return actionManager.getPlayerOfTurn();
+    }
+
+    /**
+     * this method is used to inform clients the expected action form the player of turn.
+     */
+    public ActionType actionExpected(){
+        return actionManager.getActionType();
+    }
+
+
+    /**
+     * Returns array of winners. If array is empty, then the game is still on going.
+     * If there's more than one winner, then the game ended in a draw.
+     */
+    public ArrayList<Player> getWinners(){
+        return players.stream().filter(Player::isWinner).collect(Collectors.toCollection(ArrayList::new));
     }
 }
