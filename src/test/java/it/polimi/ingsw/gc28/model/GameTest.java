@@ -191,7 +191,7 @@ public class GameTest {
                 moveList.add(moveObject);
             }
 
-            this.game = new Game(playersList, this.deck);
+            this.game = new Game(4, this.deck);
 
         } catch (Exception e) {
             fail("Error while reading Game " + i + ":\n" + e.getMessage());

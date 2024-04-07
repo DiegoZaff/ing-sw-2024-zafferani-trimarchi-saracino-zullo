@@ -69,4 +69,17 @@ public class DeckTest {
             }
         }
     }
+
+    /**
+     * This method tests that shuffleALl doesn't throw errors
+     */
+    @Test
+    public void shuffleAllDecks(){
+        try{
+            deck.shuffleAll();
+            assertTrue(true, "Shuffle completed");
+        }catch (Exception e){
+            fail("Error: " + e.getMessage());
+        }
+    }
 }

@@ -41,9 +41,6 @@ public class Game {
     }
 
     public Game(int nPlayers) throws IOException, IllegalArgumentException, IllegalStateException {
-//        if(nicknames == null || nicknames.size() < 2){
-//            throw new IllegalArgumentException();
-//        }
         this.nPlayers = nPlayers;
 
         this.deck = new Deck();
@@ -51,8 +48,6 @@ public class Game {
         this.deck.shuffleAll();
 
         this.players = new ArrayList<>();
-
-//        this.initPlayers(nicknames);
 
         this.errorManager = new ErrorManager(this.players);
         this.actionManager = new ActionManager(this.players, this.errorManager);
