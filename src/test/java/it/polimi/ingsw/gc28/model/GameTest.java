@@ -3,7 +3,7 @@ package it.polimi.ingsw.gc28.model;
 import java.io.FileReader;
 
 import it.polimi.ingsw.gc28.games.assertions.GameAssertion;
-import it.polimi.ingsw.gc28.games.Move;
+import it.polimi.ingsw.gc28.games.moves.Move;
 import it.polimi.ingsw.gc28.games.TestingDeck;
 import it.polimi.ingsw.gc28.games.assertions.NextPlayerTurnGameAssertion;
 import it.polimi.ingsw.gc28.games.assertions.PointsPlayerGameAssertion;
@@ -17,7 +17,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Optional;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -100,6 +99,7 @@ public class GameTest {
                 CardGame card = null;
                 Coordinate coord = null;
                 Boolean isFront = null;
+                Boolean fromGoldDeck = null;
 
                 if(action.equals(ActionType.PLAY_INITIAL_CARD)){
                     Object indexObj = moveObj.get("cardIndex");
@@ -135,14 +135,19 @@ public class GameTest {
                     cardObj = deckCopy.deckCardObjective.get(index);
                 }else if(action.equals(ActionType.DRAW_CARD)){
                     Object indexObj = moveObj.get("cardIndex");
-                    int index = ((Long) indexObj).intValue();
-                    boolean isGold = (boolean) moveObj.get("isGold");
+                    if(indexObj != null){
+                        int index = ((Long) indexObj).intValue();
+                        boolean isGold = (boolean) moveObj.get("isGold");
 
-                    if(isGold){
-                        card = deckCopy.deckCardGold.get(index);
+                        if(isGold){
+                            card = deckCopy.deckCardGold.get(index);
+                        }else{
+                            card = deckCopy.deckCardResource.get(index);
+                        }
                     }else{
-                        card = deckCopy.deckCardResource.get(index);
+                        fromGoldDeck = (boolean) moveObj.get("fromGoldDeck");
                     }
+
                 }
 
                 ArrayList<GameAssertion> gameAssertions = new ArrayList<>();
@@ -182,14 +187,14 @@ public class GameTest {
                     }
                 }
 
-                Move moveObject = new Move(player, action, isFront, card, cardObj, coord, gameAssertions);
+                Move moveObject =  Move.createMove(player, action, isFront, card, cardObj, coord, fromGoldDeck, gameAssertions);
                 moveList.add(moveObject);
             }
 
             this.game = new Game(playersList, this.deck);
 
         } catch (Exception e) {
-            fail("Error while reading Game " + i);
+            fail("Error while reading Game " + i + ":\n" + e.getMessage());
         }
 
     }
@@ -209,56 +214,14 @@ public class GameTest {
         }
 
         for(Move move: moveList){
-            Optional<Player> playingPlayer = game.getPlayers().stream().filter(p -> p.getName().equals(move.getPlayer())).findFirst();
-            if(playingPlayer.isEmpty()){
-                fail("Error initialization of Game: Non existent player");
-            }
-            if(move.getAction() == ActionType.PLAY_INITIAL_CARD){
-                Optional<CardGame> cardToPlay = move.getCard();
-                Optional<Boolean> isFront = move.isFront();
-                if(cardToPlay.isEmpty() || isFront.isEmpty()){
-                    fail("Error initialization of Game");
-                }
-
-                game.playGameCard(playingPlayer.get(), cardToPlay.get(), isFront.get(), new Coordinate(0,0) );
-
-            }else  if(move.getAction() == ActionType.PLAY_CARD){
-                Optional<CardGame> cardToPlay = move.getCard();
-                Optional<Coordinate> coord = move.getCoord();
-                Optional<Boolean> isFront = move.isFront();
-
-                if(cardToPlay.isEmpty() || coord.isEmpty() || isFront.isEmpty()){
-                    fail("Error initialization of Game");
-                }
-                game.playGameCard(playingPlayer.get(), cardToPlay.get(), isFront.get(), coord.get());
-
-            }else if (move.getAction() == ActionType.CHOOSE_OBJ){
-                Optional<CardObjective> cardObj = move.getCardObjective();
-
-                if(cardObj.isEmpty()){
-                    fail("Error initialization of Game");
-                }
-
-                game.chooseObjective(playingPlayer.get(), cardObj.get());
-                // do something
-            }else if(move.getAction() == ActionType.DRAW_CARD){
-                Optional<CardGame> cardToDraw = move.getCard();
-
-                if(cardToDraw.isEmpty()){
-                    fail("Error initialization of Game");
-                }
-
-                game.drawGameCard(playingPlayer.get(), cardToDraw.get());
-                // ho lasciato in game anche il metodo con i parametri vecchi se serve per testare game, ma va messo come
-                //secondo parametro qui un boolean
-            }
+            move.play(game);
 
             // verify assertions after the move
-            for (GameAssertion ass : move.getAssertions()){
-                if(ass.verifyAssertion(game)){
-                   assertTrue(true, "Game assertion: " + ass);
+            for (GameAssertion gameAssertion : move.getAssertions()){
+                if(gameAssertion.verifyAssertion(game)){
+                   assertTrue(true, "Game assertion: " + gameAssertion);
                 }else{
-                    fail("Game assertion: " + ass);
+                    fail("Game assertion: " + gameAssertion);
                 }
             }
         }

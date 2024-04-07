@@ -66,6 +66,20 @@
       ]
     },
     {
+      "player":  "Giovanni",
+      "action" : "PLAY_CARD",
+      "cardIndex" : 7,
+      "isGold" : false,
+      "isFront" : true,
+      "x" : 1,
+      "y" : 1
+    },
+    {
+      "player":  "Giovanni",
+      "action" : "DRAW_CARD",
+      "fromGoldDeck" : true
+    },
+    {
       "player":  "Claudio",
       "action" : "PLAY_INITIAL_CARD",
       "cardIndex" : 2,
