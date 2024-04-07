@@ -111,6 +111,23 @@ public class Game {
         this.initFaceUpGoldCards();
         this.initFaceUpResourceCards();
 
+        // initialize players hands
+        for(Player player : players) {
+            Optional<CardResource> cResource1 = deck.nextResource();
+            Optional<CardResource> cResource2 = deck.nextResource();
+            Optional<CardGold> cGold = deck.nextGold();
+
+            if(cResource1.isEmpty() || cResource2.isEmpty() || cGold.isEmpty()){
+                throw new IllegalStateException();
+            }
+            CardResource cardResource1 = cResource1.get();
+            CardResource cardResource2 = cResource2.get();
+            CardGold cardGold = cGold.get();
+
+            player.getCard(cardResource1);
+            player.getCard(cardResource2);
+            player.getCard(cardGold);
+        }
     }
 
     /**
