@@ -3,6 +3,7 @@ module it.polimi.ingsw.gc28 {
     requires javafx.fxml;
     requires json.simple;
     requires org.jetbrains.annotations;
+    requires java.rmi;
 
 
     opens it.polimi.ingsw.gc28 to javafx.fxml;

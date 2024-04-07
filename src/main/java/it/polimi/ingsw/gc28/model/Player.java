@@ -17,7 +17,7 @@ public class Player {
     private final String name;
     private CardObjective objectiveChosen;
 
-    private final ArrayList<CardObjective> objectivesToChoose;
+    private  ArrayList<CardObjective> objectivesToChoose;
 
     private ArrayList<CardGame> hand;
 
@@ -25,9 +25,8 @@ public class Player {
 
     private PlayerActionError error;
 
-    public Player(String name, ArrayList<CardObjective> objectivesToChoose) {
+    public Player(String name) {
         this.name = name;
-        this.objectivesToChoose = objectivesToChoose;
         this.points = 0;
         this.objectivePoints = 0;
         this.hand = new ArrayList<>();
@@ -37,6 +36,10 @@ public class Player {
 
     public ArrayList<CardObjective> getObjectivesToChoose(){
         return objectivesToChoose;
+    }
+
+    public void setObjectivesToChoose(ArrayList<CardObjective> objectivesToChoose) {
+        this.objectivesToChoose = objectivesToChoose;
     }
 
     public void setObjectiveChosen(CardObjective card){
@@ -76,6 +79,12 @@ public class Player {
         hand.add(drawnCard);
     }
     public Table getTable () {return table;}
+
+    public String getName() {
+        return name;
+    }
+
+
 
 
     /**
@@ -143,7 +152,5 @@ public class Player {
     }
 
 
-    public String getName() {
-        return name;
-    }
+
 }

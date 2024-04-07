@@ -34,66 +34,88 @@ public class Game {
      */
     private Integer roundsLeft;
 
+    private int nPlayers;
+
     public Optional<Integer> getRoundsLeft(){
         return Optional.ofNullable(roundsLeft);
     }
 
-    public Game(ArrayList<String> nicknames) throws IOException, IllegalArgumentException, IllegalStateException {
-        if(nicknames == null || nicknames.size() < 2){
-            throw new IllegalArgumentException();
-        }
+    public Game(int nPlayers) throws IOException, IllegalArgumentException, IllegalStateException {
+//        if(nicknames == null || nicknames.size() < 2){
+//            throw new IllegalArgumentException();
+//        }
+        this.nPlayers = nPlayers;
+
         this.deck = new Deck();
 
         this.deck.shuffleAll();
 
-        this.initPlayers(nicknames);
+        this.players = new ArrayList<>();
+
+//        this.initPlayers(nicknames);
 
         this.errorManager = new ErrorManager(this.players);
         this.actionManager = new ActionManager(this.players, this.errorManager);
 
-        this.initGlobalObjectives();
-        this.initFaceUpResourceCards();
-        this.initFaceUpGoldCards();
     }
+
+
 
     /**
      * This constructor is used only for testing purposes, because a know deck
      * is passed as a parameter.
      */
-    public Game(ArrayList<String> nicknames, Deck deck) throws IllegalStateException{
+    public Game(int nPlayers, Deck deck) throws IllegalStateException{
+        this.nPlayers = nPlayers;
 
-        if(nicknames == null || nicknames.size() < 2){
-            throw new IllegalArgumentException();
-        }
         this.deck = deck;
 
-        this.initPlayers(nicknames);
+        this.players = new ArrayList<>();
 
         this.errorManager = new ErrorManager(this.players);
         this.actionManager = new ActionManager(this.players, this.errorManager);
-
-        this.initGlobalObjectives();
     }
 
-    /**
-     * This method initializes the players array.
-     */
-    private void initPlayers(ArrayList<String> nicknames){
-        this.players = nicknames.stream()
-                .map(nickname -> {
-                    Optional<CardObjective>  obj1 = deck.nextObjective();
-                    Optional<CardObjective> obj2 = deck.nextObjective();
-                    ArrayList<CardObjective> objs = new ArrayList<>();
-                    if(obj1.isPresent() && obj2.isPresent()){
-                        objs.add(obj1.get());
-                        objs.add(obj2.get());
-                    }else{
-                        // I wished streams and lambdas supported checked exceptions :(
-                        System.err.println("not enough objectives");
-                    }
-                    return  new Player(nickname, objs);
-                })
-                .collect(Collectors.toCollection(ArrayList::new));
+
+    public void addPlayerToGame(String name){
+        if(players.stream().map(Player::getName).anyMatch(pName -> pName.equals(name))){
+            return;
+        }
+        players.add(new Player(name));
+
+        checkStartGame();
+    }
+
+    private void checkStartGame(){
+        if(players.size() == nPlayers){
+            gameStart();
+        }
+    }
+
+    private void gameStart() throws IllegalStateException {
+        // initialize personal objectives
+        for(Player player : players){
+            Optional<CardObjective>  obj1 = deck.nextObjective();
+            Optional<CardObjective> obj2 = deck.nextObjective();
+
+            if(obj1.isEmpty() || obj2.isEmpty()){
+                throw new IllegalStateException();
+            }
+
+            ArrayList<CardObjective> objectives = new ArrayList<>();
+            objectives.add(obj1.get());
+            objectives.add(obj2.get());
+
+            player.setObjectivesToChoose(objectives);
+        }
+
+        // initialize global objectives
+        this.initGlobalObjectives();
+
+        //initialize visible cards
+        this.initFaceUpGoldCards();
+        this.initFaceUpResourceCards();
+
     }
 
     /**
