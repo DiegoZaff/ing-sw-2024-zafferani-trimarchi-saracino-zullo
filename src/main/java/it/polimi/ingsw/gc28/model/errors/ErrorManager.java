@@ -21,7 +21,6 @@ public class ErrorManager {
      * Manages errors resulting from playing the wrong move or being the wrong player to move.
      */
     public void fromWrongMove(Player player, ActionType action, ActionManager actionManager){
-        Player expectedPlayer = actionManager.getPlayerOfTurn();
         ActionType expectedAction = actionManager.getActionType();
 
         // one or the other.
@@ -32,7 +31,10 @@ public class ErrorManager {
                 player.setError(new AlreadyChoseObjectiveError());
             }
         }
-        if(player != expectedPlayer){
+
+        Optional<Player> expectedPlayer = actionManager.getPlayerOfTurn();
+
+        if(expectedPlayer.isPresent() && player != expectedPlayer.get()){
             player.setError(new NotYourTurnError());
         }else if(expectedAction != action){
             player.setError(new UnexpectedMoveError());

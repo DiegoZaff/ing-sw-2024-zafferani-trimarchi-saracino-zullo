@@ -35,7 +35,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
 
             if(commandsList.size() < 2){
                 System.err.println("Give me a valid command plz.");
-                return;
+                continue;
             }
 
             String action = commandsList.getFirst();

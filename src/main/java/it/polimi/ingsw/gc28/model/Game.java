@@ -169,13 +169,18 @@ public class Game {
      */
     private void checkEndGame() {
 
-        Player playerOfTurn = actionManager.getPlayerOfTurn();
+        Optional<Player> playerOfTurn = actionManager.getPlayerOfTurn();
 
-        boolean has20points = playerOfTurn.getPoints() >= 20;
+        if(playerOfTurn.isEmpty()){
+            // still in the phase of choosing objectives
+            return;
+        }
+
+        boolean has20points = playerOfTurn.get().getPoints() >= 20;
 
         if(has20points){
             // index of the player who has just played a card.
-            int indexOfPlayerOfTurn = players.indexOf(playerOfTurn);
+            int indexOfPlayerOfTurn = players.indexOf(playerOfTurn.get());
 
             // same number of plays + 1 additional round each
 
@@ -403,7 +408,7 @@ public class Game {
     /**
      * this method is used to inform clients whose turn is it.
      */
-    public Player playerToPlay(){
+    public Optional<Player>  playerToPlay(){
         return actionManager.getPlayerOfTurn();
     }
 

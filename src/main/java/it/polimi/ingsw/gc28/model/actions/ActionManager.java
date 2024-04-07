@@ -21,8 +21,8 @@ public class ActionManager {
 
     private final ErrorManager errorManager;
 
-    public Player getPlayerOfTurn(){
-        return  playerOfTurn;
+    public Optional<Player> getPlayerOfTurn(){
+        return Optional.ofNullable(playerOfTurn);
     }
 
     private ActionType actionType;
@@ -40,7 +40,6 @@ public class ActionManager {
         this.players = players;
         this.errorManager = errorManager;
         this.actionType = ActionType.CHOOSE_OBJ;
-        playerOfTurn = players.getFirst();
     }
 
 
@@ -90,6 +89,7 @@ public class ActionManager {
 
                 if(numbersOfPlayersWithObjective == numberOfPlayers){
                     actionType = ActionType.PLAY_INITIAL_CARD;
+                    initFirstPlayer();
                 }
             }
             case PLAY_INITIAL_CARD -> actionType = ActionType.PLAY_CARD;
@@ -117,5 +117,9 @@ public class ActionManager {
     public void gameFinished(){
         actionType = ActionType.GAME_ENDED;
         playerOfTurn = getNextPlayer();
+    }
+
+    public void initFirstPlayer(){
+        this.playerOfTurn = players.getFirst();
     }
 }
