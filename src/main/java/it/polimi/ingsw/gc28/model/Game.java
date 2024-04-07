@@ -16,6 +16,8 @@ public class Game {
 
     private final ActionManager actionManager;
     private ArrayList<CardObjective> globalObjectives;
+    private ArrayList<CardResource> faceUpResourceCards;
+    private ArrayList<CardGold> faceUpGoldCards;
 
     private final Deck deck;
 
@@ -50,6 +52,8 @@ public class Game {
         this.actionManager = new ActionManager(this.players, this.errorManager);
 
         this.initGlobalObjectives();
+        this.initFaceUpResourceCards();
+        this.initFaceUpGoldCards();
     }
 
     /**
@@ -106,6 +110,38 @@ public class Game {
         this.globalObjectives = new ArrayList<>();
         this.globalObjectives.add(globObj1.get());
         this.globalObjectives.add(globObj2.get());
+    }
+
+    /**
+     * This method initialized the two face-up resource cards
+     */
+    private void initFaceUpResourceCards() throws IllegalStateException{
+        Optional<CardResource> faceUpResource1 = this.deck.nextResource();
+        Optional<CardResource> faceUpResource2 = this.deck.nextResource();
+
+        if(faceUpResource1.isEmpty() || faceUpResource2.isEmpty()){
+            throw new IllegalStateException();
+        }
+
+        this.faceUpResourceCards = new ArrayList<>();
+        this.faceUpResourceCards.add(faceUpResource1.get());
+        this.faceUpResourceCards.add(faceUpResource2.get());
+    }
+
+    /**
+     * This method initialized the two face-up gold cards
+     */
+    private void initFaceUpGoldCards() throws IllegalStateException{
+        Optional<CardGold> faceUpGold1 = this.deck.nextGold();
+        Optional<CardGold> faceUpGold2 = this.deck.nextGold();
+
+        if(faceUpGold1.isEmpty() || faceUpGold2.isEmpty()){
+            throw new IllegalStateException();
+        }
+
+        this.faceUpGoldCards = new ArrayList<>();
+        this.faceUpGoldCards.add(faceUpGold1.get());
+        this.faceUpGoldCards.add(faceUpGold2.get());
     }
 
 
@@ -275,7 +311,7 @@ public class Game {
 
     /**
      * This method take the card from the top of the deck and add that card to the player's hand
-     * @param playingPlayer
+     * @param playingPlayer is the current player
      */
     public void drawGameCard(Player playingPlayer, boolean fromGoldDeck){
         ActionType actionRequested = ActionType.DRAW_CARD;
@@ -306,10 +342,23 @@ public class Game {
         actionManager.nextMove();
     }
 
-    public void drawGameCard(Player playingPlayer, CardGame CardToDraw){
+    public void drawGameCard(Player playingPlayer, CardGame cardDrawn){
+        ActionType actionRequested = ActionType.DRAW_CARD;
 
+        if(!actionManager.validatesMove(playingPlayer, actionRequested)){
+            return;
+        }
+
+        if(cardDrawn instanceof CardGold){
+            faceUpGoldCards.remove(cardDrawn);
+            faceUpGoldCards.add(deck.nextGold().get());
+        }
+        else {
+            faceUpResourceCards.remove(cardDrawn);
+            faceUpResourceCards.add(deck.nextResource().get());
+        }
+        playingPlayer.getCard(cardDrawn);
     }
-
 
     /**
      * This method is called when the user selects a personal objective card.
