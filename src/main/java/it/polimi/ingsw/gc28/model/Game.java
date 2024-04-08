@@ -36,6 +36,12 @@ public class Game {
 
     private int nPlayers;
 
+    private boolean hasGameStarted = false;
+
+    public boolean getHasGameStarted(){
+        return this.hasGameStarted;
+    }
+
     public Optional<Integer> getRoundsLeft(){
         return Optional.ofNullable(roundsLeft);
     }
@@ -72,9 +78,13 @@ public class Game {
     }
 
 
-    public void addPlayerToGame(String name){
+    public void addPlayerToGame(String name) throws RuntimeException{
+        if(players.size() >= nPlayers){
+            throw new RuntimeException("Game is full!");
+        }
+
         if(players.stream().map(Player::getName).anyMatch(pName -> pName.equals(name))){
-            return;
+            throw new RuntimeException("Choose another name");
         }
         players.add(new Player(name));
 
@@ -128,6 +138,8 @@ public class Game {
             player.getCard(cardResource2);
             player.getCard(cardGold);
         }
+
+        hasGameStarted = true;
     }
 
     /**

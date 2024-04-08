@@ -1,4 +1,5 @@
 package it.polimi.ingsw.gc28.rmi;
+import java.util.UUID;
 
 import it.polimi.ingsw.gc28.model.Player;
 
@@ -15,8 +16,11 @@ import java.util.Scanner;
 public class RmiClient extends UnicastRemoteObject implements VirtualView {
     final VirtualServer server;
 
+    final String id;
+
     protected RmiClient(VirtualServer server) throws RemoteException {
         this.server = server;
+        this.id = UUID.randomUUID().toString();
     }
 
     private void run() throws RemoteException {
@@ -45,9 +49,14 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
             } else if (action.equals("drawCard")) {
                 //server.draw...
             }else if(action.equals("chooseObj")){
-                //server.choose...
+                try {
+                    int number = Integer.parseInt(commandsList.get(1));
+                    server.chooseObjective(id, number);
+                } catch (NumberFormatException e) {
+                    System.err.println("Error: Invalid integer format");
+                }
             }else if(action.equals("setName")){
-                //server.addPlayer...
+                server.addPlayerToGame(id, commandsList.get(1));
             }
         }
     }
@@ -77,6 +86,17 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
     public void reportError(String details) throws RemoteException {
         // TODO Attenzione! Questo può causare data race con il thread dell'interfaccia o un altro thread
         System.err.print("\n[ERROR] " + details + "\n> ");
+    }
+
+    @Override
+    public void reportMessage(String details) throws RemoteException {
+        // TODO Attenzione! Questo può causare data race con il thread dell'interfaccia o un altro thread
+        System.err.print("\n[INFO] " + details + "\n> ");
+    }
+
+    @Override
+    public String getClientID() throws RemoteException {
+        return id;
     }
 
     public static void main(String[] args) throws RemoteException, NotBoundException {

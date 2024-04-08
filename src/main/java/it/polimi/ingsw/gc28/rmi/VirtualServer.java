@@ -9,16 +9,15 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 public interface VirtualServer extends Remote {
-    public void connect(VirtualView client) throws RemoteException;
+     void connect(VirtualView client) throws RemoteException;
+     void addPlayerToGame(String clientId, String name) throws  RemoteException;
 
-    public void addPlayerToGame(String name) throws  RemoteException;
+     void playGameCard (Player playingPlayer, CardGame playedCard, boolean isFront, Coordinate coordinates ) throws RemoteException;
 
-    public void playGameCard (Player playingPlayer, CardGame playedCard, boolean isFront, Coordinate coordinates ) throws RemoteException;
+     void drawGameCard(Player playingPlayer, boolean fromGoldDeck) throws  RemoteException;
 
-    public void drawGameCard(Player playingPlayer, boolean fromGoldDeck) throws  RemoteException;
+     void drawGameCard(Player playingPlayer, CardGame CardToDraw) throws  RemoteException;
 
-    public void drawGameCard(Player playingPlayer, CardGame CardToDraw) throws  RemoteException;
-
-    public void chooseObjective(Player player, CardObjective card) throws  RemoteException;
+     void chooseObjective(String clientId, int n) throws  RemoteException;
 
 }
