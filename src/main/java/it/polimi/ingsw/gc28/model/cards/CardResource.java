@@ -1,17 +1,17 @@
 package it.polimi.ingsw.gc28.model.cards;
 
-import it.polimi.ingsw.gc28.model.Cell;
-import it.polimi.ingsw.gc28.model.Coordinate;
-import it.polimi.ingsw.gc28.model.Table;
-import it.polimi.ingsw.gc28.model.Vertex;
+import it.polimi.ingsw.gc28.model.*;
 import it.polimi.ingsw.gc28.model.resources.Resource;
 import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceType;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+
+import static java.lang.reflect.Array.get;
 
 public class CardResource extends CardGame {
     private final ResourcePrimary resource;
@@ -73,5 +73,13 @@ public class CardResource extends CardGame {
         return verticesBack;
     }
 
+    public void drawFaceUpCard(ArrayList<CardResource> faceUpResCards, ArrayList<CardGold> faceUpGoldCards, Deck deck, Player player){
+        if(!faceUpResCards.contains(this)){
+            return;
+        }
+        faceUpResCards.remove(this);
+        faceUpResCards.add(deck.nextResource().get());
+        player.getCard(this);
+    }
 }
 

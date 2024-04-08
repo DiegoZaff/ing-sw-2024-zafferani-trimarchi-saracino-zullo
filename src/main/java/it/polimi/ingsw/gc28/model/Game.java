@@ -393,22 +393,19 @@ public class Game {
         actionManager.nextMove();
     }
 
-    public void drawGameCard(Player playingPlayer, CardGame cardDrawn){
+    public void drawGameCard(Player playingPlayer, CardResource cardDrawn, boolean fromGoldVisible){
         ActionType actionRequested = ActionType.DRAW_CARD;
 
         if(!actionManager.validatesMove(playingPlayer, actionRequested)){
             return;
         }
-
-        if(cardDrawn instanceof CardGold){
-            faceUpGoldCards.remove(cardDrawn);
-            faceUpGoldCards.add(deck.nextGold().get());
+        if(fromGoldVisible) {
+            CardGold cardGold = (CardGold) cardDrawn;
+            cardGold.drawFaceUpCard(this.faceUpResourceCards, this.faceUpGoldCards, this.deck, playingPlayer);
         }
         else {
-            faceUpResourceCards.remove(cardDrawn);
-            faceUpResourceCards.add(deck.nextResource().get());
+            cardDrawn.drawFaceUpCard(this.faceUpResourceCards, this.faceUpGoldCards, this.deck, playingPlayer);
         }
-        playingPlayer.getCard(cardDrawn);
     }
 
     /**

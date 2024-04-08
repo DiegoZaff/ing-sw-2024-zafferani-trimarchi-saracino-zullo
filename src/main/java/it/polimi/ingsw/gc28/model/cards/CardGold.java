@@ -1,6 +1,8 @@
 package it.polimi.ingsw.gc28.model.cards;
 
 import it.polimi.ingsw.gc28.model.Coordinate;
+import it.polimi.ingsw.gc28.model.Deck;
+import it.polimi.ingsw.gc28.model.Player;
 import it.polimi.ingsw.gc28.model.Table;
 import it.polimi.ingsw.gc28.model.challenge.Challenge;
 import it.polimi.ingsw.gc28.model.challenge.PositionChallenge;
@@ -12,6 +14,7 @@ import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceSpecialType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceType;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -77,6 +80,15 @@ public class CardGold extends CardResource {
     @Override
     public int getPoints(Table table, Coordinate coordinate){
         return getChallenge().map(value -> value.challengePoints(table, coordinate)).orElseGet(() -> super.getPoints(table, coordinate));
+    }
+    @Override
+    public void drawFaceUpCard(ArrayList<CardResource> faceUpResCards, ArrayList<CardGold> faceUpGoldCards, Deck deck, Player player){
+        if(!faceUpGoldCards.contains(this)){
+            return;
+        }
+        faceUpGoldCards.remove(this);
+        faceUpGoldCards.add(deck.nextGold().get());
+        player.getCard(this);
     }
 
 
