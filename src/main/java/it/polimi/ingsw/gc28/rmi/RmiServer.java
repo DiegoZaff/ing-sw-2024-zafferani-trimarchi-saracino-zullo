@@ -7,6 +7,7 @@ import it.polimi.ingsw.gc28.model.Player;
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.model.cards.CardGame;
 import it.polimi.ingsw.gc28.model.cards.CardObjective;
+import it.polimi.ingsw.gc28.model.cards.CardResource;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -132,7 +133,7 @@ public class RmiServer implements VirtualServer {
     }
 
     @Override
-    public void drawGameCard(Player playingPlayer, CardGame CardToDraw) throws RemoteException {
+    public void drawGameCard(Player playingPlayer, CardResource CardToDraw, boolean fromVisibleGold) throws RemoteException {
 
     }
 

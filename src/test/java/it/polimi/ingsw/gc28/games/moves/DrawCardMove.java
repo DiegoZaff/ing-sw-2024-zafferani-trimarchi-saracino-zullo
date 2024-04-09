@@ -50,7 +50,7 @@ public class DrawCardMove extends Move{
         if(isDrawFromDeck()){
             game.drawGameCard(player.get(), fromGoldDeck);
         }else{
-            game.drawGameCard(player.get(), card);
+            game.drawGameCard(player.get(), fromGoldDeck);
         }
     }
 }

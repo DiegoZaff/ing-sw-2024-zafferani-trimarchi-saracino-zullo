@@ -6,6 +6,7 @@ import it.polimi.ingsw.gc28.model.errors.ErrorManager;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -120,6 +121,8 @@ public class ActionManager {
     }
 
     public void initFirstPlayer(){
-        this.playerOfTurn = players.getFirst();
+        Random rand = new Random();
+        int index = rand.nextInt(players.size());
+        this.playerOfTurn = players.get(index);
     }
 }
