@@ -33,5 +33,5 @@ module it.polimi.ingsw.gc28 {
     exports it.polimi.ingsw.gc28.model.errors.types;
     opens it.polimi.ingsw.gc28.model.errors.types to javafx.fxml;
 
-    opens it.polimi.ingsw.gc28.rmi to java.rmi;
+    opens it.polimi.ingsw.gc28.network.rmi to java.rmi;
 }
