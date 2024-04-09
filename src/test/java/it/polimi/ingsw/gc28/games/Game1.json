@@ -7,6 +7,22 @@
   "moves" : [
     {
       "player":  "Luca",
+      "action" : "JOIN_GAME"
+    },
+    {
+      "player":  "Giovanni",
+      "action" : "JOIN_GAME"
+    },
+    {
+      "player":  "Claudio",
+      "action" : "JOIN_GAME"
+    },
+    {
+      "player":  "Amanda",
+      "action" : "JOIN_GAME"
+    },
+    {
+      "player":  "Luca",
       "action" : "CHOOSE_OBJ",
       "cardIndex" : 0
     },

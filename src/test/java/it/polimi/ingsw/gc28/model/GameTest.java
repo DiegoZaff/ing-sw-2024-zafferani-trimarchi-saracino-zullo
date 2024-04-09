@@ -100,6 +100,8 @@ public class GameTest {
                 Coordinate coord = null;
                 Boolean isFront = null;
                 Boolean fromGoldDeck = null;
+                String name = null;
+
 
                 if(action.equals(ActionType.PLAY_INITIAL_CARD)){
                     Object indexObj = moveObj.get("cardIndex");

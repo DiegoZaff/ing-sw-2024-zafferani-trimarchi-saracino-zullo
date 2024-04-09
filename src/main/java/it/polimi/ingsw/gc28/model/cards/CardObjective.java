@@ -24,7 +24,8 @@ public class CardObjective extends Card {
     public Objective getObjective(){
         return objective;
     }
-    public CardObjective(int points, ResourceType[] resourceNeeded) {
+    public CardObjective(String id,int points, ResourceType[] resourceNeeded) {
+        super(id);
         Resource[] resourceCard = new Resource[3];
 
         for (int i=0; i<resourceNeeded.length; i++) {
@@ -60,7 +61,8 @@ public class CardObjective extends Card {
         }
     }
 
-    public CardObjective(GeneralPositionType positionType, int points, ResourcePrimaryType[] resourcePosition){
+    public CardObjective(String id,GeneralPositionType positionType, int points, ResourcePrimaryType[] resourcePosition){
+        super(id);
         ResourcePrimary[] resourceCard = new ResourcePrimary[3];
         PositionType posType = null;
 
@@ -93,4 +95,6 @@ public class CardObjective extends Card {
         }
         this.objective = new ObjectivePosition(posType, points, resourceCard);
     }
+
+
 }

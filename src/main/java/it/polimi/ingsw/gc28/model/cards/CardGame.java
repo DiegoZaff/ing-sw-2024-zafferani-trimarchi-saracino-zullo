@@ -19,7 +19,8 @@ public abstract class CardGame extends Card {
     private final Vertex[] verticesFront;
 
 
-    public CardGame(ResourceType[] resourcesFront){
+    public CardGame(String id,ResourceType[] resourcesFront){
+        super(id);
 
         Resource[] resourceInCard = new Resource[4];
         Vertex[] vertices = new Vertex[4];

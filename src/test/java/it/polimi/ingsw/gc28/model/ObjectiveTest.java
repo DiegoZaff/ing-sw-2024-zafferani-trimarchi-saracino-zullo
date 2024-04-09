@@ -1,7 +1,6 @@
 package it.polimi.ingsw.gc28.model;
 
-import it.polimi.ingsw.gc28.model.Cell;
-import it.polimi.ingsw.gc28.model.Coordinate;
+
 import it.polimi.ingsw.gc28.model.cards.CardGame;
 import it.polimi.ingsw.gc28.model.cards.CardResource;
 import it.polimi.ingsw.gc28.model.objectives.Objective;
@@ -47,10 +46,10 @@ public class ObjectiveTest {
 
         this.objective = new ObjectivePosition(positionType, 3,  resources);
 
-        CardGame leafCard = new CardResource(new ResourceType[]{ResourceType.FEATHER, ResourceType.FOX, ResourceType.noResource, ResourceType.FOX},
+        CardGame leafCard = new CardResource("UNKNOWN_1",new ResourceType[]{ResourceType.FEATHER, ResourceType.FOX, ResourceType.noResource, ResourceType.FOX},
                 ResourcePrimaryType.LEAF,
                 0);
-        CardGame foxCard = new CardResource(new ResourceType[]{ResourceType.FEATHER, ResourceType.FOX, ResourceType.noResource, ResourceType.FOX},
+        CardGame foxCard = new CardResource("UNKNOWN_2",new ResourceType[]{ResourceType.FEATHER, ResourceType.FOX, ResourceType.noResource, ResourceType.FOX},
                 ResourcePrimaryType.FOX,
                 0);
 

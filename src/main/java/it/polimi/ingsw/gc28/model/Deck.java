@@ -39,7 +39,7 @@ public class Deck {
             card.set(i, card.get(j));
             card.set(j, tmp);
         }
-    };
+    }
 
     public void shuffleAll(){
        shuffle(this.cardResourceDeck);
@@ -58,7 +58,7 @@ public class Deck {
             return Optional.empty();
         }
         return Optional.ofNullable(cardResourceDeck.removeFirst());
-    };
+    }
 
     /**
      * This method is responsible for drawing the card.
@@ -70,7 +70,7 @@ public class Deck {
             return Optional.empty();
         }
         return Optional.ofNullable(cardGoldDeck.removeFirst());
-    };
+    }
 
     /**
      * This method is responsible for drawing the card.
@@ -82,7 +82,7 @@ public class Deck {
             return Optional.empty();
         }
         return Optional.ofNullable(cardObjectiveDeck.removeFirst());
-    };
+    }
 
     /**
      * This method is responsible for drawing the card.
@@ -94,7 +94,7 @@ public class Deck {
             return Optional.empty();
         }
         return Optional.ofNullable(cardInitialDeck.removeFirst());
-    };
+    }
 
     /**
       This constructor generates a deck of cards
@@ -126,7 +126,9 @@ public class Deck {
                 ResourcePrimaryType resPrimary = ResourcePrimaryType.valueOf(resourcePrimary);
                 int points = Integer.parseInt(pointsPerPlay);
 
-                cardResourceDeck.add(new CardResource(resources, resPrimary, points));
+                String id = (String) cardResource.get("id");
+
+                cardResourceDeck.add(new CardResource(id, resources, resPrimary, points));
             }
 
             JSONArray deckGold = (JSONArray)card.get("CardGold");
@@ -170,7 +172,9 @@ public class Deck {
                     resChallenge = null;
                 }
 
-                cardGoldDeck.add(new CardGold(resources, resPrimary, points, resNeeded, cha, resChallenge));
+                String id = (String) cardGold.get("id");
+
+                cardGoldDeck.add(new CardGold(id, resources, resPrimary, points, resNeeded, cha, resChallenge));
             }
 
             JSONArray deckInitial = (JSONArray)card.get("CardInitial");
@@ -200,7 +204,9 @@ public class Deck {
                 StringToResourceType(resourceFront, resFront);
                 StringToResourceType(resourceCenter, resCenter);
 
-                cardInitialDeck.add(new CardInitial(resBack, resFront, resCenter));
+                String id = (String) cardInitial.get("id");
+
+                cardInitialDeck.add(new CardInitial(id, resBack, resFront, resCenter));
 
             }
 
@@ -219,7 +225,9 @@ public class Deck {
                 int points = Integer.parseInt(pointsCard);
                 StringToResourceType(resourceNeeded, resNeeded);
 
-                cardObjectiveDeck.add(new CardObjective(points, resNeeded));
+                String id = (String) cardObjective.get("id");
+
+                cardObjectiveDeck.add(new CardObjective(id, points, resNeeded));
             }
             for(int i = deckObjective.size()/j; i<deckObjective.size(); i++) {
                 JSONObject cardObjective = (JSONObject) deckObjective.get(i);
@@ -236,12 +244,14 @@ public class Deck {
                 GeneralPositionType posType = GeneralPositionType.valueOf(positionType);
                 StringToResourcePrimaryType(resourcePosition, resPosition);
 
-                cardObjectiveDeck.add(new CardObjective(posType, points, resPosition));
+                String id = (String) cardObjective.get("id");
+
+                cardObjectiveDeck.add(new CardObjective(id, posType, points, resPosition));
             }
         } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
         }
-    };
+    }
 
     /**
      * This method is used for testing purposes to make decks with known ordered cards

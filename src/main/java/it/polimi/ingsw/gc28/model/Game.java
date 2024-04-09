@@ -34,7 +34,7 @@ public class Game {
      */
     private Integer roundsLeft;
 
-    private int nPlayers;
+    private final int nPlayers;
 
     private boolean hasGameStarted = false;
 
@@ -56,7 +56,7 @@ public class Game {
         this.players = new ArrayList<>();
 
         this.errorManager = new ErrorManager(this.players);
-        this.actionManager = new ActionManager(this.players, this.errorManager);
+        this.actionManager = new ActionManager(nPlayers,this.players, this.errorManager);
 
     }
 
@@ -74,7 +74,7 @@ public class Game {
         this.players = new ArrayList<>();
 
         this.errorManager = new ErrorManager(this.players);
-        this.actionManager = new ActionManager(this.players, this.errorManager);
+        this.actionManager = new ActionManager(nPlayers, this.players, this.errorManager);
     }
 
 
@@ -87,6 +87,8 @@ public class Game {
             throw new RuntimeException("Choose another name");
         }
         players.add(new Player(name));
+
+        actionManager.nextMove();
 
         checkStartGame();
     }
@@ -195,6 +197,8 @@ public class Game {
      * This method is responsible for checking if the player who has just
      * placed a card has reached 20 points and in that case it sets up a counter
      * which counts the rounds left.
+     *
+     * TODO : change this to reflect random starting player.
      */
     private void checkEndGame() {
 

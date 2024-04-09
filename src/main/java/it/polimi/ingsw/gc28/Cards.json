@@ -1,6 +1,7 @@
 {
   "CardResource": [
     {
+      "id" : "RES_1",
       "vertexOne": "LEAF",
       "vertexTwo": "LEAF",
       "vertexThree": "noResource",
@@ -9,6 +10,7 @@
       "pointsPerPlay": "0"
     },
     {
+      "id" : "RES_2",
       "vertexOne": null,
       "vertexTwo": "LEAF",
       "vertexThree": "LEAF",
@@ -17,6 +19,7 @@
       "pointsPerPlay": "0"
     },
     {
+      "id" : "RES_3",
       "vertexOne": "noResource",
       "vertexTwo": null,
       "vertexThree": "LEAF",
@@ -25,6 +28,7 @@
       "pointsPerPlay": "0"
     },
     {
+      "id" : "RES_4",
       "vertexOne": "LEAF",
       "vertexTwo": "noResource",
       "vertexThree": null,
@@ -33,6 +37,7 @@
       "pointsPerPlay": "0"
     },
     {
+      "id" : "RES_5",
       "vertexOne": "noResource",
       "vertexTwo": "noResource",
       "vertexThree": "LEAF",
@@ -41,6 +46,7 @@
       "pointsPerPlay": "1"
     },
     {
+      "id" : "RES_6",
       "vertexOne": null,
       "vertexTwo": "LEAF",
       "vertexThree": "noResource",
@@ -49,6 +55,7 @@
       "pointsPerPlay": "1"
     },
     {
+      "id" : "RES_7",
       "vertexOne": "noResource",
       "vertexTwo": "noResource",
       "vertexThree": null,
@@ -57,6 +64,7 @@
       "pointsPerPlay": "1"
     },
     {
+      "id" : "RES_8",
       "vertexOne": null,
       "vertexTwo": "BUTTERFLY",
       "vertexThree": "LEAF",
@@ -65,6 +73,7 @@
       "pointsPerPlay": "0"
     },
     {
+      "id" : "RES_9",
       "vertexOne": "PARCHMENT",
       "vertexTwo": null,
       "vertexThree": "FOX",
@@ -73,6 +82,7 @@
       "pointsPerPlay": "0"
     },
     {
+      "id" : "RES_10",
       "vertexOne": "MUSHROOM",
       "vertexTwo": "LEAF",
       "vertexThree": "POTION",
@@ -81,6 +91,7 @@
       "pointsPerPlay": "0"
     },
     {
+      "id" : "RES_11",
       "vertexOne": "MUSHROOM",
       "vertexTwo": "MUSHROOM",
       "vertexThree": "noResource",
@@ -89,6 +100,7 @@
       "pointsPerPlay": "0"
     },
     {
+      "id" : "RES_12",
       "vertexOne": null,
       "vertexTwo": "MUSHROOM",
       "vertexThree": "MUSHROOM",
@@ -97,6 +109,7 @@
       "pointsPerPlay": "0"
     },
     {
+      "id" : "RES_13",
       "vertexOne": "noResource",
       "vertexTwo": null,
       "vertexThree": "MUSHROOM",
@@ -105,6 +118,7 @@
       "pointsPerPlay": "0"
     },
     {
+      "id" : "RES_14",
       "vertexOne": "MUSHROOM",
       "vertexTwo": "noResource",
       "vertexThree": null,
@@ -113,6 +127,7 @@
       "pointsPerPlay": "0"
     },
     {
+      "id" : "RES_15",
       "vertexOne": "MUSHROOM",
       "vertexTwo": null,
       "vertexThree": "noResource",
@@ -121,6 +136,7 @@
       "pointsPerPlay": "1"
     },
     {
+      "id" : "RES_16",
       "vertexOne": "noResource",
       "vertexTwo": "MUSHROOM",
       "vertexThree": null,
@@ -129,6 +145,7 @@
       "pointsPerPlay": "1"
     },
     {
+      "id" : "RES_17",
       "vertexOne": null,
       "vertexTwo": "noResource",
       "vertexThree": "noResource",
@@ -137,6 +154,7 @@
       "pointsPerPlay": "1"
     },
     {
+      "id" : "RES_18",
       "vertexOne": null,
       "vertexTwo": "FEATHER",
       "vertexThree": "MUSHROOM",
@@ -145,6 +163,7 @@
       "pointsPerPlay": "0"
     },
     {
+      "id" : "RES_19",
       "vertexOne": "MUSHROOM",
       "vertexTwo": "BUTTERFLY",
       "vertexThree": null,
@@ -153,6 +172,7 @@
       "pointsPerPlay": "0"
     },
     {
+      "id" : "RES_20",
       "vertexOne": "POTION",
       "vertexTwo": "MUSHROOM",
       "vertexThree": "FOX",
@@ -161,6 +181,7 @@
       "pointsPerPlay": "0"
     },
     {
+      "id" : "RES_21",
       "vertexOne": "BUTTERFLY",
       "vertexTwo": null,
       "vertexThree": "noResource",
@@ -169,6 +190,7 @@
       "pointsPerPlay": "0"
     },
     {
+      "id" : "RES_22",
       "vertexOne": "BUTTERFLY",
       "vertexTwo": "BUTTERFLY",
       "vertexThree": null,
@@ -177,6 +199,7 @@
       "pointsPerPlay": "0"
     },
     {
+      "id" : "RES_23",
       "vertexOne": "noResource",
       "vertexTwo": "BUTTERFLY",
       "vertexThree": "BUTTERFLY",
@@ -185,6 +208,7 @@
       "pointsPerPlay": "0"
     },
     {
+      "id" : "RES_24",
       "vertexOne": null,
       "vertexTwo": "noResource",
       "vertexThree": "BUTTERFLY",
@@ -193,6 +217,7 @@
       "pointsPerPlay": "0"
     },
     {
+      "id" : "RES_25",
       "vertexOne": "BUTTERFLY",
       "vertexTwo": null,
       "vertexThree": "noResource",
@@ -201,6 +226,7 @@
       "pointsPerPlay": "1"
     },
     {
+      "id" : "RES_26",
       "vertexOne": null,
       "vertexTwo": "BUTTERFLY",
       "vertexThree": "noResource",
@@ -209,6 +235,7 @@
       "pointsPerPlay": "1"
     },
     {
+      "id" : "RES_27",
       "vertexOne": "noResource",
       "vertexTwo": "noResource",
       "vertexThree": "BUTTERFLY",
@@ -217,6 +244,7 @@
       "pointsPerPlay": "1"
     },
     {
+      "id" : "RES_28",
       "vertexOne": null,
       "vertexTwo": "FEATHER",
       "vertexThree": "BUTTERFLY",
@@ -225,6 +253,7 @@
       "pointsPerPlay": "0"
     },
     {
+      "id" : "RES_29",
       "vertexOne": "PARCHMENT",
       "vertexTwo": "BUTTERFLY",
       "vertexThree": "MUSHROOM",
@@ -233,6 +262,7 @@
       "pointsPerPlay": "0"
     },
     {
+      "id" : "RES_30",
       "vertexOne": "BUTTERFLY",
       "vertexTwo": "LEAF",
       "vertexThree": null,
@@ -241,6 +271,7 @@
       "pointsPerPlay": "0"
     },
     {
+      "id" : "RES_31",
       "vertexOne": "FOX",
       "vertexTwo": null,
       "vertexThree": "noResource",
@@ -249,6 +280,7 @@
       "pointsPerPlay": "0"
     },
     {
+      "id" : "RES_32",
       "vertexOne": "FOX",
       "vertexTwo": "FOX",
       "vertexThree": null,
@@ -257,6 +289,7 @@
       "pointsPerPlay": "0"
     },
     {
+      "id" : "RES_33",
       "vertexOne": "noResource",
       "vertexTwo": "FOX",
       "vertexThree": "FOX",
@@ -265,6 +298,7 @@
       "pointsPerPlay": "0"
     },
     {
+      "id" : "RES_34",
       "vertexOne": null,
       "vertexTwo": "noResource",
       "vertexThree": "FOX",
@@ -273,6 +307,7 @@
       "pointsPerPlay": "0"
     },
     {
+      "id" : "RES_35",
       "vertexOne": "noResource",
       "vertexTwo": null,
       "vertexThree": "FOX",
@@ -281,6 +316,7 @@
       "pointsPerPlay": "1"
     },
     {
+      "id" : "RES_36",
       "vertexOne": "noResource",
       "vertexTwo": "FOX",
       "vertexThree": null,
@@ -289,6 +325,7 @@
       "pointsPerPlay": "1"
     },
     {
+      "id" : "RES_37",
       "vertexOne": null,
       "vertexTwo": "noResource",
       "vertexThree": "noResource",
@@ -297,6 +334,7 @@
       "pointsPerPlay": "1"
     },
     {
+      "id" : "RES_38",
       "vertexOne": "FEATHER",
       "vertexTwo": null,
       "vertexThree": "MUSHROOM",
@@ -305,6 +343,7 @@
       "pointsPerPlay": "0"
     },
     {
+      "id" : "RES_39",
       "vertexOne": "LEAF",
       "vertexTwo": "FOX",
       "vertexThree": "PARCHMENT",
@@ -313,6 +352,7 @@
       "pointsPerPlay": "0"
     },
     {
+      "id" : "RES_40",
       "vertexOne": null,
       "vertexTwo": "BUTTERFLY",
       "vertexThree": "FOX",
@@ -323,6 +363,7 @@
   ],
   "CardGold" : [
     {
+      "id" : "GOLD_1",
       "vertexOne": "noResource",
       "vertexTwo": "noResource",
       "vertexThree": null,
@@ -338,6 +379,7 @@
       "resourceChallenge" : null
     },
     {
+      "id" : "GOLD_2",
       "vertexOne": "noResource",
       "vertexTwo": null,
       "vertexThree": null,
@@ -353,6 +395,7 @@
       "resourceChallenge" : null
     },
     {
+      "id" : "GOLD_3",
       "vertexOne": "PARCHMENT",
       "vertexTwo": "noResource",
       "vertexThree": null,
@@ -368,6 +411,7 @@
       "resourceChallenge" : null
     },
     {
+      "id" : "GOLD_4",
       "vertexOne": null,
       "vertexTwo": "POTION",
       "vertexThree": "noResource",
@@ -383,6 +427,7 @@
       "resourceChallenge" : null
     },
     {
+      "id" : "GOLD_5",
       "vertexOne": null,
       "vertexTwo": "noResource",
       "vertexThree": "noResource",
@@ -398,6 +443,7 @@
       "resourceChallenge" : null
     },
     {
+      "id" : "GOLD_6",
       "vertexOne": "noResource",
       "vertexTwo": null,
       "vertexThree": "noResource",
@@ -413,6 +459,7 @@
       "resourceChallenge" : null
     },
     {
+      "id" : "GOLD_7",
       "vertexOne": "noResource",
       "vertexTwo": "noResource",
       "vertexThree": null,
@@ -428,6 +475,7 @@
       "resourceChallenge" : null
     },
     {
+      "id" : "GOLD_8",
       "vertexOne": "noResource",
       "vertexTwo": null,
       "vertexThree": "noResource",
@@ -443,6 +491,7 @@
       "resourceChallenge" : "POTION"
     },
     {
+      "id" : "GOLD_9",
       "vertexOne": "FEATHER",
       "vertexTwo": "noResource",
       "vertexThree": null,
@@ -458,6 +507,7 @@
       "resourceChallenge" : "FEATHER"
     },
     {
+      "id" : "GOLD_10",
       "vertexOne": "noResource",
       "vertexTwo": "PARCHMENT",
       "vertexThree": "noResource",
@@ -473,6 +523,7 @@
       "resourceChallenge" : "PARCHMENT"
     },
     {
+      "id" : "GOLD_11",
       "vertexOne": null,
       "vertexTwo": "noResource",
       "vertexThree": "noResource",
@@ -488,6 +539,7 @@
       "resourceChallenge" : null
     },
     {
+      "id" : "GOLD_12",
       "vertexOne": null,
       "vertexTwo": "noResource",
       "vertexThree": "FEATHER",
@@ -503,6 +555,7 @@
       "resourceChallenge" : null
     },
     {
+      "id" : "GOLD_13",
       "vertexOne": "noResource",
       "vertexTwo": null,
       "vertexThree": null,
@@ -518,6 +571,7 @@
       "resourceChallenge" : null
     },
     {
+      "id" : "GOLD_14",
       "vertexOne": "noResource",
       "vertexTwo": "POTION",
       "vertexThree": null,
@@ -533,6 +587,7 @@
       "resourceChallenge" : null
     },
     {
+      "id" : "GOLD_15",
       "vertexOne": null,
       "vertexTwo": "noResource",
       "vertexThree": "noResource",
@@ -548,6 +603,7 @@
       "resourceChallenge" : null
     },
     {
+      "id" : "GOLD_16",
       "vertexOne": "noResource",
       "vertexTwo": null,
       "vertexThree": "noResource",
@@ -563,6 +619,7 @@
       "resourceChallenge" : null
     },
     {
+      "id" : "GOLD_17",
       "vertexOne": "noResource",
       "vertexTwo": "noResource",
       "vertexThree": "noResource",
@@ -578,6 +635,7 @@
       "resourceChallenge" : null
     },
     {
+      "id" : "GOLD_18",
       "vertexOne": "POTION",
       "vertexTwo": "noResource",
       "vertexThree": null,
@@ -593,6 +651,7 @@
       "resourceChallenge" : "POTION"
     },
     {
+      "id" : "GOLD_19",
       "vertexOne": "noResource",
       "vertexTwo": null,
       "vertexThree": "noResource",
@@ -608,6 +667,7 @@
       "resourceChallenge" : "FEATHER"
     },
     {
+      "id" : "GOLD_20",
       "vertexOne": null,
       "vertexTwo": "noResource",
       "vertexThree": "PARCHMENT",
@@ -623,6 +683,7 @@
       "resourceChallenge" : "PARCHMENT"
     },
     {
+      "id" : "GOLD_21",
       "vertexOne": "noResource",
       "vertexTwo": null,
       "vertexThree": null,
@@ -638,6 +699,7 @@
       "resourceChallenge" : null
     },
     {
+      "id" : "GOLD_22",
       "vertexOne": "FEATHER",
       "vertexTwo": "noResource",
       "vertexThree": null,
@@ -653,6 +715,7 @@
       "resourceChallenge" : null
     },
     {
+      "id" : "GOLD_23",
       "vertexOne": null,
       "vertexTwo": "PARCHMENT",
       "vertexThree": "noResource",
@@ -668,6 +731,7 @@
       "resourceChallenge" : null
     },
     {
+      "id" : "GOLD_24",
       "vertexOne": "noResource",
       "vertexTwo": null,
       "vertexThree": null,
@@ -683,6 +747,7 @@
       "resourceChallenge" : null
     },
     {
+      "id" : "GOLD_25",
       "vertexOne": "noResource",
       "vertexTwo": null,
       "vertexThree": "noResource",
@@ -698,6 +763,7 @@
       "resourceChallenge" : null
     },
     {
+      "id" : "GOLD_26",
       "vertexOne": "noResource",
       "vertexTwo": "noResource",
       "vertexThree": null,
@@ -713,6 +779,7 @@
       "resourceChallenge" : null
     },
     {
+      "id" : "GOLD_27",
       "vertexOne": "noResource",
       "vertexTwo": "noResource",
       "vertexThree": "noResource",
@@ -728,6 +795,7 @@
       "resourceChallenge" : null
     },
     {
+      "id" : "GOLD_28",
       "vertexOne": "noResource",
       "vertexTwo": "POTION",
       "vertexThree": "noResource",
@@ -743,6 +811,7 @@
       "resourceChallenge" : "POTION"
     },
     {
+      "id" : "GOLD_29",
       "vertexOne": null,
       "vertexTwo": "noResource",
       "vertexThree": "FEATHER",
@@ -758,6 +827,7 @@
       "resourceChallenge" : "FEATHER"
     },
     {
+      "id" : "GOLD_30",
       "vertexOne": "PARCHMENT",
       "vertexTwo": "noResource",
       "vertexThree": null,
@@ -773,6 +843,7 @@
       "resourceChallenge" : "PARCHMENT"
     },
     {
+      "id" : "GOLD_31",
       "vertexOne": "noResource",
       "vertexTwo": "noResource",
       "vertexThree": null,
@@ -788,6 +859,7 @@
       "resourceChallenge" : null
     },
     {
+      "id" : "GOLD_32",
       "vertexOne": null,
       "vertexTwo": null,
       "vertexThree": "noResource",
@@ -803,6 +875,7 @@
       "resourceChallenge" : null
     },
     {
+      "id" : "GOLD_33",
       "vertexOne": "noResource",
       "vertexTwo": "PARCHMENT",
       "vertexThree": null,
@@ -818,6 +891,7 @@
       "resourceChallenge" : null
     },
     {
+      "id" : "GOLD_34",
       "vertexOne": "POTION",
       "vertexTwo": null,
       "vertexThree": null,
@@ -833,6 +907,7 @@
       "resourceChallenge" : null
     },
     {
+      "id" : "GOLD_35",
       "vertexOne": "noResource",
       "vertexTwo": null,
       "vertexThree": "noResource",
@@ -848,6 +923,7 @@
       "resourceChallenge" : null
     },
     {
+      "id" : "GOLD_36",
       "vertexOne": "noResource",
       "vertexTwo": "noResource",
       "vertexThree": null,
@@ -863,6 +939,7 @@
       "resourceChallenge" : null
     },
     {
+      "id" : "GOLD_37",
       "vertexOne": "noResource",
       "vertexTwo": "noResource",
       "vertexThree": "noResource",
@@ -878,6 +955,7 @@
       "resourceChallenge" : null
     },
     {
+      "id" : "GOLD_38",
       "vertexOne": null,
       "vertexTwo": "noResource",
       "vertexThree": "POTION",
@@ -893,6 +971,7 @@
       "resourceChallenge" : "POTION"
     },
     {
+      "id" : "GOLD_39",
       "vertexOne": "noResource",
       "vertexTwo": "FEATHER",
       "vertexThree": "noResource",
@@ -908,6 +987,7 @@
       "resourceChallenge" : "FEATHER"
     },
     {
+      "id" : "GOLD_40",
       "vertexOne": "noResource",
       "vertexTwo": null,
       "vertexThree": "noResource",
@@ -925,6 +1005,7 @@
   ],
   "CardInitial" : [
     {
+      "id" : "INI_1",
       "vertexBackOne": "MUSHROOM",
       "vertexBackTwo": "FOX",
       "vertexBackThree": "BUTTERFLY",
@@ -938,6 +1019,7 @@
       "centralResourceThree": "MUSHROOM"
     },
     {
+      "id" : "INI_2",
       "vertexBackOne": "MUSHROOM",
       "vertexBackTwo": "LEAF",
       "vertexBackThree": "FOX",
@@ -951,6 +1033,7 @@
       "centralResourceThree": null
     },
     {
+      "id" : "INI_3",
       "vertexBackOne": "BUTTERFLY",
       "vertexBackTwo": "MUSHROOM",
       "vertexBackThree": "FOX",
@@ -964,6 +1047,7 @@
       "centralResourceThree": "LEAF"
     },
     {
+      "id" : "INI_4",
       "vertexBackOne": "LEAF",
       "vertexBackTwo": "FOX",
       "vertexBackThree": "BUTTERFLY",
@@ -977,6 +1061,7 @@
       "centralResourceThree": null
     },
     {
+      "id" : "INI_5",
       "vertexBackOne": "BUTTERFLY",
       "vertexBackTwo": "FOX",
       "vertexBackThree": "LEAF",
@@ -990,6 +1075,7 @@
       "centralResourceThree": null
     },
     {
+      "id" : "INI_6",
       "vertexBackOne": "LEAF",
       "vertexBackTwo": "BUTTERFLY",
       "vertexBackThree": "MUSHROOM",
@@ -1005,54 +1091,63 @@
   ],
   "CardObjective" : [
     {
+      "id" : "OBJ_1",
       "points": "2",
       "resourceNeededOne" : "LEAF",
       "resourceNeededTwo" : "LEAF",
       "resourceNeededThree" : "LEAF"
     },
     {
+      "id" : "OBJ_2",
       "points": "2",
       "resourceNeededOne" : "BUTTERFLY",
       "resourceNeededTwo" : "BUTTERFLY",
       "resourceNeededThree" : "BUTTERFLY"
     },
     {
+      "id" : "OBJ_3",
       "points": "2",
       "resourceNeededOne" : "FOX",
       "resourceNeededTwo" : "FOX",
       "resourceNeededThree" : "FOX"
     },
     {
+      "id" : "OBJ_4",
       "points": "2",
       "resourceNeededOne" : "MUSHROOM",
       "resourceNeededTwo" : "MUSHROOM",
       "resourceNeededThree" : "MUSHROOM"
     },
     {
+      "id" : "OBJ_5",
       "points": "2",
       "resourceNeededOne" : "PARCHMENT",
       "resourceNeededTwo" : "PARCHMENT",
       "resourceNeededThree" : null
     },
     {
+      "id" : "OBJ_6",
       "points": "2",
       "resourceNeededOne" : "POTION",
       "resourceNeededTwo" : "POTION",
       "resourceNeededThree" : null
     },
     {
+      "id" : "OBJ_7",
       "points": "2",
       "resourceNeededOne" : "FEATHER",
       "resourceNeededTwo" : "FEATHER",
       "resourceNeededThree" : null
     },
     {
+      "id" : "OBJ_8",
       "points": "3",
       "resourceNeededOne" : "PARCHMENT",
       "resourceNeededTwo" : "POTION",
       "resourceNeededThree" : "FEATHER"
     },
     {
+      "id" : "OBJ_9",
       "points": "2",
       "positionType" : "MAIN_DIAGONAL",
       "resourcePrimaryOne" : "LEAF",
@@ -1060,6 +1155,7 @@
       "resourcePrimaryThree" : "LEAF"
     },
     {
+      "id" : "OBJ_10",
       "points": "2",
       "positionType" : "MAIN_DIAGONAL",
       "resourcePrimaryOne" : "BUTTERFLY",
@@ -1067,6 +1163,7 @@
       "resourcePrimaryThree" : "BUTTERFLY"
     },
     {
+      "id" : "OBJ_11",
       "points": "2",
       "positionType" : "SECONDARY_DIAGONAL",
       "resourcePrimaryOne" : "MUSHROOM",
@@ -1074,6 +1171,7 @@
       "resourcePrimaryThree" : "MUSHROOM"
     },
     {
+      "id" : "OBJ_12",
       "points": "2",
       "positionType" : "SECONDARY_DIAGONAL",
       "resourcePrimaryOne" : "FOX",
@@ -1081,6 +1179,7 @@
       "resourcePrimaryThree" : "FOX"
     },
     {
+      "id" : "OBJ_13",
       "points": "3",
       "positionType" : "N_E_STACK",
       "resourcePrimaryOne" : "FOX",
@@ -1088,6 +1187,7 @@
       "resourcePrimaryThree" : "MUSHROOM"
     },
     {
+      "id" : "OBJ_14",
       "points": "3",
       "positionType" : "S_E_STACK",
       "resourcePrimaryOne" : "MUSHROOM",
@@ -1095,6 +1195,7 @@
       "resourcePrimaryThree" : "LEAF"
     },
     {
+      "id" : "OBJ_15",
       "points": "3",
       "positionType" : "S_W_STACK",
       "resourcePrimaryOne" : "BUTTERFLY",
@@ -1102,6 +1203,7 @@
       "resourcePrimaryThree" : "LEAF"
     },
     {
+      "id" : "OBJ_16",
       "points": "3",
       "positionType" : "N_W_STACK",
       "resourcePrimaryOne" : "FOX",

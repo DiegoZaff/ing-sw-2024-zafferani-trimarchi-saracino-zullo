@@ -16,6 +16,8 @@ import java.util.stream.Collectors;
  */
 public class ActionManager {
 
+    final private int nPlayers;
+
     private ArrayList<Player> players;
 
     private Player playerOfTurn;
@@ -37,10 +39,11 @@ public class ActionManager {
      * Initialize first Action.
      * @param players must be of length > 0
      */
-    public ActionManager(ArrayList<Player> players, ErrorManager errorManager){
+    public ActionManager(int nPlayers, ArrayList<Player> players, ErrorManager errorManager){
+        this.nPlayers = nPlayers;
         this.players = players;
         this.errorManager = errorManager;
-        this.actionType = ActionType.CHOOSE_OBJ;
+        this.actionType = ActionType.JOIN_GAME;
     }
 
 
@@ -80,6 +83,11 @@ public class ActionManager {
      */
     public void nextMove(){
         switch (actionType){
+            case JOIN_GAME -> {
+                if(players.size() == nPlayers){
+                    actionType = ActionType.CHOOSE_OBJ;
+                }
+            }
             case CHOOSE_OBJ -> {
                 int numberOfPlayers = players.size();
 
@@ -120,6 +128,9 @@ public class ActionManager {
         playerOfTurn = getNextPlayer();
     }
 
+    /**
+     * TODO : we need to store somewhere who has started as first player
+     */
     public void initFirstPlayer(){
         Random rand = new Random();
         int index = rand.nextInt(players.size());

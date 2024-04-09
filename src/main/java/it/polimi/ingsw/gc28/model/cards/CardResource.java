@@ -11,14 +11,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static java.lang.reflect.Array.get;
 
 public class CardResource extends CardGame {
     private final ResourcePrimary resource;
     private final int pointsPerPlay;
 
-    public CardResource(ResourceType[] resourceCard, ResourcePrimaryType resource, int pointsPerPlay){
-        super(resourceCard);
+    public CardResource(String id, ResourceType[] resourceCard, ResourcePrimaryType resource, int pointsPerPlay){
+        super(id, resourceCard);
         this.pointsPerPlay = pointsPerPlay;
         this.resource = new ResourcePrimary(resource);
     }
