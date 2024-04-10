@@ -103,7 +103,6 @@ public class ActionManager {
 
                 if(numbersOfPlayersWithObjective == numberOfPlayers){
                     actionType = ActionType.PLAY_INITIAL_CARD;
-                    initFirstPlayer();
                 }
             }
             case PLAY_INITIAL_CARD -> actionType = ActionType.PLAY_CARD;
@@ -136,9 +135,14 @@ public class ActionManager {
     /**
      * This method chooses randomly the first player.
      */
-    public void initFirstPlayer(){
-        Random rand = new Random();
-        int index = rand.nextInt(players.size());
+    public void initFirstPlayer(Integer i){
+        int index;
+        if(i != null){
+            index = i;
+        }else{
+            Random rand = new Random();
+            index = rand.nextInt(players.size());
+        }
         this.playerOfTurn = players.get(index);
         this.firstPlayer = players.get(index);
     }

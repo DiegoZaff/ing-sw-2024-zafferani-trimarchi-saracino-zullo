@@ -23,6 +23,12 @@ public class Game {
 
     private ArrayList<Player> players;
 
+    private Integer firstPlayerIndex;
+
+    public Integer getFirstPlayerIndex(){
+        return firstPlayerIndex;
+    }
+
     public ArrayList<Player> getPlayers(){
         return players;
     }
@@ -66,7 +72,9 @@ public class Game {
      * This constructor is used only for testing purposes, because a know deck
      * is passed as a parameter.
      */
-    public Game(int nPlayers, Deck deck) throws IllegalStateException{
+    public Game(int nPlayers, Deck deck, int firstPlayerIndex) throws IllegalStateException{
+        this.firstPlayerIndex = firstPlayerIndex;
+
         this.nPlayers = nPlayers;
 
         this.deck = deck;
@@ -141,7 +149,8 @@ public class Game {
             player.getCard(cardGold);
         }
 
-        actionManager.initFirstPlayer();
+        actionManager.initFirstPlayer(getFirstPlayerIndex());
+
         hasGameStarted = true;
     }
 

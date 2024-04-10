@@ -3,28 +3,90 @@
   "deckCardInitialPermutation" : ["INI_4", "INI_2", "INI_3", "INI_1", "INI_5", "INI_6"],
   "deckCardResourcesPermutation" : ["RES_3", "RES_13", "RES_32", "RES_12", "RES_4", "RES_11", "RES_1", "RES_25", "RES_15", "RES_5", "RES_23", "RES_9", "RES_29", "RES_26", "RES_2", "RES_8", "RES_27", "RES_19", "RES_33", "RES_14", "RES_22", "RES_36", "RES_34", "RES_38", "RES_30", "RES_6", "RES_17", "RES_37", "RES_31", "RES_18", "RES_10", "RES_40", "RES_28", "RES_16", "RES_39", "RES_24", "RES_7", "RES_21", "RES_35", "RES_20"],
   "deckCardObjectivesPermutation" : ["OBJ_10", "OBJ_15", "OBJ_9", "OBJ_13", "OBJ_5", "OBJ_12", "OBJ_16", "OBJ_3", "OBJ_14", "OBJ_2", "OBJ_1", "OBJ_11", "OBJ_7", "OBJ_4", "OBJ_6", "OBJ_8"],
-  "players" : ["Luca", "Giovanni", "Claudio", "Amanda"],
+  "players" : ["Diego, Ale"],
+  "firstPlayer" : 0,
   "moves" : [
     {
-      "player":  "Luca",
-      "action" : "JOIN_GAME"
+      "player":  "Diego",
+      "action" : "JOIN_GAME",
+      "assertions" : [
+        {
+          "type" : "PLAYERS_REGISTERED",
+          "value" : 1
+        }
+      ]
     },
     {
-      "player":  "Giovanni",
-      "action" : "JOIN_GAME"
+      "player":  "Ale",
+      "action" : "JOIN_GAME",
+      "assertions" : [
+        {
+          "type" : "PLAYERS_REGISTERED",
+          "value" : 2
+        },
+        {
+          "type" : "GAME_STARTED"
+        },
+        {
+          "type" : "FIRST_PLAYER",
+          "value" : "Diego"
+        },
+        {
+          "type" : "GLOBAL_OBJ",
+          "card1" : "OBJ_10",
+          "card2" : "OBJ_15"
+        },
+        {
+          "type" : "FACE_UP_CARDS_RES",
+          "card1" : "RES_3",
+          "card2" : "RES_13"
+        },
+        {
+          "type" : "FACE_UP_CARDS_GOLD",
+          "card1" : "GOLD_21",
+          "card2" : "GOLD_34"
+        }
+      ]
+
     },
     {
-      "player":  "Claudio",
-      "action" : "JOIN_GAME"
+      "player":  "Diego",
+      "action" : "PLAY_INITIAL_CARD",
+      "cardId" : "INI_4",
+      "isFront" : false,
+      "assertions" : [
+        {
+          "type": "POINTS_OF_PLAYER",
+          "nick": "Diego",
+          "value": 0
+        },
+        {
+          "type" : "NEXT_TURN_PLAYER",
+          "value" : "Ale"
+        }
+      ]
+    },
+    {
+      "player":  "Ale",
+      "action" : "PLAY_INITIAL_CARD",
+      "cardIndex" : "INI_2",
+      "isFront" : true,
+      "assertions" : [
+        {
+          "type": "POINTS_OF_PLAYER",
+          "nick": "Ale",
+          "value": 0
+        },
+        {
+          "type" : "NEXT_TURN_PLAYER",
+          "value" : "Diego"
+        }
+      ]
     },
     {
       "player":  "Amanda",
-      "action" : "JOIN_GAME"
-    },
-    {
-      "player":  "Luca",
       "action" : "CHOOSE_OBJ",
-      "cardIndex" : 0
+      "cardIndex" : 6
     },
     {
       "player":  "Giovanni",
