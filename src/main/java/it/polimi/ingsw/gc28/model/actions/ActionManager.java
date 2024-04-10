@@ -97,7 +97,7 @@ public class ActionManager {
                 }
             }
             case CHOOSE_OBJ -> {
-                int numberOfPlayers = players.size();
+                /*int numberOfPlayers = players.size();
 
                 int numbersOfPlayersWithObjective = players.stream().map(Player::getObjectiveChosen)
                         .filter(Optional::isPresent)
@@ -106,7 +106,11 @@ public class ActionManager {
 
                 if(numbersOfPlayersWithObjective == numberOfPlayers){
                     actionType = ActionType.PLAY_INITIAL_CARD;
+                }*/
+                if(players.indexOf(playerOfTurn) == (indexFirstPlayer - 1) % players.size()) {
+                    actionType = ActionType.PLAY_CARD;
                 }
+                playerOfTurn = getNextPlayer();
             }
             case PLAY_INITIAL_CARD -> {
                 if(players.indexOf(playerOfTurn) == (indexFirstPlayer - 1) % players.size()) {
