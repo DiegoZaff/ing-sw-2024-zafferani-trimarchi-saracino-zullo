@@ -84,122 +84,160 @@
       ]
     },
     {
-      "player":  "Amanda",
+      "player":  "Diego",
       "action" : "CHOOSE_OBJ",
-      "cardIndex" : 6
-    },
-    {
-      "player":  "Giovanni",
-      "action" : "CHOOSE_OBJ",
-      "cardIndex" : 2
-    },
-    {
-      "player":  "Claudio",
-      "action" : "CHOOSE_OBJ",
-      "cardIndex" : 4
-    },
-    {
-      "player":  "Amanda",
-      "action" : "CHOOSE_OBJ",
-      "cardIndex" : 6
-    },
-    {
-      "player":  "Luca",
-      "action" : "PLAY_INITIAL_CARD",
-      "cardIndex" : 0,
-      "isFront" : true,
+      "cardId" : "OBJ_9",
       "assertions" : [
         {
-          "type": "POINTS_OF_PLAYER",
-          "nick": "Luca",
-          "value": 0
-        }
-      ]
-    },
-    {
-      "player":  "Luca",
-      "action" : "PLAY_CARD",
-      "cardIndex" : 0,
-      "isGold" : false,
-      "isFront" : true,
-      "x" : 1,
-      "y" : 1
-    },
-    {
-      "player":  "Luca",
-      "action" : "DRAW_CARD",
-      "cardIndex" : 8,
-      "isGold" : false
-    },
-    {
-      "player":  "Giovanni",
-      "action" : "PLAY_INITIAL_CARD",
-      "cardIndex" : 1,
-      "isFront" : false,
-      "assertions" :[
-        {
-          "type" : "NEXT_TURN_PLAYER",
-          "value" : "Giovanni"
-        }
-      ]
-    },
-    {
-      "player":  "Giovanni",
-      "action" : "PLAY_CARD",
-      "cardIndex" : 7,
-      "isGold" : false,
-      "isFront" : true,
-      "x" : 1,
-      "y" : 1
-    },
-    {
-      "player":  "Giovanni",
-      "action" : "DRAW_CARD",
-      "fromGoldDeck" : true
-    },
-    {
-      "player":  "Claudio",
-      "action" : "PLAY_INITIAL_CARD",
-      "cardIndex" : 2,
-      "isFront" : true,
-      "assertions" :[
-        {
-          "type" : "NEXT_TURN_PLAYER",
-          "value" : "Amanda"
-        }
-      ]
-    },
-    {
-      "player":  "Amanda",
-      "action" : "PLAY_INITIAL_CARD",
-      "cardIndex" : 3,
-      "isFront" : false,
-      "assertions" :[
-        {
-          "type" : "NEXT_TURN_PLAYER",
-          "value" : "Luca"
+          "type" : "OBJS_TO_CHOOSE",
+          "card1" : "OBJ_9",
+          "card2" : "OBJ_13"
         },
         {
-          "type": "POINTS_OF_PLAYER",
-          "nick" : "Amanda",
-          "value": 0
+          "type" : "OBJ_CHOSEN",
+          "card" : "OBJ_9"
+        },
+        {
+          "type" : "NEXT_TURN_PLAYER",
+          "value" : "Ale"
         }
       ]
     },
     {
-      "player":  "Amanda",
-      "action" : "PLAY_CARD",
-      "cardIndex" : 5,
-      "isGold" : false,
-      "isFront" : false,
-      "x" : 1,
-      "y" : 1
+      "player":  "Ale",
+      "action" : "CHOOSE_OBJ",
+      "cardIndex" : "OBJ_5",
+      "assertions" : [
+        {
+          "type" : "OBJS_TO_CHOOSE",
+          "card1" : "OBJ_5",
+          "card2" : "OBJ_12"
+        },
+        {
+          "type" : "OBJ_CHOSEN",
+          "card" : "OBJ_5"
+        },
+        {
+          "type" : "NEXT_TURN_PLAYER",
+          "value" : "Diego"
+        },
+        {
+          "type" : "HAND_OF_PLAYER",
+          "name" : "Diego",
+          "card1" : "RES_12",
+          "card2" : "RES_32",
+          "card3" : "GOLD_26"
+        },
+        {
+          "type" : "HAND_OF_PLAYER",
+          "name" : "Ale",
+          "card1" : "RES_4",
+          "card2" : "RES_11",
+          "card3" : "GOLD_25"
+        }
+      ]
     },
     {
-      "player":  "Amanda",
+      "player":  "Diego",
+      "action" : "PLAY_CARD",
+      "cardId" : "RES_12",
+      "isFront" : true,
+      "x" : 1,
+      "y" : 1,
+      "assertions" : [
+        {
+          "type" : "HAND_OF_PLAYER",
+          "name" : "Diego",
+          "card1" : "RES_26",
+          "card2" : null,
+          "card3" : "GOLD_32"
+        },
+        {
+          "type" : "CARD_PLAYED_AT",
+          "card" : "RES_12",
+          "x" : 1,
+          "y" : 1
+        },
+        {
+          "type" : "RESOURCES_VISIBLE",
+          "resType" : "MUSHROOM",
+          "number" : 3
+        },
+        {
+          "type" : "RESOURCES_VISIBLE",
+          "resType" : "FOX",
+          "number" : 0
+        },
+        {
+          "type" : "NEXT_EXPECTED_ACTION",
+          "value" : "DRAW_CARD"
+        }
+      ]
+    },
+    {
+      "player":  "Diego",
       "action" : "DRAW_CARD",
-      "cardIndex" : 10,
-      "isGold" : false
+      "cardId" : "GOLD_21",
+      "assertions" : [
+        {
+          "type" : "HAND_OF_PLAYER",
+          "name" : "Diego",
+          "card1" : "GOLD_21",
+          "card2" : "GOLD_26",
+          "card3" : "RES_32"
+        }
+      ]
+    },
+    {
+      "player":  "Ale",
+      "action" : "PLAY_CARD",
+      "cardId" : "RES_11",
+      "isFront" : true,
+      "x" : 1,
+      "y" : -1,
+      "assertions" : [
+        {
+          "type" : "HAND_OF_PLAYER",
+          "name" : "Ale",
+          "card1" : "RES_4",
+          "card2" : null,
+          "card3" : "GOLD_25"
+        },
+        {
+          "type" : "CARD_PLAYED_AT",
+          "card" : "RES_11",
+          "x" : 1,
+          "y" : -1
+        },
+        {
+          "type" : "RESOURCES_VISIBLE",
+          "resType" : "MUSHROOM",
+          "number" : 2
+        },
+        {
+          "type" : "RESOURCES_VISIBLE",
+          "resType" : "BUTTERFLY",
+          "number" : 2
+        },
+        {
+          "type" : "NEXT_EXPECTED_ACTION",
+          "value" : "DRAW_CARD"
+        }
+      ]
+    },
+    {
+      "player":  "Ale",
+      "action" : "DRAW_CARD",
+      "fromGoldDeck" : false,
+      "assertions" : [
+        {
+          "type" : "HAND_OF_PLAYER",
+          "name" : "Ale",
+          "card1" : "GOLD_25",
+          "card2" : "RES_4",
+          "card3" : "RES_1"
+        }
+      ]
     }
   ]
 }
