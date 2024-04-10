@@ -88,7 +88,7 @@ public class CardGold extends CardResource {
         }
         faceUpGoldCards.remove(this);
         faceUpGoldCards.add(deck.nextGold().get());
-        player.getCard(this);
+        player.addCardToHand(this);
     }
 
 
