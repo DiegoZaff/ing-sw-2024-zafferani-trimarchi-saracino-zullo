@@ -7,6 +7,7 @@ import it.polimi.ingsw.gc28.model.Player;
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.model.cards.CardGame;
 import it.polimi.ingsw.gc28.model.cards.CardObjective;
+import it.polimi.ingsw.gc28.model.cards.CardResource;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -52,7 +53,7 @@ public abstract class Move {
             if (fromGoldDeck != null) {
                 return new DrawCardMove(player, gameAssertions, fromGoldDeck);
             }
-            return new DrawCardMove(player, gameAssertions, card);
+            return new DrawCardMove(player, gameAssertions,(CardResource) card);
         } else if (action.equals(ActionType.CHOOSE_OBJ)) {
             return new ChooseObjectiveMove(player, gameAssertions, cardObj);
         } else  {

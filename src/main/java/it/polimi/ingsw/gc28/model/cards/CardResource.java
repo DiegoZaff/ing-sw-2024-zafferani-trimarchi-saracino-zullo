@@ -72,6 +72,8 @@ public class CardResource extends CardGame {
         return verticesBack;
     }
 
+
+
     public void drawFaceUpCard(ArrayList<CardResource> faceUpResCards, ArrayList<CardGold> faceUpGoldCards, Deck deck, Player player){
         if(!faceUpResCards.contains(this)){
             return;

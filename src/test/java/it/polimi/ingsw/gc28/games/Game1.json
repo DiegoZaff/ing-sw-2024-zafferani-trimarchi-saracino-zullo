@@ -1,7 +1,7 @@
 {
   "deckCardResourcesPermutation" : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39],
-  "deckCardGoldPermutation" : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39],
-  "deckCardInitialPermutation" : [0, 1, 2, 3, 4, 5],
+  "deckCardGoldPermutation" : ["GOLD_21", "GOLD_34", "GOLD_26", "GOLD_25", "GOLD_11", "GOLD_3", "GOLD_1", "GOLD_28", "GOLD_9", "GOLD_35", "GOLD_24", "GOLD_18", "GOLD_16", "GOLD_37", "GOLD_36", "GOLD_14", "GOLD_31", "GOLD_2", "GOLD_13", "GOLD_12", "GOLD_7", "GOLD_8", "GOLD_23", "GOLD_10", "GOLD_30", "GOLD_29", "GOLD_17", "GOLD_39", "GOLD_6", "GOLD_5", "GOLD_33", "GOLD_32", "GOLD_38", "GOLD_4", "GOLD_19", "GOLD_40", "GOLD_15", "GOLD_20", "GOLD_27", "GOLD_22"],
+  "deckCardInitialPermutation" : ["INI_4", "INI_2", "INI_3", "INI_1", "INI_5", "INI_6"],
   "deckCardObjectivesPermutation" : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
   "players" : ["Luca", "Giovanni", "Claudio", "Amanda"],
   "moves" : [

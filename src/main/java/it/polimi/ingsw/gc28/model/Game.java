@@ -397,19 +397,15 @@ public class Game {
         actionManager.nextMove();
     }
 
-    public void drawGameCard(Player playingPlayer, CardResource cardDrawn, boolean fromGoldVisible){
+    public void drawGameCard(Player playingPlayer, CardResource cardDrawn){
         ActionType actionRequested = ActionType.DRAW_CARD;
 
         if(!actionManager.validatesMove(playingPlayer, actionRequested)){
             return;
         }
-        if(fromGoldVisible) {
-            CardGold cardGold = (CardGold) cardDrawn;
-            cardGold.drawFaceUpCard(this.faceUpResourceCards, this.faceUpGoldCards, this.deck, playingPlayer);
-        }
-        else {
-            cardDrawn.drawFaceUpCard(this.faceUpResourceCards, this.faceUpGoldCards, this.deck, playingPlayer);
-        }
+
+        cardDrawn.drawFaceUpCard(this.faceUpResourceCards, this.faceUpGoldCards, this.deck, playingPlayer);
+
     }
 
     /**

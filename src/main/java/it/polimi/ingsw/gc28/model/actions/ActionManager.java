@@ -80,6 +80,10 @@ public class ActionManager {
     /**
      * This method calculates the next expected actionType and playerOfTurn based
      * on the current ones.
+     *
+     * 1) join game asincrono
+     * 2) in game start avviene initFIrstPLayer.
+     * 3) PlayInitialCard e ChooseObjective si fanno a turni.
      */
     public void nextMove(){
         switch (actionType){

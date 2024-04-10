@@ -81,7 +81,7 @@ public class CardGold extends CardResource {
     public int getPoints(Table table, Coordinate coordinate){
         return getChallenge().map(value -> value.challengePoints(table, coordinate)).orElseGet(() -> super.getPoints(table, coordinate));
     }
-    @Override
+   @Override
     public void drawFaceUpCard(ArrayList<CardResource> faceUpResCards, ArrayList<CardGold> faceUpGoldCards, Deck deck, Player player){
         if(!faceUpGoldCards.contains(this)){
             return;
