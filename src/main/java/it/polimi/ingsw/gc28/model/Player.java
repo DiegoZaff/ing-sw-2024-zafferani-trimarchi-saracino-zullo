@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc28.model;
 
 import it.polimi.ingsw.gc28.model.cards.CardGame;
 import it.polimi.ingsw.gc28.model.cards.CardObjective;
+import it.polimi.ingsw.gc28.model.cards.CardResource;
 import it.polimi.ingsw.gc28.model.errors.types.PlayerActionError;
 import it.polimi.ingsw.gc28.model.objectives.Objective;
 
@@ -19,7 +20,7 @@ public class Player {
 
     private  ArrayList<CardObjective> objectivesToChoose;
 
-    private ArrayList<CardGame> hand;
+    private ArrayList<CardResource> hand;
 
     private Table table;
 
@@ -58,7 +59,7 @@ public class Player {
         return Optional.ofNullable(error);
     }
 
-    public ArrayList<CardGame> gethand (){
+    public ArrayList<CardResource> gethand (){
         return hand;
     }
 
@@ -75,7 +76,7 @@ public class Player {
     public void removeCard (CardGame cardToBeRemoved) {
         hand.remove(cardToBeRemoved);
     }
-    public void getCard(CardGame drawnCard){
+    public void getCard(CardResource drawnCard){
         hand.add(drawnCard);
     }
     public Table getTable () {return table;}

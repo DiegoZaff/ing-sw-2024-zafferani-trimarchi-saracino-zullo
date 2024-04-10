@@ -3,6 +3,7 @@ import it.polimi.ingsw.gc28.model.Game;
 import it.polimi.ingsw.gc28.model.Player;
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.model.cards.CardObjective;
+import it.polimi.ingsw.gc28.model.cards.CardResource;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -46,6 +47,12 @@ public class GameController {
         }
     }
 
+    public ArrayList<CardResource> getPlayerHand(Player player){
+        synchronized (gameModel) {
+            return player.gethand();
+        }
+    }
+
     public Optional<Player> getPlayerOfName(String name){
         synchronized (gameModel) {
             return gameModel.getPlayers().stream().filter((player -> player.getName().equals(name))).findFirst();
@@ -77,6 +84,31 @@ public class GameController {
             CardObjective chosen = objs.get(n);
 
             gameModel.chooseObjective(player.get(), chosen);
+        }
+    }
+
+    public void drawCardFomDeck(String name, boolean fromGoldDeck) throws IllegalArgumentException{
+        synchronized (gameModel){
+            Optional<Player> player = getPlayerOfName(name);
+
+            if(player.isEmpty()){
+                throw new IllegalArgumentException("This player doesn't belong to this game");
+            }
+
+            ActionType expectedAction = getExpectedAction();
+
+            //probabilmente questa verifica va fatta nel controller della view//
+            if(expectedAction != ActionType.DRAW_CARD){
+                throw new IllegalStateException("You can't draw a card in this moment");
+            }
+
+            ArrayList<CardResource> hand = getPlayerHand(player.get());
+
+            if(hand.size() != 2){
+                throw new IllegalStateException("Bad state in player's hand");
+            }
+
+            gameModel.drawGameCard(player.get(), fromGoldDeck);
         }
     }
 

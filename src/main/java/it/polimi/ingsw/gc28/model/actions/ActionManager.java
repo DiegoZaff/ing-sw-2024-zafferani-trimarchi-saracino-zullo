@@ -21,6 +21,7 @@ public class ActionManager {
     private ArrayList<Player> players;
 
     private Player playerOfTurn;
+    private Player firstPlayer;
 
     private final ErrorManager errorManager;
 
@@ -129,11 +130,16 @@ public class ActionManager {
     }
 
     /**
-     * TODO : we need to store somewhere who has started as first player
+     * This method chooses randomly the first player.
      */
     public void initFirstPlayer(){
         Random rand = new Random();
         int index = rand.nextInt(players.size());
         this.playerOfTurn = players.get(index);
+        this.firstPlayer = players.get(index);
+    }
+
+    public Player getFirstPlayer(){
+        return firstPlayer;
     }
 }

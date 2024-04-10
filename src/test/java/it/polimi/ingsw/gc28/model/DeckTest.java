@@ -21,21 +21,22 @@ public class DeckTest {
      * Initialize deck before each test
      */
     @BeforeEach
-    public void initDeck(){
-        try{
+    public void initDeck() {
+        try {
             deck = new Deck();
             assertTrue(true, "deck initialized correctly");
-        }catch (IOException e){
+        } catch (IOException e) {
             fail("Failed to initialize deck: " + e.getMessage());
-        }catch (Exception e){
+        } catch (Exception e) {
             fail("Exception: " + e.getMessage());
         }
     }
+
     /**
      * This tests that the card is drawn correctly from each deck
      */
     @Test
-    public void drawCards(){
+    public void drawCards() {
 
         Optional<CardObjective> cardObj = deck.nextObjective();
 
@@ -59,12 +60,12 @@ public class DeckTest {
      * Check that all resource cards are drawn correctly and removed from the deck.
      */
     @Test
-    public void drawAllCardsResources(){
-        for(int i = 0; i < 41; i++){
+    public void drawAllCardsResources() {
+        for (int i = 0; i < 41; i++) {
             Optional<CardResource> card = deck.nextResource();
-            if(i < 40){
+            if (i < 40) {
                 assertTrue(card.isPresent(), String.format("%d° card is present", i));
-            }else{
+            } else {
                 assertTrue(card.isEmpty(), "41° card is not present");
             }
         }
@@ -74,12 +75,14 @@ public class DeckTest {
      * This method tests that shuffleALl doesn't throw errors
      */
     @Test
-    public void shuffleAllDecks(){
-        try{
+    public void shuffleAllDecks() {
+        try {
             deck.shuffleAll();
             assertTrue(true, "Shuffle completed");
-        }catch (Exception e){
+        } catch (Exception e) {
             fail("Error: " + e.getMessage());
         }
     }
 }
+
+
