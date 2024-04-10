@@ -141,11 +141,12 @@ public class Game {
             player.getCard(cardGold);
         }
 
+        actionManager.initFirstPlayer();
         hasGameStarted = true;
     }
 
     /**
-     * This method initializes the global objectives
+     * This method initializes the global objectives.
      */
     private void initGlobalObjectives() throws IllegalStateException{
         Optional<CardObjective> globObj1 = this.deck.nextObjective();
@@ -161,7 +162,7 @@ public class Game {
     }
 
     /**
-     * This method initialized the two face-up resource cards
+     * This method initialized the two face-up resource cards.
      */
     private void initFaceUpResourceCards() throws IllegalStateException{
         Optional<CardResource> faceUpResource1 = this.deck.nextResource();
@@ -177,7 +178,7 @@ public class Game {
     }
 
     /**
-     * This method initialized the two face-up gold cards
+     * This method initialized the two face-up gold cards.
      */
     private void initFaceUpGoldCards() throws IllegalStateException{
         Optional<CardGold> faceUpGold1 = this.deck.nextGold();
@@ -197,8 +198,6 @@ public class Game {
      * This method is responsible for checking if the player who has just
      * placed a card has reached 20 points and in that case it sets up a counter
      * which counts the rounds left.
-     *
-     * TODO : change this to reflect random starting player.
      */
     private void checkEndGame() {
 
@@ -214,10 +213,10 @@ public class Game {
         if(has20points){
             // index of the player who has just played a card.
             int indexOfPlayerOfTurn = players.indexOf(playerOfTurn.get());
+            int indexOfFirstPlayer = players.indexOf(actionManager.getFirstPlayer());
 
             // same number of plays + 1 additional round each
-
-            roundsLeft = 2 * players.size() - (indexOfPlayerOfTurn + 1);
+            roundsLeft = 2 * players.size() - ((indexOfPlayerOfTurn-indexOfFirstPlayer) % players.size() + 1);
         }
     }
 
