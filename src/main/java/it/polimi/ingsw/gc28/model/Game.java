@@ -62,7 +62,7 @@ public class Game {
         this.players = new ArrayList<>();
 
         this.errorManager = new ErrorManager(this.players);
-        this.actionManager = new ActionManager(nPlayers,this.players, this.errorManager);
+        this.actionManager = new ActionManager(nPlayers,this.players, this.errorManager, firstPlayerIndex);
 
     }
 
@@ -82,7 +82,7 @@ public class Game {
         this.players = new ArrayList<>();
 
         this.errorManager = new ErrorManager(this.players);
-        this.actionManager = new ActionManager(nPlayers, this.players, this.errorManager);
+        this.actionManager = new ActionManager(nPlayers, this.players, this.errorManager, firstPlayerIndex);
     }
 
 
@@ -108,6 +108,10 @@ public class Game {
     }
 
     private void gameStart() throws IllegalStateException {
+
+        // initialize global objectives
+        this.initGlobalObjectives();
+
         // initialize personal objectives
         for(Player player : players){
             Optional<CardObjective>  obj1 = deck.nextObjective();
@@ -123,9 +127,6 @@ public class Game {
 
             player.setObjectivesToChoose(objectives);
         }
-
-        // initialize global objectives
-        this.initGlobalObjectives();
 
         //initialize visible cards
         this.initFaceUpGoldCards();
@@ -144,12 +145,21 @@ public class Game {
             CardResource cardResource2 = cResource2.get();
             CardGold cardGold = cGold.get();
 
-            player.getCard(cardResource1);
-            player.getCard(cardResource2);
-            player.getCard(cardGold);
+            player.addCardToHand(cardResource1);
+            player.addCardToHand(cardResource2);
+            player.addCardToHand(cardGold);
         }
 
-        actionManager.initFirstPlayer(getFirstPlayerIndex());
+        for(Player player : players){
+            Optional<CardInitial> cInitial1 = deck.nextInitial();
+
+            if(cInitial1.isEmpty()){
+                throw new IllegalStateException();
+            }
+            player.setCardInitial(cInitial1.get());
+        }
+
+        actionManager.initFirstPlayer();
 
         hasGameStarted = true;
     }
@@ -391,14 +401,14 @@ public class Game {
             cardGoldOptional = deck.nextGold();
             if(cardGoldOptional.isPresent()){
                 cardGold = cardGoldOptional.get();
-                playingPlayer.getCard(cardGold);
+                playingPlayer.addCardToHand(cardGold);
             }
         }
         else {
             cardResourceOptional = deck.nextResource();
             if(cardResourceOptional.isPresent()){
                 cardResource = cardResourceOptional.get();
-                playingPlayer.getCard(cardResource);
+                playingPlayer.addCardToHand(cardResource);
             }
         }
 

@@ -80,7 +80,7 @@ public class CardResource extends CardGame {
         }
         faceUpResCards.remove(this);
         faceUpResCards.add(deck.nextResource().get());
-        player.getCard(this);
+        player.addCardToHand(this);
     }
 }
 

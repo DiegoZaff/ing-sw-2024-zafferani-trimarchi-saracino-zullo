@@ -25,6 +25,8 @@ public class ActionManager {
 
     private final ErrorManager errorManager;
 
+    private Integer indexFirstPlayer;
+
     public Optional<Player> getPlayerOfTurn(){
         return Optional.ofNullable(playerOfTurn);
     }
@@ -40,11 +42,12 @@ public class ActionManager {
      * Initialize first Action.
      * @param players must be of length > 0
      */
-    public ActionManager(int nPlayers, ArrayList<Player> players, ErrorManager errorManager){
+    public ActionManager(int nPlayers, ArrayList<Player> players, ErrorManager errorManager, Integer i){
         this.nPlayers = nPlayers;
         this.players = players;
         this.errorManager = errorManager;
         this.actionType = ActionType.JOIN_GAME;
+        this.indexFirstPlayer = i;
     }
 
 
@@ -90,7 +93,7 @@ public class ActionManager {
         switch (actionType){
             case JOIN_GAME -> {
                 if(players.size() == nPlayers){
-                    actionType = ActionType.CHOOSE_OBJ;
+                    actionType = ActionType.PLAY_INITIAL_CARD;
                 }
             }
             case CHOOSE_OBJ -> {
@@ -105,7 +108,12 @@ public class ActionManager {
                     actionType = ActionType.PLAY_INITIAL_CARD;
                 }
             }
-            case PLAY_INITIAL_CARD -> actionType = ActionType.PLAY_CARD;
+            case PLAY_INITIAL_CARD -> {
+                if(players.indexOf(playerOfTurn) == (indexFirstPlayer - 1) % players.size()) {
+                    actionType = ActionType.CHOOSE_OBJ;
+                }
+                playerOfTurn = getNextPlayer();
+            }
             case PLAY_CARD -> actionType = ActionType.DRAW_CARD;
             case DRAW_CARD -> {
                 actionType = ActionType.PLAY_CARD;
@@ -135,16 +143,13 @@ public class ActionManager {
     /**
      * This method chooses randomly the first player.
      */
-    public void initFirstPlayer(Integer i){
-        int index;
-        if(i != null){
-            index = i;
-        }else{
+    public void initFirstPlayer(){
+        if(indexFirstPlayer == null){
             Random rand = new Random();
-            index = rand.nextInt(players.size());
+            indexFirstPlayer = rand.nextInt(players.size());
         }
-        this.playerOfTurn = players.get(index);
-        this.firstPlayer = players.get(index);
+        this.playerOfTurn = players.get(indexFirstPlayer);
+        this.firstPlayer = players.get(indexFirstPlayer);
     }
 
     public Player getFirstPlayer(){
