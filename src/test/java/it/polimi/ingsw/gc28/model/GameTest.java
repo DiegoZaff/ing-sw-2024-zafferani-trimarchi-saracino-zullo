@@ -219,7 +219,7 @@ public class GameTest {
             this.readGame(i);
             assertTrue(true);
         } catch (IOException e) {
-            fail("fail to read game 1");
+            fail("fail to read game " + i);
         }
 
         for(Move move: moveList){

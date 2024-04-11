@@ -33,12 +33,6 @@ public class Game {
         return players;
     }
 
-    /**
-     * This attribute is null until a player reaches 20 points, counting
-     * the number of rounds left to play. (it could be less if the deck finishes
-     * the cards).
-     */
-    private Integer roundsLeft;
 
     private final int nPlayers;
 
@@ -49,7 +43,7 @@ public class Game {
     }
 
     public Optional<Integer> getRoundsLeft(){
-        return Optional.ofNullable(roundsLeft);
+        return actionManager.getRoundsLeft();
     }
 
     public ArrayList<CardResource> getFaceUpResourceCards() {
@@ -242,32 +236,16 @@ public class Game {
         boolean has20points = playerOfTurn.get().getPoints() >= 20;
 
         if(has20points){
-            // index of the player who has just played a card.
-            int indexOfPlayerOfTurn = players.indexOf(playerOfTurn.get());
-            int indexOfFirstPlayer = players.indexOf(actionManager.getFirstPlayer());
-
-            // same number of plays + 1 additional round each
-            roundsLeft = 2 * players.size() - ((indexOfPlayerOfTurn-indexOfFirstPlayer) % players.size() + 1);
+            actionManager.initRoundsLeft();
         }
     }
 
     /**
-     * This method is called when roundsLeft is set and manages state in rounds
-     * after a player has reached 20 points.
      * ! TODO : make it work also when deck is finished and no player has reached 20 points.
-     *
-     * @param currRoundsLefts rounds left to be played.
-     */
-    private boolean endGame(int currRoundsLefts){
-        if(currRoundsLefts == 0){
-            calculateObjectivePoints();
-            calculateWinner();
-            // game ended
-            return true;
-        }else{
-            roundsLeft = currRoundsLefts - 1;
-            return false;
-        }
+     **/
+    private void endGame(){
+        calculateObjectivePoints();
+        calculateWinner();
     }
 
 
@@ -371,30 +349,26 @@ public class Game {
 
     /**
      * This method sets everything up for the next turn by calling checkEndGame() if
-     * roundsLeft has not been set, or endGame() if roundsLeft has been set. At the end
-     * it calls actionManager.nextMove() which updates the next turn's expected action and
+     * roundsLeft has not been set, or endGame() if roundsLeft is zero.
+     * It also calls actionManager.nextMove() which updates the next turn's expected action and
      * playerOfTurn.
-     * //TODO : verify!
      */
     private void setupNextMove(){
         Optional<Integer> roundsLeft = getRoundsLeft();
-        // if roundsLeft is not set check for endgame
+
         if(roundsLeft.isEmpty()) {
             checkEndGame();
+            actionManager.nextMove();
         }else{
-            // TODO : decrement only after drawCard if roundsLeft is null || roundsLeft >= nPlayers
-            // TODO : otherwise decrement after playCard.
-            // check if 0 rounds left and
-            boolean hasEnded = endGame(roundsLeft.get());
+            actionManager.nextMove();
+
+            boolean hasEnded = actionManager.getActionType() == ActionType.GAME_ENDED;
 
             if(hasEnded){
-                actionManager.gameFinished();
-                return;
+                endGame();
             }
         }
 
-        // update for next move
-        actionManager.nextMove();
     }
 
     /**

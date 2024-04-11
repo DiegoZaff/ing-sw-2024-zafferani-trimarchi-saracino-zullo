@@ -6,6 +6,7 @@ import it.polimi.ingsw.gc28.model.cards.CardObjective;
 import it.polimi.ingsw.gc28.model.cards.CardResource;
 import it.polimi.ingsw.gc28.model.errors.types.PlayerActionError;
 import it.polimi.ingsw.gc28.model.objectives.Objective;
+import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -162,5 +163,15 @@ public class Player {
     }
 
 
-
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Player other = (Player) obj;
+        return name.equals(other.name);
+    }
 }

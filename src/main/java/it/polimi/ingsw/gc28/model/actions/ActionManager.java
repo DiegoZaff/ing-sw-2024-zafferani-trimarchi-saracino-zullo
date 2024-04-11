@@ -33,6 +33,17 @@ public class ActionManager {
 
     private ActionType actionType;
 
+    /**
+     * This attribute is null until a player reaches 20 points, counting
+     * the number of rounds left to play. (it could be less if the deck finishes
+     * the cards).
+     */
+    private Integer roundsLeft;
+
+    public Optional<Integer> getRoundsLeft(){
+        return Optional.ofNullable(roundsLeft);
+    }
+
     public ActionType getActionType(){
         return actionType;
     }
@@ -81,12 +92,15 @@ public class ActionManager {
 
     }
 
+    private boolean isCurrentPlayerTheLastOneForTheAction(){
+        return players.indexOf(playerOfTurn) == (indexFirstPlayer - 1) % players.size();
+    }
+
     /**
      * This method calculates the next expected actionType and playerOfTurn based
      * on the current ones.
-     *
      * 1) join game asincrono
-     * 2) in game start avviene initFIrstPLayer.
+     * 2) in game start avviene initFirstPLayer.
      * 3) PlayInitialCard e ChooseObjective si fanno a turni.
      */
     public void nextMove(){
@@ -96,36 +110,32 @@ public class ActionManager {
                     actionType = ActionType.PLAY_INITIAL_CARD;
                 }
             }
-            case CHOOSE_OBJ -> {
-                /*int numberOfPlayers = players.size();
-
-                int numbersOfPlayersWithObjective = players.stream().map(Player::getObjectiveChosen)
-                        .filter(Optional::isPresent)
-                        .collect(Collectors.toCollection(ArrayList::new))
-                        .size();
-
-                if(numbersOfPlayersWithObjective == numberOfPlayers){
-                    actionType = ActionType.PLAY_INITIAL_CARD;
-                }*/
-                if(players.indexOf(playerOfTurn) == (indexFirstPlayer - 1) % players.size()) {
-                    actionType = ActionType.PLAY_CARD;
-                }
-                playerOfTurn = getNextPlayer();
-            }
             case PLAY_INITIAL_CARD -> {
-                if(players.indexOf(playerOfTurn) == (indexFirstPlayer - 1) % players.size()) {
+                if(isCurrentPlayerTheLastOneForTheAction()) {
                     actionType = ActionType.CHOOSE_OBJ;
                 }
                 playerOfTurn = getNextPlayer();
             }
+            case CHOOSE_OBJ -> {
+                if(isCurrentPlayerTheLastOneForTheAction()) {
+                    actionType = ActionType.PLAY_CARD;
+                }
+                playerOfTurn = getNextPlayer();
+            }
             case PLAY_CARD -> {
-                // TODO : if roundsLeft <= numberOfPlayers - 1 => actionType = PLAY_CARD & nextPlayer aggiornato
-
-                actionType = ActionType.DRAW_CARD;
+                // TODO DONE : if roundsLeft <= numberOfPlayers - 1 => actionType = PLAY_CARD & nextPlayer aggiornato
+                if(roundsLeft != null && roundsLeft < nPlayers - 1){
+                    // actionType remains PLAY_CARD
+                    playerOfTurn = getNextPlayer();
+                    updateRoundsLeft();
+                }else{
+                    actionType = ActionType.DRAW_CARD;
+                }
             }
             case DRAW_CARD -> {
                 actionType = ActionType.PLAY_CARD;
                 playerOfTurn = getNextPlayer();
+                updateRoundsLeft();
             }
         }
     }
@@ -140,12 +150,6 @@ public class ActionManager {
         return players.get((indexOfCurr + 1) % players.size());
     }
 
-    /**
-     * This will signal the end of the game. No more moves will be validated.
-     */
-    public void gameFinished(){
-        actionType = ActionType.GAME_ENDED;
-    }
 
     /**
      * This method chooses randomly the first player.
@@ -161,5 +165,24 @@ public class ActionManager {
 
     public Player getFirstPlayer(){
         return firstPlayer;
+    }
+
+    public void updateRoundsLeft(){
+        if(roundsLeft != null && roundsLeft > 0){
+            roundsLeft -= 1;
+
+            if(roundsLeft == 0){
+                actionType = ActionType.GAME_ENDED;
+            }
+        }
+    }
+
+    public void initRoundsLeft(){
+
+        int roundsToFinishCircle = (indexFirstPlayer - players.indexOf(playerOfTurn)) % players.size();
+
+        int additionalCircle = players.size();
+
+        roundsLeft = additionalCircle + roundsToFinishCircle;
     }
 }
