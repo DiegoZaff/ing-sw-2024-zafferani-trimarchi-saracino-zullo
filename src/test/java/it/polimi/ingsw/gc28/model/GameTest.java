@@ -8,6 +8,8 @@ import it.polimi.ingsw.gc28.games.TestingDeck;
 import it.polimi.ingsw.gc28.games.assertions.utils.GameAssertionType;
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.model.cards.*;
+import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
+import it.polimi.ingsw.gc28.model.resources.utils.ResourceType;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -269,6 +271,30 @@ public class GameTest {
                             gameAssertion = new WinnerGameAssertion(nicks);
                             gameAssertions.add(gameAssertion);
 
+                        } else if(type.equals(GameAssertionType.ROUNDS_LEFT)){
+                            int value = ((Long) astObj.get("value")).intValue();
+
+                            gameAssertion = new RoundsLeftAssertion(value);
+                            gameAssertions.add(gameAssertion);
+                        } else if(type.equals(GameAssertionType.POINTS_OF_PLAYER_FROM_OBJS)){
+                            String nick = (String) astObj.get("nick");
+                            int value = ((Long) astObj.get("value")).intValue();
+
+                            gameAssertion = new PointsPlayerFromObjsAssertion(nick, value);
+                            gameAssertions.add(gameAssertion);
+                        } else if(type.equals(GameAssertionType.RESOURCES_VISIBLE)){
+                            String playerName = (String) astObj.get("name");
+                            ResourcePrimaryType resType = ResourcePrimaryType.valueOf((String) astObj.get("resType"));
+                            int value = ((Long) astObj.get("number")).intValue();
+
+                            gameAssertion = new ResourcePrimaryVisibleGameAssertion(resType, playerName, value);
+                            gameAssertions.add(gameAssertion);
+
+                        }else if(type.equals(GameAssertionType.NEXT_EXPECTED_ACTION)){
+                            ActionType actionEx = ActionType.valueOf((String) astObj.get("value"));
+
+                            gameAssertion = new NextExpectedActionAssertion(actionEx);
+                            gameAssertions.add(gameAssertion);
                         }
                     }
                 }

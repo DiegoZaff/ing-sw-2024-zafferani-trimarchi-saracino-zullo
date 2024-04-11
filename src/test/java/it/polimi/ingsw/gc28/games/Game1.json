@@ -167,11 +167,13 @@
         },
         {
           "type" : "RESOURCES_VISIBLE",
+          "name" : "Diego",
           "resType" : "MUSHROOM",
           "number" : 3
         },
         {
           "type" : "RESOURCES_VISIBLE",
+          "name" : "Diego",
           "resType" : "FOX",
           "number" : 0
         },
@@ -220,11 +222,13 @@
         },
         {
           "type" : "RESOURCES_VISIBLE",
+          "name" : "Ale",
           "resType" : "MUSHROOM",
           "number" : 2
         },
         {
           "type" : "RESOURCES_VISIBLE",
+          "name" : "Ale",
           "resType" : "BUTTERFLY",
           "number" : 2
         },
@@ -276,7 +280,7 @@
     {
       "player":  "Diego",
       "action" : "DRAW_CARD",
-      "fromGoldDecK" : true,
+      "fromGoldDeck" : true,
       "assertions" : [
         {
           "type" : "HAND_OF_PLAYER",
