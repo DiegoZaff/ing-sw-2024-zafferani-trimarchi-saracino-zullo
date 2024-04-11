@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc28.model.cards;
 import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.model.Table;
 import it.polimi.ingsw.gc28.model.Vertex;
+import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.model.resources.Resource;
 import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
 import it.polimi.ingsw.gc28.model.resources.ResourceSpecial;
@@ -133,5 +134,9 @@ public abstract class CardGame extends Card {
 
     public abstract Vertex[] getVerticesBack();
 
+
+    public ActionType getIntendedAction(){
+        return ActionType.PLAY_CARD;
+    }
 }
 

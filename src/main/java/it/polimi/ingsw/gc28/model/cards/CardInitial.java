@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc28.model.cards;
 import it.polimi.ingsw.gc28.model.Cell;
 import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.model.Table;
+import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.model.resources.Resource;
 import it.polimi.ingsw.gc28.model.Vertex;
 import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
@@ -122,6 +123,11 @@ public class CardInitial extends CardGame {
     @Override
     public Vertex[] getVerticesBack() {
         return verticesBack;
+    }
+
+    @Override
+    public ActionType getIntendedAction(){
+        return ActionType.PLAY_INITIAL_CARD;
     }
 }
 

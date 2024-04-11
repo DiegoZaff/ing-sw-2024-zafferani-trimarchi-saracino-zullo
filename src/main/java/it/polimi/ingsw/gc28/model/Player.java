@@ -111,10 +111,11 @@ public class Player {
      * @param isFront indicate how the card has to be played, front if True, back if False
      * @param coordinates indicates the coordinate where the card has to be played
      */
-    public void playCard(CardGame playedCard, boolean isFront, Coordinate coordinates){
+    public void playCard(CardGame playedCard, boolean isFront, Coordinate coordinates) throws Exception {
         if (!table.checkPlayability(coordinates)){
             //potremmo creare una IrregularCoordinateException, da aggiungere
             // ? maybe updates error attribute inside player and returns.
+            throw new Exception();
         }else {
             if (isFront){
                 playedCard.playFront(table, coordinates);

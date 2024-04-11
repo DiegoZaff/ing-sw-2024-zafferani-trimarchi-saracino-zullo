@@ -302,7 +302,7 @@
     {
       "player":  "Ale",
       "action" : "DRAW_CARD",
-      "fromGoldDecK" : true
+      "fromGoldDeck" : true
     },
     {
       "player":  "Diego",
@@ -891,7 +891,7 @@
         },
         {
           "type" : "IS_WINNER",
-          "value" : "Ale"
+          "nicks" : ["Ale"]
         }
       ]
     }

@@ -93,7 +93,13 @@ public class ActionManager {
     }
 
     private boolean isCurrentPlayerTheLastOneForTheAction(){
-        return players.indexOf(playerOfTurn) == (indexFirstPlayer - 1) % players.size();
+
+        int lastPlayerIndex = ((indexFirstPlayer - 1) % players.size());
+
+        if (lastPlayerIndex < 0) {
+            lastPlayerIndex += players.size();
+        }
+        return players.indexOf(playerOfTurn) == lastPlayerIndex;
     }
 
     /**
