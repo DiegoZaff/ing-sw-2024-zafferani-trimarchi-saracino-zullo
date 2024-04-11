@@ -13,6 +13,8 @@ public enum GameAssertionType {
     FACE_UP_CARDS_GOLD,
     OBJ_TO_CHOOSE,
     OBJ_CHOSEN,
-    HAND_OF_PLAYER
+    HAND_OF_PLAYER,
+    ROUNDS_LEFT,
+    POINTS_OF_PLAYER_FROM_OBJS
 
 }
