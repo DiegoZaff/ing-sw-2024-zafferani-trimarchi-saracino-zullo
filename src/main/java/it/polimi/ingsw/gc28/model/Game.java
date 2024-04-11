@@ -362,6 +362,7 @@ public class Game {
      * roundsLeft has not been set, or endGame() if roundsLeft has been set. At the end
      * it calls actionManager.nextMove() which updates the next turn's expected action and
      * playerOfTurn.
+     * //TODO : verify!
      */
     private void setupNextMove(){
         Optional<Integer> roundsLeft = getRoundsLeft();
@@ -369,6 +370,8 @@ public class Game {
         if(roundsLeft.isEmpty()) {
             checkEndGame();
         }else{
+            // TODO : decrement only after drawCard if roundsLeft is null || roundsLeft >= nPlayers
+            // TODO : otherwise decrement after playCard.
             // check if 0 rounds left and
             boolean hasEnded = endGame(roundsLeft.get());
 

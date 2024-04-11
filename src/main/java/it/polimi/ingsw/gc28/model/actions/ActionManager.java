@@ -118,7 +118,11 @@ public class ActionManager {
                 }
                 playerOfTurn = getNextPlayer();
             }
-            case PLAY_CARD -> actionType = ActionType.DRAW_CARD;
+            case PLAY_CARD -> {
+                // TODO : if roundsLeft <= numberOfPlayers - 1 => actionType = PLAY_CARD & nextPlayer aggiornato
+
+                actionType = ActionType.DRAW_CARD;
+            }
             case DRAW_CARD -> {
                 actionType = ActionType.PLAY_CARD;
                 playerOfTurn = getNextPlayer();
@@ -141,7 +145,6 @@ public class ActionManager {
      */
     public void gameFinished(){
         actionType = ActionType.GAME_ENDED;
-        playerOfTurn = getNextPlayer();
     }
 
     /**

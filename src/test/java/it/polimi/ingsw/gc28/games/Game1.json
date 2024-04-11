@@ -444,6 +444,421 @@
       "player":  "Diego",
       "action" : "DRAW_CARD",
       "cardId" : "GOLD_9"
+    },
+    {
+      "player":  "Ale",
+      "action" : "PLAY_CARD",
+      "cardId" : "RES_23",
+      "isFront" : true,
+      "x" : 4,
+      "y" : -1
+    },
+    {
+      "player":  "Ale",
+      "action" : "DRAW_CARD",
+      "cardId" : "GOLD_35"
+    },
+    {
+      "player":  "Diego",
+      "action" : "PLAY_CARD",
+      "cardId" : "RES_15",
+      "isFront" : true,
+      "x" : 0,
+      "y" : -1,
+      "assertions" : [
+        {
+          "type" : "CARD_PLAYED_AT",
+          "card" : "RES_15",
+          "x" : 0,
+          "y" : -1
+        },
+        {
+          "type": "POINTS_OF_PLAYER",
+          "nick": "Diego",
+          "value": 8
+        }
+      ]
+    },
+    {
+      "player":  "Diego",
+      "action" : "DRAW_CARD",
+      "cardId" : "GOLD_24"
+    },
+    {
+      "player" : "Ale",
+      "action" : "PLAY_CARD",
+      "isFront" : false,
+      "cardId" : "GOLD_35",
+      "x" : 5,
+      "y" : -3,
+      "assertions" : [
+        {
+          "type" : "CARD_PLAYED_AT",
+          "card" : "GOLD_35",
+          "x" : 5,
+          "y" : -3
+        },
+        {
+          "type": "POINTS_OF_PLAYER",
+          "nick": "Ale",
+          "value": 6
+        }
+      ]
+    },
+    {
+      "player":  "Ale",
+      "action" : "DRAW_CARD",
+      "cardId" : "RES_13"
+    },
+    {
+      "player":  "Diego",
+      "action" : "PLAY_CARD",
+      "cardId" : "GOLD_28",
+      "isFront" : true,
+      "x" : 2,
+      "y" : 1,
+      "assertions" : [
+        {
+          "type" : "CARD_PLAYED_AT",
+          "card" : "GOLD_28",
+          "x" : 2,
+          "y" : 1
+        },
+        {
+          "type": "POINTS_OF_PLAYER",
+          "nick": "Diego",
+          "value": 9
+        }
+      ]
+    },
+    {
+      "player":  "Diego",
+      "action" : "DRAW_CARD",
+      "fromGoldDeck" : false
+    },
+    {
+      "player":  "Ale",
+      "action" : "PLAY_CARD",
+      "cardId" : "GOLD_34",
+      "isFront" : true,
+      "x" : 6,
+      "y" : -4,
+      "assertions" : [
+        {
+          "type" : "CARD_PLAYED_AT",
+          "card" : "GOLD_34",
+          "x" : 6,
+          "y" : -4
+        },
+        {
+          "type": "POINTS_OF_PLAYER",
+          "nick": "Ale",
+          "value": 9
+        }
+      ]
+    },
+    {
+      "player":  "Ale",
+      "action" : "DRAW_CARD",
+      "cardId" : "RES_26"
+    },
+    {
+      "player":  "Diego",
+      "action" : "PLAY_CARD",
+      "cardId" : "RES_29",
+      "isFront" : true,
+      "x" : -2,
+      "y" : 0
+    },
+    {
+      "player":  "Diego",
+      "action" : "DRAW_CARD",
+      "cardId" : "RES_5"
+    },
+    {
+      "player":  "Ale",
+      "action" : "PLAY_CARD",
+      "cardId" : "RES_26",
+      "isFront" : false,
+      "x" : 2,
+      "y" : 0
+    },
+    {
+      "player":  "Ale",
+      "action" : "DRAW_CARD",
+      "fromGoldDeck" : true
+    },
+    {
+      "player":  "Diego",
+      "action" : "PLAY_CARD",
+      "cardId" : "GOLD_9",
+      "isFront" : true,
+      "x" : -1,
+      "y" : 1,
+      "assertions" : [
+        {
+          "type" : "CARD_PLAYED_AT",
+          "card" : "GOLD_9",
+          "x" : -1,
+          "y" : 1
+        },
+        {
+          "type": "POINTS_OF_PLAYER",
+          "nick": "Diego",
+          "value": 10
+        }
+      ]
+    },
+    {
+      "player":  "Diego",
+      "action" : "DRAW_CARD",
+      "fromGoldDeck" : true
+    },
+    {
+      "player":  "Ale",
+      "action" : "PLAY_CARD",
+      "cardId" : "RES_13",
+      "isFront" : true,
+      "x" : 5,
+      "y" : -5
+    },
+    {
+      "player":  "Ale",
+      "action" : "DRAW_CARD",
+      "fromGoldDeck" : true
+    },
+    {
+      "player":  "Diego",
+      "action" : "PLAY_CARD",
+      "cardId" : "RES_5",
+      "isFront" : true,
+      "x" : -1,
+      "y" : -3,
+      "assertions" : [
+        {
+          "type": "POINTS_OF_PLAYER",
+          "nick": "Diego",
+          "value": 11
+        }
+      ]
+    },
+    {
+      "player":  "Diego",
+      "action" : "DRAW_CARD",
+      "cardId" : "RES_9"
+    },
+    {
+      "player":  "Ale",
+      "action" : "PLAY_CARD",
+      "cardId" : "GOLD_36",
+      "isFront" : true,
+      "x" : 1,
+      "y" : 1,
+      "assertions" : [
+        {
+          "type": "POINTS_OF_PLAYER",
+          "nick": "Ale",
+          "value": 15
+        }
+      ]
+    },
+    {
+      "player":  "Ale",
+      "action" : "DRAW_CARD",
+      "cardId" : "RES_2"
+    },
+    {
+      "player":  "Diego",
+      "action" : "PLAY_CARD",
+      "cardId" : "GOLD_37",
+      "isFront" : false,
+      "x" : -2,
+      "y" : 2,
+      "assertions" : [
+        {
+          "type": "POINTS_OF_PLAYER",
+          "nick": "Diego",
+          "value": 11
+        }
+      ]
+    },
+    {
+      "player":  "Diego",
+      "action" : "DRAW_CARD",
+      "cardId" : "RES_8"
+    },
+    {
+      "player":  "Ale",
+      "action" : "PLAY_CARD",
+      "cardId" : "RES_16",
+      "isFront" : false,
+      "x" : 3,
+      "y" : 1,
+      "assertions" : [
+        {
+          "type": "POINTS_OF_PLAYER",
+          "nick": "Ale",
+          "value": 15
+        }
+      ]
+    },
+    {
+      "player":  "Ale",
+      "action" : "DRAW_CARD",
+      "cardId" : "RES_19"
+    },
+    {
+      "player":  "Diego",
+      "action" : "PLAY_CARD",
+      "cardId" : "RES_9",
+      "isFront" : true,
+      "x" : -1,
+      "y" : 3
+    },
+    {
+      "player":  "Diego",
+      "action" : "DRAW_CARD",
+      "cardId" : "GOLD_18"
+    },
+    {
+      "player":  "Ale",
+      "action" : "PLAY_CARD",
+      "cardId" : "RES_19",
+      "isFront" : true,
+      "x" : 4,
+      "y" : -4
+    },
+    {
+      "player":  "Ale",
+      "action" : "DRAW_CARD",
+      "fromGoldDeck" : true
+    },
+    {
+      "player":  "Diego",
+      "action" : "PLAY_CARD",
+      "cardId" : "GOLD_24",
+      "isFront" : false,
+      "x" : -2,
+      "y" : 4,
+      "assertions" : [
+        {
+          "type": "POINTS_OF_PLAYER",
+          "nick": "Diego",
+          "value": 11
+        }
+      ]
+    },
+    {
+      "player":  "Diego",
+      "action" : "DRAW_CARD",
+      "cardId" : "GOLD_11"
+    },
+    {
+      "player":  "Ale",
+      "action" : "PLAY_CARD",
+      "cardId" : "RES_2",
+      "isFront" : true,
+      "x" : -1,
+      "y" : 3
+    },
+    {
+      "player":  "Ale",
+      "action" : "DRAW_CARD",
+      "fromGoldDeck" : true
+    },
+    {
+      "player":  "Diego",
+      "action" : "PLAY_CARD",
+      "cardId" : "RES_8",
+      "isFront" : true,
+      "x" : -1,
+      "y" : 5
+    },
+    {
+      "player":  "Diego",
+      "action" : "DRAW_CARD",
+      "cardId" : "GOLD_2"
+    },
+    {
+      "player":  "Ale",
+      "action" : "PLAY_CARD",
+      "cardId" : "GOLD_31",
+      "isFront" : true,
+      "x" : -2,
+      "y" : 0,
+      "assertions" : [
+        {
+          "type": "POINTS_OF_PLAYER",
+          "nick": "Ale",
+          "value": 20
+        },
+        {
+          "type": "ROUNDS_LEFT",
+          "value": 2
+        }
+      ]
+    },
+    {
+      "player":  "Ale",
+      "action" : "DRAW_CARD",
+      "cardId" : "RES_27"
+    },
+    {
+      "player":  "Diego",
+      "action" : "PLAY_CARD",
+      "cardId" : "GOLD_2",
+      "isFront" : true,
+      "x" : 0,
+      "y" : -4,
+      "assertions" : [
+        {
+          "type": "POINTS_OF_PLAYER",
+          "nick": "Diego",
+          "value": 14
+        },
+        {
+          "type": "ROUNDS_LEFT",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "player":  "Ale",
+      "action" : "PLAY_CARD",
+      "cardId" : "GOLD_13",
+      "isFront" : false,
+      "x" : 2,
+      "y" : 2,
+      "assertions" : [
+        {
+          "type": "POINTS_OF_PLAYER",
+          "nick": "Ale",
+          "value": 27
+        },
+        {
+          "type": "POINTS_OF_PLAYER_FROM_OBJS",
+          "nick": "Ale",
+          "value": 7
+        },
+        {
+          "type": "POINTS_OF_PLAYER",
+          "nick": "Diego",
+          "value": 19
+        },
+        {
+          "type": "POINTS_OF_PLAYER_FROM_OBJS",
+          "nick": "Diego",
+          "value": 5
+        },
+        {
+          "type": "ROUNDS_LEFT",
+          "value": 0
+        },
+        {
+          "type" : "IS_WINNER",
+          "value" : "Ale"
+        }
+      ]
     }
   ]
 }
