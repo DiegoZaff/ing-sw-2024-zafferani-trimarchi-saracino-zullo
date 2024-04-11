@@ -1,8 +1,8 @@
 {
-  "deckCardGoldPermutation" : ["GOLD_21", "GOLD_34", "GOLD_26", "GOLD_25", "GOLD_11", "GOLD_3", "GOLD_1", "GOLD_28", "GOLD_9", "GOLD_35", "GOLD_24", "GOLD_18", "GOLD_16", "GOLD_37", "GOLD_36", "GOLD_14", "GOLD_31", "GOLD_2", "GOLD_13", "GOLD_12", "GOLD_7", "GOLD_8", "GOLD_23", "GOLD_10", "GOLD_30", "GOLD_29", "GOLD_17", "GOLD_39", "GOLD_6", "GOLD_5", "GOLD_33", "GOLD_32", "GOLD_38", "GOLD_4", "GOLD_19", "GOLD_40", "GOLD_15", "GOLD_20", "GOLD_27", "GOLD_22"],
-  "deckCardInitialPermutation" : ["INI_4", "INI_2", "INI_3", "INI_1", "INI_5", "INI_6"],
-  "deckCardResourcesPermutation" : ["RES_3", "RES_13", "RES_32", "RES_12", "RES_4", "RES_11", "RES_1", "RES_25", "RES_15", "RES_5", "RES_23", "RES_9", "RES_29", "RES_26", "RES_2", "RES_8", "RES_27", "RES_19", "RES_33", "RES_14", "RES_22", "RES_36", "RES_34", "RES_38", "RES_30", "RES_6", "RES_17", "RES_37", "RES_31", "RES_18", "RES_10", "RES_40", "RES_28", "RES_16", "RES_39", "RES_24", "RES_7", "RES_21", "RES_35", "RES_20"],
-  "deckCardObjectivesPermutation" : ["OBJ_10", "OBJ_15", "OBJ_9", "OBJ_13", "OBJ_5", "OBJ_12", "OBJ_16", "OBJ_3", "OBJ_14", "OBJ_2", "OBJ_1", "OBJ_11", "OBJ_7", "OBJ_4", "OBJ_6", "OBJ_8"],
+  "deckCardGold" : ["GOLD_21", "GOLD_34", "GOLD_26", "GOLD_25", "GOLD_11", "GOLD_3", "GOLD_1", "GOLD_28", "GOLD_9", "GOLD_35", "GOLD_24", "GOLD_18", "GOLD_16", "GOLD_37", "GOLD_36", "GOLD_14", "GOLD_31", "GOLD_2", "GOLD_13", "GOLD_12", "GOLD_7", "GOLD_8", "GOLD_23", "GOLD_10", "GOLD_30", "GOLD_29", "GOLD_17", "GOLD_39", "GOLD_6", "GOLD_5", "GOLD_33", "GOLD_32", "GOLD_38", "GOLD_4", "GOLD_19", "GOLD_40", "GOLD_15", "GOLD_20", "GOLD_27", "GOLD_22"],
+  "deckCardInitial" : ["INI_4", "INI_2", "INI_3", "INI_1", "INI_5", "INI_6"],
+  "deckCardResources" : ["RES_3", "RES_13", "RES_32", "RES_12", "RES_4", "RES_11", "RES_1", "RES_25", "RES_15", "RES_5", "RES_23", "RES_9", "RES_29", "RES_26", "RES_2", "RES_8", "RES_27", "RES_19", "RES_33", "RES_14", "RES_22", "RES_36", "RES_34", "RES_38", "RES_30", "RES_6", "RES_17", "RES_37", "RES_31", "RES_18", "RES_10", "RES_40", "RES_28", "RES_16", "RES_39", "RES_24", "RES_7", "RES_21", "RES_35", "RES_20"],
+  "deckCardObjectives" : ["OBJ_10", "OBJ_15", "OBJ_9", "OBJ_13", "OBJ_5", "OBJ_12", "OBJ_16", "OBJ_3", "OBJ_14", "OBJ_2", "OBJ_1", "OBJ_11", "OBJ_7", "OBJ_4", "OBJ_6", "OBJ_8"],
   "players" : ["Diego, Ale"],
   "firstPlayer" : 0,
   "moves" : [

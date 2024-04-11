@@ -7,13 +7,13 @@ import it.polimi.ingsw.gc28.games.moves.Move;
 import it.polimi.ingsw.gc28.games.TestingDeck;
 import it.polimi.ingsw.gc28.games.assertions.utils.GameAssertionType;
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
-import it.polimi.ingsw.gc28.model.cards.CardGame;
-import it.polimi.ingsw.gc28.model.cards.CardObjective;
+import it.polimi.ingsw.gc28.model.cards.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -55,31 +55,31 @@ public class GameTest {
 
             JSONObject jsonObject = (JSONObject) obj;
 
-            JSONArray deckCardResourcesPermutation = (JSONArray) jsonObject.get("deckCardResourcesPermutation");
-            ArrayList<Integer> deckCardResourcesPermutationArray = convertJSONArrayToListInteger(deckCardResourcesPermutation);
+            JSONArray deckCardResources = (JSONArray) jsonObject.get("deckCardResources");
+            ArrayList<String> deckCardResourcesArray = convertJSONArrayToListStrings(deckCardResources);
 
-            JSONArray deckCardGoldPermutation = (JSONArray) jsonObject.get("deckCardGoldPermutation");
-            ArrayList<Integer> deckCardGoldPermutationArray = convertJSONArrayToListInteger(deckCardGoldPermutation);
+            JSONArray deckCardGold = (JSONArray) jsonObject.get("deckCardGold");
+            ArrayList<String> deckCardGoldArray = convertJSONArrayToListStrings(deckCardGold);
 
-            JSONArray deckCardInitialPermutation = (JSONArray) jsonObject.get("deckCardInitialPermutation");
-            ArrayList<Integer> deckCardInitialPermutationArray = convertJSONArrayToListInteger(deckCardInitialPermutation);
+            JSONArray deckCardInitial = (JSONArray) jsonObject.get("deckCardInitial");
+            ArrayList<String> deckCardInitialArray = convertJSONArrayToListStrings(deckCardInitial);
 
-            JSONArray deckCardObjectivesPermutation = (JSONArray) jsonObject.get("deckCardObjectivesPermutation");
-            ArrayList<Integer> deckCardObjectivesPermutationArray = convertJSONArrayToListInteger(deckCardObjectivesPermutation);
+            JSONArray deckCardObjectives = (JSONArray) jsonObject.get("deckCardObjectives");
+            ArrayList<String> deckCardObjectivesArray = convertJSONArrayToListStrings(deckCardObjectives);
 
             JSONArray players = (JSONArray) jsonObject.get("players");
             ArrayList<String> playersList = convertJSONArrayToListStrings(players);
 
 
-            this.deck = new Deck(deckCardResourcesPermutationArray,
-                    deckCardGoldPermutationArray,
-                    deckCardInitialPermutationArray,
-                    deckCardObjectivesPermutationArray);
+            this.deck = new Deck(deckCardResourcesArray,
+                    deckCardGoldArray,
+                    deckCardInitialArray,
+                    deckCardObjectivesArray);
 
-            this.deckCopy = new TestingDeck(deckCardResourcesPermutationArray,
-                    deckCardGoldPermutationArray,
-                    deckCardInitialPermutationArray,
-                    deckCardObjectivesPermutationArray);
+            this.deckCopy = new TestingDeck(deckCardResourcesArray,
+                    deckCardGoldArray,
+                    deckCardInitialArray,
+                    deckCardObjectivesArray);
 
             JSONArray moves = (JSONArray) jsonObject.get("moves");
 
@@ -92,8 +92,11 @@ public class GameTest {
                 ActionType action = ActionType.valueOf(actionStr);
 
 
-                CardObjective cardObj = null;
-                CardGame card = null;
+                Optional<CardObjective> cardObj = null;
+                Optional<CardInitial> cardInitial = null;
+                Optional<CardResource> cardResource = null;
+                Optional<CardGold> cardGold = null;
+
                 Coordinate coord = null;
                 Boolean isFront = null;
                 Boolean fromGoldDeck = null;
@@ -101,52 +104,46 @@ public class GameTest {
 
 
                 if(action.equals(ActionType.PLAY_INITIAL_CARD)){
-                    Object indexObj = moveObj.get("cardId");
-                    int index = ((Long) indexObj).intValue();
-
-                    card = deckCopy.deckCardInitials.get(index);
+                    Object idObj = moveObj.get("cardId");
+                    String cardId = (String) idObj;
+                    cardInitial = deckCopy.getCardInitialFromId(cardId);
 
                     isFront = (Boolean) moveObj.get("isFront");
+
                 }else if(action.equals(ActionType.PLAY_CARD)){
-                    Object indexObj = moveObj.get("cardId");
-                    int index = ((Long) indexObj).intValue();
-
-                    boolean isGold = (boolean) moveObj.get("isGold");
-
-                    if(isGold){
-                        card = deckCopy.deckCardGold.get(index);
-                    }else{
-                        card = deckCopy.deckCardResource.get(index);
+                    Object idObj = moveObj.get("cardId");
+                    String cardId = (String) idObj;
+                    if(cardId.charAt(0) == 'R') {
+                        cardResource = deckCopy.getCardResFromId(cardId);
+                    } else {
+                        cardGold = deckCopy.getCardGoldFromId(cardId);
                     }
+
+                    isFront = (Boolean) moveObj.get("isFront");
+
                     Object xObj = moveObj.get("x");
                     int x = ((Long) xObj).intValue();
                     Object yObj = moveObj.get("y");
                     int y = ((Long) yObj).intValue();
-
                     coord = new Coordinate(x,y);
 
-                    isFront = (Boolean) moveObj.get("isFront");
-
                 }else if(action.equals(ActionType.CHOOSE_OBJ)){
-                    Object indexObj = moveObj.get("cardId");
-                    int index = ((Long) indexObj).intValue();
+                    Object idObj = moveObj.get("cardId");
+                    String cardId = (String) idObj;
+                    cardObj = deckCopy.getCardObjectiveFromId(cardId);
 
-                    cardObj = deckCopy.deckCardObjective.get(index);
                 }else if(action.equals(ActionType.DRAW_CARD)){
-                    Object indexObj = moveObj.get("cardId");
-                    if(indexObj != null){
-                        int index = ((Long) indexObj).intValue();
-                        boolean isGold = (boolean) moveObj.get("isGold");
-
-                        if(isGold){
-                            card = deckCopy.deckCardGold.get(index);
-                        }else{
-                            card = deckCopy.deckCardResource.get(index);
+                    Object idObj = moveObj.get("cardId");
+                    if(idObj != null){
+                        String cardId = (String) idObj;
+                        if(cardId.charAt(0) == 'R') {
+                            cardResource = deckCopy.getCardResFromId(cardId);
+                        } else {
+                            cardGold = deckCopy.getCardGoldFromId(cardId);
                         }
                     }else{
                         fromGoldDeck = (boolean) moveObj.get("fromGoldDeck");
                     }
-
                 }
 
                 ArrayList<GameAssertion> gameAssertions = new ArrayList<>();
@@ -165,10 +162,29 @@ public class GameTest {
                             String nick = (String) astObj.get("nick");
                             String cardId = (String) astObj.get("card");
 
-                            gameAssertion = new CardPlayedAtGameAssertion(cardId, nick);
-                        }
+                            gameAssertion = new CardPlayedAtGameAssertion();
+                        }else if(type.equals(GameAssertionType.PLAYERS_REGISTERED)){
 
-                        if(type.equals(GameAssertionType.POINTS_OF_PLAYER)){
+                        }else if(type.equals(GameAssertionType.GAME_STARTED)){
+
+                        }else if(type.equals(GameAssertionType.FIRST_PLAYER)){
+
+                        }else if(type.equals(GameAssertionType.GLOBAL_OBJ)){
+
+                        }else if(type.equals(GameAssertionType.FACE_UP_CARDS_RES)){
+
+                        }else if(type.equals(GameAssertionType.FACE_UP_CARDS_GOLD)){
+
+                        }else if(type.equals(GameAssertionType.OBJS_TO_CHOOSE)){
+
+                        }else if(type.equals(GameAssertionType.OBJ_CHOSEN)){
+
+                        } else if(type.equals(GameAssertionType.HAND_OF_PLAYER)) {
+
+                        } else if(type.equals(GameAssertionType.CARD_PLAYED_AT)){
+
+                        }
+                        else if(type.equals(GameAssertionType.POINTS_OF_PLAYER)){
                             String nick = (String) astObj.get("nick");
                             Object pointsObj = astObj.get("value");
                             int points = ((Long) pointsObj).intValue();

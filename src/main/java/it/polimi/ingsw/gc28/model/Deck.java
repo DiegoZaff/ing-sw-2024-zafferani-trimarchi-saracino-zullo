@@ -257,10 +257,10 @@ public class Deck {
      * This method is used for testing purposes to make decks with known ordered cards
      * due to applied permutations.
      */
-    public Deck(ArrayList<Integer> deckCardResourcesPermutations,
-                ArrayList<Integer> deckCardGoldPermutations,
-                ArrayList<Integer> deckCardInitialPermutations,
-                ArrayList<Integer> deckCardObjectivePermutations) throws  IOException{
+    public Deck(ArrayList<String> deckCardResourcesPermutations,
+                ArrayList<String> deckCardGoldPermutations,
+                ArrayList<String> deckCardInitialPermutations,
+                ArrayList<String> deckCardObjectivePermutations) throws  IOException{
         this();
         this.mixFromPermutation(cardInitialDeck, deckCardInitialPermutations);
         this.mixFromPermutation(cardGoldDeck, deckCardGoldPermutations);
@@ -272,7 +272,7 @@ public class Deck {
      * This method applies a permutation to the deck of cards.
      * Used only for testing purposes inside the special constructor.
      */
-    private <T> void mixFromPermutation(ArrayList<T> deck, ArrayList<Integer> permutation) throws  IllegalArgumentException{
+    /*private <T> void mixFromPermutation(ArrayList<T> deck, ArrayList<String> deck) throws  IllegalArgumentException{
         if (deck.size() != permutation.size()){
             throw new IllegalArgumentException();
         }
@@ -280,7 +280,7 @@ public class Deck {
         ArrayList<T> newDeck = new ArrayList<>(deck);
 
         for(int i = 0; i < deck.size(); i++){
-            int nextIndex = permutation.get(i);
+            int nextId = deck.;
             newDeck.set(nextIndex, deck.get(i));
         }
 
@@ -288,7 +288,7 @@ public class Deck {
             int nextIndex = permutation.get(i);
             deck.set(nextIndex, newDeck.get(i));
         }
-    }
+    }*/
 
     public void StringToResourceType(String[] str, ResourceType[] res){
         for(int a=0; a<res.length;a++){
