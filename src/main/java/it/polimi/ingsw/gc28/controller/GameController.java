@@ -28,12 +28,12 @@ public class GameController {
         }
     }
 
-    public ArrayList<CardObjective> getPersonalObjectives(String name){
+    public Optional<ArrayList<CardObjective>> getPersonalObjectives(String name){
         synchronized (gameModel) {
             Optional<Player> p = getPlayerOfName(name);
 
             if (p.isEmpty()) {
-                return new ArrayList<>();
+                return Optional.of(new ArrayList<>());
             }
 
             return p.get().getObjectivesToChoose();
@@ -43,7 +43,7 @@ public class GameController {
     /**
      * Overloading, in case we have already calculated Player.
      */
-    public ArrayList<CardObjective> getPersonalObjectives(Player player){
+    public Optional<ArrayList<CardObjective>> getPersonalObjectives(Player player){
         synchronized (gameModel) {
             return player.getObjectivesToChoose();
         }
@@ -77,13 +77,13 @@ public class GameController {
                 throw new IllegalArgumentException("You must choose either the first or the second card.");
             }
 
-            ArrayList<CardObjective> objs = getPersonalObjectives(player.get());
+            Optional<ArrayList<CardObjective>> objs = getPersonalObjectives(player.get());
 
-            if(objs.size() != 2){
+            if(objs.isEmpty() || objs.get().size() != 2){
                 throw new IllegalStateException("Bad State in personal objectives");
             }
 
-            CardObjective chosen = objs.get(n);
+            CardObjective chosen = objs.get().get(n);
 
             gameModel.chooseObjective(player.get(), chosen);
         }
