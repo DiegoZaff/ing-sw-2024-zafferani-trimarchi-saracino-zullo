@@ -238,6 +238,212 @@
           "card3" : "RES_1"
         }
       ]
+    },
+    {
+      "player":  "Diego",
+      "action" : "PLAY_CARD",
+      "cardId" : "RES_32",
+      "isFront" : true,
+      "x" : 1,
+      "y" : -1,
+      "assertions" : [
+        {
+          "type" : "HAND_OF_PLAYER",
+          "name" : "Diego",
+          "card1" : "GOLD_21",
+          "card2" : null,
+          "card3" : "GOLD_26"
+        },
+        {
+          "type" : "CARD_PLAYED_AT",
+          "card" : "RES_32",
+          "x" : 1,
+          "y" : -1
+        }
+      ]
+    },
+    {
+      "player":  "Diego",
+      "action" : "DRAW_CARD",
+      "fromGoldDecK" : true,
+      "assertions" : [
+        {
+          "type" : "HAND_OF_PLAYER",
+          "name" : "Diego",
+          "card1" : "GOLD_21",
+          "card2" : "GOLD_26",
+          "card3" : "GOLD_3"
+        }
+      ]
+    },
+    {
+      "player":  "Ale",
+      "action" : "PLAY_CARD",
+      "cardId" : "RES_4",
+      "isFront" : true,
+      "x" : -1,
+      "y" : 1
+    },
+    {
+      "player":  "Ale",
+      "action" : "DRAW_CARD",
+      "fromGoldDecK" : true
+    },
+    {
+      "player":  "Diego",
+      "action" : "PLAY_CARD",
+      "cardId" : "GOLD_26",
+      "isFront" : true,
+      "x" : 2,
+      "y" : 0,
+      "assertions" : [
+        {
+          "type" : "CARD_PLAYED_AT",
+          "card" : "GOLD_26",
+          "x" : 2,
+          "y" : 0
+        },
+        {
+          "type": "POINTS_OF_PLAYER",
+          "nick": "Diego",
+          "value": 4
+        }
+      ]
+    },
+    {
+      "player":  "Diego",
+      "action" : "DRAW_CARD",
+      "cardId" : "RES_3"
+    },
+    {
+      "player":  "Ale",
+      "action" : "PLAY_CARD",
+      "cardId" : "RES_1",
+      "isFront" : true,
+      "x" : 0,
+      "y" : 1
+    },
+    {
+      "player":  "Ale",
+      "action" : "DRAW_CARD",
+      "cardId" : "RES_25"
+    },
+    {
+      "player" : "Diego",
+      "action" : "PLAY_CARD",
+      "isFront" : false,
+      "cardId" : "GOLD_21",
+      "x" : -1,
+      "y" : -1,
+      "assertions" : [
+        {
+          "type" : "CARD_PLAYED_AT",
+          "card" : "GOLD_21",
+          "x" : -1,
+          "y" : -1
+        },
+        {
+          "type": "POINTS_OF_PLAYER",
+          "nick": "Diego",
+          "value": 4
+        }
+      ]
+    },
+    {
+      "player":  "Diego",
+      "action" : "DRAW_CARD",
+      "cardId" : "RES_15"
+    },
+    {
+      "player" : "Ale",
+      "action" : "PLAY_CARD",
+      "isFront" : true,
+      "cardId" : "GOLD_1",
+      "x" : 2,
+      "y" : -2,
+      "assertions" : [
+        {
+          "type" : "CARD_PLAYED_AT",
+          "card" : "GOLD_1",
+          "x" : 2,
+          "y" : -2
+        },
+        {
+          "type": "POINTS_OF_PLAYER",
+          "nick": "Ale",
+          "value": 5
+        }
+      ]
+    },
+    {
+      "player":  "Ale",
+      "action" : "DRAW_CARD",
+      "cardId" : "GOLD_34"
+    },
+    {
+      "player":  "Diego",
+      "action" : "PLAY_CARD",
+      "cardId" : "RES_3",
+      "isFront" : true,
+      "x" : -2,
+      "y" : -2
+    },
+    {
+      "player":  "Diego",
+      "action" : "DRAW_CARD",
+      "cardId" : "GOLD_28"
+    },
+    {
+      "player":  "Ale",
+      "action" : "PLAY_CARD",
+      "cardId" : "RES_25",
+      "isFront" : true,
+      "x" : 3,
+      "y" : -1,
+      "assertions" : [
+        {
+          "type" : "CARD_PLAYED_AT",
+          "card" : "RES_25",
+          "x" : 3,
+          "y" : -1
+        },
+        {
+          "type": "POINTS_OF_PLAYER",
+          "nick": "Ale",
+          "value": 6
+        }
+      ]
+    },
+    {
+      "player":  "Ale",
+      "action" : "DRAW_CARD",
+      "fromGoldDeck" : false
+    },
+    {
+      "player":  "Diego",
+      "action" : "PLAY_CARD",
+      "cardId" : "GOLD_3",
+      "isFront" : true,
+      "x" : -3,
+      "y" : -1,
+      "assertions" : [
+        {
+          "type" : "CARD_PLAYED_AT",
+          "card" : "GOLD_3",
+          "x" : -3,
+          "y" : -1
+        },
+        {
+          "type": "POINTS_OF_PLAYER",
+          "nick": "Diego",
+          "value": 7
+        }
+      ]
+    },
+    {
+      "player":  "Diego",
+      "action" : "DRAW_CARD",
+      "cardId" : "GOLD_9"
     }
   ]
 }
