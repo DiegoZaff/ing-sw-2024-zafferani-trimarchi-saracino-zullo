@@ -96,6 +96,10 @@ public class GameTest {
                 Optional<CardInitial> cardInitial = null;
                 Optional<CardResource> cardResource = null;
                 Optional<CardGold> cardGold = null;
+                CardObjective cardO = null;
+                CardInitial cardI = null;
+                CardResource cardR = null;
+                CardGold cardG = null;
 
                 Coordinate coord = null;
                 Boolean isFront = null;
@@ -107,6 +111,7 @@ public class GameTest {
                     Object idObj = moveObj.get("cardId");
                     String cardId = (String) idObj;
                     cardInitial = deckCopy.getCardInitialFromId(cardId);
+                    cardI = cardInitial.get();
 
                     isFront = (Boolean) moveObj.get("isFront");
 
@@ -115,8 +120,10 @@ public class GameTest {
                     String cardId = (String) idObj;
                     if(cardId.charAt(0) == 'R') {
                         cardResource = deckCopy.getCardResFromId(cardId);
+                        cardR = cardResource.get();
                     } else {
                         cardGold = deckCopy.getCardGoldFromId(cardId);
+                        cardG = cardGold.get();
                     }
 
                     isFront = (Boolean) moveObj.get("isFront");
@@ -131,6 +138,7 @@ public class GameTest {
                     Object idObj = moveObj.get("cardId");
                     String cardId = (String) idObj;
                     cardObj = deckCopy.getCardObjectiveFromId(cardId);
+                    cardO = cardObj.get();
 
                 }else if(action.equals(ActionType.DRAW_CARD)){
                     Object idObj = moveObj.get("cardId");
@@ -138,8 +146,10 @@ public class GameTest {
                         String cardId = (String) idObj;
                         if(cardId.charAt(0) == 'R') {
                             cardResource = deckCopy.getCardResFromId(cardId);
+                            cardR = cardResource.get();
                         } else {
                             cardGold = deckCopy.getCardGoldFromId(cardId);
+                            cardG = cardGold.get();
                         }
                     }else{
                         fromGoldDeck = (boolean) moveObj.get("fromGoldDeck");
@@ -254,7 +264,7 @@ public class GameTest {
                     }
                 }
 
-                Move moveObject =  Move.createMove(player, action, isFront, card, cardObj, coord, fromGoldDeck, gameAssertions);
+                Move moveObject =  Move.createMove(player, action, isFront, cardR, cardG, cardI,cardO, coord, fromGoldDeck, gameAssertions);
                 moveList.add(moveObject);
             }
 
