@@ -417,7 +417,7 @@ public class Game {
         }
 
         cardDrawn.drawFaceUpCard(this.faceUpResourceCards, this.faceUpGoldCards, this.deck, playingPlayer);
-
+        actionManager.nextMove();
     }
 
     /**

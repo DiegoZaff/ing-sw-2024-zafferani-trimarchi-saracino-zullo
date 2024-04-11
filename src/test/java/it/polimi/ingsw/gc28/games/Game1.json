@@ -153,9 +153,9 @@
         {
           "type" : "HAND_OF_PLAYER",
           "name" : "Diego",
-          "card1" : "RES_26",
+          "card1" : "RES_32",
           "card2" : null,
-          "card3" : "GOLD_32"
+          "card3" : "GOLD_26"
         },
         {
           "type" : "CARD_PLAYED_AT",

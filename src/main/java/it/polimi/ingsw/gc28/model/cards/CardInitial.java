@@ -65,7 +65,9 @@ public class CardInitial extends CardGame {
 
     public void createCentralResources(Map<Resource, Integer> centralResources, Resource[] Resources){
         for(Resource resource: Resources){
-            centralResources.put(resource, 1);
+            if (resource != null) {
+                centralResources.put(resource, 1);
+            }
         }
     }
 

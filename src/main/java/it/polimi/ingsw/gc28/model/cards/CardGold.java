@@ -51,11 +51,12 @@ public class CardGold extends CardResource {
     public void createPlayabilityMap(ResourcePrimaryType[] resourceNeeded){
         playability = new HashMap<>();
         for(ResourcePrimaryType resourceType : resourceNeeded){
-            ResourcePrimary res = new ResourcePrimary(resourceType);
-            if(playability.containsKey(res)) {
-                playability.put(res, playability.get(res) + 1);
+            if (resourceType != null) {
+                ResourcePrimary res = new ResourcePrimary(resourceType);
+                if (playability.containsKey(res)) {
+                    playability.put(res, playability.get(res) + 1);
+                } else playability.put(res, 1);
             }
-            else playability.put(res, 1);
         }
     }
 
