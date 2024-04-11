@@ -69,7 +69,7 @@
     {
       "player":  "Ale",
       "action" : "PLAY_INITIAL_CARD",
-      "cardIndex" : "INI_2",
+      "cardId" : "INI_2",
       "isFront" : true,
       "assertions" : [
         {
@@ -106,7 +106,7 @@
     {
       "player":  "Ale",
       "action" : "CHOOSE_OBJ",
-      "cardIndex" : "OBJ_5",
+      "cardId" : "OBJ_5",
       "assertions" : [
         {
           "type" : "OBJS_TO_CHOOSE",

@@ -104,14 +104,14 @@ public class GameTest {
 
 
                 if(action.equals(ActionType.PLAY_INITIAL_CARD)){
-                    Object indexObj = moveObj.get("cardIndex");
+                    Object indexObj = moveObj.get("cardId");
                     int index = ((Long) indexObj).intValue();
 
                     card = deckCopy.deckCardInitials.get(index);
 
                     isFront = (Boolean) moveObj.get("isFront");
                 }else if(action.equals(ActionType.PLAY_CARD)){
-                    Object indexObj = moveObj.get("cardIndex");
+                    Object indexObj = moveObj.get("cardId");
                     int index = ((Long) indexObj).intValue();
 
                     boolean isGold = (boolean) moveObj.get("isGold");
@@ -131,12 +131,12 @@ public class GameTest {
                     isFront = (Boolean) moveObj.get("isFront");
 
                 }else if(action.equals(ActionType.CHOOSE_OBJ)){
-                    Object indexObj = moveObj.get("cardIndex");
+                    Object indexObj = moveObj.get("cardId");
                     int index = ((Long) indexObj).intValue();
 
                     cardObj = deckCopy.deckCardObjective.get(index);
                 }else if(action.equals(ActionType.DRAW_CARD)){
-                    Object indexObj = moveObj.get("cardIndex");
+                    Object indexObj = moveObj.get("cardId");
                     if(indexObj != null){
                         int index = ((Long) indexObj).intValue();
                         boolean isGold = (boolean) moveObj.get("isGold");
