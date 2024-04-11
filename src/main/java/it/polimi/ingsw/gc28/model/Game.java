@@ -439,10 +439,10 @@ public class Game {
             return;
         }
 
-        ArrayList<CardObjective> options = player.getObjectivesToChoose();
+        Optional<ArrayList<CardObjective>> options = player.getObjectivesToChoose();
 
         //check that player has that card
-        if(options.contains(card)){
+        if(options.isPresent() && options.get().contains(card)){
             player.setObjectiveChosen(card);
         }else{
             errorManager.fromInvalidObjectiveChoice(player);

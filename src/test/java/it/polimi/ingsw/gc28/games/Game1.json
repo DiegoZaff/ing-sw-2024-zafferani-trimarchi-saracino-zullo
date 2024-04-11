@@ -80,6 +80,12 @@
         {
           "type" : "NEXT_TURN_PLAYER",
           "value" : "Diego"
+        },
+        {
+          "type" : "OBJS_TO_CHOOSE",
+          "name" : "Diego",
+          "card1" : "OBJ_9",
+          "card2" : "OBJ_13"
         }
       ]
     },
@@ -89,17 +95,18 @@
       "cardId" : "OBJ_9",
       "assertions" : [
         {
-          "type" : "OBJS_TO_CHOOSE",
-          "card1" : "OBJ_9",
-          "card2" : "OBJ_13"
-        },
-        {
           "type" : "OBJ_CHOSEN",
           "card" : "OBJ_9"
         },
         {
           "type" : "NEXT_TURN_PLAYER",
           "value" : "Ale"
+        },
+        {
+          "type" : "OBJS_TO_CHOOSE",
+          "name" : "Ale",
+          "card1" : "OBJ_5",
+          "card2" : "OBJ_12"
         }
       ]
     },
@@ -108,11 +115,6 @@
       "action" : "CHOOSE_OBJ",
       "cardId" : "OBJ_5",
       "assertions" : [
-        {
-          "type" : "OBJS_TO_CHOOSE",
-          "card1" : "OBJ_5",
-          "card2" : "OBJ_12"
-        },
         {
           "type" : "OBJ_CHOSEN",
           "card" : "OBJ_5"
@@ -155,6 +157,7 @@
         {
           "type" : "CARD_PLAYED_AT",
           "card" : "RES_12",
+          "isFront" : true,
           "x" : 1,
           "y" : 1
         },
@@ -205,6 +208,7 @@
         },
         {
           "type" : "CARD_PLAYED_AT",
+          "isFront" : true,
           "card" : "RES_11",
           "x" : 1,
           "y" : -1
@@ -256,6 +260,7 @@
         },
         {
           "type" : "CARD_PLAYED_AT",
+          "isFront" : true,
           "card" : "RES_32",
           "x" : 1,
           "y" : -1
@@ -299,6 +304,7 @@
       "assertions" : [
         {
           "type" : "CARD_PLAYED_AT",
+          "isFront" : true,
           "card" : "GOLD_26",
           "x" : 2,
           "y" : 0
@@ -338,6 +344,7 @@
       "assertions" : [
         {
           "type" : "CARD_PLAYED_AT",
+          "isFront" : false,
           "card" : "GOLD_21",
           "x" : -1,
           "y" : -1
@@ -364,6 +371,7 @@
       "assertions" : [
         {
           "type" : "CARD_PLAYED_AT",
+          "isFront" : true,
           "card" : "GOLD_1",
           "x" : 2,
           "y" : -2
@@ -403,6 +411,7 @@
       "assertions" : [
         {
           "type" : "CARD_PLAYED_AT",
+          "isFront" : true,
           "card" : "RES_25",
           "x" : 3,
           "y" : -1
@@ -429,6 +438,7 @@
       "assertions" : [
         {
           "type" : "CARD_PLAYED_AT",
+          "isFront" : true,
           "card" : "GOLD_3",
           "x" : -3,
           "y" : -1
@@ -469,6 +479,7 @@
         {
           "type" : "CARD_PLAYED_AT",
           "card" : "RES_15",
+          "isFront" : true,
           "x" : 0,
           "y" : -1
         },
@@ -494,6 +505,7 @@
       "assertions" : [
         {
           "type" : "CARD_PLAYED_AT",
+          "isFront" : false,
           "card" : "GOLD_35",
           "x" : 5,
           "y" : -3
@@ -520,6 +532,7 @@
       "assertions" : [
         {
           "type" : "CARD_PLAYED_AT",
+          "isFront" : true,
           "card" : "GOLD_28",
           "x" : 2,
           "y" : 1
@@ -546,6 +559,7 @@
       "assertions" : [
         {
           "type" : "CARD_PLAYED_AT",
+          "isFront" : true,
           "card" : "GOLD_34",
           "x" : 6,
           "y" : -4
@@ -598,6 +612,7 @@
       "assertions" : [
         {
           "type" : "CARD_PLAYED_AT",
+          "isFront" : true,
           "card" : "GOLD_9",
           "x" : -1,
           "y" : 1

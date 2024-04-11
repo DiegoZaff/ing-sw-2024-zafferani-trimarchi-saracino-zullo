@@ -37,8 +37,8 @@ public class Player {
 
     }
 
-    public ArrayList<CardObjective> getObjectivesToChoose(){
-        return objectivesToChoose;
+    public Optional<ArrayList<CardObjective>> getObjectivesToChoose(){
+        return Optional.ofNullable(objectivesToChoose);
     }
 
     public void setObjectivesToChoose(ArrayList<CardObjective> objectivesToChoose) {

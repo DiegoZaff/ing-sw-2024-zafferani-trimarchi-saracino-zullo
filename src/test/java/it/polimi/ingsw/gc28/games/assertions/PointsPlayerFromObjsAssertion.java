@@ -35,6 +35,6 @@ public class PointsPlayerFromObjsAssertion  extends GameAssertion{
 
     @Override
     public String toString() {
-        return String.format("PointsPlayerFromObjsAssertion Assertion --- expectedPoints: %s, actual: %s", points, actualPoints);
+        return String.format("PointsPlayerFromObjsAssertion --- expectedPoints: %d, actual: %d", points, actualPoints);
     }
 }

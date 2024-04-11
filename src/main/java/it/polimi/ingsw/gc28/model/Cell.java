@@ -14,6 +14,10 @@ public class Cell {
 
     private final boolean isPlayedFront;
 
+    public boolean getIsPlayedFront(){
+        return isPlayedFront;
+    }
+
 
     public Cell(CardGame card, int orderPlay, boolean isPlayedFront) {
         this.card = card;
