@@ -2,12 +2,9 @@ package it.polimi.ingsw.gc28.model;
 
 import java.io.FileReader;
 
-import it.polimi.ingsw.gc28.games.assertions.GameAssertion;
+import it.polimi.ingsw.gc28.games.assertions.*;
 import it.polimi.ingsw.gc28.games.moves.Move;
 import it.polimi.ingsw.gc28.games.TestingDeck;
-import it.polimi.ingsw.gc28.games.assertions.NextPlayerTurnGameAssertion;
-import it.polimi.ingsw.gc28.games.assertions.PointsPlayerGameAssertion;
-import it.polimi.ingsw.gc28.games.assertions.WinnerGameAssertion;
 import it.polimi.ingsw.gc28.games.assertions.utils.GameAssertionType;
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.model.cards.CardGame;
@@ -163,6 +160,13 @@ public class GameTest {
                         GameAssertionType type = GameAssertionType.valueOf(astType);
 
                         GameAssertion gameAssertion;
+
+                        if(type.equals(GameAssertionType.CARD_PLAYED_AT)){
+                            String nick = (String) astObj.get("nick");
+                            String cardId = (String) astObj.get("card");
+
+                            gameAssertion = new CardPlayedAtGameAssertion(cardId, nick);
+                        }
 
                         if(type.equals(GameAssertionType.POINTS_OF_PLAYER)){
                             String nick = (String) astObj.get("nick");
