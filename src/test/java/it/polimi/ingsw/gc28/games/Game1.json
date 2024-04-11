@@ -97,6 +97,7 @@
       "assertions" : [
         {
           "type" : "OBJ_CHOSEN",
+          "name" : "Diego",
           "card" : "OBJ_9"
         },
         {
@@ -118,6 +119,7 @@
       "assertions" : [
         {
           "type" : "OBJ_CHOSEN",
+          "name" : "Ale",
           "card" : "OBJ_5"
         },
         {
@@ -157,6 +159,7 @@
         },
         {
           "type" : "CARD_PLAYED_AT",
+          "name" : "Diego",
           "card" : "RES_12",
           "isFront" : true,
           "x" : 1,
@@ -209,6 +212,7 @@
         },
         {
           "type" : "CARD_PLAYED_AT",
+          "name" : "Ale",
           "isFront" : true,
           "card" : "RES_11",
           "x" : 1,
@@ -261,6 +265,7 @@
         },
         {
           "type" : "CARD_PLAYED_AT",
+          "name" : "Diego",
           "isFront" : true,
           "card" : "RES_32",
           "x" : 1,
@@ -305,6 +310,7 @@
       "assertions" : [
         {
           "type" : "CARD_PLAYED_AT",
+          "name" : "Diego",
           "isFront" : true,
           "card" : "GOLD_26",
           "x" : 2,
@@ -345,6 +351,7 @@
       "assertions" : [
         {
           "type" : "CARD_PLAYED_AT",
+          "name" : "Diego",
           "isFront" : false,
           "card" : "GOLD_21",
           "x" : -1,
@@ -372,6 +379,7 @@
       "assertions" : [
         {
           "type" : "CARD_PLAYED_AT",
+          "name" : "Ale",
           "isFront" : true,
           "card" : "GOLD_1",
           "x" : 2,
@@ -412,6 +420,7 @@
       "assertions" : [
         {
           "type" : "CARD_PLAYED_AT",
+          "name" : "Ale",
           "isFront" : true,
           "card" : "RES_25",
           "x" : 3,
@@ -439,6 +448,7 @@
       "assertions" : [
         {
           "type" : "CARD_PLAYED_AT",
+          "name" : "Diego",
           "isFront" : true,
           "card" : "GOLD_3",
           "x" : -3,
@@ -479,6 +489,7 @@
       "assertions" : [
         {
           "type" : "CARD_PLAYED_AT",
+          "name" : "Diego",
           "card" : "RES_15",
           "isFront" : true,
           "x" : 0,
@@ -506,6 +517,7 @@
       "assertions" : [
         {
           "type" : "CARD_PLAYED_AT",
+          "name" : "Ale",
           "isFront" : false,
           "card" : "GOLD_35",
           "x" : 5,
@@ -533,6 +545,7 @@
       "assertions" : [
         {
           "type" : "CARD_PLAYED_AT",
+          "name" : "Diego",
           "isFront" : true,
           "card" : "GOLD_28",
           "x" : 2,
@@ -560,6 +573,7 @@
       "assertions" : [
         {
           "type" : "CARD_PLAYED_AT",
+          "name" : "Ale",
           "isFront" : true,
           "card" : "GOLD_34",
           "x" : 6,
@@ -613,6 +627,7 @@
       "assertions" : [
         {
           "type" : "CARD_PLAYED_AT",
+          "name" : "Diego",
           "isFront" : true,
           "card" : "GOLD_9",
           "x" : -1,

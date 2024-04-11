@@ -159,30 +159,75 @@ public class GameTest {
                         GameAssertion gameAssertion;
 
                         if(type.equals(GameAssertionType.CARD_PLAYED_AT)){
-                            String nick = (String) astObj.get("nick");
-                            String cardId = (String) astObj.get("card");
+                            String card = (String) astObj.get("card");
+                            String namePlayer = (String) astObj.get("name");
+                            boolean isPlayedFront = (boolean) astObj.get("isFront");
+                            int x = ((Long) astObj.get("x")).intValue();
+                            int y = ((Long) astObj.get("y")).intValue();
 
-                            gameAssertion = new CardPlayedAtGameAssertion();
+                            gameAssertion = new CardPlayedAtGameAssertion(card, namePlayer, x, y, isPlayedFront);
+                            gameAssertions.add(gameAssertion);
+
                         }else if(type.equals(GameAssertionType.PLAYERS_REGISTERED)){
+                            int value = ((Long) astObj.get("value")).intValue();
+
+                            gameAssertion = new PlayerRegisteredGameAssertion(value);
+                            gameAssertions.add(gameAssertion);
 
                         }else if(type.equals(GameAssertionType.GAME_STARTED)){
+                            boolean state = (boolean) astObj.get("state");
+
+                            gameAssertion = new GameStartedGameAssertion(state);
+                            gameAssertions.add(gameAssertion);
 
                         }else if(type.equals(GameAssertionType.FIRST_PLAYER)){
+                            String namePlayer = (String) astObj.get("value");
+
+                            gameAssertion = new FirstPlayerGameAssertion(namePlayer);
+                            gameAssertions.add(gameAssertion);
 
                         }else if(type.equals(GameAssertionType.GLOBAL_OBJ)){
+                            String card1 = (String) astObj.get("card1");
+                            String card2 = (String) astObj.get("card2");
+
+                            gameAssertion = new GlobalObjectivesGameAssertion(card1, card2);
+                            gameAssertions.add(gameAssertion);
 
                         }else if(type.equals(GameAssertionType.FACE_UP_CARDS_RES)){
+                            String card1 = (String) astObj.get("card1");
+                            String card2 = (String) astObj.get("card2");
 
+                            gameAssertion = new FaceUpCardsResGameAssertion(card1, card2);
+                            gameAssertions.add(gameAssertion);
                         }else if(type.equals(GameAssertionType.FACE_UP_CARDS_GOLD)){
+                            String card1 = (String) astObj.get("card1");
+                            String card2 = (String) astObj.get("card2");
 
+                            gameAssertion = new FaceUpCardsGoldGameAssertion(card1, card2);
+                            gameAssertions.add(gameAssertion);
                         }else if(type.equals(GameAssertionType.OBJS_TO_CHOOSE)){
+                            String card1 = (String) astObj.get("card1");
+                            String card2 = (String) astObj.get("card2");
+                            String namePlayer = (String) astObj.get("name");
+
+                            gameAssertion = new ObjectiveToChooseAssertion(card1, card2, namePlayer);
+                            gameAssertions.add(gameAssertion);
 
                         }else if(type.equals(GameAssertionType.OBJ_CHOSEN)){
+                            String card = (String) astObj.get("card");
+                            String namePlayer = (String) astObj.get("name");
+
+                            gameAssertion = new ObjChosenAssertion(namePlayer, card);
+                            gameAssertions.add(gameAssertion);
 
                         } else if(type.equals(GameAssertionType.HAND_OF_PLAYER)) {
+                            String card1 = (String) astObj.get("card1");
+                            String card2 = (String) astObj.get("card2");
+                            String card3 = (String) astObj.get("card3");
+                            String namePlayer = (String) astObj.get("name");
 
-                        } else if(type.equals(GameAssertionType.CARD_PLAYED_AT)){
-
+                            gameAssertion = new HandOfPlayerAssertion(card1,card2,card3, namePlayer);
+                            gameAssertions.add(gameAssertion);
                         }
                         else if(type.equals(GameAssertionType.POINTS_OF_PLAYER)){
                             String nick = (String) astObj.get("nick");
