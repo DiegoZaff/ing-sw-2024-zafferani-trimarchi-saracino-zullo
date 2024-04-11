@@ -14,7 +14,7 @@ import java.util.Optional;
 public class Table {
 
 
-    private Map<Coordinate, Cell> mapPositions;
+    private final Map<Coordinate, Cell> mapPositions;
 
     // ? I would remove playableCoords and replace it with a function
     // ? isPlayable(Coordinate coord) which checks if coord is playable based on
@@ -30,20 +30,16 @@ public class Table {
 
 
 
-    public ArrayList<Coordinate> getPlayableCoords() {
-        return playableCoords;
-    }
-
-    private ArrayList<Coordinate> playableCoords;
-
-    private ArrayList<Coordinate> unplayableCoords;
-
-    private Map<Resource, Integer> resourceCounters;
 
 
-    public ArrayList<Coordinate> getUnplayableCoords() {
-        return unplayableCoords;
-    }
+    private final ArrayList<Coordinate> playableCoords;
+
+    private final ArrayList<Coordinate> unplayableCoords;
+
+    private final Map<Resource, Integer> resourceCounters;
+
+
+
 
 
     public Map<Coordinate, Cell> GetMapPositions(){
@@ -57,8 +53,8 @@ public class Table {
     public Table(){
         mapPositions = new HashMap<>();
         resourceCounters = new HashMap<>();
-        playableCoords = new ArrayList<Coordinate>();
-        unplayableCoords = new ArrayList<Coordinate>();
+        playableCoords = new ArrayList<>();
+        unplayableCoords = new ArrayList<>();
 
         playableCoords.add(new Coordinate(0,0));
 
@@ -72,16 +68,21 @@ public class Table {
     }
 
 
-    public void addUnplayableCoordinate (Coordinate coordinatesToAdd){
-        unplayableCoords.add(coordinatesToAdd);
-    }
 
-    public void addPlayableCoordinate (Coordinate coordinatesToAdd){
-        playableCoords.add(coordinatesToAdd);
-    }
+
+
 
     public void removePlayableCoordinate (Coordinate coordinatesToRemove){
-        playableCoords.remove(coordinatesToRemove);
+        int n = 0;
+        if (playableCoords.contains(coordinatesToRemove)){
+            for (Coordinate c : playableCoords){
+                if (c.equals(coordinatesToRemove)){
+                     playableCoords.remove(n);
+                     break;
+                }
+                n++;
+            }
+        }
     }
 
 
@@ -100,10 +101,8 @@ public class Table {
         if (unplayableCoords.contains(coordinate)){
             return false;
         }
-        if (!playableCoords.contains(coordinate)){
-            return false;
-        }   // a questo punto non basta fare if (!playableCoords.contains(coordinate)){return true} e toglier ela riga sotto
-        return true;
+        // a questo punto non basta fare if (!playableCoords.contains(coordinate)){return true} e toglier ela riga sotto
+        return playableCoords.contains(coordinate);
     }
 
     public void addMapPosition(Coordinate playCoordinate, Cell cell){
@@ -256,7 +255,7 @@ public class Table {
 
     private void hasNotCornerUpdate(Coordinate c){
         unplayableCoords.add(c);
-        playableCoords.remove(c);
+        removePlayableCoordinate(c);
     }
 
     private void updateNWCoordinate(Coordinate coordinate){
