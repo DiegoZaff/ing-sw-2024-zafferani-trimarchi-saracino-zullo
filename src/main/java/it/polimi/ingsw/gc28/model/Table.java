@@ -54,6 +54,7 @@ public class Table {
         mapPositions = new HashMap<>();
         resourceCounters = new HashMap<>();
         playableCoords = new ArrayList<>();
+        playableCoords.add(new Coordinate(0,0));
         unplayableCoords = new ArrayList<>();
 
         //! recourceCounter must be initialized

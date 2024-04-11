@@ -257,19 +257,24 @@ public class Game {
      * @param coordinates indicates the coordinate where the card has to be played
      */
     public void playGameCard (Player playingPlayer, CardGame playedCard, boolean isFront, Coordinate coordinates ) {
-        ActionType actionRequested = ActionType.PLAY_CARD;
+        ActionType actionRequested = playedCard.getIntendedAction();
 
         if(!actionManager.validatesMove(playingPlayer, actionRequested)){
             return;
         }
 
-        playingPlayer.playCard(playedCard, isFront, coordinates);
+        try{
+            playingPlayer.playCard(playedCard, isFront, coordinates);
 
-        // clean up all errors after a move is done successfully.
-        errorManager.cleanUpAllErrors();
+            // clean up all errors after a move is done successfully.
+            errorManager.cleanUpAllErrors();
 
-        // set up attributes for next turn.
-        setupNextMove();
+            // set up attributes for next turn.
+            setupNextMove();
+        }catch (Exception e) {
+            System.err.println("Error playing Card " + playedCard);
+        }
+
 
     }
 

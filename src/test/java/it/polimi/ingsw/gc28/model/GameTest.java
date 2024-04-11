@@ -306,7 +306,7 @@ public class GameTest {
             Object firstPlayerObj = jsonObject.get("firstPlayer");
             int firstPlayer = ((Long) firstPlayerObj).intValue();
 
-            this.game = new Game(4, this.deck, firstPlayer);
+            this.game = new Game(2, this.deck, firstPlayer);
 
         } catch (Exception e) {
             fail("Error while reading Game " + i + ":\n" + e.getMessage());

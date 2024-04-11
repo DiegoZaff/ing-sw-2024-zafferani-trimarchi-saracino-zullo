@@ -27,4 +27,9 @@ public abstract class Card {
         Card other = (Card) obj;
         return this.id.equals(other.id);
     }
+
+    @Override
+    public String toString(){
+        return id;
+    }
 }
