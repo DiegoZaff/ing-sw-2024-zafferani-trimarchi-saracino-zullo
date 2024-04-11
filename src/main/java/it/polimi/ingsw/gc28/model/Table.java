@@ -1,6 +1,10 @@
 package it.polimi.ingsw.gc28.model;
 
 import it.polimi.ingsw.gc28.model.resources.Resource;
+import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
+import it.polimi.ingsw.gc28.model.resources.ResourceSpecial;
+import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
+import it.polimi.ingsw.gc28.model.resources.utils.ResourceSpecialType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,10 +57,18 @@ public class Table {
     public Table(){
         mapPositions = new HashMap<>();
         resourceCounters = new HashMap<>();
-        playableCoords = new ArrayList<>();
-        unplayableCoords = new ArrayList<>();
+        playableCoords = new ArrayList<Coordinate>();
+        unplayableCoords = new ArrayList<Coordinate>();
 
-        //! recourceCounter must be initialized
+        playableCoords.add(new Coordinate(0,0));
+
+        for (ResourcePrimaryType r : ResourcePrimaryType.values()){
+            resourceCounters.put(new ResourcePrimary(r), 0);
+        }
+        for (ResourceSpecialType r : ResourceSpecialType.values()){
+            resourceCounters.put(new ResourceSpecial(r), 0);
+        }
+
     }
 
 
@@ -238,15 +250,13 @@ public class Table {
     }
     private void hasCornerUpdate(Coordinate c){
         if (!mapPositions.containsKey(c) && !unplayableCoords.contains(c)){
-            addPlayableCoordinate(c);
+            playableCoords.add(c);
         }
     }
 
     private void hasNotCornerUpdate(Coordinate c){
-        addUnplayableCoordinate(c);
-        if (playableCoords.contains(c)){
-            removePlayableCoordinate(c);
-        }
+        unplayableCoords.add(c);
+        playableCoords.remove(c);
     }
 
     private void updateNWCoordinate(Coordinate coordinate){
