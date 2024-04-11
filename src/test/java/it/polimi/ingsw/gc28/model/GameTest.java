@@ -71,15 +71,24 @@ public class GameTest {
             ArrayList<String> playersList = convertJSONArrayToListStrings(players);
 
 
-            this.deck = new Deck(deckCardResourcesArray,
-                    deckCardGoldArray,
-                    deckCardInitialArray,
-                    deckCardObjectivesArray);
+
 
             this.deckCopy = new TestingDeck(deckCardResourcesArray,
                     deckCardGoldArray,
                     deckCardInitialArray,
                     deckCardObjectivesArray);
+
+            ArrayList<CardResource> cardResourcesOrdered = this.deckCopy.cardResourcesOrdered;
+            ArrayList<CardGold> cardGoldOrdered = this.deckCopy.cardGoldOrdered;
+            ArrayList<CardInitial> cardInitialOrdered = this.deckCopy.cardInitialOrdered;
+            ArrayList<CardObjective> cardObjectiveOrdered = this.deckCopy.cardObjectiveOrdered;
+
+
+
+            this.deck = new Deck(cardResourcesOrdered,
+                    cardGoldOrdered,
+                    cardInitialOrdered,
+                    cardObjectiveOrdered);
 
             JSONArray moves = (JSONArray) jsonObject.get("moves");
 

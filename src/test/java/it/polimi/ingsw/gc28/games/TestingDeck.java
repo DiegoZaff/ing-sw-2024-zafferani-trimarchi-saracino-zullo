@@ -12,16 +12,23 @@ import java.util.Optional;
 public class TestingDeck extends Deck {
 
     public ArrayList<CardInitial> deckCardInitials = new ArrayList<>();
+    public ArrayList<CardInitial> cardInitialOrdered = new ArrayList<>();
 
     public ArrayList<CardResource> deckCardResource = new ArrayList<>();
+    public ArrayList<CardResource> cardResourcesOrdered = new ArrayList<>();
+
 
     public ArrayList<CardGold> deckCardGolds = new ArrayList<>();
+    public ArrayList<CardGold> cardGoldOrdered = new ArrayList<>();
+
 
     public ArrayList<CardObjective> deckCardObjectives = new ArrayList<>();
+    public ArrayList<CardObjective> cardObjectiveOrdered = new ArrayList<>();
+
 
 
     public TestingDeck(ArrayList<String> deckCardResources, ArrayList<String> deckCardGold, ArrayList<String> deckCardInitial, ArrayList<String> deckCardObjective) throws Exception {
-        super(deckCardResources, deckCardGold, deckCardInitial, deckCardObjective);
+        super();
 
         for(int i = 0; i < deckCardInitial.size(); i++){
             Optional<CardInitial> card = super.nextInitial();
@@ -33,6 +40,14 @@ public class TestingDeck extends Deck {
             deckCardInitials.add(card.get());
         }
 
+
+        for(String cardId : deckCardInitial){
+            Optional<CardInitial> card = this.getCardInitialFromId(cardId);
+            cardInitialOrdered.add(card.get());
+        }
+
+
+
         for(int i = 0; i < deckCardResources.size(); i++){
             Optional<CardResource> card = super.nextResource();
 
@@ -41,6 +56,11 @@ public class TestingDeck extends Deck {
             }
 
             deckCardResource.add(card.get());
+        }
+
+        for(String cardId : deckCardResources){
+            Optional<CardResource> card = this.getCardResFromId(cardId);
+            cardResourcesOrdered.add(card.get());
         }
 
         for(int i = 0; i < deckCardGold.size(); i++){
@@ -53,6 +73,11 @@ public class TestingDeck extends Deck {
             deckCardGolds.add(card.get());
         }
 
+        for(String cardId : deckCardGold){
+            Optional<CardGold> card = this.getCardGoldFromId(cardId);
+            cardGoldOrdered.add(card.get());
+        }
+
         for(int i = 0; i < deckCardObjective.size(); i++){
             Optional<CardObjective> card = super.nextObjective();
 
@@ -61,6 +86,11 @@ public class TestingDeck extends Deck {
             }
 
             deckCardObjectives.add(card.get());
+        }
+
+        for(String cardId : deckCardObjective){
+            Optional<CardObjective> card = this.getCardObjectiveFromId(cardId);
+            cardObjectiveOrdered.add(card.get());
         }
     }
 

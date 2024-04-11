@@ -21,10 +21,10 @@ import java.util.Random;
  * Class that represents the deck of cards.
  */
 public class Deck {
-    private final ArrayList<CardResource> cardResourceDeck = new ArrayList<CardResource>();
-    private final ArrayList<CardGold> cardGoldDeck = new ArrayList<CardGold>();
-    private final ArrayList<CardInitial> cardInitialDeck = new ArrayList<CardInitial>();
-    private final ArrayList<CardObjective> cardObjectiveDeck = new ArrayList<CardObjective>();
+    private final ArrayList<CardResource> cardResourceDeck;
+    private final ArrayList<CardGold> cardGoldDeck;
+    private final ArrayList<CardInitial> cardInitialDeck;
+    private final ArrayList<CardObjective> cardObjectiveDeck;
 
     /**
      * This method shuffles each type of deck randomly.
@@ -100,6 +100,11 @@ public class Deck {
       This constructor generates a deck of cards
      */
     public Deck() throws IOException {
+        cardResourceDeck = new ArrayList<>();
+        cardGoldDeck = new ArrayList<>();
+        cardInitialDeck = new ArrayList<>();
+        cardObjectiveDeck = new ArrayList<>();
+
         JSONParser jsonParser = new JSONParser();
         String path = "./src/main/java/it/polimi/ingsw/gc28/Cards.json";
         FileReader reader = new FileReader(path);
@@ -257,15 +262,14 @@ public class Deck {
      * This method is used for testing purposes to make decks with known ordered cards
      * due to applied permutations.
      */
-    public Deck(ArrayList<String> deckCardResourcesPermutations,
-                ArrayList<String> deckCardGoldPermutations,
-                ArrayList<String> deckCardInitialPermutations,
-                ArrayList<String> deckCardObjectivePermutations) throws  IOException{
-        this();
-        //this.mixFromPermutation(cardInitialDeck, deckCardInitialPermutations);
-        //this.mixFromPermutation(cardGoldDeck, deckCardGoldPermutations);
-        //this.mixFromPermutation(cardObjectiveDeck, deckCardObjectivePermutations);
-        //this.mixFromPermutation(cardResourceDeck, deckCardResourcesPermutations);
+    public Deck(ArrayList<CardResource> deckCardResources,
+                ArrayList<CardGold> deckCardGold,
+                ArrayList<CardInitial> deckCardInitial,
+                ArrayList<CardObjective> deckCardObjective) throws  IOException{
+        this.cardResourceDeck = deckCardResources;
+        this.cardGoldDeck = deckCardGold;
+        this.cardInitialDeck = deckCardInitial;
+        this.cardObjectiveDeck = deckCardObjective;
     }
 
     /**
