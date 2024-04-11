@@ -68,7 +68,7 @@ public class Table {
         for (ResourceSpecialType r : ResourceSpecialType.values()){
             resourceCounters.put(new ResourceSpecial(r), 0);
         }
-
+        //prova
     }
 
 
