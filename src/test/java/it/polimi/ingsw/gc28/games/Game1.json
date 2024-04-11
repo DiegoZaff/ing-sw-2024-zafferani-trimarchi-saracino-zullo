@@ -25,7 +25,8 @@
           "value" : 2
         },
         {
-          "type" : "GAME_STARTED"
+          "type" : "GAME_STARTED",
+          "state" : true
         },
         {
           "type" : "FIRST_PLAYER",

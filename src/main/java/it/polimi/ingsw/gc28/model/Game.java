@@ -52,6 +52,18 @@ public class Game {
         return Optional.ofNullable(roundsLeft);
     }
 
+    public ArrayList<CardResource> getFaceUpResourceCards() {
+        return faceUpResourceCards;
+    }
+
+    public ArrayList<CardGold> getFaceUpGoldCards() {
+        return faceUpGoldCards;
+    }
+
+    public ArrayList<CardObjective> getGlobalObjectives() {
+        return globalObjectives;
+    }
+
     public Game(int nPlayers) throws IOException, IllegalArgumentException, IllegalStateException {
         this.nPlayers = nPlayers;
 
@@ -473,5 +485,9 @@ public class Game {
      */
     public ArrayList<Player> getWinners(){
         return players.stream().filter(Player::isWinner).collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    public Player getFirstPlayer(){
+        return actionManager.getFirstPlayer();
     }
 }
