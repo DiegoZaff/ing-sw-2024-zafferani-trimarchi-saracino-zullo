@@ -44,14 +44,21 @@ public abstract class Move {
         if(action.equals(ActionType.JOIN_GAME)){
             return new JoinGameMove(player, gameAssertions);
         } else if (action.equals(ActionType.PLAY_INITIAL_CARD)) {
-            return new PlayCardGameMove(player, isFront, card, gameAssertions);
+            return new PlayCardGameMove(player, isFront, cardInitial, gameAssertions);
         } else if (action.equals(ActionType.PLAY_CARD)) {
-            return new PlayCardGameMove(player, isFront, card, coord, gameAssertions);
+            if(cardRes != null) {
+                return new PlayCardGameMove(player, isFront, cardRes, coord, gameAssertions);
+            }
+            return new PlayCardGameMove(player, isFront, cardGold, coord, gameAssertions);
+
         } else if (action.equals(ActionType.DRAW_CARD)) {
             if (fromGoldDeck != null) {
                 return new DrawCardMove(player, gameAssertions, fromGoldDeck);
             }
-            return new DrawCardMove(player, gameAssertions,(CardResource) card);
+            if(cardRes != null) {
+                return new DrawCardMove(player, gameAssertions, cardRes);
+            }
+            return new DrawCardMove(player, gameAssertions, cardGold);
         } else if (action.equals(ActionType.CHOOSE_OBJ)) {
             return new ChooseObjectiveMove(player, gameAssertions, cardObj);
         } else  {

@@ -15,9 +15,9 @@ public class TestingDeck extends Deck {
 
     public ArrayList<CardResource> deckCardResource = new ArrayList<>();
 
-    public ArrayList<CardGold> deckCardGold = new ArrayList<>();
+    public ArrayList<CardGold> deckCardGolds = new ArrayList<>();
 
-    public ArrayList<CardObjective> deckCardObjective = new ArrayList<>();
+    public ArrayList<CardObjective> deckCardObjectives = new ArrayList<>();
 
 
     public TestingDeck(ArrayList<String> deckCardResources, ArrayList<String> deckCardGold, ArrayList<String> deckCardInitial, ArrayList<String> deckCardObjective) throws Exception {
@@ -50,7 +50,7 @@ public class TestingDeck extends Deck {
                 throw new Exception();
             }
 
-            deckCardGold.add(card.get());
+            deckCardGolds.add(card.get());
         }
 
         for(int i = 0; i < deckCardObjective.size(); i++){
@@ -60,7 +60,7 @@ public class TestingDeck extends Deck {
                 throw new Exception();
             }
 
-            deckCardObjective.add(card.get());
+            deckCardObjectives.add(card.get());
         }
     }
 
@@ -72,7 +72,7 @@ public class TestingDeck extends Deck {
     }
 
     public Optional<CardGold> getCardGoldFromId(String cardId){
-        Optional<CardGold> card = deckCardGold.stream()
+        Optional<CardGold> card = deckCardGolds.stream()
                 .filter(cardGold -> cardGold.getId().equals(cardId))
                 .findFirst();
         return card;
@@ -86,7 +86,7 @@ public class TestingDeck extends Deck {
     }
 
     public Optional<CardObjective> getCardObjectiveFromId(String cardId){
-        Optional<CardObjective> card = deckCardObjective.stream()
+        Optional<CardObjective> card = deckCardObjectives.stream()
                 .filter(cardObjective -> cardObjective.getId().equals(cardId))
                 .findFirst();
         return card;

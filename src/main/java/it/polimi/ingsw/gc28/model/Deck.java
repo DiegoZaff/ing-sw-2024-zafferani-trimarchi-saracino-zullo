@@ -262,10 +262,10 @@ public class Deck {
                 ArrayList<String> deckCardInitialPermutations,
                 ArrayList<String> deckCardObjectivePermutations) throws  IOException{
         this();
-        this.mixFromPermutation(cardInitialDeck, deckCardInitialPermutations);
-        this.mixFromPermutation(cardGoldDeck, deckCardGoldPermutations);
-        this.mixFromPermutation(cardObjectiveDeck, deckCardObjectivePermutations);
-        this.mixFromPermutation(cardResourceDeck, deckCardResourcesPermutations);
+        //this.mixFromPermutation(cardInitialDeck, deckCardInitialPermutations);
+        //this.mixFromPermutation(cardGoldDeck, deckCardGoldPermutations);
+        //this.mixFromPermutation(cardObjectiveDeck, deckCardObjectivePermutations);
+        //this.mixFromPermutation(cardResourceDeck, deckCardResourcesPermutations);
     }
 
     /**
