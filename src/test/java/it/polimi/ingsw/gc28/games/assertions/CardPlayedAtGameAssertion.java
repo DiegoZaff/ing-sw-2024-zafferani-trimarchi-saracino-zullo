@@ -31,7 +31,7 @@ public class CardPlayedAtGameAssertion extends  GameAssertion{
 
     @Override
     public boolean verifyAssertion(Game game) {
-        Optional<Player> player = game.getPlayers().stream().filter((p) -> p.getName().equals(nickname)).findFirst();
+        Optional<Player> player = super.getPlayerFromNick(nickname, game);
 
         if(player.isEmpty()){
             System.err.println("Non existent player");
