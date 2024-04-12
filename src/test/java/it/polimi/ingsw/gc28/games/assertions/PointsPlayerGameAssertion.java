@@ -8,6 +8,7 @@ import java.util.Optional;
 public class PointsPlayerGameAssertion extends GameAssertion{
 
     private final int points;
+    private int actualPoints;
 
     private final String nickname;
 
@@ -25,11 +26,12 @@ public class PointsPlayerGameAssertion extends GameAssertion{
             return false;
         }
 
-        return player.get().getPoints() == this.points;
+        actualPoints = player.get().getPoints();
+        return actualPoints == this.points;
     }
 
     @Override
     public String toString() {
-        return "PointsOfPlayer Assertion";
+        return String.format("PointsPlayerGameAssertion --- expectedPoints: %d, actual: %d", points, actualPoints);
     }
 }
