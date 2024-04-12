@@ -545,7 +545,7 @@
       "cardId" : "GOLD_28",
       "isFront" : true,
       "x" : 2,
-      "y" : 1,
+      "y" : 2,
       "assertions" : [
         {
           "type" : "CARD_PLAYED_AT",
@@ -553,7 +553,7 @@
           "isFront" : true,
           "card" : "GOLD_28",
           "x" : 2,
-          "y" : 1
+          "y" : 2
         },
         {
           "type": "POINTS_OF_PLAYER",
