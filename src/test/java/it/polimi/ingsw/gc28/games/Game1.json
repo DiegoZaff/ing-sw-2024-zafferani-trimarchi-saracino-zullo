@@ -489,7 +489,7 @@
       "cardId" : "RES_15",
       "isFront" : true,
       "x" : 0,
-      "y" : -1,
+      "y" : -2,
       "assertions" : [
         {
           "type" : "CARD_PLAYED_AT",
@@ -497,7 +497,7 @@
           "card" : "RES_15",
           "isFront" : true,
           "x" : 0,
-          "y" : -1
+          "y" : -2
         },
         {
           "type": "POINTS_OF_PLAYER",
