@@ -130,7 +130,7 @@ public class ActionManager {
             }
             case PLAY_CARD -> {
                 // TODO DONE : if roundsLeft <= numberOfPlayers - 1 => actionType = PLAY_CARD & nextPlayer aggiornato
-                if(roundsLeft != null && roundsLeft < nPlayers - 1){
+                if(getRoundsLeft().isPresent() && roundsLeft <= nPlayers){
                     // actionType remains PLAY_CARD
                     playerOfTurn = getNextPlayer();
                     updateRoundsLeft();
@@ -174,7 +174,7 @@ public class ActionManager {
     }
 
     public void updateRoundsLeft(){
-        if(roundsLeft != null && roundsLeft > 0){
+        if(getRoundsLeft().isPresent() && roundsLeft > 0){
             roundsLeft -= 1;
 
             if(roundsLeft == 0){
@@ -185,7 +185,7 @@ public class ActionManager {
 
     public void initRoundsLeft(){
 
-        int roundsToFinishCircle = (indexFirstPlayer - players.indexOf(playerOfTurn) + players.size() - 1) % players.size();
+        int roundsToFinishCircle = ((indexFirstPlayer - players.indexOf(playerOfTurn) + players.size() - 1) % players.size()) * 2 + 1;
 
         int additionalCircle = players.size();
 
