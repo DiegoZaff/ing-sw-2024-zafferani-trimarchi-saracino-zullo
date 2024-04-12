@@ -299,8 +299,8 @@ public class Game {
 
         int maxPoints = 0;
         ArrayList<Player> winners = new ArrayList<>();
-        ArrayList<Player> winnersAfterObjectivePointsCheck = new ArrayList<>();
 
+        // TODO: does this work if all players have 0 points?
         for (Player player : players ) {
             if (player.getPoints() > maxPoints) {
                 maxPoints = player.getPoints();
@@ -311,7 +311,7 @@ public class Game {
             }
         }
 
-
+        ArrayList<Player> winnersAfterObjectivePointsCheck = new ArrayList<>();
         if (winners.size() > 1)
         {
             int maxObjectivePoints = 0;
@@ -328,6 +328,8 @@ public class Game {
                     winnersAfterObjectivePointsCheck.add(player);
                 }
             }
+        }else{
+            winnersAfterObjectivePointsCheck.add(winners.getFirst());
         }
 
         for (Player player : winnersAfterObjectivePointsCheck)
