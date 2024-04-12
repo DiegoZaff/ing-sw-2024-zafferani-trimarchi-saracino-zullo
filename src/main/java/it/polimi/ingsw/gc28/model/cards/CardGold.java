@@ -62,7 +62,7 @@ public class CardGold extends CardResource {
 
     private  boolean checkCardPlayability(Table table){
         for (ResourcePrimary r : playability.keySet()){
-            if (playability.get(r) < table.getResourceCounters().get(r)){
+            if (playability.get(r) > table.getResourceCounters().get(r)){
                 return false;
             }
         }
