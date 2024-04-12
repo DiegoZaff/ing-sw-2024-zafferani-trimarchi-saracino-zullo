@@ -185,7 +185,7 @@ public class ActionManager {
 
     public void initRoundsLeft(){
 
-        int roundsToFinishCircle = (indexFirstPlayer - players.indexOf(playerOfTurn)) % players.size();
+        int roundsToFinishCircle = (indexFirstPlayer - players.indexOf(playerOfTurn) + players.size() - 1) % players.size();
 
         int additionalCircle = players.size();
 
