@@ -1149,7 +1149,7 @@
     {
       "id" : "OBJ_9",
       "points": "2",
-      "positionType" : "MAIN_DIAGONAL",
+      "positionType" : "SECONDARY_DIAGONAL",
       "resourcePrimaryOne" : "LEAF",
       "resourcePrimaryTwo" : "LEAF",
       "resourcePrimaryThree" : "LEAF"
@@ -1157,7 +1157,7 @@
     {
       "id" : "OBJ_10",
       "points": "2",
-      "positionType" : "MAIN_DIAGONAL",
+      "positionType" : "SECONDARY_DIAGONAL",
       "resourcePrimaryOne" : "BUTTERFLY",
       "resourcePrimaryTwo" : "BUTTERFLY",
       "resourcePrimaryThree" : "BUTTERFLY"
@@ -1165,7 +1165,7 @@
     {
       "id" : "OBJ_11",
       "points": "2",
-      "positionType" : "SECONDARY_DIAGONAL",
+      "positionType" : "MAIN_DIAGONAL",
       "resourcePrimaryOne" : "MUSHROOM",
       "resourcePrimaryTwo" : "MUSHROOM",
       "resourcePrimaryThree" : "MUSHROOM"
@@ -1173,7 +1173,7 @@
     {
       "id" : "OBJ_12",
       "points": "2",
-      "positionType" : "SECONDARY_DIAGONAL",
+      "positionType" : "MAIN_DIAGONAL",
       "resourcePrimaryOne" : "FOX",
       "resourcePrimaryTwo" : "FOX",
       "resourcePrimaryThree" : "FOX"

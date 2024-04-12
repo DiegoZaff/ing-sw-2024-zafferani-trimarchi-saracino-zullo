@@ -99,7 +99,7 @@ public class ObjectivePosition extends Objective {
         for(int i = 0; i < cards.size(); i++){
             if(cards.get(i).getObjectiveResource().isEmpty() ||
                     (cards.get(i).getObjectiveResource().isPresent() &&
-                            pattern[i].type != cards.get(i).getObjectiveResource().get().type )){
+                            !pattern[i].type.equals(cards.get(i).getObjectiveResource().get().type ))){
                 return false;
             }
         }

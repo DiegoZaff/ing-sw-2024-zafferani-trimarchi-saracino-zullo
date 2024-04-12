@@ -67,7 +67,7 @@ public class Player {
     }
 
     public int getPoints(){
-        return points;
+        return points + objectivePoints;
     }
 
     public void setWinner(){winner = true;}
