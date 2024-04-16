@@ -14,6 +14,13 @@ import java.util.Optional;
 public class Player {
 
     private int points, objectivePoints;
+
+/*
+    //setter per test calculatewinner è una schifezza si puo togliere;
+    public void setPoints (int pointstoset) {points = pointstoset;};
+    public void setObjectrivePoints (int pointstoset) {objectivePoints = pointstoset;};
+*/
+
     private boolean winner = false;
 
     private final String name;

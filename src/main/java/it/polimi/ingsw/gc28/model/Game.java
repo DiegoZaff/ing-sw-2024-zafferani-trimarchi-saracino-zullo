@@ -337,18 +337,6 @@ public class Game {
             player.setWinner();
         }
 
-        for (Player player : players)
-        {
-            if (player.isWinner())
-            {
-                //print hai vinto
-            }
-            else
-            {
-                //print hai perso
-            }
-        }
-
         //posso farlo con functional
 
     }
