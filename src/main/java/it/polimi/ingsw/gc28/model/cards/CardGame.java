@@ -77,20 +77,16 @@ public abstract class CardGame extends Card {
     /**
     * this method play the card in the front verse
     * @param table indicates the table in which the card is played*
-    * @param playCoordinate indicate the cordinates in which the card should be played
+    * @param playCoordinate indicate the coordinates in which the card should be played
      */
     public abstract void playFront(Table table, Coordinate playCoordinate);
-        // serve per forz aoverride perche il front differisc ela giocabilità tra risorsa e oro
-
 
     /**
      * this method play the card in the back verse
      * @param table indicates the table in which the card is played
-     * @param playCoordinate indicate the cordinates in which the card should be played
+     * @param playCoordinate indicate the coordinates in which the card should be played
      */
     public abstract void playBack(Table table, Coordinate playCoordinate);
-        // credo si possa implementare gia da qui dato che non c'è differenza di giocabilità dei retri
-
 
     /**
      * this method provides a map that contains the number of resource in the vertex in the front of the card
@@ -124,7 +120,7 @@ public abstract class CardGame extends Card {
 
     /**
      * this method return a map with the central resources of the card
-     * @return a map <Resource, Integer><the resource/ the numeber of that resource>
+     * @return a map <Resource, Integer><the resource/ the number of that resource>
      */
     public abstract Map<Resource,Integer> getBackCardResource();
 

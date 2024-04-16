@@ -30,22 +30,15 @@ public class CardResource extends CardGame {
     @Override
     public void playFront(Table table, Coordinate playCoordinate){
 
-        Cell cell = new Cell(this, 0, true);
+        Cell cell = new Cell(this, table.getMapPositions().size(), true);
         table.addMapPosition(playCoordinate, cell);
         table.removePlayableCoordinate(playCoordinate);
-
-        // orderplay è zero alla prima carta piazzata, dopodichè incrementa ad ogni carta piazzata.
-        // Idea: creare attributo lastOrderPlayNumber che è attributo di Table e nel creare la cella si fa get e +1
-
-
     }
 
-    // questi due metodi si occupano per ora solo di piazzare la carta in MapPositions
 
     @Override
     public void playBack(Table table, Coordinate playCoordinate){
-        Cell cell = new Cell(this, 0, false);
-        //da controllare orderPlay, per ora messo a zero
+        Cell cell = new Cell(this, table.getMapPositions().size(), false);
         table.addMapPosition(playCoordinate, cell);
         table.removePlayableCoordinate(playCoordinate);
     }

@@ -243,10 +243,19 @@ public class Game {
         if(has20points){
             actionManager.initRoundsLeft();
         }
+
+        if(this.faceUpResourceCards.isEmpty() && this.faceUpGoldCards.isEmpty()){ //implementazione fine partita con 0 carte a terra
+
+            actionManager.initRoundsLeft();
+
+        }
+
+
+
     }
 
     /**
-     * ! TODO : make it work also when deck is finished and no player has reached 20 points.
+     * ! TODO : make it work also when deck is finished and no player has reached 20 points. IMPLEMENTED! LOOK ABOVE
      **/
     private void endGame(){
         calculateObjectivePoints();
@@ -305,7 +314,7 @@ public class Game {
         int maxPoints = 0;
         ArrayList<Player> winners = new ArrayList<>();
 
-        // TODO: does this work if all players have 0 points?
+        // TODO: does this work if all players have 0 points? YES
         for (Player player : players ) {
             if (player.getPoints() > maxPoints) {
                 maxPoints = player.getPoints();
@@ -340,18 +349,6 @@ public class Game {
         for (Player player : winnersAfterObjectivePointsCheck)
         {
             player.setWinner();
-        }
-
-        for (Player player : players)
-        {
-            if (player.isWinner())
-            {
-                //print hai vinto
-            }
-            else
-            {
-                //print hai perso
-            }
         }
 
         //posso farlo con functional
