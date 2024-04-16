@@ -1,8 +1,10 @@
 package it.polimi.ingsw.gc28.controller;
 
+import it.polimi.ingsw.gc28.model.Game;
 import it.polimi.ingsw.gc28.network.messages.client.MessageC2S;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -26,12 +28,16 @@ public class GamesManager {
     }
 
     // TODO : implement this function
-    public void executeClientMessage(MessageC2S message){
+    public void executeClientMessage(MessageC2S message) throws IOException {
         Optional<String> gameId = message.getGameId();
 
 
         if(gameId.isEmpty()){
-            //message di creazione.
+            GameController newController = new GameController(new Game());
+            //newController
+
+
+
         }else{
             GameController controllerOfGame;
 

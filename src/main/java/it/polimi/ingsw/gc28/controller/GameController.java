@@ -122,5 +122,9 @@ public class GameController {
         return gameModel.playerToPlay();
     }
 
-    //in this class we need to implement the logic behind the call of the methods using syncronized
+    public void setNumberOfPlayers(int n){
+        synchronized (gameModel) {
+            gameModel.setNPlayers(n);
+        }
+    }
 }

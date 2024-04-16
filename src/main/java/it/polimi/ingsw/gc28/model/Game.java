@@ -14,7 +14,7 @@ public class Game {
 
     private final ErrorManager errorManager;
 
-    private final ActionManager actionManager;
+    private ActionManager actionManager;
     private ArrayList<CardObjective> globalObjectives;
     private ArrayList<CardResource> faceUpResourceCards;
     private ArrayList<CardGold> faceUpGoldCards;
@@ -34,7 +34,7 @@ public class Game {
     }
 
 
-    private final int nPlayers;
+    private int nPlayers;
 
     private boolean hasGameStarted = false;
 
@@ -58,8 +58,7 @@ public class Game {
         return globalObjectives;
     }
 
-    public Game(int nPlayers) throws IOException, IllegalArgumentException, IllegalStateException {
-        this.nPlayers = nPlayers;
+    public Game() throws IOException, IllegalArgumentException, IllegalStateException {
 
         this.deck = new Deck();
 
@@ -68,11 +67,17 @@ public class Game {
         this.players = new ArrayList<>();
 
         this.errorManager = new ErrorManager(this.players);
-        this.actionManager = new ActionManager(nPlayers,this.players, this.errorManager, firstPlayerIndex);
 
     }
 
-
+    /**
+     * This method sets the number of players and initialise the action manager.
+     * @param NumPlayers is the number of players.
+     */
+    public void setNPlayers(int NumPlayers){
+        this.nPlayers = NumPlayers;
+        this.actionManager = new ActionManager(nPlayers,this.players, this.errorManager, firstPlayerIndex);
+    }
 
     /**
      * This constructor is used only for testing purposes, because a know deck
