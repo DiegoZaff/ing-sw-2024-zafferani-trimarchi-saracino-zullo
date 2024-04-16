@@ -6,7 +6,6 @@ import it.polimi.ingsw.gc28.model.cards.CardObjective;
 import it.polimi.ingsw.gc28.model.cards.CardResource;
 import it.polimi.ingsw.gc28.model.errors.types.PlayerActionError;
 import it.polimi.ingsw.gc28.model.objectives.Objective;
-import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -103,7 +102,7 @@ public class Player {
 
     /**
      * this method play a card in the table of a player, checking if the coordinate and the card can be played.
-     * if the card is played increments points and modify table recources counters.
+     * if the card is played increments points and modify table resources counters.
      * if the card is played it removes it from hand
      * it throws an IrregularCardException if the card can not be played.
      * it throws an IrregularCoordinateException if the coordinated can not be played.
@@ -113,8 +112,6 @@ public class Player {
      */
     public void playCard(CardGame playedCard, boolean isFront, Coordinate coordinates) throws Exception {
         if (!table.checkPlayability(coordinates)){
-            //potremmo creare una IrregularCoordinateException, da aggiungere
-            // ? maybe updates error attribute inside player and returns.
             throw new Exception();
         }else {
             if (isFront){
@@ -122,8 +119,6 @@ public class Player {
             } else {
                 playedCard.playBack(table, coordinates);
             }
-            //se la carta non viene giocata (carta oro non giocabile) possiamo aggiungere una IrregularCardException
-            //da controllare se viene usato il metodo corretto
 
             table.updateCounters(coordinates);
 
@@ -152,7 +147,7 @@ public class Player {
         }
 
         for(Objective obj: objectives){
-            objectivePoints += obj.calculatePoints(table.GetMapPositions(),table.getResourceCounters());
+            objectivePoints += obj.calculatePoints(table.getMapPositions(),table.getResourceCounters());
         }
     }
     public Optional<CardInitial> getCardInitial(){
