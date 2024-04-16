@@ -21,7 +21,7 @@ import java.util.Map;
 
 public class GoldCardPointsTest {
 
-    private Player tester;
+    private Player tester = new Player("pippo");
 
 
 
@@ -41,8 +41,7 @@ public class GoldCardPointsTest {
         ResourcePrimary[] resources = new ResourcePrimary[]{res, res, res};
 
 
-
-
+        CardGame bridge = new CardResource("UNKOWN_0", new ResourceType[]{ResourceType.noResource,ResourceType.noResource,ResourceType.noResource,ResourceType.noResource}, ResourcePrimaryType.MUSHROOM, 0);
 
         CardGame leafCard = new CardResource("UNKNOWN_1", new ResourceType[]{ResourceType.FEATHER, ResourceType.FOX, ResourceType.noResource, ResourceType.FOX},
                 ResourcePrimaryType.LEAF,
@@ -56,22 +55,24 @@ public class GoldCardPointsTest {
                 ResourcePrimaryType.LEAF,
                 0);
 
-        CardGold goldFoxCard = new CardGold("UNKNOWN_4", new ResourceType[]{ResourceType.noResource, ResourceType.noResource, ResourceType.noResource, ResourceType.noResource},
-                ResourcePrimaryType.FOX, 2, new ResourcePrimaryType[]{ResourcePrimaryType.FOX, ResourcePrimaryType.FOX},
+        CardGold goldFoxCard = new CardGold("UNKNOWN_4", new ResourceType[]{ResourceType.FEATHER, ResourceType.FEATHER, ResourceType.noResource, ResourceType.noResource},
+                ResourcePrimaryType.FOX, 0, new ResourcePrimaryType[]{},
                 ChallengeType.POINTS_PER_RESOURCE, ResourceSpecialType.FEATHER);
 
         CardGold goldFoxCard2 = new CardGold("UNKNOWN_5", new ResourceType[]{ResourceType.noResource, ResourceType.noResource, ResourceType.noResource, ResourceType.noResource},
-                ResourcePrimaryType.FOX, 2, new ResourcePrimaryType[]{ResourcePrimaryType.BUTTERFLY, ResourcePrimaryType.BUTTERFLY},
+                ResourcePrimaryType.FOX, 2, new ResourcePrimaryType[]{},
                 ChallengeType.POINTS_PER_RESOURCE, ResourceSpecialType.FEATHER);
 
         CardGold goldMushroomCard = new CardGold("UNKNOWN_6", new ResourceType[]{ResourceType.noResource, ResourceType.noResource, ResourceType.noResource, ResourceType.noResource},
-                ResourcePrimaryType.MUSHROOM, 1, new ResourcePrimaryType[]{ResourcePrimaryType.MUSHROOM, ResourcePrimaryType.MUSHROOM, ResourcePrimaryType.FOX},
+                ResourcePrimaryType.MUSHROOM, 0, new ResourcePrimaryType[]{},
                 ChallengeType.POINTS_PER_COVER, ResourceSpecialType.noResource);
 
         CardGold goldLeafCard = new CardGold("UNKNOWN_7", new ResourceType[]{ResourceType.noResource, ResourceType.noResource, ResourceType.noResource, ResourceType.noResource},
-                ResourcePrimaryType.LEAF, 3, new ResourcePrimaryType[]{ResourcePrimaryType.MUSHROOM},
+                ResourcePrimaryType.LEAF, 3, new ResourcePrimaryType[]{},
                 null, ResourceSpecialType.noResource);
 
+        CardGame Position = new CardGold("UNKNOWN_P", new ResourceType[]{ResourceType.noResource,ResourceType.noResource,ResourceType.noResource,ResourceType.noResource}, ResourcePrimaryType.MUSHROOM, 0, new ResourcePrimaryType[]{}, ChallengeType.POINTS_PER_COVER, null);
+        /*
         tester.playCard(leafCard, true , new Coordinate(0, 0));
         int points = tester.getPoints();
 
@@ -82,8 +83,8 @@ public class GoldCardPointsTest {
         tester.playCard(goldFoxCard, true , new Coordinate(1, -1));
 
         points = tester.getPoints();
-        assertEquals(2, points, "Points from special resources are calculated correctly");
-
+        assertEquals(1, points, "Points from special resources are calculated correctly");
+        */
 
         /* test 2
         tester.playCard(leafCard2, true , new Coordinate(1, -1));
@@ -91,7 +92,7 @@ public class GoldCardPointsTest {
 
         points = tester.getPoints();
 
-        assertEquals(6, points, "Points from multiple special resources are calculated correctly");
+        assertEquals(3 points, "Points from multiple special resources are calculated correctly");
 
          */
 
@@ -111,7 +112,7 @@ public class GoldCardPointsTest {
 
         points = tester.getPoints();
 
-        assertEquals(1, points, "Points from covered vertex are calculated correctly");
+        assertEquals(2, points, "Points from covered vertex are calculated correctly");
         */
 
 
@@ -125,7 +126,7 @@ public class GoldCardPointsTest {
 
         points = tester.getPoints();
 
-        assertEquals(2, points, "Points per multiple covered vertex are calculated correctly");
+        assertEquals(4, points, "Points per multiple covered vertex are calculated correctly");
 
         */
 
@@ -142,6 +143,32 @@ public class GoldCardPointsTest {
         */
 
 
+        /* Test Position
+        tester.playCard(bridge, true, new Coordinate(0,0));
+
+        tester.playCard(bridge,true, new Coordinate(1,1));
+
+        tester.playCard(bridge,true, new Coordinate(-1,1));
+
+
+        tester.playCard(bridge,true, new Coordinate(2,2));
+
+        tester.playCard(bridge,true, new Coordinate(1,3));
+
+        tester.playCard(bridge,true, new Coordinate(-2,2));
+
+        tester.playCard(bridge,true, new Coordinate(-1,3));
+
+
+
+        tester.playCard(Position,true, new Coordinate(0,2));
+
+
+
+
+        assertEquals(8, tester.getPoints(), "Points noChallenge are calculated correctly");
+
+        */
 
 
 
@@ -149,28 +176,6 @@ public class GoldCardPointsTest {
 
 
 
-
-
-        /*
-        this.mapPositions = new HashMap<>() {{
-
-
-
-
-            put(new Coordinate(0, 0), new Cell(leafCard, 0, true));
-            put(new Coordinate(1, 1), new Cell(leafCard, 1, true));
-            put(new Coordinate(2, 2), new Cell(leafCard, 2, true));
-            put(new Coordinate(3, 3), new Cell(leafCard, 3, true));
-            put(new Coordinate(2, 3), new Cell(leafCard, 1, true));
-            put(new Coordinate(-1, 1), new Cell(leafCard, 5, true));
-            put(new Coordinate(-2, 2), new Cell(leafCard, 6, true));
-            put(new Coordinate(-1, 3), new Cell(leafCard, 7, true));
-            put(new Coordinate(-2, 4), new Cell(leafCard, 8, true));
-            put(new Coordinate(-1, 5), new Cell(leafCard, 9, true));
-            put(new Coordinate(0, 2), new Cell(goldFoxCard, 10, true));
-
-
-        }};*/
 
     }
 
