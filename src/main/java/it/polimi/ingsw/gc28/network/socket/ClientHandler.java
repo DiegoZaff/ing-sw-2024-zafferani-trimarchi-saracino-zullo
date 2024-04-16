@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc28.network.socket;
 
 
 import it.polimi.ingsw.gc28.controller.GameController;
+import it.polimi.ingsw.gc28.controller.GamesManager;
 import it.polimi.ingsw.gc28.network.messages.client.MessageC2S;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
 
@@ -25,10 +26,12 @@ public class ClientHandler implements VirtualView {
     public void runVirtualView() throws IOException {
 
         try {
-            MessageC2S receivedObj = null;
-            while ((receivedObj = (MessageC2S) input.readObject()) != null) {
-                System.out.println("Received message from client: " + receivedObj);
+            MessageC2S receivedMessage = null;
+            while ((receivedMessage = (MessageC2S) input.readObject()) != null) {
+                System.out.println("Received message from client: " + receivedMessage);
 
+
+                GamesManager.getInstance().executeClientMessage(receivedMessage);
                 // TODO: handle message received from the client
                 // TODO: forward message to GamesManager so that the proper controller is attached to this message.
             }

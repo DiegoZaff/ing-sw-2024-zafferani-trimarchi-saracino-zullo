@@ -72,7 +72,7 @@ public class GoldCardPointsTest {
                 null, ResourceSpecialType.noResource);
 
         CardGame Position = new CardGold("UNKNOWN_P", new ResourceType[]{ResourceType.noResource,ResourceType.noResource,ResourceType.noResource,ResourceType.noResource}, ResourcePrimaryType.MUSHROOM, 0, new ResourcePrimaryType[]{}, ChallengeType.POINTS_PER_COVER, null);
-        /*
+
         tester.playCard(leafCard, true , new Coordinate(0, 0));
         int points = tester.getPoints();
 
@@ -83,8 +83,8 @@ public class GoldCardPointsTest {
         tester.playCard(goldFoxCard, true , new Coordinate(1, -1));
 
         points = tester.getPoints();
-        assertEquals(1, points, "Points from special resources are calculated correctly");
-        */
+        assertEquals(3, points, "Points from special resources are calculated correctly");
+
 
         /* test 2
         tester.playCard(leafCard2, true , new Coordinate(1, -1));
