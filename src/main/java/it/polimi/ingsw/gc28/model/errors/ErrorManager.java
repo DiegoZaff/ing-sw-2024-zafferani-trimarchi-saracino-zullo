@@ -42,6 +42,10 @@ public class ErrorManager {
 
     }
 
+    public void fromInvalidDrawMove(Player player){
+        player.setError(new InvalidDrawMoveError());
+    }
+
     public void fromInvalidObjectiveChoice(Player player){
         player.setError(new InvalidObjectiveChoiceError());
     }

@@ -83,9 +83,9 @@ public class CardGold extends CardResource {
         return getChallenge().map(value -> value.challengePoints(table, coordinate)).orElseGet(() -> super.getPoints(table, coordinate));
     }
    @Override
-    public void drawFaceUpCard(ArrayList<CardResource> faceUpResCards, ArrayList<CardGold> faceUpGoldCards, Deck deck, Player player){
+    public void drawFaceUpCard(ArrayList<CardResource> faceUpResCards, ArrayList<CardGold> faceUpGoldCards, Deck deck, Player player) throws RuntimeException{
         if(!faceUpGoldCards.contains(this)){
-            return;
+            throw new RuntimeException("Card Invalid!");
         }
         faceUpGoldCards.remove(this);
         faceUpGoldCards.add(deck.nextGold().get());

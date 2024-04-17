@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc28.network.rmi;
 import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.model.Player;
 import it.polimi.ingsw.gc28.model.Table;
+import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.network.messages.client.MessageC2S;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
 
@@ -33,7 +34,7 @@ public interface VirtualView extends Remote {
       */
      void onGameStarted(ArrayList<Player> players) throws RemoteException;
 
-     void onPlayerPlayedCard(String playerName, Table newTable, int newPlayerPoints, ArrayList<Coordinate> newPlayableCoords) throws RemoteException;
+     void onPlayerPlayedCard(String playerName, Table newTable, int newPlayerPoints) throws RemoteException;
 
      /**
       * when a player draws from a deck.
@@ -53,5 +54,8 @@ public interface VirtualView extends Remote {
      void reportError(String details) throws RemoteException;
 
      void reportMessage(String details) throws RemoteException;
+
+
+     void onNextExpectedPlayerAction(ActionType actionType, String playerOfTurn) throws RemoteException;
 
 }

@@ -32,21 +32,21 @@ public interface VirtualServer extends Remote {
      /**
       * This method if for playing a card.
       */
-     void playGameCard (String playerName, String cardId, boolean isFront, Coordinate coordinate ) throws RemoteException;
+     void playGameCard (String playerName, String cardId, String gameId, boolean isFront, Coordinate coordinate ) throws RemoteException;
 
      /**
       * This method is for drawing a card from goldDeck or resourceDeck
       */
-     void drawGameCard(String playerName, boolean fromGoldDeck) throws  RemoteException;
+     void drawGameCard(String playerName, String gameId, boolean fromGoldDeck) throws  RemoteException;
 
      /**
       * This method is for drawing a card from the visible cards.
       */
-     void drawGameCard(String playerName, String cardId) throws  RemoteException;
+     void drawGameCard(String playerName, String gameId, String cardId) throws  RemoteException;
 
      /**
       * This method is for choosing the objective.
       */
-     void chooseObjective(String playerName, String cardId) throws  RemoteException;
+     void chooseObjective(String playerName, String gameId, String cardId) throws  RemoteException;
 
 }

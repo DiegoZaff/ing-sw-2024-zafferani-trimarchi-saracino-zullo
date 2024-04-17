@@ -25,12 +25,6 @@ public class ChooseObjectiveMove extends Move{
 
     @Override
     public void play(Game game) {
-        Optional<Player> player  =  super.getPlayer(game);
-
-        if(player.isEmpty()){
-            fail("Initialization Error");
-        }
-
-        game.chooseObjective(player.get(), cardObjective);
+        game.chooseObjective(super.getPlayerNick(), cardObjective);
     }
 }

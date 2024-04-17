@@ -67,9 +67,9 @@ public class CardResource extends CardGame {
 
 
 
-    public void drawFaceUpCard(ArrayList<CardResource> faceUpResCards, ArrayList<CardGold> faceUpGoldCards, Deck deck, Player player){
+    public void drawFaceUpCard(ArrayList<CardResource> faceUpResCards, ArrayList<CardGold> faceUpGoldCards, Deck deck, Player player) throws RuntimeException{
         if(!faceUpResCards.contains(this)){
-            return;
+            throw new RuntimeException("Card Invalid!");
         }
         faceUpResCards.remove(this);
         faceUpResCards.add(deck.nextResource().get());

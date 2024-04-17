@@ -42,16 +42,11 @@ public class DrawCardMove extends Move{
 
     @Override
     public void play(Game game) {
-        Optional<Player> player = super.getPlayer(game);
-
-        if(player.isEmpty()){
-            fail("Error initialization of Game");
-        }
 
         if(isDrawFromDeck()){
-            game.drawGameCard(player.get(), fromGoldDeck);
+            game.drawGameCard(super.getPlayerNick(), fromGoldDeck);
         }else{
-            game.drawGameCard(player.get(), card);
+            game.drawGameCard(super.getPlayerNick(), card);
         }
     }
 }

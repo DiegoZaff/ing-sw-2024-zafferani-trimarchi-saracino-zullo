@@ -43,13 +43,8 @@ public class PlayCardGameMove extends Move{
 
     @Override
     public void play(Game game) {
-        Optional<Player> player = super.getPlayer(game);
 
-        if(player.isEmpty()){
-            fail("Error initialization of Game");
-        }
-
-        game.playGameCard(player.get(), card, isFront, coord);
+        game.playGameCard(super.getPlayerNick(), card, isFront, coord);
 
     }
 }

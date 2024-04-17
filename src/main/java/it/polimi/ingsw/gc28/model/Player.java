@@ -6,7 +6,9 @@ import it.polimi.ingsw.gc28.model.cards.CardObjective;
 import it.polimi.ingsw.gc28.model.cards.CardResource;
 import it.polimi.ingsw.gc28.model.errors.types.PlayerActionError;
 import it.polimi.ingsw.gc28.model.objectives.Objective;
+import it.polimi.ingsw.gc28.network.rmi.VirtualView;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -14,6 +16,12 @@ import java.util.Optional;
 public class Player {
 
     private int points, objectivePoints;
+
+    private final VirtualView listener;
+
+    public VirtualView getListener(){
+        return listener;
+    }
 
 /*
     //setter per test calculatewinner è una schifezza si puo togliere;
@@ -35,7 +43,8 @@ public class Player {
 
     private PlayerActionError error;
 
-    public Player(String name) {
+    public Player(String name, VirtualView listener) {
+        this.listener = listener;
         this.name = name;
         this.points = 0;
         this.objectivePoints = 0;
@@ -165,6 +174,14 @@ public class Player {
         this.cardInitial = card;
     }
 
+
+    public void notifyError(){
+        try {
+            this.listener.reportError(error.getError());
+        } catch (RemoteException e) {
+            System.err.println("could not notify error to client " + listener.toString());
+        }
+    }
 
     @Override
     public boolean equals(Object obj) {
