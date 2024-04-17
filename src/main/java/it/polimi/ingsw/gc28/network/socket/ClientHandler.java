@@ -1,19 +1,23 @@
 package it.polimi.ingsw.gc28.network.socket;
 
 
-import it.polimi.ingsw.gc28.controller.GameController;
 import it.polimi.ingsw.gc28.controller.GamesManager;
+import it.polimi.ingsw.gc28.model.Coordinate;
+import it.polimi.ingsw.gc28.model.Player;
+import it.polimi.ingsw.gc28.model.Table;
 import it.polimi.ingsw.gc28.network.messages.client.MessageC2S;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
+import it.polimi.ingsw.gc28.network.rmi.VirtualView;
 
 import java.io.*;
-import java.net.ServerSocket;
 import java.net.Socket;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 public class ClientHandler implements VirtualView {
     final ServerTCP server;
     final ObjectInputStream input;
-    final VirtualView view;
+    final ClientProxy view;
     final Socket clientSocket;
 
     public ClientHandler(ServerTCP server, ObjectInputStream input, ObjectOutputStream output, Socket clientSocket) {
@@ -47,13 +51,62 @@ public class ClientHandler implements VirtualView {
         }
     }
 
-    @Override
+    //@Override
     public void sendMessage(MessageS2C message) {
         synchronized (this.view){
             this.view.sendMessage(message);
         }
     }
 
+    @Override
+    public void onGameCreated(String gameId, String playerName, int playersLeftToJoin) throws RemoteException {
+
+    }
+
+    @Override
+    public void onGameJoined(String gameId, String playerName, int playersLeftToJoin) throws RemoteException {
+        try{
+            view.onGameJoined(gameId, playerName, playersLeftToJoin);
+        } catch (IOException e){
+            System.out.println("Error" + e);
+        }
+    }
+
+    @Override
+    public void onGameStarted(ArrayList<Player> players) throws RemoteException {
+
+    }
+
+    @Override
+    public void onPlayerPlayedCard(String playerName, Table newTable, int newPlayerPoints, ArrayList<Coordinate> newPlayableCoords) throws RemoteException {
+
+    }
+
+    @Override
+    public void onPlayerDrawnCard(String playerName, String cardId, boolean fromGoldDeck) throws RemoteException {
+
+    }
+
+    @Override
+    public void onPlayerDrawnCard(String playerName, String cardId) throws RemoteException {
+
+    }
+
+    @Override
+    public void onPlayerChoseObjective(String playerName, String cardId) throws RemoteException {
+
+    }
+
+    @Override
+    public void reportError(String details) throws RemoteException {
+
+    }
+
+    @Override
+    public void reportMessage(String details) throws RemoteException {
+
+    }
 
     // TODO : qui vanno implementati i metodi che costruiscono messaggi S2C
+
 }
