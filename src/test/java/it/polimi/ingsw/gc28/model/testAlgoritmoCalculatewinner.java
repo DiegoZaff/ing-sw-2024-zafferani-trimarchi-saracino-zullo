@@ -17,11 +17,12 @@ public class testAlgoritmoCalculatewinner {
         Player tester1 = new Player("t1");
         Player tester2 = new Player("t2");
 
+        /*
         tester1.setPoints(0);
         tester2.setPoints(0);
         tester1.setObjectrivePoints(0);
         tester2.setObjectrivePoints(0);
-
+        */
         players.add(tester1);
         players.add(tester2);
 
