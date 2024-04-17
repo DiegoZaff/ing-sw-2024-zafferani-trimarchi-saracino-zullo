@@ -1,5 +1,7 @@
 package it.polimi.ingsw.gc28.network.messages.client;
 
+import it.polimi.ingsw.gc28.controller.GameController;
+
 import java.util.Optional;
 
 /**
@@ -16,4 +18,7 @@ public abstract class MessageC2S {
     public Optional<String> getGameId() {
         return Optional.ofNullable(gameId);
     }
+
+    public abstract void execute(GameController controller);
+
 }

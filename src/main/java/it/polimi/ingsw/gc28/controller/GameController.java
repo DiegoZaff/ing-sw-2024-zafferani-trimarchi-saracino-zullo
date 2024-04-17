@@ -11,6 +11,7 @@ import java.util.Optional;
 public class GameController {
     final Game gameModel;
 
+    // TODO : NEL MODEL!
     // TODO : attributo per memorizza i client connessi alla partita (sia RMI che socket)
     public GameController(Game gameModel) {
         this.gameModel = gameModel;

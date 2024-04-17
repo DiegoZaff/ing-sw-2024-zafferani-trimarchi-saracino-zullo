@@ -11,7 +11,6 @@ public class GamesManager {
 
     private static GamesManager instance;
 
-    // TODO : change this so that it also stores clients connected to the game (sockets and virtual clients (RMI))
     private Map<String, GameController> mapGames;
 
     private GamesManager() {
@@ -32,8 +31,10 @@ public class GamesManager {
 
         if(gameId.isEmpty()){
             //message di creazione.
+
         }else{
-            GameController controllerOfGame;
+            GameController controllerOfGame = mapGames.get(gameId.get());
+            message.execute(controllerOfGame);
 
         }
     }

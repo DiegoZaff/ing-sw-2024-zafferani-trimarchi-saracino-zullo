@@ -68,4 +68,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
     public void handleMessage(MessageS2C message) throws RemoteException {
         // TODO : implement handling of message coming from server.
     }
+
+
+    // TODO : aggiungi metodi che fanno cose sul client. Metodi della virtual View
 }

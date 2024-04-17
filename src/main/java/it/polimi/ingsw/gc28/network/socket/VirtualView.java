@@ -7,6 +7,10 @@ import java.io.IOException;
 /**
  * These are methods called from the server, that will act on the client
  */
+
+// TODO : unifica con quella RMI - gerarchia VirtualView -> VirtualViewRMI - VirtualViewSocket
+// TODO : questi metodi costruiscono messaggi e li inviano.
+
 public interface VirtualView {
     public void sendMessage(MessageS2C message);
 }

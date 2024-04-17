@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+// TODO : store virtualViews
+
 public class Game {
 
     private final ErrorManager errorManager;
@@ -274,8 +276,6 @@ public class Game {
         }catch (Exception e) {
             System.err.println("Error playing Card " + playedCard);
         }
-
-
     }
 
     /**

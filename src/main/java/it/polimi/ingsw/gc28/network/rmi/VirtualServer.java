@@ -12,17 +12,41 @@ import java.rmi.RemoteException;
 /**
  * These are called from the client and will act on the server.
  */
+
+// TODO : uniform virtual servers
 public interface VirtualServer extends Remote {
-     void handleMessage(MessageC2S message) throws RemoteException;
-//     void connect(VirtualView client) throws RemoteException;
-//     void addPlayerToGame(String clientId, String name) throws  RemoteException;
-//
-//     void playGameCard (Player playingPlayer, CardGame playedCard, boolean isFront, Coordinate coordinates ) throws RemoteException;
-//
-//     void drawGameCard(Player playingPlayer, boolean fromGoldDeck) throws  RemoteException;
-//
-//     void drawGameCard(Player playingPlayer, CardResource CardToDraw, boolean fromGoldVisible) throws  RemoteException;
-//
-//     void chooseObjective(String clientId, int n) throws  RemoteException;
+     // TODO : aggiungi il virtual client al Model.
+
+     /**
+      * This method is for creating a new game. The user who creates the game, also joins it by providing a username.
+      * @param client the virtualView associated with the client
+      * @param userName the nickname associated to the player who creates the game.
+      */
+     void createGame(VirtualView client, String userName, int numberOfPlayers) throws RemoteException;
+
+     /**
+      * This method is for joining an already created game. User must provide nickname.
+      */
+     void joinGame(VirtualView client, String gameId, String userName) throws  RemoteException;
+
+     /**
+      * This method if for playing a card.
+      */
+     void playGameCard (String playerName, String cardId, boolean isFront, Coordinate coordinate ) throws RemoteException;
+
+     /**
+      * This method is for drawing a card from goldDeck or resourceDeck
+      */
+     void drawGameCard(String playerName, boolean fromGoldDeck) throws  RemoteException;
+
+     /**
+      * This method is for drawing a card from the visible cards.
+      */
+     void drawGameCard(String playerName, String cardId) throws  RemoteException;
+
+     /**
+      * This method is for choosing the objective.
+      */
+     void chooseObjective(String playerName, String cardId) throws  RemoteException;
 
 }
