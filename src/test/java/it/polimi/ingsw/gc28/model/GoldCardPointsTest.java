@@ -47,7 +47,7 @@ public class GoldCardPointsTest {
     @BeforeEach
     public void initTestTable () throws Exception {
 
-        tester = new Player("Tester");
+        tester = new Player("Tester", tester.getListener());
         tester.playCard(initialCard, true , new Coordinate(0, 0));
         points = tester.getPoints();
         assertEquals(0, points, "error in initialization");

@@ -263,7 +263,7 @@ public class Game {
             actionManager.initRoundsLeft();
         }
 
-        if(this.faceUpResourceCards.isEmpty() && this.faceUpGoldCards.isEmpty()){ //implementazione fine partita con 0 carte a terra
+        else if (this.deck.nextResource().isEmpty() && this.deck.nextGold().isEmpty()){ //implementazione fine partita con 0 carte in entrambi deck
 
             actionManager.initRoundsLeft();
 
@@ -418,6 +418,8 @@ public class Game {
 
         Optional<Player> playingPlayer = getPlayerOfName(playerName);
 
+
+
         if(playingPlayer.isEmpty()){
             System.err.println("Requested action for non-existent player");
             return;
@@ -433,6 +435,7 @@ public class Game {
             playingPlayer.get().notifyError();
             return;
         }
+
 
         if(fromGoldDeck) {
             cardGoldOptional = deck.nextGold();
