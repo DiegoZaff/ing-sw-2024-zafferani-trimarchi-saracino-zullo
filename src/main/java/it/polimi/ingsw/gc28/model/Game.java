@@ -3,22 +3,14 @@ package it.polimi.ingsw.gc28.model;
 import it.polimi.ingsw.gc28.model.actions.ActionManager;
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.model.cards.*;
-import it.polimi.ingsw.gc28.model.errors.ErrorManager;
-import it.polimi.ingsw.gc28.network.rmi.VirtualView;
+import it.polimi.ingsw.gc28.model.errors.types.*;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-// TODO : store virtualViews
-
 public class Game {
-
-    private ArrayList<VirtualView> listeners;
-
-    private final ErrorManager errorManager;
 
     private ActionManager actionManager;
     private ArrayList<CardObjective> globalObjectives;
@@ -72,19 +64,6 @@ public class Game {
 
         this.players = new ArrayList<>();
 
-        this.errorManager = new ErrorManager(this.players);
-
-        this.listeners = new ArrayList<>();
-
-    }
-
-    /**
-     * This method sets the number of players and initialise the action manager.
-     * @param NumPlayers is the number of players.
-     */
-    public void setNPlayers(int NumPlayers){
-        this.nPlayers = NumPlayers;
-        this.actionManager = new ActionManager(nPlayers,this.players, this.errorManager, firstPlayerIndex);
     }
 
     /**
@@ -100,31 +79,20 @@ public class Game {
 
         this.players = new ArrayList<>();
 
-        this.errorManager = new ErrorManager(this.players);
-        this.actionManager = new ActionManager(nPlayers, this.players, this.errorManager, firstPlayerIndex);
+        this.actionManager = new ActionManager(nPlayers, this.players, firstPlayerIndex);
     }
 
 
-    public void addPlayerToGame(String name, VirtualView client) throws RuntimeException{
+    public void addPlayerToGame(String name) throws PlayerActionError {
         if(players.size() >= nPlayers){
-            try {
-                client.reportError("Game lobby is full!");
-                throw new RuntimeException("Couldn't add player to the game: lobby is full");
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
+            throw new LobbyFullError();
         }
 
         if(players.stream().map(Player::getName).anyMatch(pName -> pName.equals(name))){
-            try {
-                client.reportError("Choose another name!");
-                throw new RuntimeException("Couldn't add player to the game: name already taken");
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
+            throw new NameAlreadyChosenError();
         }
 
-        players.add(new Player(name, client));
+        players.add(new Player(name));
 
         actionManager.nextMove();
 
@@ -289,37 +257,24 @@ public class Game {
      * @param isFront indicate how the card has to be played, front if True, back if False
      * @param coordinates indicates the coordinate where the card has to be played
      */
-    public void playGameCard (String playerName, CardGame playedCard, boolean isFront, Coordinate coordinates ) {
+    public void playGameCard (String playerName, CardGame playedCard, boolean isFront, Coordinate coordinates ) throws  PlayerActionError{
 
         Optional<Player> player = getPlayerOfName(playerName);
 
         if(player.isEmpty()){
-            System.err.println("Requested action for non-existent player");
-            return;
+            throw new NoSuchPlayerError();
         }
 
         ActionType actionRequested = playedCard.getIntendedAction();
 
-        if(!actionManager.validatesMove(player.get(), actionRequested)){
-            player.get().notifyError();
-            return;
-        }
+        // this throws errors if move is not valid
+        actionManager.validatesMove(player.get(), actionRequested);
 
-        try{
-            player.get().playCard(playedCard, isFront, coordinates);
+        // this can throw errors.
+        player.get().playCard(playedCard, isFront, coordinates);
 
-            notifyOfCardPlayed(player.get(), playedCard, coordinates);
-
-            // clean up all errors after a move is done successfully.
-            errorManager.cleanUpAllErrors();
-
-            // set up attributes for next turn.
-            setupNextMove();
-
-            notifyOfNextTurn();
-        }catch (Exception e) {
-            System.err.println("Error playing Card " + playedCard);
-        }
+        // set up attributes for next turn.
+        setupNextMove();
     }
 
     /**
@@ -414,15 +369,12 @@ public class Game {
      * This method take the card from the top of the deck and add that card to the player's hand
      * @param playerName name of playing player
      */
-    public void drawGameCard(String playerName, boolean fromGoldDeck){
+    public CardResource drawGameCard(String playerName, boolean fromGoldDeck) throws PlayerActionError{
 
         Optional<Player> playingPlayer = getPlayerOfName(playerName);
 
-
-
         if(playingPlayer.isEmpty()){
-            System.err.println("Requested action for non-existent player");
-            return;
+            throw new NoSuchPlayerError();
         }
 
         ActionType actionRequested = ActionType.DRAW_CARD;
@@ -431,11 +383,7 @@ public class Game {
         Optional<CardGold> cardGoldOptional;
         CardGold cardGold;
 
-        if(!actionManager.validatesMove(playingPlayer.get(), actionRequested)){
-            playingPlayer.get().notifyError();
-            return;
-        }
-
+        actionManager.validatesMove(playingPlayer.get(), actionRequested);
 
         if(fromGoldDeck) {
             cardGoldOptional = deck.nextGold();
@@ -443,8 +391,12 @@ public class Game {
                 cardGold = cardGoldOptional.get();
                 playingPlayer.get().addCardToHand(cardGold);
 
-                notifyOfCardDrawn(playerName, cardGold, fromGoldDeck);
+                actionManager.nextMove();
+
+                return cardGold;
             }
+
+            throw new DeckHaveNoMoreCards("gold");
         }
         else {
             cardResourceOptional = deck.nextResource();
@@ -452,63 +404,47 @@ public class Game {
                 cardResource = cardResourceOptional.get();
                 playingPlayer.get().addCardToHand(cardResource);
 
-                notifyOfCardDrawn(playerName, cardResource, fromGoldDeck);
+                actionManager.nextMove();
+
+                return cardResource;
             }
+
+            throw new DeckHaveNoMoreCards("gold");
         }
 
-        actionManager.nextMove();
-
-        notifyOfNextTurn();
     }
 
-    public void drawGameCard(String playerName, CardResource cardDrawn){
+    public void drawGameCard(String playerName, CardResource cardDrawn) throws PlayerActionError{
 
         Optional<Player> playingPlayer = getPlayerOfName(playerName);
 
         if(playingPlayer.isEmpty()){
-            System.err.println("Requested action for non-existent player");
-            return;
+            throw new NoSuchPlayerError();
         }
 
         ActionType actionRequested = ActionType.DRAW_CARD;
 
-        if(!actionManager.validatesMove(playingPlayer.get(), actionRequested)){
-            playingPlayer.get().notifyError();
-            return;
-        }
+        actionManager.validatesMove(playingPlayer.get(), actionRequested);
 
-        try{
-            cardDrawn.drawFaceUpCard(this.faceUpResourceCards, this.faceUpGoldCards, this.deck, playingPlayer.get());
-
-            notifyOfCardDrawn(playerName, cardDrawn);
-        }catch (RuntimeException e){
-            errorManager.fromInvalidDrawMove(playingPlayer.get());
-            playingPlayer.get().notifyError();
-            return;
-        }
+        cardDrawn.drawFaceUpCard(this.faceUpResourceCards, this.faceUpGoldCards, this.deck, playingPlayer.get());
 
         actionManager.nextMove();
 
-        notifyOfNextTurn();
     }
 
     /**
      * This method is called when the user selects a personal objective card.
      */
-    public void chooseObjective(String playerName, CardObjective card){
+    public void chooseObjective(String playerName, CardObjective card) throws PlayerActionError{
         Optional<Player> playingPlayer = getPlayerOfName(playerName);
 
         if(playingPlayer.isEmpty()){
-            System.err.println("Requested action for non-existent player");
-            return;
+            throw new NoSuchPlayerError();
         }
 
         ActionType actionRequested = ActionType.CHOOSE_OBJ;
 
-        if(!actionManager.validatesMove(playingPlayer.get(), actionRequested)){
-            playingPlayer.get().notifyError();
-            return;
-        }
+        actionManager.validatesMove(playingPlayer.get(), actionRequested);
 
         Optional<ArrayList<CardObjective>> options = playingPlayer.get().getObjectivesToChoose();
 
@@ -516,16 +452,11 @@ public class Game {
         if(options.isPresent() && options.get().contains(card)){
             playingPlayer.get().setObjectiveChosen(card);
 
-            notifyObjChosen(playerName, card);
         }else{
-            errorManager.fromInvalidObjectiveChoice(playingPlayer.get());
-            playingPlayer.get().notifyError();
-            return;
+            throw new InvalidObjectiveChoiceError();
         }
 
         actionManager.nextMove();
-
-        notifyOfNextTurn();
     }
 
     /**
@@ -560,63 +491,5 @@ public class Game {
     }
 
 
-    public void notifyOfNextTurn(){
 
-        String nextPlayer = null;
-
-        Optional<Player> playerOfTurn =  actionManager.getPlayerOfTurn();
-
-        if(playerOfTurn.isPresent()){
-            nextPlayer = playerOfTurn.get().getName();
-        }
-
-        for(Player player : players){
-            try {
-                player.getListener().onNextExpectedPlayerAction(actionManager.getActionType(), nextPlayer);
-            } catch (RemoteException e) {
-                System.err.println("Could not notify client " + player.getListener().toString() + " about next turn");
-            }
-        }
-    }
-
-
-    public void notifyOfCardDrawn(String playerName, CardResource card, boolean fromGoldDeck){
-        for(Player player : players){
-            try {
-                player.getListener().onPlayerDrawnCard(playerName, card.getId(), fromGoldDeck);
-            } catch (RemoteException e) {
-                System.err.println("Could not notify client " + player.getListener().toString() + " about card drawn from deck");
-            }
-        }
-    }
-
-    public void notifyOfCardDrawn(String playerName, CardResource card){
-        for(Player player : players){
-            try {
-                player.getListener().onPlayerDrawnCard(playerName, card.getId());
-            } catch (RemoteException e) {
-                System.err.println("Could not notify client " + player.getListener().toString() + " about card drawn from visible cards");
-            }
-        }
-    }
-
-    public void notifyOfCardPlayed(Player playerWhoPlayed, CardGame card, Coordinate coord){
-        for(Player player : players){
-            try {
-                player.getListener().onPlayerPlayedCard(playerWhoPlayed.getName(), playerWhoPlayed.getTable(), playerWhoPlayed.getPoints());
-            } catch (RemoteException e) {
-                System.err.println("Could not notify client " + player.getListener().toString() + " about card card played");
-            }
-        }
-    }
-
-    public void notifyObjChosen(String playerName, CardObjective cardObjective){
-        for(Player player : players){
-            try {
-                player.getListener().onPlayerChoseObjective(playerName, cardObjective.getId());
-            } catch (RemoteException e) {
-                System.err.println("Could not notify client " + player.getListener().toString() + " about card card played");
-            }
-        }
-    }
 }

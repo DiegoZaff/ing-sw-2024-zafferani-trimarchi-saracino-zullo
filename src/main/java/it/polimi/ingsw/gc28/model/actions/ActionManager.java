@@ -2,12 +2,14 @@ package it.polimi.ingsw.gc28.model.actions;
 
 import it.polimi.ingsw.gc28.model.Player;
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
-import it.polimi.ingsw.gc28.model.errors.ErrorManager;
+import it.polimi.ingsw.gc28.model.errors.types.AlreadyChoseObjectiveError;
+import it.polimi.ingsw.gc28.model.errors.types.NotYourTurnError;
+import it.polimi.ingsw.gc28.model.errors.types.PlayerActionError;
+import it.polimi.ingsw.gc28.model.errors.types.UnexpectedMoveError;
 
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 /**
  * This class manages the playerOfTurn and actionType lifecycle.
@@ -23,7 +25,6 @@ public class ActionManager {
     private Player playerOfTurn;
     private Player firstPlayer;
 
-    private final ErrorManager errorManager;
 
     private Integer indexFirstPlayer;
 
@@ -53,10 +54,9 @@ public class ActionManager {
      * Initialize first Action.
      * @param players must be of length > 0
      */
-    public ActionManager(int nPlayers, ArrayList<Player> players, ErrorManager errorManager, Integer i){
+    public ActionManager(int nPlayers, ArrayList<Player> players, Integer i){
         this.nPlayers = nPlayers;
         this.players = players;
-        this.errorManager = errorManager;
         this.actionType = ActionType.JOIN_GAME;
         this.indexFirstPlayer = i;
     }
@@ -68,28 +68,27 @@ public class ActionManager {
      * @param a is the action that 'p' wants to perform
      * @return true is it is the expected action from the expected player.
      */
-    public boolean validatesMove(Player p, ActionType a){
+    public void validatesMove(Player p, ActionType a) throws PlayerActionError {
 
         // when actionType is CHOOSE_OBJ check is different.
         if(actionType == ActionType.CHOOSE_OBJ ){
-            if (a.equals(ActionType.CHOOSE_OBJ) && p.getObjectiveChosen().isEmpty()){
-                return true;
-            }else{
-                errorManager.fromWrongMove(p, a, this);
-                return false;
+            if (!a.equals(ActionType.CHOOSE_OBJ) || p.getObjectiveChosen().isPresent()) {
+                if(!a.equals(ActionType.CHOOSE_OBJ)){
+                    throw new NotYourTurnError();
+                }else if(p.getObjectiveChosen().isPresent()){
+                    throw new AlreadyChoseObjectiveError();
+                }
             }
 
         }
 
-        if(playerOfTurn.equals(p) && a.equals(actionType)){
-            return true;
-        }else{
-            errorManager.fromWrongMove(p, a, this);
-            return false;
+        if (!playerOfTurn.equals(p) || !a.equals(actionType)) {
+            if(!p.equals(playerOfTurn)){
+                throw new NotYourTurnError();
+            }else if(!a.equals(actionType)){
+                throw new UnexpectedMoveError();
+            }
         }
-
-
-
     }
 
     private boolean isCurrentPlayerTheLastOneForTheAction(){

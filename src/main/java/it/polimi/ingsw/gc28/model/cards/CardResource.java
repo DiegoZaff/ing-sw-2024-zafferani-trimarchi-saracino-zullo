@@ -1,6 +1,8 @@
 package it.polimi.ingsw.gc28.model.cards;
 
 import it.polimi.ingsw.gc28.model.*;
+import it.polimi.ingsw.gc28.model.errors.types.NotDrawableCardError;
+import it.polimi.ingsw.gc28.model.errors.types.PlayerActionError;
 import it.polimi.ingsw.gc28.model.resources.Resource;
 import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
@@ -67,11 +69,13 @@ public class CardResource extends CardGame {
 
 
 
-    public void drawFaceUpCard(ArrayList<CardResource> faceUpResCards, ArrayList<CardGold> faceUpGoldCards, Deck deck, Player player) throws RuntimeException{
+    public void drawFaceUpCard(ArrayList<CardResource> faceUpResCards, ArrayList<CardGold> faceUpGoldCards, Deck deck, Player player) throws PlayerActionError {
         if(!faceUpResCards.contains(this)){
-            throw new RuntimeException("Card Invalid!");
+            throw new NotDrawableCardError(this.getId());
         }
         faceUpResCards.remove(this);
+
+        // TODO : adjust this optional, check isPresent
         faceUpResCards.add(deck.nextResource().get());
         player.addCardToHand(this);
     }

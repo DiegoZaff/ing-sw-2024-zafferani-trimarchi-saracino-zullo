@@ -8,6 +8,8 @@ import it.polimi.ingsw.gc28.model.challenge.Challenge;
 import it.polimi.ingsw.gc28.model.challenge.PositionChallenge;
 import it.polimi.ingsw.gc28.model.challenge.ResourceChallenge;
 import it.polimi.ingsw.gc28.model.challenge.utils.ChallengeType;
+import it.polimi.ingsw.gc28.model.errors.types.NotDrawableCardError;
+import it.polimi.ingsw.gc28.model.errors.types.PlayerActionError;
 import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
 import it.polimi.ingsw.gc28.model.resources.ResourceSpecial;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
@@ -83,9 +85,9 @@ public class CardGold extends CardResource {
         return getChallenge().map(value -> value.challengePoints(table, coordinate)).orElseGet(() -> super.getPoints(table, coordinate));
     }
    @Override
-    public void drawFaceUpCard(ArrayList<CardResource> faceUpResCards, ArrayList<CardGold> faceUpGoldCards, Deck deck, Player player) throws RuntimeException{
+    public void drawFaceUpCard(ArrayList<CardResource> faceUpResCards, ArrayList<CardGold> faceUpGoldCards, Deck deck, Player player) throws PlayerActionError {
         if(!faceUpGoldCards.contains(this)){
-            throw new RuntimeException("Card Invalid!");
+            throw new NotDrawableCardError(this.getId());
         }
         faceUpGoldCards.remove(this);
         faceUpGoldCards.add(deck.nextGold().get());

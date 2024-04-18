@@ -48,8 +48,8 @@ public class GamesManager {
         }
     }
 
-    public void createGame(VirtualView client, String playerName, int numberOfPlayers){
-        GameController newController = new GameController(new Game(numberOfPlayers));
+    public void createGame(VirtualView client, String playerName, int numberOfPlayers) throws IOException {
+        GameController newController = new GameController(new Game());
 
         try{
             newController.addPlayerToGame(playerName, client);

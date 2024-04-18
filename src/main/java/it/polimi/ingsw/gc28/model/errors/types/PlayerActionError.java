@@ -1,6 +1,6 @@
 package it.polimi.ingsw.gc28.model.errors.types;
 
-public abstract class PlayerActionError {
+public abstract class PlayerActionError extends Throwable {
     private final String error;
 
     public PlayerActionError(String error) {

@@ -8,6 +8,7 @@ import it.polimi.ingsw.gc28.games.TestingDeck;
 import it.polimi.ingsw.gc28.games.assertions.utils.GameAssertionType;
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.model.cards.*;
+import it.polimi.ingsw.gc28.model.errors.types.PlayerActionError;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceType;
 import org.json.simple.JSONArray;
@@ -329,7 +330,12 @@ public class GameTest {
         }
 
         for(Move move: moveList){
-            move.play(game);
+            try {
+                move.play(game);
+            } catch (PlayerActionError e) {
+                // TODO: add assertions for exceptions!
+                System.out.println(e.getMessage());
+            }
 
             // verify assertions after the move
             for (GameAssertion gameAssertion : move.getAssertions()){

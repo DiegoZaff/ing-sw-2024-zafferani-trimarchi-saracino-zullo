@@ -5,6 +5,7 @@ import it.polimi.ingsw.gc28.model.cards.CardInitial;
 import it.polimi.ingsw.gc28.model.cards.CardObjective;
 import it.polimi.ingsw.gc28.model.cards.CardResource;
 import it.polimi.ingsw.gc28.model.errors.types.PlayerActionError;
+import it.polimi.ingsw.gc28.model.errors.types.UnplayableCoordinate;
 import it.polimi.ingsw.gc28.model.objectives.Objective;
 import it.polimi.ingsw.gc28.network.rmi.VirtualView;
 
@@ -16,12 +17,6 @@ import java.util.Optional;
 public class Player {
 
     private int points, objectivePoints;
-
-    private final VirtualView listener;
-
-    public VirtualView getListener(){
-        return listener;
-    }
 
 /*
     //setter per test calculatewinner è una schifezza si puo togliere;
@@ -43,8 +38,7 @@ public class Player {
 
     private PlayerActionError error;
 
-    public Player(String name, VirtualView listener) {
-        this.listener = listener;
+    public Player(String name) {
         this.name = name;
         this.points = 0;
         this.objectivePoints = 0;
@@ -126,9 +120,10 @@ public class Player {
      * @param isFront indicate how the card has to be played, front if True, back if False
      * @param coordinates indicates the coordinate where the card has to be played
      */
-    public void playCard(CardGame playedCard, boolean isFront, Coordinate coordinates) throws Exception {
+    public void playCard(CardGame playedCard, boolean isFront, Coordinate coordinates) throws PlayerActionError {
         if (!table.checkPlayability(coordinates)){
-            throw new Exception();
+            // TODO : maybe make more granular, why cant be played...
+            throw new UnplayableCoordinate(coordinates);
         }else {
             if (isFront){
                 playedCard.playFront(table, coordinates);
@@ -175,13 +170,7 @@ public class Player {
     }
 
 
-    public void notifyError(){
-        try {
-            this.listener.reportError(error.getError());
-        } catch (RemoteException e) {
-            System.err.println("could not notify error to client " + listener.toString());
-        }
-    }
+
 
     @Override
     public boolean equals(Object obj) {
