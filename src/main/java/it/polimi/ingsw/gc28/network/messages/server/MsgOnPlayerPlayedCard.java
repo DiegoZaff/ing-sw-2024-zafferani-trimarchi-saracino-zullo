@@ -12,12 +12,11 @@ public class MsgOnPlayerPlayedCard extends MessageS2C{
     String playerName;
     Table newTable;
     int newPlayerPoints;
-    ArrayList<Coordinate> newPlayableCoords;
-    MsgOnPlayerPlayedCard(String playerName, Table newTable, int newPlayerPoints, ArrayList<Coordinate> newPlayableCoords){
+
+    public MsgOnPlayerPlayedCard(String playerName, Table newTable, int newPlayerPoints){
         this.playerName = playerName;
         this.newTable = newTable;
         this.newPlayerPoints = newPlayerPoints;
-        this.newPlayableCoords = newPlayableCoords;
     }
     @Override
     public void update(VirtualView non_va_passata_una_VV_ma_una_GameRepresentation ) throws IOException {

@@ -8,7 +8,7 @@ public class MsgOnPlayerChooseObjective extends MessageS2C{
     String playerName;
     String cardId;
 
-    MsgOnPlayerChooseObjective(String playerName, String cardId){
+    public MsgOnPlayerChooseObjective(String playerName, String cardId){
         this.playerName = playerName;
         this.cardId = cardId;
     }

@@ -2,9 +2,9 @@ package it.polimi.ingsw.gc28.network.socket;
 
 
 import it.polimi.ingsw.gc28.controller.GamesManager;
-import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.model.Player;
 import it.polimi.ingsw.gc28.model.Table;
+import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.network.messages.client.MessageC2S;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
 import it.polimi.ingsw.gc28.network.rmi.VirtualView;
@@ -17,13 +17,13 @@ import java.util.ArrayList;
 public class ClientHandler implements VirtualView {
     final ServerTCP server;
     final ObjectInputStream input;
-    final ClientProxy view;
+    final ClientProxy clientProxy;
     final Socket clientSocket;
 
     public ClientHandler(ServerTCP server, ObjectInputStream input, ObjectOutputStream output, Socket clientSocket) {
         this.server = server;
         this.input = input;
-        this.view = new ClientProxy(output);
+        this.clientProxy = new ClientProxy(output);
         this.clientSocket = clientSocket;
     }
 
@@ -51,22 +51,19 @@ public class ClientHandler implements VirtualView {
         }
     }
 
-    //@Override
-    public void sendMessage(MessageS2C message) {
-        synchronized (this.view){
-            this.view.sendMessage(message);
-        }
-    }
-
     @Override
     public void onGameCreated(String gameId, String playerName, int playersLeftToJoin) throws RemoteException {
-
+        try{
+            clientProxy.onGameCreated(gameId, playerName, playersLeftToJoin);
+        } catch (IOException e){
+            System.out.println("Error" + e);
+        }
     }
 
     @Override
     public void onGameJoined(String gameId, String playerName, int playersLeftToJoin) throws RemoteException {
         try{
-            view.onGameJoined(gameId, playerName, playersLeftToJoin);
+            clientProxy.onGameJoined(gameId, playerName, playersLeftToJoin);
         } catch (IOException e){
             System.out.println("Error" + e);
         }
@@ -74,39 +71,73 @@ public class ClientHandler implements VirtualView {
 
     @Override
     public void onGameStarted(ArrayList<Player> players) throws RemoteException {
-
+        try{
+            clientProxy.onGameStarted(players);
+        } catch (IOException e){
+            System.out.println("Error" + e);
+        }
     }
 
     @Override
-    public void onPlayerPlayedCard(String playerName, Table newTable, int newPlayerPoints, ArrayList<Coordinate> newPlayableCoords) throws RemoteException {
-
+    public void onPlayerPlayedCard(String playerName, Table newTable, int newPlayerPoints) throws RemoteException {
+        try{
+            clientProxy.onPlayerPlayedCard(playerName, newTable, newPlayerPoints);
+        } catch (IOException e){
+            System.out.println("Error" + e);
+        }
     }
 
     @Override
     public void onPlayerDrawnCard(String playerName, String cardId, boolean fromGoldDeck) throws RemoteException {
-
+        try{
+            clientProxy.onPlayerDrawnCard(playerName, cardId, fromGoldDeck);
+        } catch (IOException e){
+            System.out.println("Error" + e);
+        }
     }
 
     @Override
     public void onPlayerDrawnCard(String playerName, String cardId) throws RemoteException {
-
+        try{
+            clientProxy.onPlayerDrawnCard(playerName, cardId);
+        } catch (IOException e){
+            System.out.println("Error" + e);
+        }
     }
 
     @Override
     public void onPlayerChoseObjective(String playerName, String cardId) throws RemoteException {
-
+        try{
+            clientProxy.onPlayerChoseObjective(playerName, cardId);
+        } catch (IOException e){
+            System.out.println("Error" + e);
+        }
     }
 
     @Override
     public void reportError(String details) throws RemoteException {
-
+        try{
+            clientProxy.reportError(details);
+        } catch (IOException e){
+            System.out.println("Error" + e);
+        }
     }
 
     @Override
     public void reportMessage(String details) throws RemoteException {
-
+        try{
+            clientProxy.reportMessage(details);
+        } catch (IOException e){
+            System.out.println("Error" + e);
+        }
     }
 
-    // TODO : qui vanno implementati i metodi che costruiscono messaggi S2C
-
+    @Override
+    public void onNextExpectedPlayerAction(ActionType actionType, String playerOfTurn) throws RemoteException {
+        try{
+            clientProxy.onNextExpectedPlayerAction(actionType, playerOfTurn);
+        } catch (IOException e){
+            System.out.println("Error" + e);
+        }
+    }
 }

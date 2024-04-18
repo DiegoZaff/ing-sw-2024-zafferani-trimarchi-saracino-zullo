@@ -7,7 +7,7 @@ import java.io.IOException;
 public class MsgReportError extends MessageS2C{
 
     String details;
-    MsgReportError(String details){
+    public MsgReportError(String details){
         this.details = details;
     }
 

@@ -4,13 +4,16 @@ import it.polimi.ingsw.gc28.network.rmi.VirtualView;
 
 import java.io.IOException;
 
-public class MsgOnPlayerDrawnCard extends MessageS2C{
+public class MsgOnPlayerDrawnVisibleCard extends MessageS2C{
+
     String playerName;
     String cardId;
+    boolean fromGoldDeck;
 
-    public MsgOnPlayerDrawnCard(String playerName, String cardId){
+    public MsgOnPlayerDrawnVisibleCard(String playerName, String cardId, boolean fromGoldDeck){
         this.playerName = playerName;
         this.cardId = cardId;
+        this.fromGoldDeck = fromGoldDeck;
     }
     @Override
     public void update(VirtualView non_va_passata_una_VV_ma_una_GameRepresentation ) throws IOException {
