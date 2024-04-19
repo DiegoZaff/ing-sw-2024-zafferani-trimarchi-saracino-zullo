@@ -6,7 +6,7 @@ import it.polimi.ingsw.gc28.model.cards.CardInitial;
 import it.polimi.ingsw.gc28.model.cards.CardResource;
 import it.polimi.ingsw.gc28.model.cards.CardGold;
 import it.polimi.ingsw.gc28.model.challenge.utils.ChallengeType;
-import it.polimi.ingsw.gc28.model.errors.types.PlayerActionError;
+import it.polimi.ingsw.gc28.model.errors.PlayerActionError;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceSpecialType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceType;

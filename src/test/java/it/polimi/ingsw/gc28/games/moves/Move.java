@@ -6,7 +6,7 @@ import it.polimi.ingsw.gc28.model.Game;
 import it.polimi.ingsw.gc28.model.Player;
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.model.cards.*;
-import it.polimi.ingsw.gc28.model.errors.types.PlayerActionError;
+import it.polimi.ingsw.gc28.model.errors.PlayerActionError;
 
 import java.util.ArrayList;
 import java.util.Optional;

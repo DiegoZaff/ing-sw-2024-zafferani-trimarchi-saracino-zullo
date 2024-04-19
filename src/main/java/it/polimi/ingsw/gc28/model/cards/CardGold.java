@@ -9,7 +9,7 @@ import it.polimi.ingsw.gc28.model.challenge.PositionChallenge;
 import it.polimi.ingsw.gc28.model.challenge.ResourceChallenge;
 import it.polimi.ingsw.gc28.model.challenge.utils.ChallengeType;
 import it.polimi.ingsw.gc28.model.errors.types.NotDrawableCardError;
-import it.polimi.ingsw.gc28.model.errors.types.PlayerActionError;
+import it.polimi.ingsw.gc28.model.errors.PlayerActionError;
 import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
 import it.polimi.ingsw.gc28.model.resources.ResourceSpecial;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;

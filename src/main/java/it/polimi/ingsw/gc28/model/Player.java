@@ -4,12 +4,10 @@ import it.polimi.ingsw.gc28.model.cards.CardGame;
 import it.polimi.ingsw.gc28.model.cards.CardInitial;
 import it.polimi.ingsw.gc28.model.cards.CardObjective;
 import it.polimi.ingsw.gc28.model.cards.CardResource;
-import it.polimi.ingsw.gc28.model.errors.types.PlayerActionError;
+import it.polimi.ingsw.gc28.model.errors.PlayerActionError;
 import it.polimi.ingsw.gc28.model.errors.types.UnplayableCoordinate;
 import it.polimi.ingsw.gc28.model.objectives.Objective;
-import it.polimi.ingsw.gc28.network.rmi.VirtualView;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Optional;
 

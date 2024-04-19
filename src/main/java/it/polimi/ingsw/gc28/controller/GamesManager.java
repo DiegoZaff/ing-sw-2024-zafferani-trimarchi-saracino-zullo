@@ -35,21 +35,16 @@ public class GamesManager {
         Optional<String> gameId = message.getGameId();
 
 
-        if(gameId.isEmpty()){
-            GameController newController = new GameController(new Game());
-            //newController
-
-
-
-        }else{
-            GameController controllerOfGame = mapGames.get(gameId.get());
-            message.execute(controllerOfGame);
-
-        }
+       // socket implementation
     }
 
-    public void createGame(VirtualView client, String playerName, int numberOfPlayers) throws IOException {
-        GameController newController = new GameController(new Game());
+    public void createGame(VirtualView client, String playerName, int numberOfPlayers)  {
+        GameController newController = null;
+        try {
+            newController = new GameController(new Game(numberOfPlayers));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         try{
             newController.addPlayerToGame(playerName, client);

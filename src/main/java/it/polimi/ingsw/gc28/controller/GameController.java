@@ -8,7 +8,7 @@ import it.polimi.ingsw.gc28.model.cards.CardObjective;
 import it.polimi.ingsw.gc28.model.cards.CardResource;
 import it.polimi.ingsw.gc28.model.cards.CardsManager;
 import it.polimi.ingsw.gc28.model.errors.types.NoSuchCardId;
-import it.polimi.ingsw.gc28.model.errors.types.PlayerActionError;
+import it.polimi.ingsw.gc28.model.errors.PlayerActionError;
 import it.polimi.ingsw.gc28.network.rmi.VirtualView;
 
 import java.rmi.RemoteException;

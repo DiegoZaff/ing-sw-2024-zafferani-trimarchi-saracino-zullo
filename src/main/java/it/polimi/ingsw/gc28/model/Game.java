@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc28.model;
 import it.polimi.ingsw.gc28.model.actions.ActionManager;
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.model.cards.*;
+import it.polimi.ingsw.gc28.model.errors.PlayerActionError;
 import it.polimi.ingsw.gc28.model.errors.types.*;
 
 import java.io.IOException;
@@ -56,7 +57,9 @@ public class Game {
         return globalObjectives;
     }
 
-    public Game() throws IOException, IllegalArgumentException, IllegalStateException {
+    public Game(int nPlayers) throws IOException, IllegalArgumentException, IllegalStateException {
+
+        this.nPlayers = nPlayers;
 
         this.deck = new Deck();
 
@@ -64,6 +67,7 @@ public class Game {
 
         this.players = new ArrayList<>();
 
+        this.actionManager = new ActionManager(nPlayers, this.players);
     }
 
     /**

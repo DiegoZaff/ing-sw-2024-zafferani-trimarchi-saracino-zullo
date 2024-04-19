@@ -4,7 +4,7 @@ import it.polimi.ingsw.gc28.model.Player;
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.model.errors.types.AlreadyChoseObjectiveError;
 import it.polimi.ingsw.gc28.model.errors.types.NotYourTurnError;
-import it.polimi.ingsw.gc28.model.errors.types.PlayerActionError;
+import it.polimi.ingsw.gc28.model.errors.PlayerActionError;
 import it.polimi.ingsw.gc28.model.errors.types.UnexpectedMoveError;
 
 import java.util.ArrayList;
@@ -59,6 +59,13 @@ public class ActionManager {
         this.players = players;
         this.actionType = ActionType.JOIN_GAME;
         this.indexFirstPlayer = i;
+    }
+
+
+    public ActionManager(int nPlayers, ArrayList<Player> players){
+        this.nPlayers = nPlayers;
+        this.players = players;
+        this.actionType = ActionType.JOIN_GAME;
     }
 
 

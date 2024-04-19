@@ -2,7 +2,7 @@ package it.polimi.ingsw.gc28.games.moves;
 
 import it.polimi.ingsw.gc28.games.assertions.GameAssertion;
 import it.polimi.ingsw.gc28.model.Game;
-import it.polimi.ingsw.gc28.model.errors.types.PlayerActionError;
+import it.polimi.ingsw.gc28.model.errors.PlayerActionError;
 
 import java.util.ArrayList;
 

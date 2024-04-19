@@ -2,7 +2,7 @@ package it.polimi.ingsw.gc28.model.cards;
 
 import it.polimi.ingsw.gc28.model.*;
 import it.polimi.ingsw.gc28.model.errors.types.NotDrawableCardError;
-import it.polimi.ingsw.gc28.model.errors.types.PlayerActionError;
+import it.polimi.ingsw.gc28.model.errors.PlayerActionError;
 import it.polimi.ingsw.gc28.model.resources.Resource;
 import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;

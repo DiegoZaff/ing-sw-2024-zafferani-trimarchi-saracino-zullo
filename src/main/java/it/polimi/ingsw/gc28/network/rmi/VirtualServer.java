@@ -15,8 +15,6 @@ import java.rmi.RemoteException;
 
 // TODO : uniform virtual servers
 public interface VirtualServer extends Remote {
-     // TODO : aggiungi il virtual client al Model.
-
      /**
       * This method is for creating a new game. The user who creates the game, also joins it by providing a username.
       * @param client the virtualView associated with the client
