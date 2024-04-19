@@ -168,6 +168,8 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
 
     @Override
     public void onGameCreated(String gameId, String playerName, int playersLeftToJoin) throws RemoteException {
+        // TODO : implement this
+        System.out.println("Received GameCreation: " + gameId + " " + playerName + " " + playersLeftToJoin);
 
     }
 

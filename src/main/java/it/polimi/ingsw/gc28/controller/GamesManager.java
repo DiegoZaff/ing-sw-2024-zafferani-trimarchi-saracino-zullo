@@ -55,6 +55,12 @@ public class GamesManager {
 
         String gameId = UUID.randomUUID().toString();
         mapGames.put(gameId, newController);
+
+        try {
+            client.onGameCreated(gameId, playerName, numberOfPlayers);
+        } catch (RemoteException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
 
