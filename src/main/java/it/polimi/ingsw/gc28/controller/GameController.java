@@ -6,6 +6,8 @@ import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.model.cards.CardGame;
 import it.polimi.ingsw.gc28.model.cards.CardObjective;
 import it.polimi.ingsw.gc28.model.cards.CardResource;
+import it.polimi.ingsw.gc28.model.cards.CardsManager;
+import it.polimi.ingsw.gc28.model.errors.types.NoSuchCardId;
 import it.polimi.ingsw.gc28.model.errors.types.PlayerActionError;
 import it.polimi.ingsw.gc28.network.rmi.VirtualView;
 
@@ -66,14 +68,20 @@ public class GameController {
 
 
     public void chooseObjectivePersonal(String name, String cardId) throws IllegalArgumentException, IllegalStateException{
+
+        Optional<CardObjective> chosen = CardsManager.getInstance().getCardObjectiveFromId(cardId);
+
+        if(chosen.isEmpty()){
+            notifyError(name, new NoSuchCardId(cardId), "ChooseObjective");
+            return;
+        }
+
         synchronized (gameModel){
 
-            CardObjective chosen = CardsManager.getInstance().getObjectiveCard(cardId);
-
             try{
-                gameModel.chooseObjective(name, chosen);
+                gameModel.chooseObjective(name, chosen.get());
 
-                notifyObjChosen(name, chosen);
+                notifyObjChosen(name, chosen.get());
             }catch (PlayerActionError e){
                 notifyError(name, e, "ChooseObjective");
             }
@@ -97,13 +105,18 @@ public class GameController {
     }
 
     public void drawCard(String playerName, String cardId) {
-        CardResource cardToDraw = CardsManager.getInstance().getResourceCard(cardId);
+        Optional<? extends CardResource> cardToDraw = CardsManager.getInstance().getCardResourceFromId(cardId);
+
+        if(cardToDraw.isEmpty()){
+            notifyError(playerName, new NoSuchCardId(cardId), "DrawCardFromCardId");
+            return;
+        }
 
         synchronized (gameModel){
             try {
-                gameModel.drawGameCard(playerName, cardToDraw);
+                gameModel.drawGameCard(playerName, cardToDraw.get());
 
-                notifyOfCardDrawn(playerName, cardToDraw);
+                notifyOfCardDrawn(playerName, cardToDraw.get());
             } catch (PlayerActionError e) {
                 notifyError(playerName, e, "DrawCardFromCardId");
             }
@@ -114,10 +127,16 @@ public class GameController {
 
 
     public void playCard(String playerName, String cardId, boolean isFront, Coordinate coordinate){
-        CardGame cardToPlay = CardsManager.getInstance().get(cardId);
+        Optional<? extends CardGame> cardToPlay = CardsManager.getInstance().getCardGameFromId(cardId);
+
+        if(cardToPlay.isEmpty()){
+            notifyError(playerName, new NoSuchCardId(cardId), "PlayCard");
+            return;
+        }
+
         synchronized (gameModel){
             try{
-                gameModel.playGameCard(playerName, cardToPlay, isFront, coordinate);
+                gameModel.playGameCard(playerName, cardToPlay.get(), isFront, coordinate);
 
                 Optional<Player> playerWhoPlayed = gameModel.getPlayerOfName(playerName);
 
@@ -126,7 +145,7 @@ public class GameController {
                     throw new RuntimeException("Something went seriously wrong!");
                 }
 
-                notifyOfCardPlayed(playerWhoPlayed.get(),cardToPlay, coordinate);
+                notifyOfCardPlayed(playerWhoPlayed.get(), cardToPlay.get(), coordinate);
             }catch (PlayerActionError e){
                 notifyError(playerName, e, "PlayCard");
             }
