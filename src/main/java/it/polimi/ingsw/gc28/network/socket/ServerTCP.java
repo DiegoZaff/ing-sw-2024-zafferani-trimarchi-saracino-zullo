@@ -8,18 +8,18 @@ import java.util.List;
 
 
 public class ServerTCP extends Thread {
-    final ServerSocket listenSocket;
+    final ServerSocket serverSocket;
     final List<ClientHandler> clients = new ArrayList<>();
 
     public ServerTCP(int port) throws IOException {
-        this.listenSocket = new ServerSocket(port);
+        this.serverSocket = new ServerSocket(port);
     }
 
     @Override
     public void run() {
         Socket clientSocket = null;
         try{
-            while ((clientSocket = this.listenSocket.accept()) != null) {
+            while ((clientSocket = this.serverSocket.accept()) != null) {
                 System.out.printf("Connection accepted through socket TCP: %s %s%n",clientSocket.getInetAddress(),  clientSocket.getPort());
                 ObjectInputStream socketRx = new ObjectInputStream(clientSocket.getInputStream());
                 ObjectOutputStream socketTx = new ObjectOutputStream(clientSocket.getOutputStream());

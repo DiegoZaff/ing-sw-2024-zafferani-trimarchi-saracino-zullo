@@ -5,7 +5,7 @@ import it.polimi.ingsw.gc28.controller.GameController;
 public class MsgDrawnVisibleGameCard extends MessageC2S{
     String playerName;
     String cardId;
-    protected MsgDrawnVisibleGameCard(String playerName, String gameId, String cardId) {
+    public MsgDrawnVisibleGameCard(String playerName, String gameId, String cardId) {
         super(gameId);
         this.playerName = playerName;
         this.cardId = cardId;

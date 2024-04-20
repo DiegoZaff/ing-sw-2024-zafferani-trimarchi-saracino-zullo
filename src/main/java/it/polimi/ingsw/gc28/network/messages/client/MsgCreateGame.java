@@ -9,7 +9,7 @@ public class MsgCreateGame extends MessageC2S{
     String userName;
     int numberOfPlayers;
 
-    protected MsgCreateGame(String gameId, VirtualView client, String userName, int numberOfPlayers) {
+    public MsgCreateGame(String gameId, VirtualView client, String userName, int numberOfPlayers) {
         super(gameId);
         this.client = client;
         this.userName = userName;

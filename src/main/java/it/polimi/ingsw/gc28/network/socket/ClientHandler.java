@@ -2,11 +2,13 @@ package it.polimi.ingsw.gc28.network.socket;
 
 
 import it.polimi.ingsw.gc28.controller.GamesManager;
+import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.model.Player;
 import it.polimi.ingsw.gc28.model.Table;
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.network.messages.client.MessageC2S;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
+import it.polimi.ingsw.gc28.network.rmi.VirtualServer;
 import it.polimi.ingsw.gc28.network.rmi.VirtualView;
 
 import java.io.*;
@@ -14,7 +16,7 @@ import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-public class ClientHandler implements VirtualView {
+public class ClientHandler implements VirtualView, VirtualServer {
     final ServerTCP server;
     final ObjectInputStream input;
     final ClientProxy clientProxy;
@@ -139,5 +141,35 @@ public class ClientHandler implements VirtualView {
         } catch (IOException e){
             System.out.println("Error" + e);
         }
+    }
+
+    @Override
+    public void createGame(VirtualView client, String userName, int numberOfPlayers) throws RemoteException {
+
+    }
+
+    @Override
+    public void joinGame(VirtualView client, String gameId, String userName) throws RemoteException {
+
+    }
+
+    @Override
+    public void playGameCard(String playerName, String cardId, String gameId, boolean isFront, Coordinate coordinate) throws RemoteException {
+
+    }
+
+    @Override
+    public void drawGameCard(String playerName, String gameId, boolean fromGoldDeck) throws RemoteException {
+
+    }
+
+    @Override
+    public void drawGameCard(String playerName, String gameId, String cardId) throws RemoteException {
+
+    }
+
+    @Override
+    public void chooseObjective(String playerName, String gameId, String cardId) throws RemoteException {
+
     }
 }

@@ -6,7 +6,7 @@ import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
 public class MsgChooseObjective extends MessageC2S {
     String playerName;
     String cardId;
-    protected MsgChooseObjective(String playerName, String gameId, String cardId) {
+    public MsgChooseObjective(String playerName, String gameId, String cardId) {
         super(gameId);
         this.playerName = playerName;
         this.cardId = cardId;
