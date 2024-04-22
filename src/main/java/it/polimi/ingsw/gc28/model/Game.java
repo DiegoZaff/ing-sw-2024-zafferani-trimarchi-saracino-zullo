@@ -9,6 +9,7 @@ import it.polimi.ingsw.gc28.model.errors.types.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class Game {
@@ -31,6 +32,8 @@ public class Game {
     public ArrayList<Player> getPlayers(){
         return players;
     }
+
+    private String gameId;
 
 
     private int nPlayers;
@@ -68,6 +71,8 @@ public class Game {
         this.players = new ArrayList<>();
 
         this.actionManager = new ActionManager(nPlayers, this.players);
+
+        this.gameId = generateRandomGameId();
     }
 
     /**
@@ -183,7 +188,7 @@ public class Game {
     }
 
     /**
-     * This method initialized the two face-up resource cards.
+     * This method initializes the two face-up resource cards.
      */
     private void initFaceUpResourceCards() throws IllegalStateException{
         Optional<CardResource> faceUpResource1 = this.deck.nextResource();
@@ -199,7 +204,7 @@ public class Game {
     }
 
     /**
-     * This method initialized the two face-up gold cards.
+     * This method initializes the two face-up gold cards.
      */
     private void initFaceUpGoldCards() throws IllegalStateException{
         Optional<CardGold> faceUpGold1 = this.deck.nextGold();
@@ -494,6 +499,10 @@ public class Game {
             return getPlayers().stream().filter((player -> player.getName().equals(name))).findFirst();
     }
 
-
+    public String generateRandomGameId(){
+        Random random = new Random();
+        int id = random.nextInt(1000000000);
+        return Integer.toString(id);
+    }
 
 }

@@ -33,8 +33,15 @@ public class GamesManager {
     // TODO : implement this function
     public void executeClientMessage(MessageC2S message) throws IOException {
         Optional<String> gameId = message.getGameId();
-
-
+        if(gameId.isEmpty()){
+            //method in message to return the initial number of players?
+            //mapGames.put(gameId, new GameController(new Game()))
+        }
+        else {
+            //i'm supposing gameId is present
+            GameController gameController = mapGames.get(gameId);
+            message.execute(gameController);
+        }
        // socket implementation
     }
 
