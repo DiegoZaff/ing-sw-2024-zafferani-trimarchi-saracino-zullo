@@ -18,7 +18,7 @@ public class MsgCreateGame extends MessageC2S{
 
     @Override
     public void execute(GameController controller) {
-
+        //mettere i try catch
     }
 
     public int getNumberOfPlayers(){
