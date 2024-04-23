@@ -199,5 +199,13 @@ public class Deck {
         }
     }*/
 
+    public CardGold getNextGoldCard(){
+        return cardGoldDeck.getFirst();
+    }
+
+    public CardResource getNextResourceCard(){
+        return cardResourceDeck.getFirst();
+    }
+
 
 }

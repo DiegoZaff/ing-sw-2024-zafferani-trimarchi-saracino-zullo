@@ -1,15 +1,16 @@
 package it.polimi.ingsw.gc28.model;
 
+import it.polimi.ingsw.gc28.View.GameRepresentation;
+import it.polimi.ingsw.gc28.View.PrivateRepresentation;
 import it.polimi.ingsw.gc28.model.actions.ActionManager;
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.model.cards.*;
 import it.polimi.ingsw.gc28.model.errors.PlayerActionError;
 import it.polimi.ingsw.gc28.model.errors.types.*;
 
+
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Game {
@@ -516,4 +517,68 @@ public class Game {
         return gameId;
     }
 
+    private ArrayList<String> getPlayersNickname(){
+        ArrayList<String> nicknames = new ArrayList<>();
+        for (Player p : players){
+            nicknames.add(p.getName());
+        }
+        return nicknames;
+    }
+
+
+    private Map<String, Integer> getPointsMap(){
+        Map<String, Integer> points = new HashMap<>();
+        for (Player p : players){
+            points.put(p.getName(), p.getPoints());
+        }
+
+        return points;
+    }
+
+    public Map<String, PrivateRepresentation> getPrivateRepresentationsMap(){
+        Map<String, PrivateRepresentation> privateRepresentations = new HashMap<>();
+
+        for (Player p : players){
+            privateRepresentations.put(p.getName(), p.getState());
+        }
+
+        return privateRepresentations;
+    }
+
+    private ArrayList<String> getFaceUpGoldCardsIDs(){
+        ArrayList<String> faceUpCards = new ArrayList<>();
+
+        for (Card c : faceUpGoldCards){
+            faceUpCards.add(c.getId());
+        }
+
+        return faceUpCards;
+    }
+    private ArrayList<String> getFaceUpResourceCardsIDs(){
+        ArrayList<String> faceUpCards = new ArrayList<>();
+
+        for (Card c : faceUpResourceCards){
+            faceUpCards.add(c.getId());
+        }
+
+        return faceUpCards;
+    }
+    private ArrayList<String> getObjectiveIDs(){
+        ArrayList<String> faceUpCards = new ArrayList<>();
+
+        for (Card c : globalObjectives){
+            faceUpCards.add(c.getId());
+        }
+
+        return faceUpCards;
+    }
+
+
+    public GameRepresentation getGameRepresentation(){
+
+        return new GameRepresentation(this.getPlayersNickname(),
+                this.getObjectiveIDs(), this.getFaceUpResourceCardsIDs() ,this.getFaceUpGoldCardsIDs(),
+                deck.getNextResourceCard().getId(), deck.getNextGoldCard().getId(),
+                this.getPointsMap(), this.getPrivateRepresentationsMap());
+    }
 }

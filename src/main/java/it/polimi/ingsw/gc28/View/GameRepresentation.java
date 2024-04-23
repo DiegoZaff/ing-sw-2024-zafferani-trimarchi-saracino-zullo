@@ -13,28 +13,27 @@ public class GameRepresentation {
     /*
     CardsManager.getInstance().getCardTipoFromid(id)
      */
-
-
-    private ArrayList<String> othersNickname;
-
-
-    private ArrayList<CardObjective> globalObjectives;
-    private ArrayList<CardResource> faceUpResourceCards;
-    private ArrayList<CardGold> faceUpGoldCards;
-
-
+    private ArrayList<String> nicknames;
+    private ArrayList<String> globalObjectives, faceUpResourceCards, faceUpGoldCards;
     //next card to be drawn, needed to show the back of the card. Can be substituted with the card primary resource
-    private CardResource nextResourceCard;
-    private CardGold nextGoldCard;
-
+    private String nextResourceCard, nextGoldCard;
     private Map<String, Integer> points;
+    private Map<String, PrivateRepresentation> representations;
 
-    private PrivateRepresentation myRepresentation;
+    public GameRepresentation (ArrayList<String> nicknames, ArrayList<String> globalObjectives,
+                               ArrayList<String> faceUpResourceCards, ArrayList<String> faceUpGoldCards,
+                               String nextResourceCard, String nextGoldCard,
+                               Map<String, Integer> points, Map<String, PrivateRepresentation> representations){
 
-    private Map<String, PrivateRepresentation> othersRepresentation;
-
-
-
+        this.nicknames = nicknames;
+        this.globalObjectives = globalObjectives;
+        this.faceUpResourceCards = faceUpResourceCards;
+        this.faceUpGoldCards = faceUpGoldCards;
+        this.nextResourceCard = nextResourceCard;
+        this.nextGoldCard = nextGoldCard;
+        this.points = points;
+        this.representations = representations;
+    }
     
     
 
