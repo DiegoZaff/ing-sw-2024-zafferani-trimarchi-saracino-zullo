@@ -14,4 +14,12 @@ public class PrivateRepresentation {
 
     private Table table;
 
+    public PrivateRepresentation (CardObjective objective, Table table, ArrayList<CardResource> hand){
+
+        this.hand = hand;
+        this.table = table;
+        this.privateObjective = objective;
+
+    }
+
 }

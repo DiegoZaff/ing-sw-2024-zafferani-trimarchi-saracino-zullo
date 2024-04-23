@@ -18,6 +18,7 @@ public class MsgPlayGameCard extends MessageC2S{
 
     @Override
     public void execute(GameController controller) {
+        //probably va messo il try catch qui.
         controller.playCard(playerName, cardId, isFront, coordinate);
     }
 }

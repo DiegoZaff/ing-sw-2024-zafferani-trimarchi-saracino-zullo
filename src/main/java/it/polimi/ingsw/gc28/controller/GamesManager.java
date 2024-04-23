@@ -31,26 +31,29 @@ public class GamesManager {
         return instance;
     }
 
-    // TODO : implement this function
+    /**
+     * This method is used when the client choose a network working with sockets.
+     * The method receives a message from the client and call a controller's method to execute the client's request.
+     * @param message is the message coming from the client.
+     * @throws IOException
+     */
     public void executeClientMessage(MessageC2S message) throws IOException {
         Optional<String> gameId = message.getGameId();
+        // in base al messaggio che arriva, leggo i parametri e chiamo i metodi sotto
         if(gameId.isEmpty()){
             //case the message is a MsgCreateGame
             MsgCreateGame messageCreateGame = (MsgCreateGame) message;
             int nPlayers = messageCreateGame.getNumberOfPlayers();
-            GameController controller = new GameController(new Game(nPlayers));
-            String newGameId = controller.gameModel.getGameId();
-            mapGames.put(newGameId, controller);
+            GameController newController = new GameController(new Game(nPlayers));
+            String newGameId = newController.gameModel.getGameId();
+            mapGames.put(newGameId, newController);
+            message.execute(newController);
         }
         else {
             //case gameId is present
             GameController gameController = mapGames.get(gameId);
             message.execute(gameController);
         }
-    }
-
-    private void x (MsgCreateGame message){
-
     }
 
     public void createGame(VirtualView client, String playerName, int numberOfPlayers)  {

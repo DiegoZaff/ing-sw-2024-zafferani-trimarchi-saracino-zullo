@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc28.network.rmi;
 import java.util.UUID;
 
+import it.polimi.ingsw.gc28.View.GameRepresentation;
 import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.model.Player;
 import it.polimi.ingsw.gc28.model.Table;
@@ -26,6 +27,8 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
     private String userName;
 
     final String id;
+
+    private GameRepresentation representation;
 
     protected RmiClient(VirtualServer server) throws RemoteException {
         this.server = server;
@@ -170,16 +173,20 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
     public void onGameCreated(String gameId, String playerName, int playersLeftToJoin) throws RemoteException {
         // TODO : implement this
         System.out.println("Received GameCreation: " + gameId + " " + playerName + " " + playersLeftToJoin);
-
+        this.gameId = gameId;
     }
 
     @Override
     public void onGameJoined(String gameId, String playerName, int playersLeftToJoin) throws RemoteException {
+        this.gameId = gameId;
 
     }
 
     @Override
     public void onGameStarted(ArrayList<Player> players) throws RemoteException {
+        //mi servono gli obbiettivi globali e le carte
+
+
 
     }
 
@@ -200,7 +207,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
 
     @Override
     public void onPlayerChoseObjective(String playerName, String cardId) throws RemoteException {
-
+        
     }
 
     @Override
