@@ -499,10 +499,21 @@ public class Game {
             return getPlayers().stream().filter((player -> player.getName().equals(name))).findFirst();
     }
 
+    /**
+     * This method generates a random id associated to a new game.
+     * @return game id converted to a string.
+     */
     public String generateRandomGameId(){
         Random random = new Random();
         int id = random.nextInt(1000000000);
         return Integer.toString(id);
+    }
+
+    /**
+     * @return gameId
+     */
+    public String getGameId(){
+        return gameId;
     }
 
 }

@@ -20,4 +20,8 @@ public class MsgCreateGame extends MessageC2S{
     public void execute(GameController controller) {
 
     }
+
+    public int getNumberOfPlayers(){
+        return numberOfPlayers;
+    }
 }

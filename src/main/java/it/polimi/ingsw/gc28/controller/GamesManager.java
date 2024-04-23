@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc28.controller;
 import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.model.Game;
 import it.polimi.ingsw.gc28.network.messages.client.MessageC2S;
+import it.polimi.ingsw.gc28.network.messages.client.MsgCreateGame;
 import it.polimi.ingsw.gc28.network.rmi.VirtualView;
 
 import java.io.IOException;
@@ -34,15 +35,22 @@ public class GamesManager {
     public void executeClientMessage(MessageC2S message) throws IOException {
         Optional<String> gameId = message.getGameId();
         if(gameId.isEmpty()){
-            //method in message to return the initial number of players?
-            //mapGames.put(gameId, new GameController(new Game()))
+            //case the message is a MsgCreateGame
+            MsgCreateGame messageCreateGame = (MsgCreateGame) message;
+            int nPlayers = messageCreateGame.getNumberOfPlayers();
+            GameController controller = new GameController(new Game(nPlayers));
+            String newGameId = controller.gameModel.getGameId();
+            mapGames.put(newGameId, controller);
         }
         else {
-            //i'm supposing gameId is present
+            //case gameId is present
             GameController gameController = mapGames.get(gameId);
             message.execute(gameController);
         }
-       // socket implementation
+    }
+
+    private void x (MsgCreateGame message){
+
     }
 
     public void createGame(VirtualView client, String playerName, int numberOfPlayers)  {
