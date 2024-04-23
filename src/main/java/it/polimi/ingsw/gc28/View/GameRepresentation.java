@@ -1,15 +1,19 @@
 package it.polimi.ingsw.gc28.View;
 
+import it.polimi.ingsw.gc28.model.Table;
 import it.polimi.ingsw.gc28.model.cards.CardGold;
 import it.polimi.ingsw.gc28.model.cards.CardObjective;
 import it.polimi.ingsw.gc28.model.cards.CardResource;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class GameRepresentation {
+    /*
+    CardsManager.getInstance().getCardTipoFromid(id)
+     */
 
-    private String myNickname;
 
     private ArrayList<String> othersNickname;
 
@@ -31,6 +35,8 @@ public class GameRepresentation {
 
 
 
+    
+    
 
 
 }
