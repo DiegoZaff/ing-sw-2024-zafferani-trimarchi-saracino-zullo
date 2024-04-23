@@ -240,7 +240,7 @@ public class Game {
             actionManager.initRoundsLeft();
         }
 
-        else if (this.deck.nextResource().isEmpty() && this.deck.nextGold().isEmpty()){ //implementazione fine partita con 0 carte in entrambi deck
+        else if (this.deck.isResEmpty() && this.deck.isGoldEmpty()){ //implementazione fine partita con 0 carte in entrambi deck
 
             actionManager.initRoundsLeft();
 

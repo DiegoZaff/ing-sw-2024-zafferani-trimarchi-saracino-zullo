@@ -97,6 +97,14 @@ public class Deck {
         return Optional.ofNullable(cardInitialDeck.removeFirst());
     }
 
+    public boolean isResEmpty(){
+        return cardResourceDeck.isEmpty();
+    }
+
+    public boolean isGoldEmpty(){
+        return cardResourceDeck.isEmpty();
+    }
+
     /**
       This constructor generates a deck of cards
      */
