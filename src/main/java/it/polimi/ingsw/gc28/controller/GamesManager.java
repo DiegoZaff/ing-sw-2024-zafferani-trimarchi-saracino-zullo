@@ -51,7 +51,7 @@ public class GamesManager {
         }
         else {
             //case gameId is present
-            GameController gameController = mapGames.get(gameId);
+            GameController gameController = mapGames.get(gameId.get());
             message.execute(gameController);
         }
     }

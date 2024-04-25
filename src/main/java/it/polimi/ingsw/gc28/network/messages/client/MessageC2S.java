@@ -9,7 +9,7 @@ import java.util.Optional;
  */
 public abstract class MessageC2S {
 
-    private String gameId;
+    private final String gameId;
 
     protected MessageC2S(String gameId) {
         this.gameId = gameId;

@@ -13,6 +13,6 @@ public class MsgReportError extends MessageS2C{
 
     @Override
     public void update(VirtualView non_va_passata_una_VV_ma_una_GameRepresentation ) throws IOException {
-
+        non_va_passata_una_VV_ma_una_GameRepresentation.sendMessage(this);
     }
 }

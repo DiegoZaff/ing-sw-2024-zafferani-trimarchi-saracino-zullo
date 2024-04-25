@@ -9,8 +9,10 @@ import it.polimi.ingsw.gc28.model.cards.CardResource;
 import it.polimi.ingsw.gc28.model.cards.CardsManager;
 import it.polimi.ingsw.gc28.model.errors.types.NoSuchCardId;
 import it.polimi.ingsw.gc28.model.errors.PlayerActionError;
+import it.polimi.ingsw.gc28.network.messages.server.MsgReportError;
 import it.polimi.ingsw.gc28.network.rmi.VirtualView;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -174,10 +176,11 @@ public class GameController {
             try {
                 String playerName = entry.getKey();
 
-                client.onNextExpectedPlayerAction(actionExpected, nextPlayer);
+                client.onNextExpectedPlayerAction(actionExpected, nextPlayer);//TODO : qui
             } catch (RemoteException e) {
                 System.err.println("Could not notify client " + client + " about next turn");
             }
+            // TODO : deve creare un messaggio di risposta
         }
     }
 
@@ -201,7 +204,9 @@ public class GameController {
             VirtualView client = entry.getValue();
 
             try {
-                client.onPlayerDrawnCard(playerName, card.getId());
+                client.onPlayerDrawnCard(playerName, card.getId());// qui va costruito e mandato il messaggio in tutte le notify ch corrispondono i messaggi. esattamme
+                //TODO: sopraaaaaaaa
+
             } catch (RemoteException e) {
                 System.err.println("Could not notify client " + client + " about card " + card + " drawn from visible cards");
             }
@@ -235,7 +240,7 @@ public class GameController {
     }
 
 
-    public void notifyError(String name, PlayerActionError e, String actionDetails){
+    public void notifyError(String name, PlayerActionError e, String actionDetails) throws IOException {
         VirtualView clientOfRequest = clients.get(name);
 
         if(clientOfRequest == null){
@@ -243,10 +248,7 @@ public class GameController {
             return;
         }
 
-        try {
-            clientOfRequest.reportError(e.getMessage());
-        } catch (RemoteException ex) {
-            System.err.println(ex.getMessage());
-        }
+        MsgReportError message = new MsgReportError(actionDetails);
+        message.update(clients.get(name));
     }
 }

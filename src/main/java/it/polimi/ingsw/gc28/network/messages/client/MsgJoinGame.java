@@ -15,6 +15,6 @@ public class MsgJoinGame extends MessageC2S{
 
     @Override
     public void execute(GameController controller) {
-
+        controller.addPlayerToGame(userName, client);
     }
 }

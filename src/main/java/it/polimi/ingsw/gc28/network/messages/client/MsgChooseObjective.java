@@ -1,7 +1,6 @@
 package it.polimi.ingsw.gc28.network.messages.client;
 
 import it.polimi.ingsw.gc28.controller.GameController;
-import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
 
 public class MsgChooseObjective extends MessageC2S {
     String playerName;

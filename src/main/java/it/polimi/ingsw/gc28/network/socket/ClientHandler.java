@@ -16,7 +16,7 @@ import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-public class ClientHandler implements VirtualView, VirtualServer {
+public class ClientHandler implements VirtualView {
     final ServerTCP server;
     final ObjectInputStream input;
     final ClientProxy clientProxy;
@@ -55,121 +55,91 @@ public class ClientHandler implements VirtualView, VirtualServer {
 
     @Override
     public void onGameCreated(String gameId, String playerName, int playersLeftToJoin) throws RemoteException {
-        try{
+        try {
             clientProxy.onGameCreated(gameId, playerName, playersLeftToJoin);
-        } catch (IOException e){
+        } catch (IOException e) {
             System.out.println("Error" + e);
         }
     }
 
     @Override
     public void onGameJoined(String gameId, String playerName, int playersLeftToJoin) throws RemoteException {
-        try{
+        try {
             clientProxy.onGameJoined(gameId, playerName, playersLeftToJoin);
-        } catch (IOException e){
+        } catch (IOException e) {
             System.out.println("Error" + e);
         }
     }
 
     @Override
     public void onGameStarted(ArrayList<Player> players) throws RemoteException {
-        try{
+        try {
             clientProxy.onGameStarted(players);
-        } catch (IOException e){
+        } catch (IOException e) {
             System.out.println("Error" + e);
         }
     }
 
     @Override
     public void onPlayerPlayedCard(String playerName, Table newTable, int newPlayerPoints) throws RemoteException {
-        try{
+        try {
             clientProxy.onPlayerPlayedCard(playerName, newTable, newPlayerPoints);
-        } catch (IOException e){
+        } catch (IOException e) {
             System.out.println("Error" + e);
         }
     }
 
     @Override
     public void onPlayerDrawnCard(String playerName, String cardId, boolean fromGoldDeck) throws RemoteException {
-        try{
+        try {
             clientProxy.onPlayerDrawnCard(playerName, cardId, fromGoldDeck);
-        } catch (IOException e){
+        } catch (IOException e) {
             System.out.println("Error" + e);
         }
     }
 
     @Override
     public void onPlayerDrawnCard(String playerName, String cardId) throws RemoteException {
-        try{
+        try {
             clientProxy.onPlayerDrawnCard(playerName, cardId);
-        } catch (IOException e){
+        } catch (IOException e) {
             System.out.println("Error" + e);
         }
     }
 
     @Override
     public void onPlayerChoseObjective(String playerName, String cardId) throws RemoteException {
-        try{
+        try {
             clientProxy.onPlayerChoseObjective(playerName, cardId);
-        } catch (IOException e){
+        } catch (IOException e) {
             System.out.println("Error" + e);
         }
     }
 
     @Override
     public void reportError(String details) throws RemoteException {
-        try{
+        try {
             clientProxy.reportError(details);
-        } catch (IOException e){
+        } catch (IOException e) {
             System.out.println("Error" + e);
         }
     }
 
     @Override
     public void reportMessage(String details) throws RemoteException {
-        try{
+        try {
             clientProxy.reportMessage(details);
-        } catch (IOException e){
+        } catch (IOException e) {
             System.out.println("Error" + e);
         }
     }
 
     @Override
     public void onNextExpectedPlayerAction(ActionType actionType, String playerOfTurn) throws RemoteException {
-        try{
+        try {
             clientProxy.onNextExpectedPlayerAction(actionType, playerOfTurn);
-        } catch (IOException e){
+        } catch (IOException e) {
             System.out.println("Error" + e);
         }
-    }
-
-    @Override
-    public void createGame(VirtualView client, String userName, int numberOfPlayers) throws RemoteException {
-
-    }
-
-    @Override
-    public void joinGame(VirtualView client, String gameId, String userName) throws RemoteException {
-
-    }
-
-    @Override
-    public void playGameCard(String playerName, String cardId, String gameId, boolean isFront, Coordinate coordinate) throws RemoteException {
-
-    }
-
-    @Override
-    public void drawGameCard(String playerName, String gameId, boolean fromGoldDeck) throws RemoteException {
-
-    }
-
-    @Override
-    public void drawGameCard(String playerName, String gameId, String cardId) throws RemoteException {
-
-    }
-
-    @Override
-    public void chooseObjective(String playerName, String gameId, String cardId) throws RemoteException {
-
     }
 }

@@ -18,7 +18,7 @@ public class ClientProxy implements VirtualView {
     public ClientProxy(ObjectOutputStream output) {
         this.output = output;
     }
-
+    @Override
     public void sendMessage(MessageS2C message)  {
         try{
             output.writeObject(message);
@@ -28,7 +28,7 @@ public class ClientProxy implements VirtualView {
         }
     }
 
-    @Override
+   /* @Override
     public void onGameCreated(String gameId, String playerName, int playersLeftToJoin) throws RemoteException {
         sendMessage(new MsgOnGameCreated(gameId, playerName, playersLeftToJoin));
     }
@@ -77,7 +77,7 @@ public class ClientProxy implements VirtualView {
     @Override
     public void onNextExpectedPlayerAction(ActionType actionType, String playerOfTurn) throws RemoteException {
         sendMessage(new MsgOnNextExpectedPlayerAction(actionType, playerOfTurn));
-    }
+    }*/
 
     /**
      * This method ensures that everything written to the output steam is actually sent and the steam is ready for

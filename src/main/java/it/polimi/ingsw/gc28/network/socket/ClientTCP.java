@@ -71,6 +71,7 @@ public class ClientTCP {
             }
 
             // TODO: construct message to send to server from the commands given.
+            //c'è gia in rmi vanno unificati i due metodi;
 
         }
     }
