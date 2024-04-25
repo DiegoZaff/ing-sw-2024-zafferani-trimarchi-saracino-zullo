@@ -24,4 +24,12 @@ public class MsgCreateGame extends MessageC2S{
     public int getNumberOfPlayers(){
         return numberOfPlayers;
     }
+
+    public VirtualView getVirtualView(){
+        return client;
+    }
+
+    public String getUserName(){
+        return userName;
+    }
 }

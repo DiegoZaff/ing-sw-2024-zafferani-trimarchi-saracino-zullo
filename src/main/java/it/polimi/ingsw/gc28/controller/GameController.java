@@ -249,6 +249,7 @@ public class GameController {
         }
 
         MsgReportError message = new MsgReportError(actionDetails);
-        message.update(clients.get(name));
+        clients.get(name).sendMessage(message);
+        //TODO : controllare che funzioni e fare cosi per tutte le notify
     }
 }

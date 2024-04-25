@@ -2,12 +2,13 @@ package it.polimi.ingsw.gc28.network.messages.client;
 
 import it.polimi.ingsw.gc28.controller.GameController;
 
+import java.io.Serializable;
 import java.util.Optional;
 
 /**
  * Message sent from Client To Server
  */
-public abstract class MessageC2S {
+public abstract class MessageC2S implements Serializable {
 
     private final String gameId;
 

@@ -32,27 +32,30 @@ public class GamesManager {
     }
 
     /**
-     * This method is used when the client choose a network working with sockets.
      * The method receives a message from the client and call a controller's method to execute the client's request.
      * @param message is the message coming from the client.
-     * @throws IOException
      */
     public void executeClientMessage(MessageC2S message) throws IOException {
         Optional<String> gameId = message.getGameId();
-        // in base al messaggio che arriva, leggo i parametri e chiamo i metodi sotto
+
         if(gameId.isEmpty()){
-            //case the message is a MsgCreateGame
             MsgCreateGame messageCreateGame = (MsgCreateGame) message;
+
             int nPlayers = messageCreateGame.getNumberOfPlayers();
-            GameController newController = new GameController(new Game(nPlayers));
-            String newGameId = newController.gameModel.getGameId();
-            mapGames.put(newGameId, newController);
-            message.execute(newController);
+            VirtualView client = messageCreateGame.getVirtualView();
+            String playerName = messageCreateGame.getUserName();
+
+            createGame(client, playerName, nPlayers);
         }
         else {
-            //case gameId is present
-            GameController gameController = mapGames.get(gameId.get());
-            message.execute(gameController);
+            Optional<GameController> controller = getGameController(String.valueOf(gameId));
+
+            if(controller.isEmpty()){
+                System.err.println("Error");
+                return;
+            }
+
+            message.execute(controller.get());
         }
     }
 
@@ -75,7 +78,7 @@ public class GamesManager {
         mapGames.put(gameId, newController);
 
         try {
-            client.onGameCreated(gameId, playerName, numberOfPlayers);
+            client.onGameCreated(gameId, playerName, numberOfPlayers); // TODO: va creato il messaggio di risposta
         } catch (RemoteException e) {
             System.err.println(e.getMessage());
         }
