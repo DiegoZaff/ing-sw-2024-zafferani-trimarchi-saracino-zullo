@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc28.model;
 
+import it.polimi.ingsw.gc28.View.PrivateRepresentation;
 import it.polimi.ingsw.gc28.model.cards.CardGame;
 import it.polimi.ingsw.gc28.model.cards.CardInitial;
 import it.polimi.ingsw.gc28.model.cards.CardObjective;
@@ -180,5 +181,9 @@ public class Player {
         }
         Player other = (Player) obj;
         return name.equals(other.name);
+    }
+
+    public PrivateRepresentation getState(){
+        return new PrivateRepresentation(objectiveChosen, table, hand);
     }
 }
