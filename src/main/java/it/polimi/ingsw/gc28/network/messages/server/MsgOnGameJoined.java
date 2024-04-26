@@ -6,12 +6,10 @@ import java.io.IOException;
 
 public class MsgOnGameJoined extends MessageS2C{
 
-    String gameId;
     String playerName;
     int playersLeftToJoin;
 
-    public MsgOnGameJoined(String gameId, String playerName, int playersLeftToJoin){
-        this.gameId = gameId;
+    public MsgOnGameJoined(String playerName, int playersLeftToJoin){
         this.playerName = playerName;
         this.playersLeftToJoin = playersLeftToJoin;
     }

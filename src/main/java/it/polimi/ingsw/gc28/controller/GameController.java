@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc28.controller;
 import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.model.Game;
 import it.polimi.ingsw.gc28.model.Player;
+import it.polimi.ingsw.gc28.model.Table;
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.model.cards.CardGame;
 import it.polimi.ingsw.gc28.model.cards.CardObjective;
@@ -9,7 +10,7 @@ import it.polimi.ingsw.gc28.model.cards.CardResource;
 import it.polimi.ingsw.gc28.model.cards.CardsManager;
 import it.polimi.ingsw.gc28.model.errors.types.NoSuchCardId;
 import it.polimi.ingsw.gc28.model.errors.PlayerActionError;
-import it.polimi.ingsw.gc28.network.messages.server.MsgReportError;
+import it.polimi.ingsw.gc28.network.messages.server.*;
 import it.polimi.ingsw.gc28.network.rmi.VirtualView;
 
 import java.io.IOException;
@@ -37,12 +38,11 @@ public class GameController {
                 this.gameModel.addPlayerToGame(name);
                 this.clients.put(name, client);
             }catch (PlayerActionError e){
-                try {
-                    client.reportError(e.getMessage());
-                } catch (RemoteException ex) {
-                    System.err.println(ex.getMessage());
-                }
+                MsgReportError message = new MsgReportError(name, e.getMessage());
             }
+
+            MsgOnGameJoined message = new MsgOnGameJoined(name, gameModel.getNPlayers() - gameModel.getActualNumPlayers());
+            clients.get(name).sendMessage(message);
         }
     }
 
@@ -173,13 +173,13 @@ public class GameController {
 
             VirtualView client = entry.getValue();
 
-            try {
+            //try {
                 String playerName = entry.getKey();
 
-                client.onNextExpectedPlayerAction(actionExpected, nextPlayer);//TODO : qui
-            } catch (RemoteException e) {
-                System.err.println("Could not notify client " + client + " about next turn");
-            }
+                //client.onNextExpectedPlayerAction(actionExpected, nextPlayer);//TODO : qui
+           // } //catch (RemoteException e) {
+               // System.err.println("Could not notify client " + client + " about next turn");
+            //}
             // TODO : deve creare un messaggio di risposta
         }
     }
@@ -213,32 +213,25 @@ public class GameController {
         }
     }
 
-    public void notifyOfCardPlayed(Player playerWhoPlayed, CardGame card, Coordinate coord){
+    public void notifyOfCardPlayed(String playerWhoPlayed, Table table, int newPlayerPoints){
         for(Map.Entry<String, VirtualView> entry : clients.entrySet()){
 
             VirtualView client = entry.getValue();
 
-            try {
-                client.onPlayerPlayedCard(playerWhoPlayed.getName(), playerWhoPlayed.getTable(), playerWhoPlayed.getPoints());
-            } catch (RemoteException e) {
-                System.err.println("Could not notify client " + client + " about card " + card + " played at coordinate " + coord);
-            }
+            MsgOnPlayerPlayedCard message = new MsgOnPlayerPlayedCard(playerWhoPlayed, table, newPlayerPoints);
+            client.sendMessage(message);
         }
     }
 
-    public void notifyObjChosen(String playerName, CardObjective cardObjective){
+    public void notifyObjChosen(String playerName, String cardId){
         for(Map.Entry<String, VirtualView> entry : clients.entrySet()){
 
             VirtualView client = entry.getValue();
 
-            try {
-                client.onPlayerChoseObjective(playerName, cardObjective.getId());
-            } catch (RemoteException e) {
-                System.err.println("Could not notify client " + client + " about objective chosen: " + cardObjective);
-            }
+            MsgOnPlayerChooseObjective message = new MsgOnPlayerChooseObjective(playerName, cardId);
+            client.sendMessage(message);
         }
     }
-
 
     public void notifyError(String name, PlayerActionError e, String actionDetails) throws IOException {
         VirtualView clientOfRequest = clients.get(name);
@@ -248,8 +241,19 @@ public class GameController {
             return;
         }
 
-        MsgReportError message = new MsgReportError(actionDetails);
+        MsgReportError message = new MsgReportError(name, actionDetails);
         clients.get(name).sendMessage(message);
-        //TODO : controllare che funzioni e fare cosi per tutte le notify
+    }
+
+    public void notifyGameCreated(String gameId, String name, int numberOfPlayersLeftToJoin){
+        VirtualView clientOfRequest = clients.get(name);
+
+        if(clientOfRequest == null){
+            System.err.println(" from non existent player!");
+            return;
+        }
+
+        MsgOnGameCreated message = new MsgOnGameCreated(gameId, name, numberOfPlayersLeftToJoin);
+        clients.get(name).sendMessage(message);
     }
 }

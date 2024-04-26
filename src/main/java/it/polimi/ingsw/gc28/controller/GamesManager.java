@@ -77,11 +77,7 @@ public class GamesManager {
         String gameId = UUID.randomUUID().toString();
         mapGames.put(gameId, newController);
 
-        try {
-            client.onGameCreated(gameId, playerName, numberOfPlayers); // TODO: va creato il messaggio di risposta
-        } catch (RemoteException e) {
-            System.err.println(e.getMessage());
-        }
+        newController.notifyGameCreated(gameId, playerName, numberOfPlayers - 1);
     }
 
 

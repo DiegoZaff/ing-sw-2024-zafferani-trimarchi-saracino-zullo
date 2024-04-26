@@ -10,12 +10,12 @@ import java.util.ArrayList;
 public class MsgOnPlayerPlayedCard extends MessageS2C{
 
     String playerName;
-    Table newTable;
+    Table table;
     int newPlayerPoints;
 
-    public MsgOnPlayerPlayedCard(String playerName, Table newTable, int newPlayerPoints){
+    public MsgOnPlayerPlayedCard(String playerName, Table table, int newPlayerPoints){
         this.playerName = playerName;
-        this.newTable = newTable;
+        this.table = table;
         this.newPlayerPoints = newPlayerPoints;
     }
     @Override

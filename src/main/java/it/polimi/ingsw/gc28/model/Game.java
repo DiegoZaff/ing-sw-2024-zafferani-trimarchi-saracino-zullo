@@ -109,6 +109,14 @@ public class Game {
         checkStartGame();
     }
 
+    public int getActualNumPlayers(){
+        return players.size();
+    }
+
+    public int getNPlayers(){
+        return nPlayers;
+    }
+
     private void checkStartGame(){
         if(players.size() == nPlayers){
             gameStart();
