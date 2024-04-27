@@ -34,35 +34,40 @@ public class RmiServer  implements VirtualServer  {
         }
     }
 
-
     @Override
-    public void createGame(VirtualView client, String userName, int numberOfPlayers) throws RemoteException {
-        GamesManager.getInstance().createGame(client, userName, numberOfPlayers);
+    public void sendMessage(MessageC2S message) throws RemoteException {
+        GamesManager.getInstance().addMessageToQueue(message);
     }
 
-    @Override
-    public void joinGame(VirtualView client, String gameId, String userName) throws RemoteException {
-        GamesManager.getInstance().joinGame(client, gameId, userName);
-    }
 
-    @Override
-    public void playGameCard(String playerName, String gameId, String cardId, boolean isFront, Coordinate coordinate) throws RemoteException {
-        GamesManager.getInstance().playGameCard(playerName, gameId, cardId, isFront, coordinate);
-    }
-
-    @Override
-    public void drawGameCard(String playerName, String gameId, boolean fromGoldDeck) throws RemoteException {
-        GamesManager.getInstance().drawCard(playerName, gameId, fromGoldDeck);
-    }
-
-    @Override
-    public void drawGameCard(String playerName, String gameId, String cardId) throws RemoteException {
-        GamesManager.getInstance().drawCard(playerName, gameId, cardId);
-    }
-
-    @Override
-    public void chooseObjective(String playerName, String gameId, String cardId) throws RemoteException {
-        GamesManager.getInstance().chooseObjective(playerName, gameId, cardId);
-
-    }
+//    @Override
+//    public void createGame(VirtualView client, String userName, int numberOfPlayers) throws RemoteException {
+//        GamesManager.getInstance().createGame(client, userName, numberOfPlayers);
+//    }
+//
+//    @Override
+//    public void joinGame(VirtualView client, String gameId, String userName) throws RemoteException {
+//        GamesManager.getInstance().joinGame(client, gameId, userName);
+//    }
+//
+//    @Override
+//    public void playGameCard(String playerName, String gameId, String cardId, boolean isFront, Coordinate coordinate) throws RemoteException {
+//        GamesManager.getInstance().playGameCard(playerName, gameId, cardId, isFront, coordinate);
+//    }
+//
+//    @Override
+//    public void drawGameCard(String playerName, String gameId, boolean fromGoldDeck) throws RemoteException {
+//        GamesManager.getInstance().drawCard(playerName, gameId, fromGoldDeck);
+//    }
+//
+//    @Override
+//    public void drawGameCard(String playerName, String gameId, String cardId) throws RemoteException {
+//        GamesManager.getInstance().drawCard(playerName, gameId, cardId);
+//    }
+//
+//    @Override
+//    public void chooseObjective(String playerName, String gameId, String cardId) throws RemoteException {
+//        GamesManager.getInstance().chooseObjective(playerName, gameId, cardId);
+//
+//    }
 }

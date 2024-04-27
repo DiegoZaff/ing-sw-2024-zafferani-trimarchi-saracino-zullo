@@ -12,16 +12,21 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class GamesManager {
 
+    private final BlockingQueue<MessageC2S> messageQueue;
+
     private static GamesManager instance;
 
-    // TODO : change this so that it also stores clients connected to the game (sockets and virtual clients (RMI))
     private final Map<String, GameController> mapGames;
 
     private GamesManager() {
         mapGames = new HashMap<>();
+        messageQueue = new LinkedBlockingQueue<>();
+        this.processIncomingMessages();
     }
 
     public static GamesManager getInstance() {
@@ -29,6 +34,43 @@ public class GamesManager {
             instance = new GamesManager();
         }
         return instance;
+    }
+
+    /**
+     * This method creates and starts a thread which is responsible for popping messages from the queue
+     * and processing theme.
+     */
+    public void processIncomingMessages() {
+        new Thread(() -> {
+            while (true) {
+                try {
+                    MessageC2S message = messageQueue.take(); // Blocking call
+                    try{
+                        this.executeClientMessage(message);
+                    }catch (IOException e){
+                        System.err.println("Message threw an error!");
+                        System.err.println(e.getMessage());
+                    }
+                } catch (InterruptedException e) {
+                    System.err.println("Thread was interrupted while taking a message!");
+                    System.err.println(e.getMessage());
+                    throw new RuntimeException(e);
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * This method adds a message to the queue
+     */
+    public void addMessageToQueue(MessageC2S message){
+        try {
+            messageQueue.put(message);
+        } catch (InterruptedException e) {
+            System.err.println("Thread was interrupted while inserting a message!");
+            System.err.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
     }
 
     /**

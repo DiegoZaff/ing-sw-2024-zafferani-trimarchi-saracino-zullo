@@ -25,8 +25,6 @@ public class GameController {
 
     private final Map<String, VirtualView> clients;
 
-    // TODO : NEL MODEL!
-    // TODO : attributo per memorizza i client connessi alla partita (sia RMI che socket)
     public GameController(Game gameModel) {
         this.gameModel = gameModel;
         this.clients = new HashMap<>();
