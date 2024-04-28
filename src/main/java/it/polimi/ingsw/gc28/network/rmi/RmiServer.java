@@ -2,18 +2,12 @@ package it.polimi.ingsw.gc28.network.rmi;
 
 import it.polimi.ingsw.gc28.controller.GamesManager;
 import it.polimi.ingsw.gc28.model.Coordinate;
-import it.polimi.ingsw.gc28.model.Player;
-import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
-import it.polimi.ingsw.gc28.model.cards.CardGame;
-import it.polimi.ingsw.gc28.model.cards.CardObjective;
-import it.polimi.ingsw.gc28.model.cards.CardResource;
 import it.polimi.ingsw.gc28.network.messages.client.MessageC2S;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.*;
 
 public class RmiServer  implements VirtualServer  {
 
@@ -33,10 +27,40 @@ public class RmiServer  implements VirtualServer  {
             System.err.println(e.getMessage());
         }
     }
-
-    @Override
     public void sendMessage(MessageC2S message) throws RemoteException {
         GamesManager.getInstance().addMessageToQueue(message);
+    }
+    @Override
+    public void createGame(VirtualView client, String userName, int numberOfPlayers) throws RemoteException {
+
+    }
+
+    @Override
+
+
+    @Override
+    public void joinGame(VirtualView client, String gameId, String userName) throws RemoteException {
+
+    }
+
+    @Override
+    public void playGameCard(String playerName, String cardId, String gameId, boolean isFront, Coordinate coordinate) throws RemoteException {
+
+    }
+
+    @Override
+    public void drawGameCard(String playerName, String gameId, boolean fromGoldDeck) throws RemoteException {
+
+    }
+
+    @Override
+    public void drawGameCard(String playerName, String gameId, String cardId) throws RemoteException {
+
+    }
+
+    @Override
+    public void chooseObjective(String playerName, String gameId, String cardId) throws RemoteException {
+
     }
 
 

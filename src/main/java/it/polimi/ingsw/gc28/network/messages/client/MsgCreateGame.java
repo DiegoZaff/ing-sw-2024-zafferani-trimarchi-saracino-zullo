@@ -32,4 +32,5 @@ public class MsgCreateGame extends MessageC2S{
     public String getUserName(){
         return userName;
     }
+
 }

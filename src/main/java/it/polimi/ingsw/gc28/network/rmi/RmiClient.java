@@ -6,7 +6,7 @@ import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.model.Player;
 import it.polimi.ingsw.gc28.model.Table;
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
-import it.polimi.ingsw.gc28.network.messages.client.MessageC2S;
+import it.polimi.ingsw.gc28.network.messages.client.*;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
 
 import java.rmi.NotBoundException;
@@ -57,13 +57,12 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
 
             switch (action) {
                 case "createGame":
-
                     if (commandsList.size() != 3) {
                         System.err.println("Invalid format");
                         return;
                     }
 
-                    String username = commandsList.get(1);
+                    userName = commandsList.get(1);
 
                     Integer nPlayers = null;
                     try {
@@ -73,7 +72,12 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
                         return;
                     }
 
-                    server.createGame(this, username, nPlayers);
+                    server.createGame(this, userName, nPlayers);
+
+                    MsgCreateGame CGMess = new MsgCreateGame(gameId, this  , userName, nPlayers ); //controllo
+                    server.sendMessage(CGMess);
+
+
                     break;
                 case "joinGame":
 
@@ -82,11 +86,13 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
                         return;
                     }
 
-                    String gameId = commandsList.get(1);
+                    String gameIdToJoin = commandsList.get(1);
 
-                    String userName = commandsList.get(2);
+                    userName = commandsList.get(2);
 
-                    server.joinGame(this, gameId, userName);
+                    server.joinGame(this, gameIdToJoin, userName);
+                    MsgJoinGame JGMess = new MsgJoinGame(this, gameIdToJoin, userName); //controllo
+                    server.sendMessage(JGMess);
 
                     break;
                 case "chooseObj": {
@@ -98,7 +104,11 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
 
                     String cardId = commandsList.get(1);
 
-                    server.chooseObjective(this.userName, this.gameId, cardId);
+                    server.chooseObjective(this.userName, this.gameId, cardId); //devo coordinar eil fatto che utenti di partite divers epossono inviere messaggi nello stesso momento
+
+                    MsgChooseObjective COMess = new MsgChooseObjective(userName, gameId, cardId); //controllo
+                    server.sendMessage(COMess);
+
                     break;
                 }
                 case "drawCard":
@@ -110,12 +120,23 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
 
                     String arg = commandsList.get(1);
 
+
+
                     if (arg.equals("goldDeck")) {
                         server.drawGameCard(this.userName, this.gameId, true);
+                        MsgDrawGameCard DGCMessGold = new MsgDrawGameCard( userName, gameId, true);
+                        server.sendMessage(DGCMessGold);
+
                     } else if (arg.equals("resourceDeck")) {
                         server.drawGameCard(this.userName, this.gameId, false);
+                        MsgDrawGameCard DGCMessRes = new MsgDrawGameCard( userName, gameId, false);
+                        server.sendMessage(DGCMessRes);
+
                     } else if (arg.startsWith("RES") || arg.startsWith("GOLD")) {
                         server.drawGameCard(this.userName, this.gameId, arg);
+                        MsgDrawnVisibleGameCard DGCMessFU = new MsgDrawnVisibleGameCard( userName, gameId, arg);
+                        server.sendMessage(DGCMessFU);
+
                     } else {
                         System.err.println("Invalid format");
                     }
@@ -150,6 +171,10 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
                     }
 
                     server.playGameCard(this.userName, cardId, this.gameId, isFront, new Coordinate(x, y));
+
+                    MsgPlayGameCard PGCMess = new MsgPlayGameCard( userName, cardId, gameId, isFront, new Coordinate(x,y));
+                    server.sendMessage(PGCMess);
+
                     break;
                 }
                 default:
@@ -167,6 +192,11 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
         VirtualServer server = (VirtualServer) registry.lookup("VirtualServer");
 
         new RmiClient(server).run();
+    }
+
+    @Override
+    public void sendMessage(MessageS2C message) {
+
     }
 
     @Override
@@ -207,7 +237,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
 
     @Override
     public void onPlayerChoseObjective(String playerName, String cardId) throws RemoteException {
-        
+
     }
 
     @Override

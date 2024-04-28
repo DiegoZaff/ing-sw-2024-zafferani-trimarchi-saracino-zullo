@@ -17,4 +17,24 @@ import java.util.ArrayList;
  */
 public interface VirtualView extends Remote {
      public abstract void sendMessage(MessageS2C message);
-     }
+
+     void onGameCreated(String gameId, String playerName, int playersLeftToJoin) throws RemoteException;
+
+     void onGameJoined(String gameId, String playerName, int playersLeftToJoin) throws RemoteException;
+
+     void onGameStarted(ArrayList<Player> players) throws RemoteException;
+
+     void onPlayerPlayedCard(String playerName, Table newTable, int newPlayerPoints) throws RemoteException;
+
+     void onPlayerDrawnCard(String playerName, String cardId, boolean fromGoldDeck) throws RemoteException;
+
+     void onPlayerDrawnCard(String playerName, String cardId) throws RemoteException;
+
+     void onPlayerChoseObjective(String playerName, String cardId) throws RemoteException;
+
+     void reportError(String details) throws RemoteException;
+
+     void reportMessage(String details) throws RemoteException;
+
+     void onNextExpectedPlayerAction(ActionType actionType, String playerOfTurn) throws RemoteException;
+}
