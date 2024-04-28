@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc28.network.messages.server;
 
+import it.polimi.ingsw.gc28.View.GameRepresentation;
 import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.model.Table;
 import it.polimi.ingsw.gc28.network.rmi.VirtualView;
@@ -18,8 +19,9 @@ public class MsgOnPlayerPlayedCard extends MessageS2C{
         this.table = table;
         this.newPlayerPoints = newPlayerPoints;
     }
+
     @Override
-    public void update(VirtualView non_va_passata_una_VV_ma_una_GameRepresentation ) throws IOException {
+    public void update(GameRepresentation gameRepresentation) throws IOException {
 
     }
 }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc28.network.messages.server;
 
+import it.polimi.ingsw.gc28.View.GameRepresentation;
 import it.polimi.ingsw.gc28.network.rmi.VirtualView;
 
 import java.io.IOException;
@@ -15,8 +16,9 @@ public class MsgOnGameCreated extends MessageS2C{
         this.playerName = playerName;
         this.playersLeftToJoin = playersLeftToJoin;
     }
+
     @Override
-    public void update(VirtualView non_va_passata_una_VV_ma_una_GameRepresentation ) throws IOException {
+    public void update(GameRepresentation gameRepresentation) throws IOException {
 
     }
 }
