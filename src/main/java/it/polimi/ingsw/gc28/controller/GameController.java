@@ -1,4 +1,5 @@
 package it.polimi.ingsw.gc28.controller;
+import it.polimi.ingsw.gc28.View.GameRepresentation;
 import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.model.Game;
 import it.polimi.ingsw.gc28.model.Player;
@@ -41,6 +42,16 @@ public class GameController {
 
             MsgOnGameJoined message = new MsgOnGameJoined(name, gameModel.getNPlayers() - gameModel.getActualNumPlayers());
             clients.get(name).sendMessage(message);
+
+            if(hasGameStarted()){
+                for(Map.Entry<String, VirtualView> entry : clients.entrySet()){
+
+                    VirtualView cli = entry.getValue();
+
+                   /*/ MsgOnGameStarted m = new MsgOnGameStarted(new GameRepresentation());
+                   // client.sendMessage(m);*/
+                }
+            }
         }
     }
 
@@ -72,7 +83,7 @@ public class GameController {
         Optional<CardObjective> chosen = CardsManager.getInstance().getCardObjectiveFromId(cardId);
 
         if(chosen.isEmpty()){
-            notifyError(name, new NoSuchCardId(cardId), "ChooseObjective");
+            //notifyError(name, new NoSuchCardId(cardId), "ChooseObjective");
             return;
         }
 
@@ -81,9 +92,9 @@ public class GameController {
             try{
                 gameModel.chooseObjective(name, chosen.get());
 
-                notifyObjChosen(name, chosen.get());
+                //notifyObjChosen(name, chosen.get());
             }catch (PlayerActionError e){
-                notifyError(name, e, "ChooseObjective");
+                //notifyError(name, e, "ChooseObjective");
             }
 
             notifyOfNextTurn();
@@ -97,7 +108,7 @@ public class GameController {
 
                 notifyOfCardDrawn(name, card, fromGoldDeck);
             }catch (PlayerActionError e){
-                notifyError(name, e, "DrawCardFromDeck");
+                //notifyError(name, e, "DrawCardFromDeck");
             }
 
             notifyOfNextTurn();
@@ -108,7 +119,7 @@ public class GameController {
         Optional<? extends CardResource> cardToDraw = CardsManager.getInstance().getCardResourceFromId(cardId);
 
         if(cardToDraw.isEmpty()){
-            notifyError(playerName, new NoSuchCardId(cardId), "DrawCardFromCardId");
+            //notifyError(playerName, new NoSuchCardId(cardId), "DrawCardFromCardId");
             return;
         }
 
@@ -118,7 +129,7 @@ public class GameController {
 
                 notifyOfCardDrawn(playerName, cardToDraw.get());
             } catch (PlayerActionError e) {
-                notifyError(playerName, e, "DrawCardFromCardId");
+                //notifyError(playerName, e, "DrawCardFromCardId");
             }
 
             notifyOfNextTurn();
@@ -130,7 +141,7 @@ public class GameController {
         Optional<? extends CardGame> cardToPlay = CardsManager.getInstance().getCardGameFromId(cardId);
 
         if(cardToPlay.isEmpty()){
-            notifyError(playerName, new NoSuchCardId(cardId), "PlayCard");
+            //notifyError(playerName, new NoSuchCardId(cardId), "PlayCard");
             return;
         }
 
@@ -145,9 +156,12 @@ public class GameController {
                     throw new RuntimeException("Something went seriously wrong!");
                 }
 
-                notifyOfCardPlayed(playerWhoPlayed.get(), cardToPlay.get(), coordinate);
+                //capire i parametri da passare ma non servono in teoria;
+                //notifyOfCardPlayed(playerName, );
+
             }catch (PlayerActionError e){
-                notifyError(playerName, e, "PlayCard");
+                MsgReportError message = new MsgReportError(playerName, e.getMessage());
+                clients.get(playerName).sendMessage(message);
             }
 
             notifyOfNextTurn();
@@ -171,14 +185,7 @@ public class GameController {
 
             VirtualView client = entry.getValue();
 
-            //try {
-                String playerName = entry.getKey();
-
-                //client.onNextExpectedPlayerAction(actionExpected, nextPlayer);//TODO : qui
-           // } //catch (RemoteException e) {
-               // System.err.println("Could not notify client " + client + " about next turn");
-            //}
-            // TODO : deve creare un messaggio di risposta
+            //MsgOnNextExpectedPlayerAction()
         }
     }
 
@@ -188,11 +195,12 @@ public class GameController {
 
             VirtualView client = entry.getValue();
 
-            try {
-                client.onPlayerDrawnCard(playerName, card.getId(), fromGoldDeck);
-            } catch (RemoteException e) {
-                System.err.println("Could not notify client " + client + " about card " + card + " drawn from deck");
-            }
+            //method to construct a game representation, to pass to the message, from the current model state
+
+            //MsgOnPlayerAction message = new MsgOnPlayerAction(//this parameter is the game representation);
+            //client.sendMessage(message);
+
+            notifyOfNextTurn();
         }
     }
 
@@ -201,13 +209,12 @@ public class GameController {
 
             VirtualView client = entry.getValue();
 
-            try {
-                client.onPlayerDrawnCard(playerName, card.getId());// qui va costruito e mandato il messaggio in tutte le notify ch corrispondono i messaggi. esattamme
-                //TODO: sopraaaaaaaa
+            //method to construct a game representation, to pass to the message, from the current model state
 
-            } catch (RemoteException e) {
-                System.err.println("Could not notify client " + client + " about card " + card + " drawn from visible cards");
-            }
+            //MsgOnPlayerAction message = new MsgOnPlayerAction(//this parameter is the game representation);
+            //client.sendMessage(message);
+
+            notifyOfNextTurn();
         }
     }
 
@@ -216,8 +223,13 @@ public class GameController {
 
             VirtualView client = entry.getValue();
 
-            MsgOnPlayerPlayedCard message = new MsgOnPlayerPlayedCard(playerWhoPlayed, table, newPlayerPoints);
-            client.sendMessage(message);
+            //method to construct a game representation, to pass to the message, from the current model state
+
+            //MsgOnPlayerAction message = new MsgOnPlayerAction(//this parameter is the game representation);
+            //client.sendMessage(message);
+
+            //MsgOnPlayerPlayedCard message = new MsgOnPlayerPlayedCard(playerWhoPlayed, table, newPlayerPoints);
+            //client.sendMessage(message);
         }
     }
 
@@ -226,8 +238,10 @@ public class GameController {
 
             VirtualView client = entry.getValue();
 
-            MsgOnPlayerChooseObjective message = new MsgOnPlayerChooseObjective(playerName, cardId);
-            client.sendMessage(message);
+            //method to construct a game representation, to pass to the message, from the current model state
+
+            //MsgOnPlayerAction message = new MsgOnPlayerAction(//this parameter is the game representation);
+            //client.sendMessage(message);
         }
     }
 

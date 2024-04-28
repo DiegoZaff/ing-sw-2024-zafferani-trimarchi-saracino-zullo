@@ -123,7 +123,7 @@ public class GamesManager {
     }
 
 
-    public void joinGame(VirtualView client, String gameId, String userName){
+    /*public void joinGame(VirtualView client, String gameId, String userName){
         Optional<GameController> controller = getGameController(gameId);
 
         if(controller.isEmpty()){
@@ -187,7 +187,7 @@ public class GamesManager {
         }
 
         controller.get().chooseObjectivePersonal(playerName, cardId);
-    }
+    }*/
 
     public Optional<GameController> getGameController(String id){
         GameController controller = mapGames.get(id);
