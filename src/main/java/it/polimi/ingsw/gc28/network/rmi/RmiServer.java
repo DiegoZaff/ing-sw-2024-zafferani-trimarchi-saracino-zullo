@@ -30,38 +30,6 @@ public class RmiServer  implements VirtualServer  {
     public void sendMessage(MessageC2S message) throws RemoteException {
         GamesManager.getInstance().addMessageToQueue(message);
     }
-    @Override
-    public void createGame(VirtualView client, String userName, int numberOfPlayers) throws RemoteException {
-
-    }
-
-    @Override
-
-
-    @Override
-    public void joinGame(VirtualView client, String gameId, String userName) throws RemoteException {
-
-    }
-
-    @Override
-    public void playGameCard(String playerName, String cardId, String gameId, boolean isFront, Coordinate coordinate) throws RemoteException {
-
-    }
-
-    @Override
-    public void drawGameCard(String playerName, String gameId, boolean fromGoldDeck) throws RemoteException {
-
-    }
-
-    @Override
-    public void drawGameCard(String playerName, String gameId, String cardId) throws RemoteException {
-
-    }
-
-    @Override
-    public void chooseObjective(String playerName, String gameId, String cardId) throws RemoteException {
-
-    }
 
 
 //    @Override

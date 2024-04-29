@@ -84,10 +84,11 @@ public class GamesManager {
             MsgCreateGame messageCreateGame = (MsgCreateGame) message;
 
             int nPlayers = messageCreateGame.getNumberOfPlayers();
-            VirtualView client = messageCreateGame.getVirtualView();
             String playerName = messageCreateGame.getUserName();
 
-            createGame(client, playerName, nPlayers);
+            //va creata da qualche parte una virtual view per il nuovo client e in generale per ogni nuovo client che si connette
+
+            //createGame(client, playerName, nPlayers);
         }
         else {
             Optional<GameController> controller = getGameController(String.valueOf(gameId));

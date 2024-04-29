@@ -72,9 +72,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
                         return;
                     }
 
-                    server.createGame(this, userName, nPlayers);
-
-                    MsgCreateGame CGMess = new MsgCreateGame(gameId, this  , userName, nPlayers ); //controllo
+                    MsgCreateGame CGMess = new MsgCreateGame(gameId , userName, nPlayers ); //controllo
                     server.sendMessage(CGMess);
 
 
@@ -90,7 +88,6 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
 
                     userName = commandsList.get(2);
 
-                    server.joinGame(this, gameIdToJoin, userName);
                     MsgJoinGame JGMess = new MsgJoinGame(this, gameIdToJoin, userName); //controllo
                     server.sendMessage(JGMess);
 
@@ -103,8 +100,6 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
                     }
 
                     String cardId = commandsList.get(1);
-
-                    server.chooseObjective(this.userName, this.gameId, cardId); //devo coordinar eil fatto che utenti di partite divers epossono inviere messaggi nello stesso momento
 
                     MsgChooseObjective COMess = new MsgChooseObjective(userName, gameId, cardId); //controllo
                     server.sendMessage(COMess);
@@ -123,17 +118,14 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
 
 
                     if (arg.equals("goldDeck")) {
-                        server.drawGameCard(this.userName, this.gameId, true);
                         MsgDrawGameCard DGCMessGold = new MsgDrawGameCard( userName, gameId, true);
                         server.sendMessage(DGCMessGold);
 
                     } else if (arg.equals("resourceDeck")) {
-                        server.drawGameCard(this.userName, this.gameId, false);
                         MsgDrawGameCard DGCMessRes = new MsgDrawGameCard( userName, gameId, false);
                         server.sendMessage(DGCMessRes);
 
                     } else if (arg.startsWith("RES") || arg.startsWith("GOLD")) {
-                        server.drawGameCard(this.userName, this.gameId, arg);
                         MsgDrawnVisibleGameCard DGCMessFU = new MsgDrawnVisibleGameCard( userName, gameId, arg);
                         server.sendMessage(DGCMessFU);
 
@@ -170,7 +162,6 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
                         return;
                     }
 
-                    server.playGameCard(this.userName, cardId, this.gameId, isFront, new Coordinate(x, y));
 
                     MsgPlayGameCard PGCMess = new MsgPlayGameCard( userName, cardId, gameId, isFront, new Coordinate(x,y));
                     server.sendMessage(PGCMess);
@@ -185,8 +176,6 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
     }
 
 
-
-
     public static void startClientRMI(String host, int port) throws RemoteException, NotBoundException {
         Registry registry = LocateRegistry.getRegistry(host, port);
         VirtualServer server = (VirtualServer) registry.lookup("VirtualServer");
@@ -199,7 +188,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
 
     }
 
-    @Override
+   /* @Override
     public void onGameCreated(String gameId, String playerName, int playersLeftToJoin) throws RemoteException {
         // TODO : implement this
         System.out.println("Received GameCreation: " + gameId + " " + playerName + " " + playersLeftToJoin);
@@ -253,7 +242,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
     @Override
     public void onNextExpectedPlayerAction(ActionType actionType, String playerOfTurn) throws RemoteException {
 
-    }
+    }*/
 
 
 }

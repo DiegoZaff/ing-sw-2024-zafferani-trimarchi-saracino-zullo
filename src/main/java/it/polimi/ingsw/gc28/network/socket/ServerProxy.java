@@ -13,7 +13,7 @@ public class ServerProxy implements VirtualServer {
     final ObjectOutputStream output;
 
     public ServerProxy(ObjectOutputStream output) {
-        this.output =output;
+        this.output = output;
     }
 
     public void sendMessage(MessageC2S message) {

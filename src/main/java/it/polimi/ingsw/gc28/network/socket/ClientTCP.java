@@ -1,6 +1,9 @@
 package it.polimi.ingsw.gc28.network.socket;
 
 import it.polimi.ingsw.gc28.network.messages.client.MessageC2S;
+import it.polimi.ingsw.gc28.network.messages.client.MsgCreateGame;
+import it.polimi.ingsw.gc28.network.messages.server.MsgReportError;
+import it.polimi.ingsw.gc28.network.rmi.VirtualView;
 
 import java.io.*;
 import java.net.Socket;
@@ -12,6 +15,7 @@ import java.util.Scanner;
 public class ClientTCP {
     final ObjectInputStream input;
     final ServerProxy server;
+    String userName;
 
     protected ClientTCP(ObjectInputStream input, ObjectOutputStream output) {
         this.input = input;
@@ -65,19 +69,57 @@ public class ClientTCP {
             String[] commands = line.split(" ");
             ArrayList<String> commandsList = new ArrayList<>(Arrays.asList(commands));
 
-            if(commandsList.size() < 2){
+            if (commandsList.size() < 2) {
                 System.err.println("Give me a valid command plz.");
                 continue;
             }
 
-            // TODO: construct message to send to server from the commands given.
-            //c'è gia in rmi vanno unificati i due metodi;
+            String action = commandsList.getFirst();
 
+            switch (action) {
+                case "createGame":
+                    if (commandsList.size() != 3) {
+                        System.err.println("Invalid format");
+                        return;
+                    }
+
+                    userName = commandsList.get(1);
+
+                    //qui va controllato che venga inserito un numero compreso tra 2 e 4;
+                    Integer nPlayers = null;
+                    try {
+                        nPlayers = Integer.parseInt(commandsList.get(2));
+                    } catch (NumberFormatException e) {
+                        System.err.println(e.getMessage());
+                        return;
+                    }
+
+                    if (nPlayers < 2 || nPlayers > 4) {
+                        System.out.println("Select a number of player between 2 and 4");
+                        break;
+                    }
+
+                    MsgCreateGame message = new MsgCreateGame(null, userName, nPlayers);
+                    server.sendMessage(message);
+
+                    break;
+                case "joinGame":
+
+
+                    // TODO: construct message to send to server from the commands given.
+                    //c'è gia in rmi vanno unificati i due metodi;
+
+            }
         }
     }
 
-    public static void startClientSocket(String host, int port) throws IOException {
-        Socket serverSocket = new Socket(host, port);
+    public static void startClientSocket (String host, int port) throws IOException {
+        Socket serverSocket = null;
+        try{
+            serverSocket = new Socket(host, port);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         ObjectInputStream socketRx = null;
         ObjectOutputStream socketTx = null;
         try{

@@ -25,3 +25,4 @@ public class MsgOnPlayerPlayedCard extends MessageS2C{
 
     }
 }
+//ora che aggiorniamo tutta la game representation non serve più
