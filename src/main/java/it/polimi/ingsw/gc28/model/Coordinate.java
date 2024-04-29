@@ -1,10 +1,9 @@
 package it.polimi.ingsw.gc28.model;
 
-import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
 
-import java.util.Objects;
+import java.io.Serializable;
 
-public record Coordinate(int x, int y) {
+public record Coordinate(int x, int y) implements Serializable {
     public int getX(){
         return x;
     }

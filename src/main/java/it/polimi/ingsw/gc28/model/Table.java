@@ -6,12 +6,13 @@ import it.polimi.ingsw.gc28.model.resources.ResourceSpecial;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceSpecialType;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class Table {
+public class Table implements Serializable {
 
 
     private final Map<Coordinate, Cell> mapPositions;
@@ -21,9 +22,6 @@ public class Table {
     private final ArrayList<Coordinate> unplayableCoords;
 
     private final Map<Resource, Integer> resourceCounters;
-
-
-
 
 
     public Map<Coordinate, Cell> getMapPositions(){
@@ -50,10 +48,6 @@ public class Table {
         }
         //prova
     }
-
-
-
-
 
 
     public void removePlayableCoordinate (Coordinate coordinatesToRemove){

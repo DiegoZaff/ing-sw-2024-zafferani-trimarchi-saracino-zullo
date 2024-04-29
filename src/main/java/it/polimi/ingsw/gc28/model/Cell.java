@@ -3,10 +3,11 @@ package it.polimi.ingsw.gc28.model;
 import it.polimi.ingsw.gc28.model.cards.CardGame;
 import it.polimi.ingsw.gc28.model.resources.Resource;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.Optional;
 
-public class Cell {
+public class Cell implements Serializable {
 
     public final CardGame card;
 

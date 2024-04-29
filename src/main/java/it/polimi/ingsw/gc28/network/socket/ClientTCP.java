@@ -1,9 +1,8 @@
 package it.polimi.ingsw.gc28.network.socket;
 
-import it.polimi.ingsw.gc28.network.messages.client.MessageC2S;
+import it.polimi.ingsw.gc28.View.GameManagerClient;
 import it.polimi.ingsw.gc28.network.messages.client.MsgCreateGame;
-import it.polimi.ingsw.gc28.network.messages.server.MsgReportError;
-import it.polimi.ingsw.gc28.network.rmi.VirtualView;
+import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
 
 import java.io.*;
 import java.net.Socket;
@@ -38,15 +37,11 @@ public class ClientTCP {
      */
     private void runVirtualServer() {
         try{
-            MessageC2S receivedObj = null;
-            while ((receivedObj = (MessageC2S) input.readObject()) != null) {
+            MessageS2C receivedObj = null;
+            while ((receivedObj = (MessageS2C) input.readObject()) != null) {
                 System.out.println("Received message from server: " + receivedObj);
 
-                // TODO : implement handling of message.
-                // TODO : we could create a GameRepresentation Singleton Class
-                // TODO : which serves as local representation of the game, which is updated upon
-                // TODO : receiving a new message from the server.
-                // TODO : also print stuff upon receiving a message.
+                GameManagerClient.getInstance().addMessageToQueue(receivedObj);
             }
         }catch (ClassNotFoundException e) {
             // Handle class not found exception
@@ -99,7 +94,8 @@ public class ClientTCP {
                         break;
                     }
 
-                    MsgCreateGame message = new MsgCreateGame(null, userName, nPlayers);
+                    // TODO : remember to attach client inside clientHandler
+                    MsgCreateGame message = new MsgCreateGame(null, userName, nPlayers, null);
                     server.sendMessage(message);
 
                     break;

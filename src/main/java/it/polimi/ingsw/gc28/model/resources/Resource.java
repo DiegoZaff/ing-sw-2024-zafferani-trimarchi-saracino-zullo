@@ -1,7 +1,8 @@
 package it.polimi.ingsw.gc28.model.resources;
 
-import it.polimi.ingsw.gc28.model.resources.utils.ResourceType;
 
-public abstract class Resource {
+import java.io.Serializable;
+
+public abstract class Resource implements Serializable {
 }
 

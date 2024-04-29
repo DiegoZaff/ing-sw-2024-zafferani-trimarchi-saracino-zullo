@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc28.network.messages.client;
 import it.polimi.ingsw.gc28.controller.GameController;
 
 import java.io.Serializable;
+import java.rmi.RemoteException;
 import java.util.Optional;
 
 /**
@@ -20,6 +21,6 @@ public abstract class MessageC2S implements Serializable {
         return Optional.ofNullable(gameId);
     }
 
-    public abstract void execute(GameController controller);
+    public abstract void execute(GameController controller) throws RemoteException;
 
 }

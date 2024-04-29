@@ -1,23 +1,46 @@
 package it.polimi.ingsw.gc28.network.messages.server;
 
+import it.polimi.ingsw.gc28.View.GameManagerClient;
 import it.polimi.ingsw.gc28.View.GameRepresentation;
-import it.polimi.ingsw.gc28.network.rmi.VirtualView;
-
-import java.io.IOException;
 
 public class MsgOnPlayerChooseObjective extends MessageS2C{
-    String playerName;
-    String cardId;
+    private final String playerName;
 
-    public MsgOnPlayerChooseObjective(String playerName, String cardId){
+    private final GameRepresentation gameRepresentation;
+
+    public MsgOnPlayerChooseObjective(String playerName, GameRepresentation gameRepresentation){
         this.playerName = playerName;
-        this.cardId = cardId;
+        this.gameRepresentation = gameRepresentation;
     }
 
     @Override
-    public void update(GameRepresentation gameRepresentation) throws IOException {
+    public void update(GameManagerClient gameManagerClient)  {
+        gameManagerClient.setCurrentRepresentation(gameRepresentation);
 
+        String text;
+
+        if(playerName.equals(gameManagerClient.getPlayerName())){
+
+            String personalObjId;
+            try {
+                personalObjId = gameRepresentation.getRepresentations().get(playerName).getPrivateObjective().getId();
+            }catch (Exception e){
+                System.err.println("Something is wrong in the private representation!");
+                throw new RuntimeException(e);
+            }
+
+            text = String.format("""
+                You have chosen your objective: %s
+                Don't tell anyone!
+                """, personalObjId);
+
+        }else{
+            text = String.format("""
+                %s has chosen his super secret objective!
+                """, playerName);
+        }
+
+        gameManagerClient.writeInConsole(text);
     }
 }
 
-//ora che aggiorniamo tutta la game representation non serve più

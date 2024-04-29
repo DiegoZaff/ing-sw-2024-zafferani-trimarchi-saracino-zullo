@@ -1,11 +1,9 @@
 package it.polimi.ingsw.gc28.network.rmi;
 import java.util.UUID;
 
+import it.polimi.ingsw.gc28.View.GameManagerClient;
 import it.polimi.ingsw.gc28.View.GameRepresentation;
 import it.polimi.ingsw.gc28.model.Coordinate;
-import it.polimi.ingsw.gc28.model.Player;
-import it.polimi.ingsw.gc28.model.Table;
-import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.network.messages.client.*;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
 
@@ -72,7 +70,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
                         return;
                     }
 
-                    MsgCreateGame CGMess = new MsgCreateGame(gameId , userName, nPlayers ); //controllo
+                    MsgCreateGame CGMess = new MsgCreateGame(gameId , userName, nPlayers, this ); //controllo
                     server.sendMessage(CGMess);
 
 
@@ -185,64 +183,8 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
 
     @Override
     public void sendMessage(MessageS2C message) {
-
+        GameManagerClient.getInstance().addMessageToQueue(message);
     }
-
-   /* @Override
-    public void onGameCreated(String gameId, String playerName, int playersLeftToJoin) throws RemoteException {
-        // TODO : implement this
-        System.out.println("Received GameCreation: " + gameId + " " + playerName + " " + playersLeftToJoin);
-        this.gameId = gameId;
-    }
-
-    @Override
-    public void onGameJoined(String gameId, String playerName, int playersLeftToJoin) throws RemoteException {
-        this.gameId = gameId;
-
-    }
-
-    @Override
-    public void onGameStarted(ArrayList<Player> players) throws RemoteException {
-        //mi servono gli obbiettivi globali e le carte
-
-
-
-    }
-
-    @Override
-    public void onPlayerPlayedCard(String playerName, Table newTable, int newPlayerPoints) throws RemoteException {
-
-    }
-
-    @Override
-    public void onPlayerDrawnCard(String playerName, String cardId, boolean fromGoldDeck) throws RemoteException {
-
-    }
-
-    @Override
-    public void onPlayerDrawnCard(String playerName, String cardId) throws RemoteException {
-
-    }
-
-    @Override
-    public void onPlayerChoseObjective(String playerName, String cardId) throws RemoteException {
-
-    }
-
-    @Override
-    public void reportError(String details) throws RemoteException {
-
-    }
-
-    @Override
-    public void reportMessage(String details) throws RemoteException {
-
-    }
-
-    @Override
-    public void onNextExpectedPlayerAction(ActionType actionType, String playerOfTurn) throws RemoteException {
-
-    }*/
 
 
 }

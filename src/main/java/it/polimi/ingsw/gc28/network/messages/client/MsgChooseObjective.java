@@ -2,9 +2,11 @@ package it.polimi.ingsw.gc28.network.messages.client;
 
 import it.polimi.ingsw.gc28.controller.GameController;
 
+import java.rmi.RemoteException;
+
 public class MsgChooseObjective extends MessageC2S {
-    String playerName;
-    String cardId;
+    private final String playerName;
+    private final String cardId;
     public MsgChooseObjective(String playerName, String gameId, String cardId) {
         super(gameId);
         this.playerName = playerName;
@@ -12,7 +14,7 @@ public class MsgChooseObjective extends MessageC2S {
     }
 
     @Override
-    public void execute(GameController controller) {
+    public void execute(GameController controller) throws RemoteException {
         controller.chooseObjectivePersonal(playerName, cardId);
     }
 }

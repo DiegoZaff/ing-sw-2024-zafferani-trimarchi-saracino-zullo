@@ -12,11 +12,12 @@ import it.polimi.ingsw.gc28.model.resources.utils.ResourceSpecialType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceType;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public abstract class CardGame extends Card {
+public abstract class CardGame extends Card implements Serializable {
     private final Vertex[] verticesFront;
 
 

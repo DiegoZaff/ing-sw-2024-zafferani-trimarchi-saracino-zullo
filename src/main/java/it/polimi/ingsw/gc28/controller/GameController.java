@@ -3,8 +3,6 @@ import it.polimi.ingsw.gc28.View.GameRepresentation;
 import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.model.Game;
 import it.polimi.ingsw.gc28.model.Player;
-import it.polimi.ingsw.gc28.model.Table;
-import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.model.cards.CardGame;
 import it.polimi.ingsw.gc28.model.cards.CardObjective;
 import it.polimi.ingsw.gc28.model.cards.CardResource;
@@ -14,7 +12,6 @@ import it.polimi.ingsw.gc28.model.errors.PlayerActionError;
 import it.polimi.ingsw.gc28.network.messages.server.*;
 import it.polimi.ingsw.gc28.network.rmi.VirtualView;
 
-import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,25 +28,37 @@ public class GameController {
         this.clients = new HashMap<>();
     }
 
-    public void addPlayerToGame(String name, VirtualView client){
+    public void addPlayerToGame(String name, VirtualView client, boolean notifyJoin) throws RemoteException {
         synchronized (gameModel){
             try{
                 this.gameModel.addPlayerToGame(name);
                 this.clients.put(name, client);
             }catch (PlayerActionError e){
+                // notify error to player
                 MsgReportError message = new MsgReportError(name, e.getMessage());
+                client.sendMessage(message);
+                return;
             }
 
-            MsgOnGameJoined message = new MsgOnGameJoined(name, gameModel.getNPlayers() - gameModel.getActualNumPlayers());
-            clients.get(name).sendMessage(message);
+
+            if(notifyJoin){
+                int playersLeftToJoin = gameModel.getNPlayers() - gameModel.getActualNumPlayers();
+
+                MsgOnGameJoined message = new MsgOnGameJoined(this.gameModel.getGameId() ,name, playersLeftToJoin);
+
+                clients.get(name).sendMessage(message);
+            }
 
             if(hasGameStarted()){
                 for(Map.Entry<String, VirtualView> entry : clients.entrySet()){
 
                     VirtualView cli = entry.getValue();
 
-                   /*/ MsgOnGameStarted m = new MsgOnGameStarted(new GameRepresentation());
-                   // client.sendMessage(m);*/
+                    GameRepresentation representation = getGameRepresentation();
+
+                    MsgOnGameStarted m = new MsgOnGameStarted(representation);
+
+                    cli.sendMessage(m);
                 }
             }
         }
@@ -78,12 +87,12 @@ public class GameController {
     }
 
 
-    public void chooseObjectivePersonal(String name, String cardId) throws IllegalArgumentException, IllegalStateException{
+    public void chooseObjectivePersonal(String name, String cardId) throws RemoteException {
 
         Optional<CardObjective> chosen = CardsManager.getInstance().getCardObjectiveFromId(cardId);
 
         if(chosen.isEmpty()){
-            //notifyError(name, new NoSuchCardId(cardId), "ChooseObjective");
+            notifyError(name, new NoSuchCardId(cardId), "ChooseObjective");
             return;
         }
 
@@ -92,34 +101,30 @@ public class GameController {
             try{
                 gameModel.chooseObjective(name, chosen.get());
 
-                //notifyObjChosen(name, chosen.get());
+                notifyObjChosen(name);
             }catch (PlayerActionError e){
-                //notifyError(name, e, "ChooseObjective");
+                notifyError(name, e, "ChooseObjective");
             }
-
-            notifyOfNextTurn();
         }
     }
 
-    public void drawCard(String name, boolean fromGoldDeck) throws IllegalArgumentException{
+    public void drawCard(String name, boolean fromGoldDeck) throws RemoteException {
         synchronized (gameModel){
             try{
                 CardResource card = gameModel.drawGameCard(name, fromGoldDeck);
 
                 notifyOfCardDrawn(name, card, fromGoldDeck);
             }catch (PlayerActionError e){
-                //notifyError(name, e, "DrawCardFromDeck");
+                notifyError(name, e, "DrawCardFromDeck");
             }
-
-            notifyOfNextTurn();
         }
     }
 
-    public void drawCard(String playerName, String cardId) {
+    public void drawCard(String playerName, String cardId) throws RemoteException {
         Optional<? extends CardResource> cardToDraw = CardsManager.getInstance().getCardResourceFromId(cardId);
 
         if(cardToDraw.isEmpty()){
-            //notifyError(playerName, new NoSuchCardId(cardId), "DrawCardFromCardId");
+            notifyError(playerName, new NoSuchCardId(cardId), "DrawCardFromCardId");
             return;
         }
 
@@ -129,19 +134,17 @@ public class GameController {
 
                 notifyOfCardDrawn(playerName, cardToDraw.get());
             } catch (PlayerActionError e) {
-                //notifyError(playerName, e, "DrawCardFromCardId");
+                notifyError(playerName, e, "DrawCardFromCardId");
             }
-
-            notifyOfNextTurn();
         }
     }
 
 
-    public void playCard(String playerName, String cardId, boolean isFront, Coordinate coordinate){
+    public void playCard(String playerName, String cardId, boolean isFront, Coordinate coordinate) throws RemoteException {
         Optional<? extends CardGame> cardToPlay = CardsManager.getInstance().getCardGameFromId(cardId);
 
         if(cardToPlay.isEmpty()){
-            //notifyError(playerName, new NoSuchCardId(cardId), "PlayCard");
+            notifyError(playerName, new NoSuchCardId(cardId), "PlayCard");
             return;
         }
 
@@ -156,96 +159,81 @@ public class GameController {
                     throw new RuntimeException("Something went seriously wrong!");
                 }
 
-                //capire i parametri da passare ma non servono in teoria;
-                //notifyOfCardPlayed(playerName, );
+                notifyOfCardPlayed(playerName, cardToPlay.get().getId());
 
             }catch (PlayerActionError e){
                 MsgReportError message = new MsgReportError(playerName, e.getMessage());
-                clients.get(playerName).sendMessage(message);
+                try {
+                    clients.get(playerName).sendMessage(message);
+                    return;
+                } catch (RemoteException ex) {
+                    System.err.println("Could not notify client! Maybe disconnected?");
+                    System.err.println(e.getMessage());
+                    throw new RuntimeException(ex);
+                }
             }
 
-            notifyOfNextTurn();
         }
     }
 
 
-    public void notifyOfNextTurn(){
+    public void notifyOfCardDrawn(String playerName, CardResource card, Boolean fromGoldDeck) throws RemoteException {
 
-        Optional<Player> playerOfTurn =  gameModel.playerToPlay();
-
-        ActionType actionExpected = gameModel.actionExpected();
-
-        String nextPlayer = null;
-
-        if(playerOfTurn.isPresent()){
-            nextPlayer = playerOfTurn.get().getName();
-        }
+        GameRepresentation gameRepresentation = getGameRepresentation();
 
         for(Map.Entry<String, VirtualView> entry : clients.entrySet()){
 
             VirtualView client = entry.getValue();
 
-            //MsgOnNextExpectedPlayerAction()
+            MsgOnPlayerDrawnCard message = new MsgOnPlayerDrawnCard(gameRepresentation,playerName, card.getId(), fromGoldDeck);
+
+            client.sendMessage(message);
         }
     }
 
+    public void notifyOfCardDrawn(String playerName, CardResource card) throws RemoteException {
 
-    public void notifyOfCardDrawn(String playerName, CardResource card, boolean fromGoldDeck){
+        GameRepresentation gameRepresentation = getGameRepresentation();
+
         for(Map.Entry<String, VirtualView> entry : clients.entrySet()){
 
             VirtualView client = entry.getValue();
 
-            //method to construct a game representation, to pass to the message, from the current model state
+            MsgOnPlayerDrawnCard message = new MsgOnPlayerDrawnCard(gameRepresentation,playerName, card.getId(), null);
 
-            //MsgOnPlayerAction message = new MsgOnPlayerAction(//this parameter is the game representation);
-            //client.sendMessage(message);
+            client.sendMessage(message);
 
-            notifyOfNextTurn();
         }
     }
 
-    public void notifyOfCardDrawn(String playerName, CardResource card){
+    public void notifyOfCardPlayed(String playerWhoPlayed, String cardPlayedId) throws RemoteException {
+        GameRepresentation gameRepresentation = getGameRepresentation();
+
         for(Map.Entry<String, VirtualView> entry : clients.entrySet()){
 
             VirtualView client = entry.getValue();
 
-            //method to construct a game representation, to pass to the message, from the current model state
 
-            //MsgOnPlayerAction message = new MsgOnPlayerAction(//this parameter is the game representation);
-            //client.sendMessage(message);
-
-            notifyOfNextTurn();
+            MsgOnPlayerPlayedCard message = new MsgOnPlayerPlayedCard(gameRepresentation, cardPlayedId, playerWhoPlayed);
+            client.sendMessage(message);
         }
     }
 
-    public void notifyOfCardPlayed(String playerWhoPlayed, Table table, int newPlayerPoints){
+    public void notifyObjChosen(String playerName) throws RemoteException {
+
+        GameRepresentation gameRepresentation = getGameRepresentation();
+
         for(Map.Entry<String, VirtualView> entry : clients.entrySet()){
 
             VirtualView client = entry.getValue();
 
-            //method to construct a game representation, to pass to the message, from the current model state
+            MsgOnPlayerChooseObjective message = new MsgOnPlayerChooseObjective(playerName, gameRepresentation);
 
-            //MsgOnPlayerAction message = new MsgOnPlayerAction(//this parameter is the game representation);
-            //client.sendMessage(message);
-
-            //MsgOnPlayerPlayedCard message = new MsgOnPlayerPlayedCard(playerWhoPlayed, table, newPlayerPoints);
-            //client.sendMessage(message);
+            client.sendMessage(message);
         }
     }
 
-    public void notifyObjChosen(String playerName, String cardId){
-        for(Map.Entry<String, VirtualView> entry : clients.entrySet()){
-
-            VirtualView client = entry.getValue();
-
-            //method to construct a game representation, to pass to the message, from the current model state
-
-            //MsgOnPlayerAction message = new MsgOnPlayerAction(//this parameter is the game representation);
-            //client.sendMessage(message);
-        }
-    }
-
-    public void notifyError(String name, PlayerActionError e, String actionDetails) throws IOException {
+    public void notifyError(String name, PlayerActionError e, String actionDetails) throws RemoteException {
         VirtualView clientOfRequest = clients.get(name);
 
         if(clientOfRequest == null){
@@ -257,7 +245,7 @@ public class GameController {
         clients.get(name).sendMessage(message);
     }
 
-    public void notifyGameCreated(String gameId, String name, int numberOfPlayersLeftToJoin){
+    public void notifyGameCreated(String gameId, String name, int numberOfPlayersLeftToJoin) throws RemoteException {
         VirtualView clientOfRequest = clients.get(name);
 
         if(clientOfRequest == null){
@@ -266,6 +254,14 @@ public class GameController {
         }
 
         MsgOnGameCreated message = new MsgOnGameCreated(gameId, name, numberOfPlayersLeftToJoin);
+
         clients.get(name).sendMessage(message);
+
+    }
+
+    public GameRepresentation getGameRepresentation(){
+        synchronized (gameModel){
+            return gameModel.getGameRepresentation();
+        }
     }
 }

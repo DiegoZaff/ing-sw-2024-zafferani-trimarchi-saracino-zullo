@@ -1,28 +1,49 @@
 package it.polimi.ingsw.gc28.network.messages.server;
 
+import it.polimi.ingsw.gc28.View.GameManagerClient;
 import it.polimi.ingsw.gc28.View.GameRepresentation;
-import it.polimi.ingsw.gc28.model.Coordinate;
-import it.polimi.ingsw.gc28.model.Table;
-import it.polimi.ingsw.gc28.network.rmi.VirtualView;
-
-import java.io.IOException;
-import java.util.ArrayList;
 
 public class MsgOnPlayerPlayedCard extends MessageS2C{
 
-    String playerName;
-    Table table;
-    int newPlayerPoints;
+    private final GameRepresentation gameRepresentation;
 
-    public MsgOnPlayerPlayedCard(String playerName, Table table, int newPlayerPoints){
-        this.playerName = playerName;
-        this.table = table;
-        this.newPlayerPoints = newPlayerPoints;
+    private final String cardPlayedId;
+
+    private final  String playerWhoPlayed;
+
+    public MsgOnPlayerPlayedCard(GameRepresentation gameRep, String cardPlayedId, String playerWhoPlayed){
+        this.gameRepresentation = gameRep;
+        this.cardPlayedId = cardPlayedId;
+        this.playerWhoPlayed = playerWhoPlayed;
     }
 
     @Override
-    public void update(GameRepresentation gameRepresentation) throws IOException {
+    public void update(GameManagerClient gameManagerClient)  {
+        gameManagerClient.setCurrentRepresentation(gameRepresentation);
 
+        String text;
+
+        if(playerWhoPlayed.equals(gameManagerClient.getPlayerName())){
+
+            text = String.format("""
+                You have played the card %s
+                """, cardPlayedId);
+
+        }else{
+
+            text = String.format("""
+                %s has played the card %s
+                """, playerWhoPlayed, cardPlayedId);
+        }
+
+        gameManagerClient.writeInConsole(text);    }
+
+
+    public String getCardPlayedId() {
+        return cardPlayedId;
+    }
+
+    public String getPlayerWhoPlayed(){
+        return playerWhoPlayed;
     }
 }
-//ora che aggiorniamo tutta la game representation non serve più

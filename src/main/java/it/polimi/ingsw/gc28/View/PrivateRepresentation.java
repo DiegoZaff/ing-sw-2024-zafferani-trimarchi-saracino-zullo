@@ -4,9 +4,10 @@ import it.polimi.ingsw.gc28.model.Table;
 import it.polimi.ingsw.gc28.model.cards.CardObjective;
 import it.polimi.ingsw.gc28.model.cards.CardResource;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class PrivateRepresentation {
+public class PrivateRepresentation implements Serializable {
 
     private ArrayList<CardResource> hand;
 
@@ -22,4 +23,15 @@ public class PrivateRepresentation {
 
     }
 
+    public ArrayList<CardResource> getHand() {
+        return hand;
+    }
+
+    public CardObjective getPrivateObjective() {
+        return privateObjective;
+    }
+
+    public Table getTable() {
+        return table;
+    }
 }

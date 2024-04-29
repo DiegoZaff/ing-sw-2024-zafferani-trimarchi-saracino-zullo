@@ -61,7 +61,7 @@ public class Game {
         return globalObjectives;
     }
 
-    public Game(int nPlayers) throws IOException, IllegalArgumentException, IllegalStateException {
+    public Game(int nPlayers, String gameId) throws IOException, IllegalArgumentException, IllegalStateException {
 
         this.nPlayers = nPlayers;
 
@@ -73,14 +73,24 @@ public class Game {
 
         this.actionManager = new ActionManager(nPlayers, this.players);
 
-        this.gameId = generateRandomGameId();
+        if(gameId != null){
+            this.gameId = gameId;
+        }else{
+            this.gameId = generateRandomGameId();
+        }
     }
 
     /**
      * This constructor is used only for testing purposes, because a know deck
      * is passed as a parameter.
      */
-    public Game(int nPlayers, Deck deck, int firstPlayerIndex) throws IllegalStateException{
+    public Game(int nPlayers, Deck deck, int firstPlayerIndex, String gameId) throws IllegalStateException{
+        if(gameId != null){
+            this.gameId = gameId;
+        }else{
+            this.gameId = generateRandomGameId();
+        }
+
         this.firstPlayerIndex = firstPlayerIndex;
 
         this.nPlayers = nPlayers;
@@ -513,6 +523,7 @@ public class Game {
      * @return game id converted to a string.
      */
     public String generateRandomGameId(){
+        // TODO : use same method of other!! uuid
         Random random = new Random();
         int id = random.nextInt(1000000000);
         return Integer.toString(id);
@@ -584,7 +595,15 @@ public class Game {
 
     public GameRepresentation getGameRepresentation(){
 
-        return new GameRepresentation(this.getPlayersNickname(),
+        Optional<Player> playerOfTurn = actionManager.getPlayerOfTurn();
+
+        String playerToPlayName;
+
+        playerToPlayName = playerOfTurn.map(Player::getName).orElse(null);
+
+        ActionType actionExpected = actionExpected();
+
+        return new GameRepresentation(playerToPlayName, actionExpected ,this.getPlayersNickname(),
                 this.getObjectiveIDs(), this.getFaceUpResourceCardsIDs() ,this.getFaceUpGoldCardsIDs(),
                 deck.getNextResourceCard().getId(), deck.getNextGoldCard().getId(),
                 this.getPointsMap(), this.getPrivateRepresentationsMap());

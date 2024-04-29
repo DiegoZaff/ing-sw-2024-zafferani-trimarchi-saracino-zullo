@@ -3,6 +3,8 @@ package it.polimi.ingsw.gc28.network.messages.client;
 import it.polimi.ingsw.gc28.controller.GameController;
 import it.polimi.ingsw.gc28.model.Coordinate;
 
+import java.rmi.RemoteException;
+
 public class MsgPlayGameCard extends MessageC2S{
     String playerName;
     String cardId;
@@ -17,7 +19,7 @@ public class MsgPlayGameCard extends MessageC2S{
     }
 
     @Override
-    public void execute(GameController controller) {
+    public void execute(GameController controller) throws RemoteException {
         controller.playCard(playerName, cardId, isFront, coordinate);
     }
 }

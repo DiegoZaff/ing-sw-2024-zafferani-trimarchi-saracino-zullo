@@ -2,9 +2,10 @@ package it.polimi.ingsw.gc28.model;
 
 import it.polimi.ingsw.gc28.model.resources.Resource;
 
+import java.io.Serializable;
 import java.util.Optional;
 
-public class Vertex {
+public class Vertex implements Serializable {
     private final Resource resource;
     private final boolean exists;
 

@@ -1,9 +1,6 @@
 package it.polimi.ingsw.gc28.network.messages.server;
 
-import it.polimi.ingsw.gc28.View.GameRepresentation;
-import it.polimi.ingsw.gc28.network.rmi.VirtualView;
-
-import java.io.IOException;
+import it.polimi.ingsw.gc28.View.GameManagerClient;
 
 public class MsgOnGameCreated extends MessageS2C{
 
@@ -18,7 +15,18 @@ public class MsgOnGameCreated extends MessageS2C{
     }
 
     @Override
-    public void update(GameRepresentation gameRepresentation) throws IOException {
+    public void update(GameManagerClient gameManagerClient) {
+        gameManagerClient.setGameId(gameId);
 
+        gameManagerClient.setPlayerName(playerName);
+
+        String text = String.format("""
+                Welcome %s, may the power be with you!!
+                The game has been created successfully with id: %s!
+                
+                Waiting other %d to join...
+                """, playerName, gameId, playersLeftToJoin) ;
+
+        gameManagerClient.writeInConsole(text);
     }
 }

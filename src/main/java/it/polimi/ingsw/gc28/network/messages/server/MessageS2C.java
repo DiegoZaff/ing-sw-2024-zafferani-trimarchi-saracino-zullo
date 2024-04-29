@@ -1,9 +1,8 @@
 package it.polimi.ingsw.gc28.network.messages.server;
 
-import it.polimi.ingsw.gc28.View.GameRepresentation;
-import it.polimi.ingsw.gc28.network.rmi.VirtualView;
+import it.polimi.ingsw.gc28.View.GameManagerClient;
 
-import java.io.IOException;
+
 import java.io.Serializable;
 
 /**
@@ -11,5 +10,5 @@ import java.io.Serializable;
  */
 public abstract class MessageS2C implements Serializable {
 
-    public abstract void update(GameRepresentation gameRepresentation) throws IOException;
+    public abstract void update(GameManagerClient gameManagerClient);
 }
