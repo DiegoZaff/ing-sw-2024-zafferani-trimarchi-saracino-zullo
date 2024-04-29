@@ -40,7 +40,7 @@ public class GamesManager {
      * This method creates and starts a thread which is responsible for popping messages from the queue
      * and processing theme.
      */
-    public void processIncomingMessages() {
+    private void processIncomingMessages() {
         new Thread(() -> {
             while (true) {
                 try {
@@ -77,7 +77,7 @@ public class GamesManager {
      * The method receives a message from the client and call a controller's method to execute the client's request.
      * @param message is the message coming from the client.
      */
-    public void executeClientMessage(MessageC2S message) throws IOException {
+    private void executeClientMessage(MessageC2S message) throws IOException {
         Optional<String> gameId = message.getGameId();
 
         if(gameId.isEmpty()){

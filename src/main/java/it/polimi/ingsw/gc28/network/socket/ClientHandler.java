@@ -36,11 +36,7 @@ public class ClientHandler implements VirtualView {
             while ((receivedMessage = (MessageC2S) input.readObject()) != null) {
                 System.out.println("Received message from client: " + receivedMessage);
 
-
-                // attaccare l'handler al messaggio
-                GamesManager.getInstance().executeClientMessage(receivedMessage);
-                // TODO: handle message received from the client
-                // TODO: forward message to GamesManager so that the proper controller is attached to this message.
+                GamesManager.getInstance().addMessageToQueue(receivedMessage);
             }
         } catch (EOFException e) {
             // Client has closed the connection

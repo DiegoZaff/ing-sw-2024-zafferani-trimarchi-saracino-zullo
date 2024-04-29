@@ -593,7 +593,7 @@
     {
       "player":  "Ale",
       "action" : "DRAW_CARD",
-      "cardId" : "RES_26"
+      "fromGoldDeck" : false
     },
     {
       "player":  "Diego",

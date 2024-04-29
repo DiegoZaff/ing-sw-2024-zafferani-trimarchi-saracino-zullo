@@ -75,9 +75,12 @@ public class CardResource extends CardGame {
         }
         faceUpResCards.remove(this);
 
-        // TODO : adjust this optional, check isPresent
-        faceUpResCards.add(deck.nextResource().get());
+        Optional<CardResource> cardToAddToVisible = deck.nextResource();
+
+        cardToAddToVisible.ifPresent(faceUpResCards::add);
+
         player.addCardToHand(this);
+
     }
 }
 

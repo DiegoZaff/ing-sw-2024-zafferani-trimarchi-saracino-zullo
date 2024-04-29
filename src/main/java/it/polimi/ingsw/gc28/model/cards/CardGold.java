@@ -76,6 +76,8 @@ public class CardGold extends CardResource {
         if (checkCardPlayability(table)){
             super.playFront(table, playCoordinate);
         } else {
+            throw new RuntimeException();
+            // TODO : throw errore.
             //messaggio di errore
         }
     }
@@ -90,8 +92,12 @@ public class CardGold extends CardResource {
             throw new NotDrawableCardError(this.getId());
         }
         faceUpGoldCards.remove(this);
-        faceUpGoldCards.add(deck.nextGold().get());
-        player.addCardToHand(this);
+
+        Optional<CardGold> cardGoldAddToVisible = deck.nextGold();
+
+       cardGoldAddToVisible.ifPresent(faceUpGoldCards::add);
+
+       player.addCardToHand(this);
     }
 
 
