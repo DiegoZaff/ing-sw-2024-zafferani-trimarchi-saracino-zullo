@@ -84,7 +84,6 @@ public class GamesManager {
 
             int nPlayers = messageCreateGame.getNumberOfPlayers();
             String playerName = messageCreateGame.getUserName();
-
             VirtualView client = messageCreateGame.getClient();
 
             createGame(client, playerName, nPlayers);

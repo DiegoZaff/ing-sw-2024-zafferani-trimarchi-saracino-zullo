@@ -68,9 +68,8 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
                         return;
                     }
 
-                    MsgCreateGame CGMess = new MsgCreateGame(gameId , userName, nPlayers, this ); //controllo
+                    MsgCreateGame CGMess = new MsgCreateGame(gameId , userName, nPlayers, this );
                     server.sendMessage(CGMess);
-
 
                     break;
                 case "joinGame":
@@ -84,7 +83,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
 
                     userName = commandsList.get(2);
 
-                    MsgJoinGame JGMess = new MsgJoinGame(this, gameIdToJoin, userName); //controllo
+                    MsgJoinGame JGMess = new MsgJoinGame(this, gameIdToJoin, userName);
                     server.sendMessage(JGMess);
 
                     break;
@@ -97,7 +96,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
 
                     String cardId = commandsList.get(1);
 
-                    MsgChooseObjective COMess = new MsgChooseObjective(userName, gameId, cardId); //controllo
+                    MsgChooseObjective COMess = new MsgChooseObjective(userName, gameId, cardId);
                     server.sendMessage(COMess);
 
                     break;

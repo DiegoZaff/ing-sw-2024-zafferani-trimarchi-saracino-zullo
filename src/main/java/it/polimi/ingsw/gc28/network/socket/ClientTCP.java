@@ -1,8 +1,10 @@
 package it.polimi.ingsw.gc28.network.socket;
 
 import it.polimi.ingsw.gc28.View.GameManagerClient;
-import it.polimi.ingsw.gc28.network.messages.client.MsgCreateGame;
+import it.polimi.ingsw.gc28.model.Coordinate;
+import it.polimi.ingsw.gc28.network.messages.client.*;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
+import it.polimi.ingsw.gc28.network.rmi.VirtualView;
 
 import java.io.*;
 import java.net.Socket;
@@ -15,6 +17,7 @@ public class ClientTCP {
     final ObjectInputStream input;
     final ServerProxy server;
     String userName;
+    String gameId;
 
     protected ClientTCP(ObjectInputStream input, ObjectOutputStream output) {
         this.input = input;
@@ -72,7 +75,7 @@ public class ClientTCP {
             String action = commandsList.getFirst();
 
             switch (action) {
-                case "createGame":
+                case "createGame": {
                     if (commandsList.size() != 3) {
                         System.err.println("Invalid format");
                         return;
@@ -99,12 +102,76 @@ public class ClientTCP {
                     server.sendMessage(message);
 
                     break;
-                case "joinGame":
+                }
+                case "joinGame": {
+
+                    if (commandsList.size() != 3) {
+                        System.err.println("Invalid format");
+                        return;
+                    }
+
+                    String gameIdToJoin = commandsList.get(1);
+                    userName = commandsList.get(2);
+
+                    MsgJoinGame JGMess = new MsgJoinGame(null, gameIdToJoin, userName);
+                    server.sendMessage(JGMess);
+
+                    break;
+                }
+                case "chooseObj": {
+
+                    if (commandsList.size() != 3) {
+                        System.err.println("Invalid format");
+                        return;
+                    }
+
+                    String cardId = commandsList.get(1);
+                    gameId = commandsList.get(2);
+
+                    MsgChooseObjective COMess = new MsgChooseObjective(userName, gameId, cardId);
+                    server.sendMessage(COMess);
+
+                    break;
+                }
+                case "playCard": {
+
+                    if (commandsList.size() != 5) {
+                        System.err.println("Invalid format");
+                        return;
+                    }
+
+                    String cardId = commandsList.get(1);
+
+                    String isFrontString = commandsList.get(2);
+
+                    if (!isFrontString.equals("up") && !isFrontString.equals("down")) {
+                        System.err.println("Invalid isFront format");
+                        return;
+                    }
+
+                    boolean isFront = isFrontString.equals("up");
+
+                    Integer x = null;
+                    Integer y = null;
+
+                    try {
+                        x = Integer.parseInt(commandsList.get(3));
+                        y = Integer.parseInt(commandsList.get(4));
+                    } catch (NumberFormatException e) {
+                        System.err.println(e.getMessage());
+                        return;
+                    }
 
 
-                    // TODO: construct message to send to server from the commands given.
-                    //c'è gia in rmi vanno unificati i due metodi;
+                    MsgPlayGameCard PGCMess = new MsgPlayGameCard( userName, cardId, gameId, isFront, new Coordinate(x,y));
+                    server.sendMessage(PGCMess);
 
+                    break;
+                }
+                default:
+                    System.err.println("Invalid First Argument!");
+                    break;
+                    
             }
         }
     }
