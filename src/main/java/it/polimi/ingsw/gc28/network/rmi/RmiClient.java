@@ -49,13 +49,14 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
                 continue;
             }
 
+            //-------------------------------------------------------------------------------------------------------
             String action = commandsList.getFirst();
 
             switch (action) {
                 case "createGame":
                     if (commandsList.size() != 3) {
                         System.err.println("Invalid format");
-                        return;
+                        break;
                     }
 
                     userName = commandsList.get(1);
@@ -65,7 +66,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
                         nPlayers = Integer.parseInt(commandsList.get(2));
                     } catch (NumberFormatException e) {
                         System.err.println(e.getMessage());
-                        return;
+                        break;
                     }
 
                     MsgCreateGame CGMess = new MsgCreateGame(gameId , userName, nPlayers, this );
@@ -76,7 +77,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
 
                     if (commandsList.size() != 3) {
                         System.err.println("Invalid format");
-                        return;
+                        break;
                     }
 
                     String gameIdToJoin = commandsList.get(1);
@@ -91,7 +92,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
 
                     if (commandsList.size() != 2) {
                         System.err.println("Invalid format");
-                        return;
+                        break;
                     }
 
                     String cardId = commandsList.get(1);
@@ -105,7 +106,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
 
                     if (commandsList.size() < 2) {
                         System.err.println("Invalid format");
-                        return;
+                        break;
                     }
 
                     String arg = commandsList.get(1);
@@ -132,7 +133,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
 
                     if (commandsList.size() != 5) {
                         System.err.println("Invalid format");
-                        return;
+                        break;
                     }
 
                     String cardId = commandsList.get(1);
@@ -141,7 +142,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
 
                     if (!isFrontString.equals("up") && !isFrontString.equals("down")) {
                         System.err.println("Invalid isFront format");
-                        return;
+                        break;
                     }
 
                     boolean isFront = isFrontString.equals("up");
@@ -154,7 +155,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
                         y = Integer.parseInt(commandsList.get(4));
                     } catch (NumberFormatException e) {
                         System.err.println(e.getMessage());
-                        return;
+                        break;
                     }
 
 
@@ -164,7 +165,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
                     break;
                 }
                 default:
-                    System.err.println("Invalid First Argument!");
+                    System.err.println("Invalid First Argument! by default");
                     break;
             }
         }

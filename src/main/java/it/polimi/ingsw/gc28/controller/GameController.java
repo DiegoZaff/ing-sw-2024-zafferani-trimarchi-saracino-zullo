@@ -29,6 +29,7 @@ public class GameController {
     }
 
     public void addPlayerToGame(String name, VirtualView client, boolean notifyJoin) throws RemoteException {
+
         synchronized (gameModel){
             try{
                 this.gameModel.addPlayerToGame(name);
