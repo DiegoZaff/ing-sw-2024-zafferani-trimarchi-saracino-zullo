@@ -76,15 +76,18 @@ public abstract class CardGame extends Card implements Serializable {
     // ? some of their logic is overlapping. let's see if there's a lot of overlap.
 
     /**
-    * this method play the card in the front verse
-    * @param table indicates the table in which the card is played*
-    * @param playCoordinate indicate the coordinates in which the card should be played
+     * this method play the card in the front verse
+     *
+     * @param table          indicates the table in which the card is played*
+     * @param playCoordinate indicate the coordinates in which the card should be played
+     * @return
      */
-    public abstract void playFront(Table table, Coordinate playCoordinate);
+    public abstract int playFront(Table table, Coordinate playCoordinate);
 
     /**
      * this method play the card in the back verse
-     * @param table indicates the table in which the card is played
+     *
+     * @param table          indicates the table in which the card is played
      * @param playCoordinate indicate the coordinates in which the card should be played
      */
     public abstract void playBack(Table table, Coordinate playCoordinate);

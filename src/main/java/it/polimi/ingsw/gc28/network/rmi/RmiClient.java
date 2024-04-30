@@ -26,8 +26,6 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
 
     final String id;
 
-    private GameRepresentation representation;
-
     protected RmiClient(VirtualServer server) throws RemoteException {
         this.server = server;
         this.id = UUID.randomUUID().toString();

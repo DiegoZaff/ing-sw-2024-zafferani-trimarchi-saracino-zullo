@@ -72,13 +72,11 @@ public class CardGold extends CardResource {
     }
 
     @Override
-    public void playFront(Table table, Coordinate playCoordinate){
+    public int playFront(Table table, Coordinate playCoordinate){
         if (checkCardPlayability(table)){
-            super.playFront(table, playCoordinate);
+            return super.playFront(table, playCoordinate);
         } else {
-            throw new RuntimeException();
-            // TODO : throw errore.
-            //messaggio di errore
+            return -1;
         }
     }
 

@@ -6,6 +6,7 @@ import it.polimi.ingsw.gc28.model.cards.CardInitial;
 import it.polimi.ingsw.gc28.model.cards.CardObjective;
 import it.polimi.ingsw.gc28.model.cards.CardResource;
 import it.polimi.ingsw.gc28.model.errors.PlayerActionError;
+import it.polimi.ingsw.gc28.model.errors.types.NotPlayableGoldCard;
 import it.polimi.ingsw.gc28.model.errors.types.UnplayableCoordinate;
 import it.polimi.ingsw.gc28.model.objectives.Objective;
 
@@ -124,10 +125,14 @@ public class Player {
             // TODO : maybe make more granular, why cant be played...
             throw new UnplayableCoordinate(coordinates);
         }else {
+            int flag = 0;
             if (isFront){
-                playedCard.playFront(table, coordinates);
+                flag = playedCard.playFront(table, coordinates);
             } else {
                 playedCard.playBack(table, coordinates);
+            }
+            if (flag != 0){
+                throw new NotPlayableGoldCard(playedCard.getId());
             }
 
             table.updateCounters(coordinates);

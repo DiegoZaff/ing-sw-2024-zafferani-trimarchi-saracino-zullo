@@ -46,13 +46,6 @@ public class GameRepresentation implements Serializable {
     }
 
 
-    //this method update the representation, it is in the message coming from the server
-    //TODO: need to be implemented
-    public void update(GameRepresentation gameRepresentation){
-
-    }
-
-
     public ArrayList<String> getNicknames() {
         return nicknames;
     }

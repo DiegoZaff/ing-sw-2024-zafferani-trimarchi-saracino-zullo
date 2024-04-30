@@ -30,11 +30,12 @@ public class CardResource extends CardGame {
     }
 
     @Override
-    public void playFront(Table table, Coordinate playCoordinate){
+    public int playFront(Table table, Coordinate playCoordinate){
 
         Cell cell = new Cell(this, table.getMapPositions().size(), true);
         table.addMapPosition(playCoordinate, cell);
         table.removePlayableCoordinate(playCoordinate);
+        return 0;
     }
 
 
