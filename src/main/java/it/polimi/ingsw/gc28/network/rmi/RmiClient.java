@@ -1,8 +1,9 @@
 package it.polimi.ingsw.gc28.network.rmi;
-import java.util.UUID;
+import java.util.*;
 
 import it.polimi.ingsw.gc28.View.GameManagerClient;
 import it.polimi.ingsw.gc28.View.GameRepresentation;
+import it.polimi.ingsw.gc28.View.MessageToServer;
 import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.network.messages.client.*;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
@@ -12,9 +13,6 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
 
 
 public class RmiClient extends UnicastRemoteObject implements VirtualView {
@@ -25,6 +23,8 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
     private String userName;
 
     final String id;
+
+    MessageToServer messageToServer = MessageToServer.getInstance();
 
     protected RmiClient(VirtualServer server) throws RemoteException {
         this.server = server;
@@ -44,129 +44,17 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
             String[] commands = line.split(" ");
             ArrayList<String> commandsList = new ArrayList<>(Arrays.asList(commands));
 
-            if(commandsList.size() < 2){
+            if (commandsList.size() < 2) {
                 System.err.println("Give me a valid command plz.");
                 continue;
             }
 
-            //-------------------------------------------------------------------------------------------------------
-            String action = commandsList.getFirst();
+            Optional<MessageC2S> message;
+            message = messageToServer.createMessage(commandsList, this);
 
-            switch (action) {
-                case "createGame":
-                    if (commandsList.size() != 3) {
-                        System.err.println("Invalid format");
-                        break;
-                    }
-
-                    userName = commandsList.get(1);
-
-                    Integer nPlayers = null;
-                    try {
-                        nPlayers = Integer.parseInt(commandsList.get(2));
-                    } catch (NumberFormatException e) {
-                        System.err.println(e.getMessage());
-                        break;
-                    }
-
-                    MsgCreateGame CGMess = new MsgCreateGame(gameId , userName, nPlayers, this );
-                    server.sendMessage(CGMess);
-
-                    break;
-                case "joinGame":
-
-                    if (commandsList.size() != 3) {
-                        System.err.println("Invalid format");
-                        break;
-                    }
-
-                    String gameIdToJoin = commandsList.get(1);
-
-                    userName = commandsList.get(2);
-
-                    MsgJoinGame JGMess = new MsgJoinGame(this, gameIdToJoin, userName);
-                    server.sendMessage(JGMess);
-
-                    break;
-                case "chooseObj": {
-
-                    if (commandsList.size() != 2) {
-                        System.err.println("Invalid format");
-                        break;
-                    }
-
-                    String cardId = commandsList.get(1);
-
-                    MsgChooseObjective COMess = new MsgChooseObjective(userName, gameId, cardId);
-                    server.sendMessage(COMess);
-
-                    break;
-                }
-                case "drawCard":
-
-                    if (commandsList.size() < 2) {
-                        System.err.println("Invalid format");
-                        break;
-                    }
-
-                    String arg = commandsList.get(1);
-
-
-
-                    if (arg.equals("goldDeck")) {
-                        MsgDrawGameCard DGCMessGold = new MsgDrawGameCard( userName, gameId, true);
-                        server.sendMessage(DGCMessGold);
-
-                    } else if (arg.equals("resourceDeck")) {
-                        MsgDrawGameCard DGCMessRes = new MsgDrawGameCard( userName, gameId, false);
-                        server.sendMessage(DGCMessRes);
-
-                    } else if (arg.startsWith("RES") || arg.startsWith("GOLD")) {
-                        MsgDrawnVisibleGameCard DGCMessFU = new MsgDrawnVisibleGameCard( userName, gameId, arg);
-                        server.sendMessage(DGCMessFU);
-
-                    } else {
-                        System.err.println("Invalid format");
-                    }
-                    break;
-                case "playCard": {
-
-                    if (commandsList.size() != 5) {
-                        System.err.println("Invalid format");
-                        break;
-                    }
-
-                    String cardId = commandsList.get(1);
-
-                    String isFrontString = commandsList.get(2);
-
-                    if (!isFrontString.equals("up") && !isFrontString.equals("down")) {
-                        System.err.println("Invalid isFront format");
-                        break;
-                    }
-
-                    boolean isFront = isFrontString.equals("up");
-
-                    Integer x = null;
-                    Integer y = null;
-
-                    try {
-                        x = Integer.parseInt(commandsList.get(3));
-                        y = Integer.parseInt(commandsList.get(4));
-                    } catch (NumberFormatException e) {
-                        System.err.println(e.getMessage());
-                        break;
-                    }
-
-
-                    MsgPlayGameCard PGCMess = new MsgPlayGameCard( userName, cardId, gameId, isFront, new Coordinate(x,y));
-                    server.sendMessage(PGCMess);
-
-                    break;
-                }
-                default:
-                    System.err.println("Invalid First Argument! by default");
-                    break;
+            if (message.isPresent()) {
+                MessageC2S messageToSend = message.get();
+                server.sendMessage(messageToSend);
             }
         }
     }
