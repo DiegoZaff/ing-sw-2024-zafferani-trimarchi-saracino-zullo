@@ -1,16 +1,22 @@
 package it.polimi.ingsw.gc28.network.messages.client;
 
 import it.polimi.ingsw.gc28.controller.GameController;
+import it.polimi.ingsw.gc28.model.chat.ChatMessage;
 
 import java.rmi.RemoteException;
 
+/**
+ * Message send from the client to the server used to send a new chat message.
+ */
 public class MsgChatMessage extends MessageC2S{
-    protected MsgChatMessage(String gameId) {
+    private final ChatMessage chatMessage;
+    protected MsgChatMessage(String gameId, ChatMessage chatMessage) {
         super(gameId);
+        this.chatMessage = chatMessage;
     }
 
     @Override
     public void execute(GameController controller) throws RemoteException {
-
+        controller.sendMessage(chatMessage);
     }
 }

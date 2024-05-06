@@ -5,6 +5,8 @@ import it.polimi.ingsw.gc28.View.PrivateRepresentation;
 import it.polimi.ingsw.gc28.model.actions.ActionManager;
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.model.cards.*;
+import it.polimi.ingsw.gc28.model.chat.Chat;
+import it.polimi.ingsw.gc28.model.chat.ChatMessage;
 import it.polimi.ingsw.gc28.model.errors.PlayerActionError;
 import it.polimi.ingsw.gc28.model.errors.types.*;
 
@@ -60,6 +62,8 @@ public class Game {
     public ArrayList<CardObjective> getGlobalObjectives() {
         return globalObjectives;
     }
+
+    private Chat chat;
 
     public Game(int nPlayers, String gameId) throws IOException, IllegalArgumentException, IllegalStateException {
 
@@ -607,5 +611,13 @@ public class Game {
                 this.getObjectiveIDs(), this.getFaceUpResourceCardsIDs() ,this.getFaceUpGoldCardsIDs(),
                 deck.getNextResourceCard().getId(), deck.getNextGoldCard().getId(),
                 this.getPointsMap(), this.getPrivateRepresentationsMap());
+    }
+
+    public void sendMessage(ChatMessage chatMessage){
+        chat.addMessage();
+    }
+
+    public Chat getChat(){
+        return chat;
     }
 }

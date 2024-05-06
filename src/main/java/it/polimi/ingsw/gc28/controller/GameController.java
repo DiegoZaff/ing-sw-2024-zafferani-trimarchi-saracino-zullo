@@ -7,6 +7,7 @@ import it.polimi.ingsw.gc28.model.cards.CardGame;
 import it.polimi.ingsw.gc28.model.cards.CardObjective;
 import it.polimi.ingsw.gc28.model.cards.CardResource;
 import it.polimi.ingsw.gc28.model.cards.CardsManager;
+import it.polimi.ingsw.gc28.model.chat.ChatMessage;
 import it.polimi.ingsw.gc28.model.errors.types.NoSuchCardId;
 import it.polimi.ingsw.gc28.model.errors.PlayerActionError;
 import it.polimi.ingsw.gc28.network.messages.server.*;
@@ -177,6 +178,12 @@ public class GameController {
         }
     }
 
+    public void sendMessage(ChatMessage chatMessage){
+        gameModel.sendMessage(chatMessage);
+        //TODO : vanno aggiunti i controlli
+
+        //TODO: vanno aggiunte le notify
+    }
 
     public void notifyOfCardDrawn(String playerName, CardResource card, Boolean fromGoldDeck) throws RemoteException {
 
