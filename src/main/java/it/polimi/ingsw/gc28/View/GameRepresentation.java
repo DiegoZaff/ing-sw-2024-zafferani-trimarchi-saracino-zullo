@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc28.View;
 
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
+import it.polimi.ingsw.gc28.model.chat.Chat;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.Map;
 
 public class GameRepresentation implements Serializable {
     /*
-    CardsManager.getInstance().getCardTipoFromid(id)
+    CardsManager.getInstance().getCardFromId(id)
      */
     private String playerToPlay;
 
@@ -20,14 +21,14 @@ public class GameRepresentation implements Serializable {
     private  String nextResourceCard, nextGoldCard;
     private Map<String, Integer> points;
     private Map<String, PrivateRepresentation> representations;
+    private Chat chat;
 
     public GameRepresentation (String playerToPlay, ActionType actionExpected, ArrayList<String> nicknames, ArrayList<String> globalObjectives,
                                ArrayList<String> faceUpResourceCards, ArrayList<String> faceUpGoldCards,
                                String nextResourceCard, String nextGoldCard,
-                               Map<String, Integer> points, Map<String, PrivateRepresentation> representations){
+                               Map<String, Integer> points, Map<String, PrivateRepresentation> representations, Chat chat){
         this.playerToPlay = playerToPlay;
         this.actionExpected = actionExpected;
-
         this.nicknames = nicknames;
         this.globalObjectives = globalObjectives;
         this.faceUpResourceCards = faceUpResourceCards;
@@ -36,6 +37,7 @@ public class GameRepresentation implements Serializable {
         this.nextGoldCard = nextGoldCard;
         this.points = points;
         this.representations = representations;
+        this.chat = chat;
     }
 
     /**
@@ -84,5 +86,9 @@ public class GameRepresentation implements Serializable {
 
     public ActionType getActionExpected() {
         return actionExpected;
+    }
+
+    public Chat getChat(){
+        return chat;
     }
 }

@@ -29,7 +29,7 @@ public class MsgOnGameJoined extends MessageS2C{
                 """, playerName, gameId);
 
         if(playersLeftToJoin > 0) {
-            text += String.format("Waiting for other %d players to join", playersLeftToJoin);
+            text += String.format("Waiting for other %d players to join...", playersLeftToJoin);
         }
 
         gameManagerClient.writeInConsole(text);

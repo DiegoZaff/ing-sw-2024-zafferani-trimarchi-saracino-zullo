@@ -89,7 +89,7 @@ public class GamesManager {
             createGame(client, playerName, nPlayers);
         }
         else {
-            Optional<GameController> controller = getGameController(gameId.get());
+            Optional<GameController> controller = getGameController(message.getGameId().get());
 
             if(controller.isEmpty()){
                 System.err.println("Error");

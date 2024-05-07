@@ -9,7 +9,6 @@ import java.util.Optional;
 
 public class MessageToServer {
     private static MessageToServer instance;
-    ArrayList<String> commandsList;
 
     public static MessageToServer getInstance() {
         if (instance == null) {

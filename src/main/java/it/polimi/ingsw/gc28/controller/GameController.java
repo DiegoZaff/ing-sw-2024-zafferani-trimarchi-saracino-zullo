@@ -267,6 +267,10 @@ public class GameController {
 
     }
 
+    public void notifyChatMessage(){
+
+    }
+
     public GameRepresentation getGameRepresentation(){
         synchronized (gameModel){
             return gameModel.getGameRepresentation();
