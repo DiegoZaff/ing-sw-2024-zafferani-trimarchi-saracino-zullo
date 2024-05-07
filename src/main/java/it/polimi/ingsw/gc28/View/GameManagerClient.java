@@ -1,7 +1,9 @@
 package it.polimi.ingsw.gc28.View;
 
+import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.model.cards.Card;
 import it.polimi.ingsw.gc28.model.cards.CardGame;
+import it.polimi.ingsw.gc28.model.cards.CardObjective;
 import it.polimi.ingsw.gc28.model.cards.CardResource;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
 
@@ -104,19 +106,46 @@ public class GameManagerClient {
     }
 
     public void showPlayerAndActionOfTurn(){
+        GameRepresentation rep = getCurrentRepresentation();
+
+        String playerToPlay = rep.getPlayerToPlay();
+        String action = rep.getActionExpected().name();
+
+        this.writeInConsole(String.format("%s is playing and is acton is %s", playerToPlay, action));
 
     }
 
     public void showDrawableCards(){
+        GameRepresentation rep = getCurrentRepresentation();
+
+        ArrayList<String> visibleGolds = rep.getFaceUpGoldCards();
+        ArrayList<String> visibleCards = rep.getFaceUpResourceCards();
+        String nextResource = rep.getNextResourceCard();
+        String nextGold = rep.getNextGoldCard();
+        visibleCards.addAll(visibleGolds);
+        visibleCards.add(nextResource);
+        visibleCards.add(nextGold);
+
+        String cardIdsString = String.join(", ", visibleCards);
+
+        this.writeInConsole(String.format("Drawable cards are: %s", cardIdsString));
 
     }
 
     public void showGlobalObjectives(){
+        GameRepresentation rep = getCurrentRepresentation();
 
+        ArrayList<String> globalObjectives = rep.getGlobalObjectives();
+        this.writeInConsole(String.format("Global objectives are %s and %s", globalObjectives.get(0), globalObjectives.get(1)));
     }
 
     public void showYourObjective(){
+        PrivateRepresentation rep = getPrivateRepresentation(playerName);
 
+        CardObjective secretObjective = rep.getPrivateObjective();
+
+        String cardId = secretObjective.toString();
+        this.writeInConsole(String.format("Your secret objective is", cardId));
     }
 
     public void showGlobalChat(){
