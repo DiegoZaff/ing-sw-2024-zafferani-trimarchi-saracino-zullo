@@ -24,6 +24,12 @@ public class CardResource extends CardGame {
         this.resource = new ResourcePrimary(resource);
     }
 
+    public CardResource(String id,ResourcePrimary resource, int pointsPerPlay, Vertex[] verticesFront){
+        super(id, verticesFront);
+        this.resource = resource;
+        this.pointsPerPlay = pointsPerPlay;
+    }
+
     @Override
     public Optional<ResourcePrimary> getObjectiveResource() {
         return Optional.of(resource);

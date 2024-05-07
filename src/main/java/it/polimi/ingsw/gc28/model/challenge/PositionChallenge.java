@@ -4,7 +4,9 @@ import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.model.Table;
 import it.polimi.ingsw.gc28.model.challenge.utils.ChallengeType;
 
-public class PositionChallenge extends Challenge{
+import java.io.Serializable;
+
+public class PositionChallenge extends Challenge implements Serializable {
     public PositionChallenge(ChallengeType type){
         super(type);
     }

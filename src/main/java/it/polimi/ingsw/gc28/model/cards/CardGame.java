@@ -65,6 +65,10 @@ public abstract class CardGame extends Card implements Serializable {
         this.verticesFront = vertices;
     }
 
+    public CardGame(String id, Vertex[] vertices){
+        super(id);
+        this.verticesFront = vertices;
+    }
 
     /**
      * This method provides the resource primary of the card for counting the points

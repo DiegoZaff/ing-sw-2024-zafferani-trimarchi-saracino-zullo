@@ -1,11 +1,13 @@
 package it.polimi.ingsw.gc28.model.cards;
 
+import java.io.Serializable;
+
 /**
  * The purpose of this empty abstract class is to have a hierarchy that
  * allows us to perform shuffling and drawing of cards inside `Deck` in
  * a general way.
  */
-public abstract class Card {
+public abstract class Card implements Serializable {
     final private String id;
 
     protected Card(String id) {

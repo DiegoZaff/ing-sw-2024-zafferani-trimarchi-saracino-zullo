@@ -4,7 +4,6 @@ import it.polimi.ingsw.gc28.View.GameManagerClient;
 import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.network.messages.client.*;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
-import it.polimi.ingsw.gc28.network.rmi.VirtualView;
 
 import java.io.*;
 import java.net.Socket;
