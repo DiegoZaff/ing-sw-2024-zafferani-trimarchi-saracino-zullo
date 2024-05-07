@@ -15,9 +15,14 @@ public class ServerApplication {
     public static void main(String[] args) throws IOException {
         int portTCP; // 1234
         int portRMI; // 1235
+        String host = null;
         try{
             portTCP = Integer.parseInt(args[0]);
             portRMI = Integer.parseInt(args[1]);
+            if(args.length > 2){
+                host = args[2];
+            }
+
         }catch (NumberFormatException e){
             System.out.println(e.getMessage());
             return;
@@ -34,7 +39,7 @@ public class ServerApplication {
         try{
             System.out.println("Registering RMI server...");
             // this is not a thread. It just registers the stub.
-            RmiServer.registerServerRMI(portRMI);
+            RmiServer.registerServerRMI(portRMI, host);
         }catch (RemoteException e){
             System.out.println(e.getMessage());
         }

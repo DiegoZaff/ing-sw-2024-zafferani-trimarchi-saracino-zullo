@@ -49,12 +49,20 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
                 continue;
             }
 
-            Optional<MessageC2S> message;
-            message = messageToServer.createMessage(commandsList, this, gameId, userName);
+            String action = commandsList.getFirst();
 
-            if (message.isPresent()) {
-                MessageC2S messageToSend = message.get();
-                server.sendMessage(messageToSend);
+            if(action.equals("show")){
+
+
+
+            }else{
+                Optional<MessageC2S> message;
+                message = messageToServer.createMessage(commandsList, this, gameId, userName);
+
+                if (message.isPresent()) {
+                    MessageC2S messageToSend = message.get();
+                    server.sendMessage(messageToSend);
+                }
             }
         }
     }

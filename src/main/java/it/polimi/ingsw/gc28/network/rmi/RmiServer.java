@@ -14,9 +14,13 @@ public class RmiServer  implements VirtualServer  {
     public RmiServer(){}
 
 
-    public static void registerServerRMI(int portRMI) throws RemoteException {
+    public static void registerServerRMI(int portRMI, String host) throws RemoteException {
         String name = "VirtualServer";
         try{
+            if(host != null){
+                System.setProperty("java.rmi.server.hostname", host);
+            }
+
             VirtualServer engine = new RmiServer();
             VirtualServer stub =
                     (VirtualServer) UnicastRemoteObject.exportObject(engine, 0);

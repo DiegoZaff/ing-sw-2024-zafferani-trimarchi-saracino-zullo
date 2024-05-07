@@ -70,6 +70,51 @@ public class GameManagerClient {
         System.out.println(text);
     }
 
+    public void showHand(){
+        PrivateRepresentation repr
+    }
+
+    public void showCardInitial(){
+
+    }
+
+    public void showTable(String name){
+
+    }
+
+    public void showTable(){
+
+    }
+
+
+    public void showPoints(){
+
+    }
+
+    public void showPlayerAndActionOfTurn(){
+
+    }
+
+    public void showDrawableCards(){
+
+    }
+
+    public void showGlobalObjectives(){
+
+    }
+
+    public void showYourObjective(){
+
+    }
+
+    public void showGlobalChat(){
+
+    }
+
+    public void showPrivateChat(String player){
+
+    }
+
     public GameRepresentation getCurrentRepresentation() {
         return currentRepresentation;
     }

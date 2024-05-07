@@ -27,7 +27,7 @@ public class MsgOnGameStarted extends MessageS2C{
                 
                 It's %s's Turn.
                 Action Expected: %s.
-                """,playerOfTurn, actionType) ;
+                """,playerOfTurn, actionType);
 
         gameManagerClient.writeInConsole(text);
     }
