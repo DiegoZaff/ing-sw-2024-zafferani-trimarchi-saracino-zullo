@@ -1,9 +1,14 @@
 package it.polimi.ingsw.gc28.View;
 
+import it.polimi.ingsw.gc28.model.cards.Card;
+import it.polimi.ingsw.gc28.model.cards.CardGame;
+import it.polimi.ingsw.gc28.model.cards.CardResource;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
 
+import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.stream.Collectors;
 
 public class GameManagerClient {
 
@@ -71,7 +76,14 @@ public class GameManagerClient {
     }
 
     public void showHand(){
-        PrivateRepresentation repr
+        PrivateRepresentation repr = getPrivateRepresentation(playerName);
+
+        ArrayList<CardResource> cards =  repr.getHand();
+
+        String cardIdsString = cards.stream().map((CardResource::toString)).collect(Collectors.joining(", "));
+
+        this.writeInConsole(String.format("You hand is composed of cards: %s", cardIdsString));
+
     }
 
     public void showCardInitial(){
@@ -113,6 +125,16 @@ public class GameManagerClient {
 
     public void showPrivateChat(String player){
 
+    }
+
+    private PrivateRepresentation getPrivateRepresentation(String name){
+        PrivateRepresentation repr = currentRepresentation.getRepresentations().get(playerName);
+
+        if(repr == null){
+            throw new RuntimeException();
+        }
+
+        return repr;
     }
 
     public GameRepresentation getCurrentRepresentation() {
