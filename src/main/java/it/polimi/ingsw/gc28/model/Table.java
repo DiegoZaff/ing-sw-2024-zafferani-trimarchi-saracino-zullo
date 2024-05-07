@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc28.model;
 
+import it.polimi.ingsw.gc28.model.cards.CardResource;
 import it.polimi.ingsw.gc28.model.resources.Resource;
 import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
 import it.polimi.ingsw.gc28.model.resources.ResourceSpecial;
@@ -7,10 +8,8 @@ import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceSpecialType;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Table implements Serializable {
 
@@ -291,5 +290,18 @@ public class Table implements Serializable {
     }
 
 
+    @Override
+    public String toString(){
+//        ArrayList<Coordinate> coords = new ArrayList<>(mapPositions.keySet());
+//
+//        ArrayList<Coordinate> orderedCoords = coords.stream().sorted(Comparator.comparingInt(Coordinate::getY))
+//                .sorted(Comparator.comparingInt(Coordinate::getX)).collect(Collectors.toCollection(ArrayList::new));
 
+
+
+        String cardIdsString = mapPositions.values().stream().map(cell -> cell.getCard().getId()).collect(Collectors.joining(", "));
+
+        return String.format("Cards on the table are: %s", cardIdsString);
+
+    }
 }

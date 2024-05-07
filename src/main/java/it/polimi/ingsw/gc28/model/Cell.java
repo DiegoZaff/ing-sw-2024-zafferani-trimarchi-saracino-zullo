@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public class Cell implements Serializable {
 
-    public final CardGame card;
+    private final CardGame card;
 
     private final int orderPlay;
 
@@ -57,6 +57,11 @@ public class Cell implements Serializable {
         }
         return v;
     }
+
+    public CardGame getCard() {
+        return card;
+    }
+
     public Optional<Resource> getNWResource (){
         return getVertex()[0].getResource();
     }
