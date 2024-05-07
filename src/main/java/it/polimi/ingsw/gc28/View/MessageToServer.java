@@ -17,17 +17,17 @@ public class MessageToServer {
         return instance;
     }
 
-    public Optional<MessageC2S> createMessage(ArrayList<String> commandsList, RmiClient rmiClient) {
+    public Optional<MessageC2S> createMessage(ArrayList<String> commandsList, RmiClient rmiClient, String gameId, String userName) {
         String action = commandsList.getFirst();
-        String userName;
+        String playerName;
 
         switch (action) {
             case "createGame" -> {
                 if (commandsList.size() != 3) {
-                    System.err.println("Invalid format");
+                    System.out.println("Invalid format in create game");
                     return Optional.empty();
                 }
-                userName = commandsList.get(1);
+                playerName = commandsList.get(1);
 
                 int nPlayers = 0;
                 try {
@@ -38,57 +38,53 @@ public class MessageToServer {
                 }
 
                 if (nPlayers < 2 || nPlayers > 4) {
-                    System.err.println("Invalid number of players");
+                    System.out.println("Invalid number of players");
                     return Optional.empty();
                 }
 
                 MsgCreateGame message;
                 if (rmiClient == null) {
-                    message = new MsgCreateGame(null, userName, nPlayers, null);
+                    message = new MsgCreateGame(null, playerName, nPlayers, null);
                 } else {
-                    message = new MsgCreateGame(null, userName, nPlayers, rmiClient);
+                    message = new MsgCreateGame(null, playerName, nPlayers, rmiClient);
                 }
                 return Optional.of(message);
             }
             case "joinGame" -> {
                 if (commandsList.size() != 3) {
-                    System.err.println("Invalid format");
+                    System.out.println("Invalid format in join game");
                     return Optional.empty();
                 }
 
-                String gameId = commandsList.get(1);
-                userName = commandsList.get(2);
+                String newGameId = commandsList.get(1);
+                playerName = commandsList.get(2);
 
                 MsgJoinGame message;
                 if (rmiClient == null) {
-                    message = new MsgJoinGame(null, gameId, userName);
+                    message = new MsgJoinGame(null, newGameId, playerName);
                 } else {
-                    message = new MsgJoinGame(rmiClient, gameId, userName);
+                    message = new MsgJoinGame(rmiClient, newGameId, playerName);
                 }
                 return Optional.of(message);
             }
             case "chooseObj" -> {
-                if (commandsList.size() != 4) {
-                    System.err.println("Invalid format");
+                if (commandsList.size() != 2) {
+                    System.out.println("Invalid format in choose objective");
                     return Optional.empty();
                 }
 
-                String gameId = commandsList.get(1);
-                userName = commandsList.get(2);
-                String cardId = commandsList.get(3);
+                String cardId = commandsList.get(1);
 
                 MsgChooseObjective message = new MsgChooseObjective(userName, gameId, cardId);
                 return Optional.of(message);
             }
             case "drawCard" -> {
-                if (commandsList.size() != 4) {
-                    System.err.println("Invalid format");
+                if (commandsList.size() != 2) {
+                    System.out.println("Invalid format in drawCard");
                     return Optional.empty();
                 }
 
-                String gameId = commandsList.get(1);
-                userName = commandsList.get(2);
-                String arg = commandsList.get(3);
+                String arg = commandsList.get(1);
 
                 MessageC2S message = null;
 
@@ -99,24 +95,22 @@ public class MessageToServer {
                 } else if (arg.startsWith("RES") || arg.startsWith("GOLD")) {
                     message = new MsgDrawnVisibleGameCard(userName, gameId, arg);
                 } else {
-                    System.err.println("Invalid format");
+                    System.out.println("Invalid format in drawCard");
                 }
 
-                return Optional.of(message);
+                return Optional.ofNullable(message);
             }
             case "playCard" -> {
-                if (commandsList.size() != 7) {
-                    System.err.println("Invalid format");
+                if (commandsList.size() != 5) {
+                    System.out.println("Invalid format command playCard");
                     return Optional.empty();
                 }
 
-                String gameId = commandsList.get(1);
-                userName = commandsList.get(2);
-                String cardId = commandsList.get(3);
-                String isFrontString = commandsList.get(4);
+                String cardId = commandsList.get(1);
+                String isFrontString = commandsList.get(2);
 
                 if (!isFrontString.equals("up") && !isFrontString.equals("down")) {
-                    System.err.println("Invalid isFront format");
+                    System.out.println("Invalid isFront format in playCard command");
                     return Optional.empty();
                 }
                 boolean isFront = isFrontString.equals("up");
@@ -125,10 +119,10 @@ public class MessageToServer {
                 Integer y = null;
 
                 try {
-                    x = Integer.parseInt(commandsList.get(5));
-                    y = Integer.parseInt(commandsList.get(6));
+                    x = Integer.parseInt(commandsList.get(3));
+                    y = Integer.parseInt(commandsList.get(4));
                 } catch (NumberFormatException e) {
-                    System.err.println(e.getMessage());
+                    System.out.println(e.getMessage());
                     return Optional.empty();
                 }
 
@@ -136,7 +130,7 @@ public class MessageToServer {
                 return Optional.of(message);
             }
             default -> {
-                System.err.println("Invalid First Argument!");
+                System.out.println("Invalid command");
                 return Optional.empty();
             }
         }

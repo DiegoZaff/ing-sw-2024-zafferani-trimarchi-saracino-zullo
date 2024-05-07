@@ -18,9 +18,9 @@ import java.rmi.server.UnicastRemoteObject;
 public class RmiClient extends UnicastRemoteObject implements VirtualView {
     final VirtualServer server;
 
-    private String gameId;
+    private String gameId = null;
 
-    private String userName;
+    private String userName= null;
 
     final String id;
 
@@ -45,12 +45,12 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
             ArrayList<String> commandsList = new ArrayList<>(Arrays.asList(commands));
 
             if (commandsList.size() < 2) {
-                System.err.println("Give me a valid command plz.");
+                System.out.println("Give me a valid command plz.");
                 continue;
             }
 
             Optional<MessageC2S> message;
-            message = messageToServer.createMessage(commandsList, this);
+            message = messageToServer.createMessage(commandsList, this, gameId, userName);
 
             if (message.isPresent()) {
                 MessageC2S messageToSend = message.get();
@@ -58,7 +58,6 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
             }
         }
     }
-
 
     public static void startClientRMI(String host, int port) throws RemoteException, NotBoundException {
         Registry registry = LocateRegistry.getRegistry(host, port);
