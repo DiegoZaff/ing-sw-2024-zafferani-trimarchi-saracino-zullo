@@ -1,13 +1,16 @@
 package it.polimi.ingsw.gc28.View;
 
+import it.polimi.ingsw.gc28.model.Table;
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.model.cards.Card;
 import it.polimi.ingsw.gc28.model.cards.CardGame;
+import it.polimi.ingsw.gc28.model.cards.CardInitial;
 import it.polimi.ingsw.gc28.model.cards.CardObjective;
 import it.polimi.ingsw.gc28.model.cards.CardResource;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
@@ -89,20 +92,39 @@ public class GameManagerClient {
     }
 
     public void showCardInitial(){
+        PrivateRepresentation repr = getPrivateRepresentation(playerName);
 
+        CardInitial cardInitial = repr.getCardInitial();
+
+        if(cardInitial == null){
+            this.writeInConsole("CardInitial is null!");
+        }else{
+            this.writeInConsole(String.format("You card initial is: %s", cardInitial.getId()));
+        }
     }
 
     public void showTable(String name){
+        Table table = getPrivateRepresentation(name).getTable();
 
+        this.writeInConsole(table.toString());
     }
 
     public void showTable(){
-
+        showTable(playerName);
     }
 
 
     public void showPoints(){
+        Map<String, Integer> points = currentRepresentation.getPoints();
 
+        StringBuilder pointsString = new StringBuilder();
+
+
+        for(Map.Entry<String, Integer> entry : points.entrySet() ){
+            pointsString.append(String.format("%s : %s \n", entry.getKey(), entry.getValue()));
+        }
+
+        this.writeInConsole(pointsString.toString());
     }
 
     public void showPlayerAndActionOfTurn(){
