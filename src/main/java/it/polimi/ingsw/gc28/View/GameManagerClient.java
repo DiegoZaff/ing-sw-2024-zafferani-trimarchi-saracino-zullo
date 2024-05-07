@@ -127,7 +127,7 @@ public class GameManagerClient {
         this.writeInConsole(pointsString.toString());
     }
 
-    public void showPlayerAndActionOfTurn(){
+    public void showPlayerAndAction(){
         GameRepresentation rep = getCurrentRepresentation();
 
         String playerToPlay = rep.getPlayerToPlay();
@@ -167,7 +167,7 @@ public class GameManagerClient {
         CardObjective secretObjective = rep.getPrivateObjective();
 
         String cardId = secretObjective.toString();
-        this.writeInConsole(String.format("Your secret objective is", cardId));
+        this.writeInConsole(String.format("Your secret objective is %s", cardId));
     }
 
     public void showGlobalChat(){

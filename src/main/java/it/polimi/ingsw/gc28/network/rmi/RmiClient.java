@@ -44,18 +44,41 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
             String[] commands = line.split(" ");
             ArrayList<String> commandsList = new ArrayList<>(Arrays.asList(commands));
 
-            if (commandsList.size() < 2) {
+            if (commandsList.isEmpty()) {
                 System.out.println("Give me a valid command plz.");
                 continue;
             }
 
             String action = commandsList.getFirst();
 
-            if(action.equals("show")){
+            if(action.equals("showHand")){
+                GameManagerClient.getInstance().showHand();
+            }else if(action.equals("showCardInitial")){
+                GameManagerClient.getInstance().showCardInitial();
+            }else if(action.equals("showTable")){
+                if(commandsList.size() == 2){
+                    String player = commandsList.get(1);
 
+                    GameManagerClient.getInstance().showTable(player);
+                }
 
-
+                GameManagerClient.getInstance().showTable();
+            }else if(action.equals("showPoints")){
+                GameManagerClient.getInstance().showPoints();
+            }else if(action.equals("showPlayerAndAction")){
+                GameManagerClient.getInstance().showPlayerAndAction();
+            }else if(action.equals("showDrawableCards")){
+                GameManagerClient.getInstance().showDrawableCards();
+            }else if(action.equals("showGlobalObjectives")){
+                GameManagerClient.getInstance().showGlobalObjectives();
+            }else if(action.equals("showObjective")){
+                GameManagerClient.getInstance().showYourObjective();
             }else{
+                if (commandsList.size() < 2) {
+                    System.out.println("Give me a valid command plz.");
+                    continue;
+                }
+
                 Optional<MessageC2S> message;
                 message = messageToServer.createMessage(commandsList, this, gameId, userName);
 
