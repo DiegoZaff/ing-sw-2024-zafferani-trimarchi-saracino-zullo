@@ -45,7 +45,7 @@ public class ObjectivePosition extends Objective {
 
             ArrayList<CardGame> cardsNeighbors = neighborsCoordinates.stream()
                     .filter(map::containsKey)
-                    .map(coord -> map.get(coord).card)
+                    .map(coord -> map.get(coord).getCard())
                     .collect(Collectors.toCollection(ArrayList::new));
 
             boolean isValid = validateNeighbors(cardsNeighbors, patternPosition);
