@@ -131,7 +131,9 @@ public class CardInitial extends CardGame {
     }
 
     @Override
-    public String getCentralResourceStringInfo() {
+    public String getCentralResourceStringInfo(boolean isFront) {
+        if(!isFront) return  "";
+
         StringBuilder info = new StringBuilder();
 
         for(Resource res : centralResources.keySet()){

@@ -101,8 +101,8 @@ public class GameManagerClient {
             ArrayList<String> verticesStrings2 = TuiStringHelper.getVerticesStringInfo(card2, isFront);
 
 
-            String centralRes1 = card1.getCentralResourceStringInfo();
-            String centralRes2 = card2.getCentralResourceStringInfo();
+            String centralRes1 = card1.getCentralResourceStringInfo(isFront);
+            String centralRes2 = card2.getCentralResourceStringInfo(isFront);
 
             String show = null;
 
@@ -122,7 +122,7 @@ public class GameManagerClient {
 
                 ArrayList<String> verticesStrings3 = TuiStringHelper.getVerticesStringInfo(card3, isFront);
 
-                String centralRes3 = card3.getCentralResourceStringInfo();
+                String centralRes3 = card3.getCentralResourceStringInfo(isFront);
 
                 show = String.format("""
                     _________________   _________________   _________________

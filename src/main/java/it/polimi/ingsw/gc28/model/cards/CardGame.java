@@ -144,6 +144,6 @@ public abstract class CardGame extends Card implements Serializable {
     }
 
 
-    public abstract String getCentralResourceStringInfo();
+    public abstract String getCentralResourceStringInfo(boolean isFront);
 }
 

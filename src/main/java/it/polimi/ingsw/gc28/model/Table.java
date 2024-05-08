@@ -331,7 +331,7 @@ public class Table implements Serializable {
             int currPlayOrder = cell.getOrderPlay();
 
             ArrayList<String> verticesStrings= TuiStringHelper.getVerticesStringInfo(cell.getCard(), cell.getIsPlayedFront());
-            String centralRes = cell.getCard().getCentralResourceStringInfo();
+            String centralRes = cell.getCard().getCentralResourceStringInfo(cell.getIsPlayedFront());
 
             Optional<Cell> NECell = getNECell(coord);
             Optional<Cell> NWCell = getNWCell(coord);
@@ -365,7 +365,7 @@ public class Table implements Serializable {
                 firstLayer2 = "______";
                 secondLayer2 = String.format("   %s|", verticesStrings.get(1));
             }else{
-                firstLayer2 = "--";
+                firstLayer2 = "__";
                 secondLayer2 = "  ";
             }
 
@@ -415,14 +415,15 @@ public class Table implements Serializable {
         int minY = orderedCoords.stream().min(Comparator.comparingInt(Coordinate::getY)).orElseThrow().getY();
         int maxY = orderedCoords.stream().max(Comparator.comparingInt(Coordinate::getY)).orElseThrow().getY();
 
-        int y = maxY;
-        int x = minX;
-
-        ArrayList<Coordinate> coordsCurrentCardLayer = orderedCoords.stream().filter(coordinate -> coordinate.getY() == y).collect(Collectors.toCollection(ArrayList::new));
-
-        Coordinate curr = new Coordinate(x, y);
+        Coordinate curr;
 
         int startingK = 0;
+
+        // these are just to keep track of coordinates whose cell's first and second layer were already printed.
+        ArrayList<Coordinate> firstLayerAlreadyPrinted = new ArrayList<>();
+        ArrayList<Coordinate> secondLayerAlreadyPrinted = new ArrayList<>();
+
+
         for (int j = maxY; j > minY - 1 ; j--){
             for (int k = startingK; k < 5; k++){
                 for (int i = minX ; i < maxX + 1; i++){
@@ -437,8 +438,20 @@ public class Table implements Serializable {
                             }else{
                                 result.append(emptySpace5);
                             }
+                        }else{
+                            Coordinate downCoord = new Coordinate(curr.getX(), curr.getY() - 1);
+
+                            String[] downCoordStrings = mapLayers.get(downCoord);
+
+                            if(downCoordStrings == null){
+                                if(i == minX){
+                                    result.append(emptySpace9);
+                                }else{
+                                    result.append(emptySpace5);
+                                }
+                            }
+                            //else do nothing
                         }
-                        // k == 4 or k == 5 do nothing
 
                     }else{
                         String[] currStrings = mapLayers.get(curr);
@@ -453,7 +466,10 @@ public class Table implements Serializable {
                                     String[] stringsAdjLeft = mapLayers.get(adjacentCoordLeft);
 
                                     if(stringsAdjLeft != null){
-                                        result.append(stringsAdjLeft[0]);
+                                        if(!firstLayerAlreadyPrinted.contains(adjacentCoordLeft)){
+                                            result.append(stringsAdjLeft[0]);
+                                            firstLayerAlreadyPrinted.add(adjacentCoordLeft);
+                                        }
                                         result.append(emptySpace5);
                                     }else{
                                         result.append(emptySpace9);
@@ -464,7 +480,10 @@ public class Table implements Serializable {
                                     String[] stringsAdjRight = mapLayers.get(adjacentCoordRight);
 
                                     if(stringsAdjRight != null){
-                                        result.append(stringsAdjRight[0]);
+                                        if(!firstLayerAlreadyPrinted.contains(adjacentCoordRight)){
+                                            result.append(stringsAdjRight[0]);
+                                            firstLayerAlreadyPrinted.add(adjacentCoordRight);
+                                        }
                                     }else{
                                         result.append(emptySpace4);
                                     }
@@ -474,7 +493,10 @@ public class Table implements Serializable {
                                     String[] stringsAdjLeft = mapLayers.get(adjacentCoordLeft);
 
                                     if(stringsAdjLeft != null){
-                                        result.append(stringsAdjLeft[1]);
+                                        if(!secondLayerAlreadyPrinted.contains(adjacentCoordLeft)){
+                                            result.append(stringsAdjLeft[1]);
+                                            secondLayerAlreadyPrinted.add(adjacentCoordLeft);
+                                        }
                                         result.append(emptySpace5);
                                     }else{
                                         result.append(emptySpace9);
@@ -485,7 +507,10 @@ public class Table implements Serializable {
                                     String[] stringsAdjRight = mapLayers.get(adjacentCoordRight);
 
                                     if(stringsAdjRight != null){
-                                        result.append(stringsAdjRight[1]);
+                                        if(!secondLayerAlreadyPrinted.contains(adjacentCoordRight)){
+                                            result.append(stringsAdjRight[1]);
+                                            secondLayerAlreadyPrinted.add(adjacentCoordRight);
+                                        }
                                     }else{
                                         result.append(emptySpace4);
                                     }
@@ -508,7 +533,11 @@ public class Table implements Serializable {
                                 if(stringsAdjLeft == null){
                                     result.append(currStrings[3]);
                                 }else{
-                                    result.append(stringsAdjLeft[0]);
+                                    if(!firstLayerAlreadyPrinted.contains(adjacentCoordLeft)){
+                                        result.append(stringsAdjLeft[0]);
+                                        firstLayerAlreadyPrinted.add(adjacentCoordLeft);
+                                    }
+
                                     result.append(currStrings[3]);
                                 }
 
@@ -518,6 +547,7 @@ public class Table implements Serializable {
 
                                 if (stringsAdjRight != null) {
                                     result.append(stringsAdjRight[0]);
+                                    firstLayerAlreadyPrinted.add(adjacentCoordRight);
                                 }
                             }else {
                                 Coordinate adjacentCoordLeft = new Coordinate(curr.getX() - 1, curr.getY() - 1);
@@ -527,7 +557,10 @@ public class Table implements Serializable {
                                 if(stringsAdjLeft == null){
                                     result.append(currStrings[4]);
                                 }else{
-                                    result.append(stringsAdjLeft[1]);
+                                    if(!secondLayerAlreadyPrinted.contains(adjacentCoordLeft)){
+                                        result.append(stringsAdjLeft[1]);
+                                        secondLayerAlreadyPrinted.add(adjacentCoordLeft);
+                                    }
                                     result.append(currStrings[4]);
                                 }
 
@@ -537,6 +570,8 @@ public class Table implements Serializable {
 
                                 if (stringsAdjRight != null) {
                                     result.append(stringsAdjRight[1]);
+                                    secondLayerAlreadyPrinted.add(adjacentCoordRight);
+
                                 }
                             }
                         }
@@ -549,16 +584,6 @@ public class Table implements Serializable {
             }
             startingK = 2;
         }
-
-//        while (!orderedCoords.isEmpty()){
-//            int maxY =  orderedCoords.getFirst().getY();
-//            int minX = orderedCoords.
-//
-//            ArrayList<Coordinate> layer = orderedCoords.stream().filter(coordinate -> coordinate.getY() == maxY).collect(Collectors.toCollection(ArrayList::new));
-//
-//            String top = "_____________";
-//            String space= ""
-//        }
 
 
         return result.toString();

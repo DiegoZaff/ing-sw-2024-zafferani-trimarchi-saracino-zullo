@@ -75,7 +75,11 @@ public class CardResource extends CardGame {
     }
 
     @Override
-    public String getCentralResourceStringInfo() {
+    public String getCentralResourceStringInfo(boolean isFront) {
+        if(!isFront){
+            return  "";
+        }
+
         Optional<ResourcePrimary> centralRes1 = this.getObjectiveResource();
         String centralRes1String = "";
         if(centralRes1.isPresent()){
