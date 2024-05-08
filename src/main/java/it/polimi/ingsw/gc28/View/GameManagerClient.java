@@ -91,8 +91,6 @@ public class GameManagerClient {
 
         ArrayList<CardResource> cards =  repr.getHand();
 
-        String cardIdsString = cards.stream().map((CardResource::toString)).collect(Collectors.joining(", "));
-
         if(cards.size() >= 2){
             CardGame card1 = cards.getFirst();
             CardGame card2 = cards.get(1);

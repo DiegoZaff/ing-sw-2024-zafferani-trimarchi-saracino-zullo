@@ -63,9 +63,10 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
                     String player = commandsList.get(1);
 
                     GameManagerClient.getInstance().showTable(player);
-                }
 
-                GameManagerClient.getInstance().showTable();
+                }else{
+                    GameManagerClient.getInstance().showTable();
+                }
             }else if(action.equals("showPoints")){
                 GameManagerClient.getInstance().showPoints();
             }else if(action.equals("showPlayerAndAction")){
