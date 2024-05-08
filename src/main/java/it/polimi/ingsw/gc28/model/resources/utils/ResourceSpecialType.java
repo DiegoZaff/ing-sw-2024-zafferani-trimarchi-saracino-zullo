@@ -4,5 +4,14 @@ public enum ResourceSpecialType {
     POTION,
     FEATHER,
     PARCHMENT,
-    noResource
+    noResource;
+    @Override
+    public String toString() {
+        return switch (this) {
+            case POTION -> "Po";
+            case FEATHER -> "Fe";
+            case PARCHMENT -> "Pe";
+            case noResource -> "  ";
+        };
+    }
 }

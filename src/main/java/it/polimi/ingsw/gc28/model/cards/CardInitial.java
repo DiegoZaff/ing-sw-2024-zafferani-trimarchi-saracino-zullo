@@ -129,6 +129,17 @@ public class CardInitial extends CardGame {
     public ActionType getIntendedAction(){
         return ActionType.PLAY_INITIAL_CARD;
     }
+
+    @Override
+    public String getCentralResourceStringInfo() {
+        StringBuilder info = new StringBuilder();
+
+        for(Resource res : centralResources.keySet()){
+            info.append(res.toString());
+        }
+
+        return info.toString();
+    }
 }
 
 

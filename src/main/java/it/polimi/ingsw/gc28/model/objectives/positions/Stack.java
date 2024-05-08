@@ -1,9 +1,11 @@
 package it.polimi.ingsw.gc28.model.objectives.positions;
 import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.model.objectives.positions.utils.PositionStackType;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Stack extends PositionType{
+public class Stack extends PositionType implements Serializable {
     public Stack(PositionStackType type) {
         this.type = type;
     }

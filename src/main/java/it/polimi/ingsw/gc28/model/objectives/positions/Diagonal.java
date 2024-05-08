@@ -1,9 +1,11 @@
 package it.polimi.ingsw.gc28.model.objectives.positions;
 import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.model.objectives.positions.utils.DiagonalType;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Diagonal extends PositionType{
+public class Diagonal extends PositionType implements Serializable {
 
     public final DiagonalType diagonalType;
 

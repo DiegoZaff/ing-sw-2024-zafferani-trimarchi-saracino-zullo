@@ -2,9 +2,11 @@ package it.polimi.ingsw.gc28.model.objectives;
 import it.polimi.ingsw.gc28.model.Cell;
 import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.model.resources.Resource;
+
+import java.io.Serializable;
 import java.util.Map;
 
-public class ObjectiveResources extends Objective{
+public class ObjectiveResources extends Objective implements Serializable {
 
     /**
      * This generalizes all combinations of resources.

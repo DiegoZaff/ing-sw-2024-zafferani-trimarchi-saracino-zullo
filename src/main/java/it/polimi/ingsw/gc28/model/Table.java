@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc28.model;
 
+import it.polimi.ingsw.gc28.View.utils.TuiStringHelper;
 import it.polimi.ingsw.gc28.model.cards.CardResource;
 import it.polimi.ingsw.gc28.model.resources.Resource;
 import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
@@ -292,16 +293,275 @@ public class Table implements Serializable {
 
     @Override
     public String toString(){
-//        ArrayList<Coordinate> coords = new ArrayList<>(mapPositions.keySet());
+        ArrayList<Coordinate> coords = new ArrayList<>(mapPositions.keySet());
+
+        // decreasing y order, increasing x order
+        ArrayList<Coordinate> orderedCoords = coords.stream()
+                .sorted((o1, o2) -> {
+                    if (o1.getY() == o2.getY()) {
+                        // If y values are equal, compare by x in ascending order
+                        return Integer.compare(o1.getX(), o2.getX());
+                    } else {
+                        // Otherwise, compare by y in descending order
+                        return Integer.compare(o2.getY(), o1.getY());
+                    }
+                })
+                .collect(Collectors.toCollection(ArrayList::new));
+
+
+        /*
+                x=-1 y=1           x=1 y=1                                                            x=-1 y=1           x=1 y=1
+
+            <-----13----><-5-><------13---><-5-><-----13----><-5->
+            _____________     _____________                                                      _____________      _____________
+            |%s       %s|     |%s       %s|                                                      |%s       %s|      |%s       %s|
+            |     %s    |     |     %s    |                                                      |     %s    |      |     %s    |
+            |%s      _____________        |                                                      |%s         |__________        |
+            ‾‾‾‾‾‾‾‾‾|%s       %s|‾‾‾‾‾‾‾‾‾                                                      ‾‾‾‾‾‾‾‾‾‾‾‾‾       %s|‾‾‾‾‾‾‾‾‾
+            <---9--->|     %s    |<---9--->                                                                |     %s    |
+                     |%s       %s|                                                                         |%s       %s|
+                     ‾‾‾‾‾‾‾‾‾‾‾‾‾                                                                         ‾‾‾‾‾‾‾‾‾‾‾‾‾
+                            x=0 y=0
+         */
+
+        Map<Coordinate, String[]> mapLayers = new HashMap<>();
+
+        for(Coordinate coord : orderedCoords){
+            Cell cell = mapPositions.get(coord);
+            int currPlayOrder = cell.getOrderPlay();
+
+            ArrayList<String> verticesStrings= TuiStringHelper.getVerticesStringInfo(cell.getCard(), cell.getIsPlayedFront());
+            String centralRes = cell.getCard().getCentralResourceStringInfo();
+
+            Optional<Cell> NECell = getNECell(coord);
+            Optional<Cell> NWCell = getNWCell(coord);
+            Optional<Cell> SECell = getSECell(coord);
+            Optional<Cell> SWCell = getSWCell(coord);
+
+            String firstLayer;
+            String firstLayer1;
+            String firstLayer2;
+            String secondLayer;
+            String secondLayer1;
+            String secondLayer2;
+            String thirdLayer;
+            String fourthLayer;
+            String fourthLayer1;
+            String fourthLayer2;
+            String fifthLayer;
+            String fifthLayer1;
+            String fifthLayer2;
+
+            //1st and 2nd layer
+            if(NWCell.isEmpty() || NWCell.get().getOrderPlay() < currPlayOrder){
+                firstLayer1 = "______";
+                secondLayer1 = String.format("|%s   ", verticesStrings.getFirst());
+            }else{
+                firstLayer1 = "__";
+                secondLayer1 = "  ";
+            }
+
+            if(NECell.isEmpty() || NECell.get().getOrderPlay() < currPlayOrder){
+                firstLayer2 = "______";
+                secondLayer2 = String.format("   %s|", verticesStrings.get(1));
+            }else{
+                firstLayer2 = "--";
+                secondLayer2 = "  ";
+            }
+
+            //4th and 5th layer
+            if(SWCell.isEmpty() || SWCell.get().getOrderPlay() < currPlayOrder){
+                fourthLayer1 = String.format("|%s   ", verticesStrings.get(3));
+                fifthLayer1 = "‾‾‾‾‾‾";
+            }else{
+                fourthLayer1 = "  ";
+                fifthLayer1 = "‾‾";
+            }
+
+            if(SECell.isEmpty() || SECell.get().getOrderPlay() < currPlayOrder){
+                fourthLayer2 = String.format("   %s|", verticesStrings.get(2));
+                fifthLayer2 = "‾‾‾‾‾‾";
+            }else{
+                fourthLayer2 = "  ";
+                fifthLayer2 = "‾‾";
+            }
+
+            firstLayer = firstLayer1 + "_" + firstLayer2;
+            secondLayer = secondLayer1 + " " + secondLayer2;
+
+            int lengthResString = centralRes.length();
+            int leftPadding = (11 - lengthResString) / 2;
+            int rightPadding = 11 - leftPadding - lengthResString;
+            thirdLayer ="|" + " ".repeat(leftPadding) + centralRes + " ".repeat(rightPadding) + "|" ;
+            fourthLayer = fourthLayer1 + " " + fourthLayer2;
+            fifthLayer = fifthLayer1 + "‾" + fifthLayer2;
+
+            String[] cardLayers = {firstLayer, secondLayer, thirdLayer, fourthLayer, fifthLayer};
+
+            mapLayers.put(coord, cardLayers);
+        }
+
+
+        String emptySpace5 = "     ";
+        String emptySpace13 = "             ";
+        String emptySpace9 = "         ";
+        String emptySpace4 = "    ";
+
+        StringBuilder result = new StringBuilder();
+
+
+        int minX = orderedCoords.stream().min(Comparator.comparingInt(Coordinate::getX)).orElseThrow().getX();
+        int maxX = orderedCoords.stream().max(Comparator.comparingInt(Coordinate::getX)).orElseThrow().getX();
+        int minY = orderedCoords.stream().min(Comparator.comparingInt(Coordinate::getY)).orElseThrow().getY();
+        int maxY = orderedCoords.stream().max(Comparator.comparingInt(Coordinate::getY)).orElseThrow().getY();
+
+        int y = maxY;
+        int x = minX;
+
+        ArrayList<Coordinate> coordsCurrentCardLayer = orderedCoords.stream().filter(coordinate -> coordinate.getY() == y).collect(Collectors.toCollection(ArrayList::new));
+
+        Coordinate curr = new Coordinate(x, y);
+
+        int startingK = 0;
+        for (int j = maxY; j > minY - 1 ; j--){
+            for (int k = startingK; k < 5; k++){
+                for (int i = minX ; i < maxX + 1; i++){
+
+                    curr = new Coordinate(i, j);
+
+                    if((Math.abs(curr.getX()) + Math.abs(curr.getY()))% 2 != 0){
+
+                        if(k == 0 || k == 1 || k == 2){
+                            if(i == minX){
+                                result.append(emptySpace9);
+                            }else{
+                                result.append(emptySpace5);
+                            }
+                        }
+                        // k == 4 or k == 5 do nothing
+
+                    }else{
+                        String[] currStrings = mapLayers.get(curr);
+
+                        if(currStrings == null){
+                            if(k == 0 || k == 1 || k == 2){
+                                result.append(emptySpace13);
+                            }else{
+                                if(k == 3){
+                                    Coordinate adjacentCoordLeft = new Coordinate(curr.getX() - 1, curr.getY() - 1);
+
+                                    String[] stringsAdjLeft = mapLayers.get(adjacentCoordLeft);
+
+                                    if(stringsAdjLeft != null){
+                                        result.append(stringsAdjLeft[0]);
+                                        result.append(emptySpace5);
+                                    }else{
+                                        result.append(emptySpace9);
+                                    }
+
+                                    Coordinate adjacentCoordRight = new Coordinate(curr.getX() + 1, curr.getY() - 1);
+
+                                    String[] stringsAdjRight = mapLayers.get(adjacentCoordRight);
+
+                                    if(stringsAdjRight != null){
+                                        result.append(stringsAdjRight[0]);
+                                    }else{
+                                        result.append(emptySpace4);
+                                    }
+                                }else{
+                                    Coordinate adjacentCoordLeft = new Coordinate(curr.getX() - 1, curr.getY() - 1);
+
+                                    String[] stringsAdjLeft = mapLayers.get(adjacentCoordLeft);
+
+                                    if(stringsAdjLeft != null){
+                                        result.append(stringsAdjLeft[1]);
+                                        result.append(emptySpace5);
+                                    }else{
+                                        result.append(emptySpace9);
+                                    }
+
+                                    Coordinate adjacentCoordRight = new Coordinate(curr.getX() + 1, curr.getY() - 1);
+
+                                    String[] stringsAdjRight = mapLayers.get(adjacentCoordRight);
+
+                                    if(stringsAdjRight != null){
+                                        result.append(stringsAdjRight[1]);
+                                    }else{
+                                        result.append(emptySpace4);
+                                    }
+                                }
+                            }
+
+                        }else{
+                            //first layer
+                            if(k == 0){
+                                result.append(currStrings[0]);
+                            }else if(k == 1){
+                                result.append(currStrings[1]);
+                            }else if(k == 2){
+                                result.append(currStrings[2]);
+                            }else if(k == 3){
+                                Coordinate adjacentCoordLeft = new Coordinate(curr.getX() - 1, curr.getY() - 1);
+
+                                String[] stringsAdjLeft = mapLayers.get(adjacentCoordLeft);
+
+                                if(stringsAdjLeft == null){
+                                    result.append(currStrings[3]);
+                                }else{
+                                    result.append(stringsAdjLeft[0]);
+                                    result.append(currStrings[3]);
+                                }
+
+                                Coordinate adjacentCoordRight = new Coordinate(curr.getX() + 1, curr.getY() - 1);
+
+                                String[] stringsAdjRight = mapLayers.get(adjacentCoordRight);
+
+                                if (stringsAdjRight != null) {
+                                    result.append(stringsAdjRight[0]);
+                                }
+                            }else {
+                                Coordinate adjacentCoordLeft = new Coordinate(curr.getX() - 1, curr.getY() - 1);
+
+                                String[] stringsAdjLeft = mapLayers.get(adjacentCoordLeft);
+
+                                if(stringsAdjLeft == null){
+                                    result.append(currStrings[4]);
+                                }else{
+                                    result.append(stringsAdjLeft[1]);
+                                    result.append(currStrings[4]);
+                                }
+
+                                Coordinate adjacentCoordRight = new Coordinate(curr.getX() + 1, curr.getY() - 1);
+
+                                String[] stringsAdjRight = mapLayers.get(adjacentCoordRight);
+
+                                if (stringsAdjRight != null) {
+                                    result.append(stringsAdjRight[1]);
+                                }
+                            }
+                        }
+
+                    }
+
+                }
+
+                result.append("\n");
+            }
+            startingK = 2;
+        }
+
+//        while (!orderedCoords.isEmpty()){
+//            int maxY =  orderedCoords.getFirst().getY();
+//            int minX = orderedCoords.
 //
-//        ArrayList<Coordinate> orderedCoords = coords.stream().sorted(Comparator.comparingInt(Coordinate::getY))
-//                .sorted(Comparator.comparingInt(Coordinate::getX)).collect(Collectors.toCollection(ArrayList::new));
+//            ArrayList<Coordinate> layer = orderedCoords.stream().filter(coordinate -> coordinate.getY() == maxY).collect(Collectors.toCollection(ArrayList::new));
+//
+//            String top = "_____________";
+//            String space= ""
+//        }
 
 
-
-        String cardIdsString = mapPositions.values().stream().map(cell -> cell.getCard().getId()).collect(Collectors.joining(", "));
-
-        return String.format("Cards on the table are: %s", cardIdsString);
+        return result.toString();
 
     }
 }

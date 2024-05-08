@@ -28,6 +28,11 @@ public class ResourcePrimary extends Resource {
     public int hashCode() {
         return Objects.hash(type);
     }
+
+    @Override
+    public String toString(){
+        return type.toString();
+    }
 }
 
 

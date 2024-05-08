@@ -74,6 +74,17 @@ public class CardResource extends CardGame {
         return verticesBack;
     }
 
+    @Override
+    public String getCentralResourceStringInfo() {
+        Optional<ResourcePrimary> centralRes1 = this.getObjectiveResource();
+        String centralRes1String = "";
+        if(centralRes1.isPresent()){
+            centralRes1String = centralRes1.get().toString();
+        }else{
+            centralRes1String = "  ";
+        }
+
+        return centralRes1String;    }
 
 
     public void drawFaceUpCard(ArrayList<CardResource> faceUpResCards, ArrayList<CardGold> faceUpGoldCards, Deck deck, Player player) throws PlayerActionError {

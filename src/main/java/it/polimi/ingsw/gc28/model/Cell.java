@@ -93,4 +93,7 @@ public class Cell implements Serializable {
         return getVertex()[3].isExists();
     }
 
+    public int getOrderPlay() {
+        return orderPlay;
+    }
 }

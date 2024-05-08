@@ -33,7 +33,7 @@ public class CardsManager {
         cardObjectiveMap = new HashMap<>();
 
         JSONParser jsonParser = new JSONParser();
-        String path = "./../src/main/java/it/polimi/ingsw/gc28/Cards.json";
+        String path = "./src/main/java/it/polimi/ingsw/gc28/Cards.json";
         FileReader reader = null;
         try {
             reader = new FileReader(path);

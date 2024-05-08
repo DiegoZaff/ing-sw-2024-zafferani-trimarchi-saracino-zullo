@@ -5,11 +5,13 @@ import it.polimi.ingsw.gc28.model.cards.CardGame;
 import it.polimi.ingsw.gc28.model.objectives.positions.PositionType;
 import it.polimi.ingsw.gc28.model.resources.Resource;
 import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ObjectivePosition extends Objective {
+public class ObjectivePosition extends Objective implements Serializable {
 
     /**
      * this generalizes position patterns.

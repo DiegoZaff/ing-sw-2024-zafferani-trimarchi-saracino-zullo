@@ -142,5 +142,8 @@ public abstract class CardGame extends Card implements Serializable {
     public ActionType getIntendedAction(){
         return ActionType.PLAY_CARD;
     }
+
+
+    public abstract String getCentralResourceStringInfo();
 }
 

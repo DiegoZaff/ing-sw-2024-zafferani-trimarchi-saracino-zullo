@@ -189,6 +189,6 @@ public class Player {
     }
 
     public PrivateRepresentation getState(){
-        return new PrivateRepresentation(objectiveChosen, table, hand, cardInitial);
+        return new PrivateRepresentation(objectiveChosen, table, hand, cardInitial, objectivesToChoose);
     }
 }

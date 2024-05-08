@@ -18,10 +18,6 @@ import java.rmi.server.UnicastRemoteObject;
 public class RmiClient extends UnicastRemoteObject implements VirtualView {
     final VirtualServer server;
 
-    private String gameId = null;
-
-    private String userName= null;
-
     final String id;
 
     MessageToServer messageToServer = MessageToServer.getInstance();
@@ -52,7 +48,14 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
             String action = commandsList.getFirst();
 
             if(action.equals("showHand")){
-                GameManagerClient.getInstance().showHand();
+                boolean isFront = true;
+                if(commandsList.size() == 2){
+                    String orientation = commandsList.get(1);
+                    isFront = orientation.equals("up");
+                }
+
+                GameManagerClient.getInstance().showHand(isFront);
+
             }else if(action.equals("showCardInitial")){
                 GameManagerClient.getInstance().showCardInitial();
             }else if(action.equals("showTable")){
@@ -73,6 +76,8 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
                 GameManagerClient.getInstance().showGlobalObjectives();
             }else if(action.equals("showObjective")){
                 GameManagerClient.getInstance().showYourObjective();
+            }else if(action.equals("showObjectivesToChoose")){
+                GameManagerClient.getInstance().showObjectivesToChoose();
             }else{
                 if (commandsList.size() < 2) {
                     System.out.println("Give me a valid command plz.");
@@ -80,6 +85,10 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
                 }
 
                 Optional<MessageC2S> message;
+
+                String gameId = GameManagerClient.getInstance().getGameId();
+                String userName = GameManagerClient.getInstance().getPlayerName();
+
                 message = messageToServer.createMessage(commandsList, this, gameId, userName);
 
                 if (message.isPresent()) {

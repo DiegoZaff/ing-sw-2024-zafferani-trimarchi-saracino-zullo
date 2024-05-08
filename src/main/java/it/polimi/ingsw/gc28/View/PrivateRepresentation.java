@@ -18,12 +18,14 @@ public class PrivateRepresentation implements Serializable {
 
     private CardInitial cardInitial;
 
-    public PrivateRepresentation (CardObjective objective, Table table, ArrayList<CardResource> hand,  CardInitial cardInitial){
+    private ArrayList<CardObjective> objsToChoose;
+
+    public PrivateRepresentation (CardObjective objective, Table table, ArrayList<CardResource> hand, CardInitial cardInitial, ArrayList<CardObjective> objsToChoose){
         this.cardInitial = cardInitial;
         this.hand = hand;
         this.table = table;
         this.privateObjective = objective;
-
+        this.objsToChoose = objsToChoose;
     }
 
     public ArrayList<CardResource> getHand() {
@@ -40,5 +42,9 @@ public class PrivateRepresentation implements Serializable {
 
     public CardInitial getCardInitial() {
         return cardInitial;
+    }
+
+    public ArrayList<CardObjective> getObjsToChoose() {
+        return objsToChoose;
     }
 }

@@ -1,16 +1,22 @@
 package it.polimi.ingsw.gc28.View;
 
+import it.polimi.ingsw.gc28.View.utils.TuiStringHelper;
 import it.polimi.ingsw.gc28.model.Table;
+import it.polimi.ingsw.gc28.model.Vertex;
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.model.cards.Card;
 import it.polimi.ingsw.gc28.model.cards.CardGame;
 import it.polimi.ingsw.gc28.model.cards.CardInitial;
 import it.polimi.ingsw.gc28.model.cards.CardObjective;
 import it.polimi.ingsw.gc28.model.cards.CardResource;
+import it.polimi.ingsw.gc28.model.resources.Resource;
+import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
@@ -80,14 +86,61 @@ public class GameManagerClient {
         System.out.println(text);
     }
 
-    public void showHand(){
+    public void showHand(boolean isFront){
         PrivateRepresentation repr = getPrivateRepresentation(playerName);
 
         ArrayList<CardResource> cards =  repr.getHand();
 
         String cardIdsString = cards.stream().map((CardResource::toString)).collect(Collectors.joining(", "));
 
-        this.writeInConsole(String.format("You hand is composed of cards: %s", cardIdsString));
+        if(cards.size() >= 2){
+            CardGame card1 = cards.getFirst();
+            CardGame card2 = cards.get(1);
+
+            ArrayList<String> verticesStrings1 = TuiStringHelper.getVerticesStringInfo(card1, isFront);
+            ArrayList<String> verticesStrings2 = TuiStringHelper.getVerticesStringInfo(card2, isFront);
+
+
+            String centralRes1 = card1.getCentralResourceStringInfo();
+            String centralRes2 = card2.getCentralResourceStringInfo();
+
+            String show = null;
+
+            if(cards.size() == 2){
+                show = String.format("""
+                    _________________   _________________
+                    |%s           %s|   |%s           %s|
+                    |       %s      |   |       %s      |
+                    |%s           %s|   |%s           %s|
+                    ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+                        %s              %s
+                """, verticesStrings1.get(0), verticesStrings1.get(1), verticesStrings2.get(0), verticesStrings2.get(1),centralRes1, centralRes2,
+                        verticesStrings1.get(3), verticesStrings1.get(2), verticesStrings2.get(3), verticesStrings2.get(2), card1.getId(), card2.getId());
+            }else if(cards.size() == 3){
+
+                CardGame card3 = cards.get(2);
+
+                ArrayList<String> verticesStrings3 = TuiStringHelper.getVerticesStringInfo(card3, isFront);
+
+                String centralRes3 = card3.getCentralResourceStringInfo();
+
+                show = String.format("""
+                    _________________   _________________   _________________
+                    |%s           %s|   |%s           %s|   |%s           %s|
+                    |       %s      |   |       %s      |   |       %s      |
+                    |%s           %s|   |%s           %s|   |%s           %s|
+                    ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+                          %s              %s              %s
+                """, verticesStrings1.get(0), verticesStrings1.get(1), verticesStrings2.get(0), verticesStrings2.get(1),
+                        verticesStrings3.get(0), verticesStrings3.get(1), centralRes1, centralRes2, centralRes3,
+                        verticesStrings1.get(3), verticesStrings1.get(2), verticesStrings2.get(3), verticesStrings2.get(2),
+                        verticesStrings3.get(3), verticesStrings3.get(2),card1.getId(), card2.getId(), card3.getId());
+
+            }
+
+            this.writeInConsole(String.format("Your hand is composed of cards: \n%s", show));
+
+        }
 
     }
 
@@ -99,7 +152,7 @@ public class GameManagerClient {
         if(cardInitial == null){
             this.writeInConsole("CardInitial is null!");
         }else{
-            this.writeInConsole(String.format("You card initial is: %s", cardInitial.getId()));
+            this.writeInConsole(String.format("You card initial is: \n%s", cardInitial.getId()));
         }
     }
 
@@ -166,8 +219,30 @@ public class GameManagerClient {
 
         CardObjective secretObjective = rep.getPrivateObjective();
 
-        String cardId = secretObjective.toString();
+        String cardId;
+        if(secretObjective != null){
+            cardId = secretObjective.toString();
+        }else{
+            cardId = "null";
+        }
         this.writeInConsole(String.format("Your secret objective is %s", cardId));
+    }
+
+    public void showObjectivesToChoose(){
+        PrivateRepresentation rep = getPrivateRepresentation(playerName);
+
+        ArrayList<CardObjective> cards = rep.getObjsToChoose();
+
+        String result;
+
+        if(cards == null || cards.size() != 2){
+            result = "no cards to choose yet";
+        }else{
+            result = String.format("%s, %s", cards.get(0).getId(), cards.get(1).getId());
+        }
+
+        this.writeInConsole(result);
+
     }
 
     public void showGlobalChat(){
