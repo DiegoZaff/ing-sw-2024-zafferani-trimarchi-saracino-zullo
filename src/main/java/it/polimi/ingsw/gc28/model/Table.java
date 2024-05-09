@@ -1,7 +1,6 @@
 package it.polimi.ingsw.gc28.model;
 
 import it.polimi.ingsw.gc28.View.utils.TuiStringHelper;
-import it.polimi.ingsw.gc28.model.cards.CardResource;
 import it.polimi.ingsw.gc28.model.resources.Resource;
 import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
 import it.polimi.ingsw.gc28.model.resources.ResourceSpecial;
@@ -295,6 +294,7 @@ public class Table implements Serializable {
     public String toString(){
         ArrayList<Coordinate> coords = new ArrayList<>(mapPositions.keySet());
 
+        // TODO : useless, remember to remove this
         // decreasing y order, increasing x order
         ArrayList<Coordinate> orderedCoords = coords.stream()
                 .sorted((o1, o2) -> {
@@ -310,17 +310,17 @@ public class Table implements Serializable {
 
 
         /*
-                x=-1 y=1           x=1 y=1                                                            x=-1 y=1           x=1 y=1
 
             <-----13----><-5-><------13---><-5-><-----13----><-5->
-            _____________     _____________                                                      _____________      _____________
-            |%s       %s|     |%s       %s|                                                      |%s       %s|      |%s       %s|
-            |     %s    |     |     %s    |                                                      |     %s    |      |     %s    |
-            |%s      _____________        |                                                      |%s         |__________        |
-            ‾‾‾‾‾‾‾‾‾|%s       %s|‾‾‾‾‾‾‾‾‾                                                      ‾‾‾‾‾‾‾‾‾‾‾‾‾       %s|‾‾‾‾‾‾‾‾‾
-            <---9--->|     %s    |<---9--->                                                                |     %s    |
-                     |%s       %s|                                                                         |%s       %s|
-                     ‾‾‾‾‾‾‾‾‾‾‾‾‾                                                                         ‾‾‾‾‾‾‾‾‾‾‾‾‾
+
+            _____________     _____________     <---- firstLayer
+            |%s       %s|     |%s       %s|     <---- secondLayer
+            |     %s    |     |     %s    |     <---- thirdLayer
+            |%s      _____________        |     <---- fourthLayer
+            ‾‾‾‾‾‾‾‾‾|%s       %s|‾‾‾‾‾‾‾‾‾     <---- fifthLayer
+            <---9--->|     %s    |<---9--->
+                     |%s       %s|
+                     ‾‾‾‾‾‾‾‾‾‾‾‾‾
                             x=0 y=0
          */
 
