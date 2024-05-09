@@ -180,9 +180,6 @@ public class GameController {
 
     public void sendMessage(ChatMessage chatMessage){
         gameModel.sendMessage(chatMessage);
-        //TODO : vanno aggiunti i controlli
-
-        //TODO: vanno aggiunte le notify
     }
 
     public void notifyOfCardDrawn(String playerName, CardResource card, Boolean fromGoldDeck) throws RemoteException {

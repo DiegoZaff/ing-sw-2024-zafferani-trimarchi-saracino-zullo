@@ -52,7 +52,7 @@ public class CardPlayedAtGameAssertion extends  GameAssertion{
 
         isFrontActual = cell.getIsPlayedFront();
 
-        cardIdActual = cell.card.getId();
+        cardIdActual = cell.getCard().getId();
 
         return cardIdActual.equals(card) && isFrontActual == this.isFront;
     }

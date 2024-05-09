@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc28.View;
 
 import it.polimi.ingsw.gc28.model.Coordinate;
+import it.polimi.ingsw.gc28.model.chat.ChatMessage;
 import it.polimi.ingsw.gc28.network.messages.client.*;
 import it.polimi.ingsw.gc28.network.rmi.RmiClient;
 
@@ -127,6 +128,19 @@ public class MessageToServer {
                 }
 
                 MsgPlayGameCard message = new MsgPlayGameCard(userName, cardId, gameId, isFront, new Coordinate(x,y));
+                return Optional.of(message);
+            }
+            case "chatMessage" -> {
+                StringBuilder builder = new StringBuilder();
+                for (String str : commandsList) {
+                    builder.append(str).append(" ");
+                }
+                if (!builder.isEmpty()) {
+                    builder.deleteCharAt(builder.length() - 1);
+                }
+                ChatMessage chatMessage = new ChatMessage(builder.toString(), userName);
+
+                MsgChatMessage message = new MsgChatMessage(gameId, chatMessage);
                 return Optional.of(message);
             }
             default -> {

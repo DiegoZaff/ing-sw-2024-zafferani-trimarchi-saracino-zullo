@@ -614,7 +614,7 @@ public class Game {
     }
 
     public void sendMessage(ChatMessage chatMessage){
-        chat.addMessage();
+        chat.addMessage(chatMessage);
     }
 
     public Chat getChat(){

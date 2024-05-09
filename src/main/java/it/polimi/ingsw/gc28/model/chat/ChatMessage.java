@@ -1,8 +1,36 @@
 package it.polimi.ingsw.gc28.model.chat;
 
-public class ChatMessage {
+import java.io.Serializable;
+import java.time.LocalTime;
+
+public class ChatMessage implements Serializable {
+    private String text;
+    private String sender;
+    private LocalTime time;
+
+    /**
+     * Constructor.
+     * @param text is the body of the message.
+     * @param sender is the player who sent the message.
+     */
+    public ChatMessage(String text, String sender){
+        this.text = text;
+        this.sender = sender;
+        this.time = java.time.LocalTime.now();
+    }
+    public String getText(){
+        return text;
+    }
+
+    public String toString(int i, int len, boolean isPrivate){
+        String priv = "[Private] ";
+        if (!isPrivate)
+            priv = "";
+        String time = String.format("[%02d:%02d:%02d] ", this.time.getHour(), this.time.getMinute(), this.time.getSecond());
+        String messageText = priv + time + sender + ": " + this.text;
+        int paddingLength = Math.max(0, len - messageText.length());
+        String padding = " ".repeat(paddingLength);
+        return messageText + padding;
+    }
 }
 
-//TODO: ricordarsi di mettere un boolean per segnare se il messaggio è private o meno
-
-//vedere discorso chat generale più chat tra tutti i singoli giocatori

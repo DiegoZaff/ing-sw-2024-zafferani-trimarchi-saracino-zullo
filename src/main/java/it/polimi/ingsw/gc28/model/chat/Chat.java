@@ -1,11 +1,51 @@
 package it.polimi.ingsw.gc28.model.chat;
 
-public class Chat {
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-    public void addMessage(){
-        //qui va preso il messaggio, convertito in string e aggiunto alla lista di messaggi
-        // già inviati precedentemente, dopo aver fatto questo, in controller può fare la notify
-        //e quindi restituire al client un aggiornamento della game representation che contiene anche la
-        //chat che quindi viene aggiornata con il nuovo messaggio inviato
+public class Chat implements Serializable {
+    private List<ChatMessage> chat;
+    private final int maxVisibleMessages = 8;
+
+    /**
+     * Constructor.
+     */
+    public Chat(){
+        this.chat = new ArrayList<>();
+    }
+
+    public void addMessage(ChatMessage message){
+
+        if(chat.size() > maxVisibleMessages){
+            chat.removeFirst();
+        }
+        chat.add(message);
+    }
+
+    public String toString(){
+        StringBuilder builder = new StringBuilder();
+        int c = 0;
+        int maxLen = 0;
+        for (ChatMessage message : chat) {
+            int messageLength = message.getText().length();
+            if (messageLength > maxLen) {
+                maxLen = messageLength;
+            }
+        }
+        for (ChatMessage message : chat) {
+            builder.append(message.toString(c, maxLen, false));
+            c++;
+        }
+        return builder.toString();
+    }
+
+    public List<ChatMessage> getChat(){
+        return chat;
     }
 }
+
+//qui va preso il messaggio, convertito in string e aggiunto alla lista di messaggi
+// già inviati precedentemente, dopo aver fatto questo, in controller può fare la notify
+//e quindi restituire al client un aggiornamento della game representation che contiene anche la
+//chat che quindi viene aggiornata con il nuovo messaggio inviato

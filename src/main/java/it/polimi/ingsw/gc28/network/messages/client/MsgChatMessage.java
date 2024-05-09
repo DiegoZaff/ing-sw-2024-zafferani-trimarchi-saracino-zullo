@@ -10,7 +10,7 @@ import java.rmi.RemoteException;
  */
 public class MsgChatMessage extends MessageC2S{
     private final ChatMessage chatMessage;
-    protected MsgChatMessage(String gameId, ChatMessage chatMessage) {
+    public MsgChatMessage(String gameId, ChatMessage chatMessage) {
         super(gameId);
         this.chatMessage = chatMessage;
     }

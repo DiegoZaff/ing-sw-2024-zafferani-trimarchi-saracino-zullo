@@ -79,6 +79,8 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
                 GameManagerClient.getInstance().showYourObjective();
             }else if(action.equals("showObjectivesToChoose")){
                 GameManagerClient.getInstance().showObjectivesToChoose();
+            }else if(action.equals("showChat")){
+                GameManagerClient.getInstance().showGlobalChat();
             }else{
                 if (commandsList.size() < 2) {
                     System.out.println("Give me a valid command plz.");
