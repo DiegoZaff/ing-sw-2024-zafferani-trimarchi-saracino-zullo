@@ -23,7 +23,7 @@ public class Chat implements Serializable {
         chat.add(message);
     }
 
-    public String toString(){
+    public String toString() {
         StringBuilder builder = new StringBuilder();
         int c = 0;
         int maxLen = 0;
@@ -35,9 +35,14 @@ public class Chat implements Serializable {
         }
         for (ChatMessage message : chat) {
             builder.append(message.toString(c, maxLen, false));
+            builder.append("\n");
             c++;
         }
-        return builder.toString();
+        String result = null;
+        if (builder.toString().endsWith("\n")) {
+            result = builder.substring(0, builder.toString().length() - 1);
+        }
+        return result;
     }
 
     public List<ChatMessage> getChat(){

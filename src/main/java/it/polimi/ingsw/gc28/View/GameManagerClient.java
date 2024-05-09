@@ -246,7 +246,7 @@ public class GameManagerClient {
     public void showGlobalChat(){
         GameRepresentation rep = getCurrentRepresentation();
         String chat = rep.getChat().toString();
-        this.writeInConsole(String.format("Chat is %s", chat));
+        this.writeInConsole(String.format("%s", chat));
     }
 
     public void showPrivateChat(String player){

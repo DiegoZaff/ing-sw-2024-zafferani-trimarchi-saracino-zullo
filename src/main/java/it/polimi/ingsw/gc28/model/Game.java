@@ -82,6 +82,7 @@ public class Game {
         }else{
             this.gameId = generateRandomGameId();
         }
+        this.chat = new Chat();
     }
 
     /**

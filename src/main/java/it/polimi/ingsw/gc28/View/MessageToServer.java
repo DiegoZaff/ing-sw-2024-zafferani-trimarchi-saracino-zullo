@@ -132,9 +132,11 @@ public class MessageToServer {
             }
             case "chatMessage" -> {
                 StringBuilder builder = new StringBuilder();
+                commandsList.removeFirst();
                 for (String str : commandsList) {
                     builder.append(str).append(" ");
                 }
+
                 if (!builder.isEmpty()) {
                     builder.deleteCharAt(builder.length() - 1);
                 }

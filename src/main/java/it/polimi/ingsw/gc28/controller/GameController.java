@@ -178,8 +178,11 @@ public class GameController {
         }
     }
 
-    public void sendMessage(ChatMessage chatMessage){
-        gameModel.sendMessage(chatMessage);
+    public void sendMessage(ChatMessage chatMessage) throws RemoteException {
+        synchronized (gameModel) {
+            gameModel.sendMessage(chatMessage);
+        }
+        notifyChatMessage();
     }
 
     public void notifyOfCardDrawn(String playerName, CardResource card, Boolean fromGoldDeck) throws RemoteException {
@@ -264,8 +267,17 @@ public class GameController {
 
     }
 
-    public void notifyChatMessage(){
+    public void notifyChatMessage() throws RemoteException {
+        GameRepresentation gameRepresentation = getGameRepresentation();
 
+        for(Map.Entry<String, VirtualView> entry : clients.entrySet()){
+
+            VirtualView client = entry.getValue();
+
+            MsgOnChatMessage message = new MsgOnChatMessage(gameRepresentation);
+
+            client.sendMessage(message);
+        }
     }
 
     public GameRepresentation getGameRepresentation(){
