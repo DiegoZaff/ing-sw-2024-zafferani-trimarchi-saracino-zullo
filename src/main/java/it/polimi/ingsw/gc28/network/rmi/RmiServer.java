@@ -1,7 +1,6 @@
 package it.polimi.ingsw.gc28.network.rmi;
 
 import it.polimi.ingsw.gc28.controller.GamesManager;
-import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.network.messages.client.MessageC2S;
 
 import java.rmi.RemoteException;
@@ -17,6 +16,9 @@ public class RmiServer  implements VirtualServer  {
     public static void registerServerRMI(int portRMI, String host) throws RemoteException {
         String name = "VirtualServer";
         try{
+            // this is because sometimes when client connecting from a device different than the server's device
+            // client looks up for localhost after it receives the stub:
+            // see https://stackoverflow.com/questions/15685686/java-rmi-connectexception-connection-refused-to-host-127-0-1-1
             if(host != null){
                 System.setProperty("java.rmi.server.hostname", host);
             }
@@ -35,35 +37,4 @@ public class RmiServer  implements VirtualServer  {
         GamesManager.getInstance().addMessageToQueue(message);
     }
 
-
-//    @Override
-//    public void createGame(VirtualView client, String userName, int numberOfPlayers) throws RemoteException {
-//        GamesManager.getInstance().createGame(client, userName, numberOfPlayers);
-//    }
-//
-//    @Override
-//    public void joinGame(VirtualView client, String gameId, String userName) throws RemoteException {
-//        GamesManager.getInstance().joinGame(client, gameId, userName);
-//    }
-//
-//    @Override
-//    public void playGameCard(String playerName, String gameId, String cardId, boolean isFront, Coordinate coordinate) throws RemoteException {
-//        GamesManager.getInstance().playGameCard(playerName, gameId, cardId, isFront, coordinate);
-//    }
-//
-//    @Override
-//    public void drawGameCard(String playerName, String gameId, boolean fromGoldDeck) throws RemoteException {
-//        GamesManager.getInstance().drawCard(playerName, gameId, fromGoldDeck);
-//    }
-//
-//    @Override
-//    public void drawGameCard(String playerName, String gameId, String cardId) throws RemoteException {
-//        GamesManager.getInstance().drawCard(playerName, gameId, cardId);
-//    }
-//
-//    @Override
-//    public void chooseObjective(String playerName, String gameId, String cardId) throws RemoteException {
-//        GamesManager.getInstance().chooseObjective(playerName, gameId, cardId);
-//
-//    }
 }

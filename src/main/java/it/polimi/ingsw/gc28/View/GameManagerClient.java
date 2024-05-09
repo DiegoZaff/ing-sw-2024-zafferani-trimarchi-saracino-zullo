@@ -2,24 +2,17 @@ package it.polimi.ingsw.gc28.View;
 
 import it.polimi.ingsw.gc28.View.utils.TuiStringHelper;
 import it.polimi.ingsw.gc28.model.Table;
-import it.polimi.ingsw.gc28.model.Vertex;
-import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
-import it.polimi.ingsw.gc28.model.cards.Card;
+
 import it.polimi.ingsw.gc28.model.cards.CardGame;
 import it.polimi.ingsw.gc28.model.cards.CardInitial;
 import it.polimi.ingsw.gc28.model.cards.CardObjective;
 import it.polimi.ingsw.gc28.model.cards.CardResource;
-import it.polimi.ingsw.gc28.model.resources.Resource;
-import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.stream.Collectors;
 
 public class GameManagerClient {
 
