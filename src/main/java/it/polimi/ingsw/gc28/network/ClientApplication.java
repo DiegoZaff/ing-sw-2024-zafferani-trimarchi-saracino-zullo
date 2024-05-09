@@ -28,25 +28,27 @@ public class ClientApplication {
 
         // defaults to using sockets
         boolean isRmi = false;
+        boolean isCli = true;
 
         for (String arg : Arrays.stream(args).skip(2).toList()) {
             if (arg.equals("--rmi")) {
                 isRmi = true;
-                break;
+            }else if(arg.equals("--gui") || arg.equals("-g") || arg.equals("-G")){
+                isCli = false;
             }
         }
 
         if (isRmi) {
             System.out.println("Starting RMI connection...");
             try {
-                RmiClient.startClientRMI(host, port);
+                RmiClient.startClientRMI(host, port, isCli);
             } catch (RemoteException | NotBoundException e) {
                 throw new RuntimeException(e);
             }
         } else {
             System.out.println("Starting TCP connection...");
             try {
-                ClientTCP.startClientSocket(host, port);
+                ClientTCP.startClientSocket(host, port, isCli);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

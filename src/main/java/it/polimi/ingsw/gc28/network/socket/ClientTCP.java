@@ -1,9 +1,11 @@
 package it.polimi.ingsw.gc28.network.socket;
 
+import it.polimi.ingsw.gc28.gui.GuiApplication;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.network.messages.client.*;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
+import javafx.application.Application;
 
 import java.io.*;
 import java.net.Socket;
@@ -23,7 +25,7 @@ public class ClientTCP {
         this.server = new ServerProxy(output);
     }
 
-    private void run() throws RemoteException {
+    private void run(boolean isCli) throws RemoteException {
         new Thread(() -> {
             try {
                 runVirtualServer();
@@ -31,7 +33,16 @@ public class ClientTCP {
                 throw new RuntimeException(e);
             }
         }).start();
-        runCli();
+
+        if(isCli){
+            runCli();
+        }else{
+            runGui();
+        }
+    }
+
+    private void runGui(){
+        Application.launch(GuiApplication.class);
     }
 
     /**
@@ -175,7 +186,7 @@ public class ClientTCP {
         }
     }
 
-    public static void startClientSocket (String host, int port) throws IOException {
+    public static void startClientSocket (String host, int port, boolean isCli) throws IOException {
         Socket serverSocket = null;
         try{
             serverSocket = new Socket(host, port);
@@ -188,7 +199,7 @@ public class ClientTCP {
             socketTx = new ObjectOutputStream(serverSocket.getOutputStream());
             socketRx = new ObjectInputStream(serverSocket.getInputStream());
 
-            new ClientTCP(socketRx, socketTx).run();
+            new ClientTCP(socketRx, socketTx).run(isCli);
         }catch (IOException e){
             System.out.println(e.getMessage());
         }

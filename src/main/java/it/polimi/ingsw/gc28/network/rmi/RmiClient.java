@@ -1,10 +1,14 @@
 package it.polimi.ingsw.gc28.network.rmi;
+import java.io.IOException;
 import java.util.*;
 
+import it.polimi.ingsw.gc28.gui.GuiApplication;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.MessageToServer;
 import it.polimi.ingsw.gc28.network.messages.client.*;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
+import javafx.application.Application;
+import javafx.stage.Stage;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -25,8 +29,12 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
         this.id = UUID.randomUUID().toString();
     }
 
-    private void run() throws RemoteException {
-        runCli();
+    private void run(boolean isCli) throws RemoteException {
+        if(isCli){
+            runCli();
+        }else{
+            runGui();
+        }
     }
 
     private void runCli() throws RemoteException {
@@ -100,11 +108,15 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
         }
     }
 
-    public static void startClientRMI(String host, int port) throws RemoteException, NotBoundException {
+    private void runGui(){
+        Application.launch(GuiApplication.class);
+    }
+
+    public static void startClientRMI(String host, int port, boolean isCli) throws RemoteException, NotBoundException {
         Registry registry = LocateRegistry.getRegistry(host, port);
         VirtualServer server = (VirtualServer) registry.lookup("VirtualServer");
 
-        new RmiClient(server).run();
+        new RmiClient(server).run(isCli);
     }
 
     @Override
