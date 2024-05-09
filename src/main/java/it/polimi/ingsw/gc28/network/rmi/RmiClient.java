@@ -1,10 +1,8 @@
 package it.polimi.ingsw.gc28.network.rmi;
 import java.util.*;
 
-import it.polimi.ingsw.gc28.View.GameManagerClient;
-import it.polimi.ingsw.gc28.View.GameRepresentation;
-import it.polimi.ingsw.gc28.View.MessageToServer;
-import it.polimi.ingsw.gc28.model.Coordinate;
+import it.polimi.ingsw.gc28.view.GameManagerClient;
+import it.polimi.ingsw.gc28.view.MessageToServer;
 import it.polimi.ingsw.gc28.network.messages.client.*;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
 

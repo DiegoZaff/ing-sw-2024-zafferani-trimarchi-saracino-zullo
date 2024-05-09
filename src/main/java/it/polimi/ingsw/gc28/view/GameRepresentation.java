@@ -1,4 +1,4 @@
-package it.polimi.ingsw.gc28.View;
+package it.polimi.ingsw.gc28.view;
 
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.model.chat.Chat;

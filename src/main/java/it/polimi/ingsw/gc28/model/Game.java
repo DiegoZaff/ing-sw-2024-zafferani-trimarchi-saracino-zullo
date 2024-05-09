@@ -1,7 +1,7 @@
 package it.polimi.ingsw.gc28.model;
 
-import it.polimi.ingsw.gc28.View.GameRepresentation;
-import it.polimi.ingsw.gc28.View.PrivateRepresentation;
+import it.polimi.ingsw.gc28.view.GameRepresentation;
+import it.polimi.ingsw.gc28.view.PrivateRepresentation;
 import it.polimi.ingsw.gc28.model.actions.ActionManager;
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.model.cards.*;

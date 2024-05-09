@@ -1,5 +1,5 @@
 package it.polimi.ingsw.gc28.controller;
-import it.polimi.ingsw.gc28.View.GameRepresentation;
+import it.polimi.ingsw.gc28.view.GameRepresentation;
 import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.model.Game;
 import it.polimi.ingsw.gc28.model.Player;

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.gc28.network.messages.server;
 
-import it.polimi.ingsw.gc28.View.GameManagerClient;
+import it.polimi.ingsw.gc28.view.GameManagerClient;
 
 
 public class MsgOnGameJoined extends MessageS2C{

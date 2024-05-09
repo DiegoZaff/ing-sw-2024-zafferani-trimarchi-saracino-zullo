@@ -1,6 +1,6 @@
-package it.polimi.ingsw.gc28.View;
+package it.polimi.ingsw.gc28.view;
 
-import it.polimi.ingsw.gc28.View.utils.TuiStringHelper;
+import it.polimi.ingsw.gc28.view.utils.TuiStringHelper;
 import it.polimi.ingsw.gc28.model.Table;
 
 import it.polimi.ingsw.gc28.model.cards.CardGame;

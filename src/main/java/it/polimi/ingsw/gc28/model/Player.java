@@ -1,6 +1,6 @@
 package it.polimi.ingsw.gc28.model;
 
-import it.polimi.ingsw.gc28.View.PrivateRepresentation;
+import it.polimi.ingsw.gc28.view.PrivateRepresentation;
 import it.polimi.ingsw.gc28.model.cards.CardGame;
 import it.polimi.ingsw.gc28.model.cards.CardInitial;
 import it.polimi.ingsw.gc28.model.cards.CardObjective;

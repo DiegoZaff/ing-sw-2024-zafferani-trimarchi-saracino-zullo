@@ -1,12 +1,10 @@
-package it.polimi.ingsw.gc28.View.utils;
+package it.polimi.ingsw.gc28.view.utils;
 
 import it.polimi.ingsw.gc28.model.Vertex;
 import it.polimi.ingsw.gc28.model.cards.CardGame;
-import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class TuiStringHelper {

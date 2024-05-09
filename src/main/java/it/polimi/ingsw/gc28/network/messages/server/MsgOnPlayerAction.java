@@ -1,7 +1,7 @@
 package it.polimi.ingsw.gc28.network.messages.server;
 
-import it.polimi.ingsw.gc28.View.GameManagerClient;
-import it.polimi.ingsw.gc28.View.GameRepresentation;
+import it.polimi.ingsw.gc28.view.GameManagerClient;
+import it.polimi.ingsw.gc28.view.GameRepresentation;
 
 public class MsgOnPlayerAction extends MessageS2C{
 

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.gc28.model;
 
-import it.polimi.ingsw.gc28.View.utils.TuiStringHelper;
+import it.polimi.ingsw.gc28.view.utils.TuiStringHelper;
 import it.polimi.ingsw.gc28.model.resources.Resource;
 import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
 import it.polimi.ingsw.gc28.model.resources.ResourceSpecial;
