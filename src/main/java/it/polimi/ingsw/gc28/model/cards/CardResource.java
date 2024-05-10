@@ -106,19 +106,26 @@ public class CardResource extends CardGame {
 
     }
 
+    @Override
     public String toString(boolean isFront){
+        /*
         ArrayList<String> verticesStrings = TuiStringHelper.getVerticesStringInfo(this, isFront);
         String centralRes = this.getCentralResourceStringInfo(isFront);
 
         String show = String.format("""
-                    __________________   
-                    |%s            %s|   
-                    |       %s       |   
-                    |%s            %s|   
-                    ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾           
+                    __________________
+                    |%s            %s|
+                    |       %s       |
+                    |%s            %s|
+                    ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
                 """, verticesStrings.get(0), verticesStrings.get(1),centralRes,
                 verticesStrings.get(3), verticesStrings.get(2));
         return show;
+         */
+        StringBuffer show = new StringBuffer(super.toString(isFront));
+        show.replace(46,48, this.getCentralResourceStringInfo(isFront));
+        return show.toString();
+
     }
 }
 

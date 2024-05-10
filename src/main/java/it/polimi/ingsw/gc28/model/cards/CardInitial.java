@@ -132,9 +132,9 @@ public class CardInitial extends CardGame {
 
     @Override
     public String getCentralResourceStringInfo(boolean isFront) {
-        if(!isFront) return  "";
+        if(!isFront) return  "  ";
 
-        StringBuilder info = new StringBuilder();
+        StringBuffer info = new StringBuffer();
 
         for(Resource res : centralResources.keySet()){
             info.append(res.toString());
@@ -142,6 +142,16 @@ public class CardInitial extends CardGame {
 
         return info.toString();
     }
+
+    @Override
+    public String toString(boolean isFront){
+        StringBuffer show = new StringBuffer(super.toString(isFront));
+        String x = this.getCentralResourceStringInfo(isFront);
+        int offset = x.length()/2;
+        show.replace(47-offset,47+offset, this.getCentralResourceStringInfo(isFront));
+        return show.toString();
+    }
+
 }
 
 
