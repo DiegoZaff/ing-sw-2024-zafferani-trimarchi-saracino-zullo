@@ -117,7 +117,7 @@ public class CardResource extends CardGame {
                     |%s            %s|   
                     ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾           
                 """, verticesStrings.get(0), verticesStrings.get(1),centralRes,
-                verticesStrings.get(3), verticesStrings.get(2), this.getId());
+                verticesStrings.get(3), verticesStrings.get(2));
         return show;
     }
 }
