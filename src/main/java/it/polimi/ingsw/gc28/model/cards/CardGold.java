@@ -98,6 +98,13 @@ public class CardGold extends CardResource {
        player.addCardToHand(this);
     }
 
+    @Override
+    public String toString(boolean isFront){
+        StringBuffer show = new StringBuffer(super.toString(isFront));
+        show.replace(26,30, "gold");
+        return show.toString();
+    }
+
 
 }
 

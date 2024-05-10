@@ -6,7 +6,6 @@ import java.rmi.RemoteException;
 
 public class MsgDrawGameCard extends MessageC2S{
     String playerName;
-    String gameId;
     boolean fromGoldDeck;
     public MsgDrawGameCard(String playerName, String gameId, boolean fromGoldDeck) {
         super(gameId);

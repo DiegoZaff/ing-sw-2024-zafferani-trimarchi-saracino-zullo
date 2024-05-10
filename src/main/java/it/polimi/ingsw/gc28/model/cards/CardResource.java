@@ -7,6 +7,7 @@ import it.polimi.ingsw.gc28.model.resources.Resource;
 import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceType;
+import it.polimi.ingsw.gc28.view.utils.TuiStringHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,7 +78,7 @@ public class CardResource extends CardGame {
     @Override
     public String getCentralResourceStringInfo(boolean isFront) {
         if(!isFront){
-            return  "";
+            return  resource.toString();
         }
 
         Optional<ResourcePrimary> centralRes1 = this.getObjectiveResource();
@@ -102,6 +103,28 @@ public class CardResource extends CardGame {
         cardToAddToVisible.ifPresent(faceUpResCards::add);
 
         player.addCardToHand(this);
+
+    }
+
+    @Override
+    public String toString(boolean isFront){
+        /*
+        ArrayList<String> verticesStrings = TuiStringHelper.getVerticesStringInfo(this, isFront);
+        String centralRes = this.getCentralResourceStringInfo(isFront);
+
+        String show = String.format("""
+                    __________________
+                    |%s            %s|
+                    |       %s       |
+                    |%s            %s|
+                    ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+                """, verticesStrings.get(0), verticesStrings.get(1),centralRes,
+                verticesStrings.get(3), verticesStrings.get(2));
+        return show;
+         */
+        StringBuffer show = new StringBuffer(super.toString(isFront));
+        show.replace(46,48, this.getCentralResourceStringInfo(isFront));
+        return show.toString();
 
     }
 }

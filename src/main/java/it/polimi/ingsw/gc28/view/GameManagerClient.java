@@ -1,12 +1,9 @@
 package it.polimi.ingsw.gc28.view;
 
+import it.polimi.ingsw.gc28.model.cards.*;
 import it.polimi.ingsw.gc28.view.utils.TuiStringHelper;
 import it.polimi.ingsw.gc28.model.Table;
 
-import it.polimi.ingsw.gc28.model.cards.CardGame;
-import it.polimi.ingsw.gc28.model.cards.CardInitial;
-import it.polimi.ingsw.gc28.model.cards.CardObjective;
-import it.polimi.ingsw.gc28.model.cards.CardResource;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
 
 import java.util.ArrayList;
@@ -79,11 +76,18 @@ public class GameManagerClient {
         System.out.println(text);
     }
 
+
+
+
     public void showHand(boolean isFront){
         PrivateRepresentation repr = getPrivateRepresentation(playerName);
 
         ArrayList<CardResource> cards =  repr.getHand();
-
+        String show = (" \n \n \n \n ");
+        for (CardResource cardResource : cards){
+            show = this.mergeCards(show, cardResource.toString(isFront));
+        }
+        /*
         if(cards.size() >= 2){
             CardGame card1 = cards.getFirst();
             CardGame card2 = cards.get(1);
@@ -128,11 +132,21 @@ public class GameManagerClient {
                         verticesStrings3.get(3), verticesStrings3.get(2),card1.getId(), card2.getId(), card3.getId());
 
             }
-
+            */
             this.writeInConsole(String.format("Your hand is composed of cards: \n%s", show));
 
-        }
 
+
+    }
+
+    private String mergeCards(String s1, String s2){
+        String []a1 = s1.split("\n");
+        String []a2 = s2.split("\n");
+        StringBuffer show = new StringBuffer();
+        for (int i = 0; i<a1.length; i++){
+            show.append(a1[i]).append("   ").append(a2[i]).append("\n");
+        }
+        return show.toString();
     }
 
     public void showCardInitial(){
@@ -143,7 +157,8 @@ public class GameManagerClient {
         if(cardInitial == null){
             this.writeInConsole("CardInitial is null!");
         }else{
-            this.writeInConsole(String.format("You card initial is: \n%s", cardInitial.getId()));
+            String show = this.mergeCards(cardInitial.toString(true), cardInitial.toString(false));
+            this.writeInConsole(String.format("You card initial is (left:front right:back): \n%s", show));
         }
     }
 
@@ -185,17 +200,28 @@ public class GameManagerClient {
         GameRepresentation rep = getCurrentRepresentation();
 
         ArrayList<String> visibleGolds = rep.getFaceUpGoldCards();
-        ArrayList<String> visibleCards = rep.getFaceUpResourceCards();
+        ArrayList<String> visibleResource = rep.getFaceUpResourceCards();
         String nextResource = rep.getNextResourceCard();
         String nextGold = rep.getNextGoldCard();
-        visibleCards.addAll(visibleGolds);
-        visibleCards.add(nextResource);
-        visibleCards.add(nextGold);
 
-        String cardIdsString = String.join(", ", visibleCards);
+        this.writeInConsole(String.format("Drawable face up gold cards are:\n%s", this.drawableCard(visibleGolds)));
+        this.writeInConsole(String.format("Drawable face up resource cards are:\n%s", this.drawableCard(visibleResource)));
+        this.writeInConsole(String.format("next gold cards is:\n%s", this.drawableCard(nextGold)));
+        this.writeInConsole(String.format("next resource cards is:\n%s", this.drawableCard(nextResource)));
 
-        this.writeInConsole(String.format("Drawable cards are: %s", cardIdsString));
 
+    }
+    private String drawableCard(ArrayList <String> cards){
+        String show = (" \n \n \n \n ");
+        for(String s : cards){
+            CardResource c = CardsManager.getInstance().getCardResourceFromId(s).get();
+            show = mergeCards(show, c.toString(true));
+        }
+        return show;
+    }
+
+    private String drawableCard(String card){
+        return CardsManager.getInstance().getCardResourceFromId(card).get().toString(false);
     }
 
     public void showGlobalObjectives(){
