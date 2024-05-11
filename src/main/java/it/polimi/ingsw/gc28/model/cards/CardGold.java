@@ -101,7 +101,12 @@ public class CardGold extends CardResource {
     @Override
     public String toString(boolean isFront){
         StringBuffer show = new StringBuffer(super.toString(isFront));
-        show.replace(26,30, "gold");
+        /*
+        for (int i = 0; i<show.length(); i++){
+            System.out.println("char at "+i+": "+show.charAt(i));
+        }
+         */
+        show.replace(53,57, "gold");
         return show.toString();
     }
 

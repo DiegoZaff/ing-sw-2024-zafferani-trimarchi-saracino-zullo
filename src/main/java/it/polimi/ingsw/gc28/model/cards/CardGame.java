@@ -148,6 +148,7 @@ public abstract class CardGame extends Card implements Serializable {
 
     public abstract String getCentralResourceStringInfo(boolean isFront);
 
+    /*
     public String toString(boolean isFront){
         ArrayList<String> verticesStrings = TuiStringHelper.getVerticesStringInfo(this, isFront);
 
@@ -161,6 +162,7 @@ public abstract class CardGame extends Card implements Serializable {
                 verticesStrings.get(3), verticesStrings.get(2));
         return show;
     }
+     */
 
 
 

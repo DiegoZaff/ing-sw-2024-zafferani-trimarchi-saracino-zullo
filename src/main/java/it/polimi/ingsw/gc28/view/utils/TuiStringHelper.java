@@ -24,10 +24,10 @@ public class TuiStringHelper {
                 if(vertex.getResource().isPresent()){
                     return vertex.getResource().get().toString();
                 }else{
-                    return "OO";
+                    return Colors.WHITE.getCode()+"OO"+Colors.RESET.getCode();
                 }
             }else{
-                return "  ";
+                return Colors.WHITE.getCode()+"  "+Colors.RESET.getCode();
             }
         }).collect(Collectors.toCollection(ArrayList::new));
     }

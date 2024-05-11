@@ -7,6 +7,7 @@ import it.polimi.ingsw.gc28.model.resources.Resource;
 import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceType;
+import it.polimi.ingsw.gc28.view.utils.Colors;
 import it.polimi.ingsw.gc28.view.utils.TuiStringHelper;
 
 import java.util.ArrayList;
@@ -106,25 +107,29 @@ public class CardResource extends CardGame {
 
     }
 
-    @Override
+
     public String toString(boolean isFront){
-        /*
+
         ArrayList<String> verticesStrings = TuiStringHelper.getVerticesStringInfo(this, isFront);
         String centralRes = this.getCentralResourceStringInfo(isFront);
+        String color = resource.getType().getResourceColor();
 
         String show = String.format("""
-                    __________________
-                    |%s            %s|
-                    |       %s       |
-                    |%s            %s|
-                    ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-                """, verticesStrings.get(0), verticesStrings.get(1),centralRes,
-                verticesStrings.get(3), verticesStrings.get(2));
+                    %s__________________
+                    %s|%s            %s|
+                    %s|       %s       |
+                    %s|%s            %s|
+                    %s‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾%s
+                """,color, color, verticesStrings.get(0), verticesStrings.get(1)+color,color,centralRes+color,color,
+                verticesStrings.get(3), verticesStrings.get(2)+color,color,Colors.RESET.getCode());
         return show;
-         */
+
+
+        /*
         StringBuffer show = new StringBuffer(super.toString(isFront));
         show.replace(46,48, this.getCentralResourceStringInfo(isFront));
         return show.toString();
+         */
 
     }
 }

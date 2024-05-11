@@ -9,7 +9,10 @@ import it.polimi.ingsw.gc28.model.Vertex;
 import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceType;
+import it.polimi.ingsw.gc28.view.utils.Colors;
+import it.polimi.ingsw.gc28.view.utils.TuiStringHelper;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -132,24 +135,67 @@ public class CardInitial extends CardGame {
 
     @Override
     public String getCentralResourceStringInfo(boolean isFront) {
-        if(!isFront) return  "  ";
+        if(!isFront) return Colors.RESET.getCode()+"  "+Colors.RESET.getCode();
 
         StringBuffer info = new StringBuffer();
 
         for(Resource res : centralResources.keySet()){
-            info.append(res.toString());
+            for (int i = 0; i<centralResources.get(res); i++){
+                info.append(res.toString());
+            }
         }
 
         return info.toString();
     }
+    private int getCentralResourceNumber(boolean isFront){
+        if(!isFront) return 1;
+        int x = 0;
+        for (Resource res : centralResources.keySet()){
+            x += centralResources.get(res);
+        }
+        return x;
+    }
 
-    @Override
-    public String toString(boolean isFront){
+
+    public String toString(boolean isFront) {
+        /*
         StringBuffer show = new StringBuffer(super.toString(isFront));
         String x = this.getCentralResourceStringInfo(isFront);
         int offset = x.length()/2;
         show.replace(47-offset,47+offset, this.getCentralResourceStringInfo(isFront));
         return show.toString();
+
+         */
+        ArrayList<String> verticesStrings = TuiStringHelper.getVerticesStringInfo(this, isFront);
+        String centralRes = this.getCentralResourceStringInfo(isFront);
+
+        String show = String.format("""
+                            __________________
+                            |%s            %s|
+                            |       %s       |
+                            |%s            %s|
+                            ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+                        """, verticesStrings.get(0), verticesStrings.get(1), this.getCentralResourceStringInfo(isFront),
+                verticesStrings.get(3), verticesStrings.get(2));
+
+
+        StringBuffer s = new StringBuffer(show);
+        int offset = this.getCentralResourceNumber(isFront)-1;
+
+        /*
+        to check the offset values
+        for(int i = 0; i<s.length(); i++){
+            System.out.println("char at "+i+": "+ s.charAt(i));
+        }
+        */
+        s.delete(70,70+offset);
+
+        int x = 74+11*getCentralResourceNumber(isFront)+1;
+        s.delete(x,x+offset);
+
+        return s.toString();
+
+
     }
 
 }

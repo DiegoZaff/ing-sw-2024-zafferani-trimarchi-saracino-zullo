@@ -12,6 +12,10 @@ public class ResourcePrimary extends Resource {
         this.type = type;
     }
 
+    public ResourcePrimaryType getType(){
+        return type;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
