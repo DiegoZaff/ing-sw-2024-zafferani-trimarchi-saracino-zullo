@@ -82,15 +82,9 @@ public class CardResource extends CardGame {
             return  resource.toString();
         }
 
-        Optional<ResourcePrimary> centralRes1 = this.getObjectiveResource();
-        String centralRes1String = "";
-        if(centralRes1.isPresent()){
-            centralRes1String = centralRes1.get().toString();
-        }else{
-            centralRes1String = "  ";
-        }
+        return Colors.RED.getCode()+"  "+Colors.RESET.getCode();
 
-        return centralRes1String;    }
+    }
 
 
     public void drawFaceUpCard(ArrayList<CardResource> faceUpResCards, ArrayList<CardGold> faceUpGoldCards, Deck deck, Player player) throws PlayerActionError {
@@ -115,11 +109,11 @@ public class CardResource extends CardGame {
         String color = resource.getType().getResourceColor();
 
         String show = String.format("""
-                    %s__________________
-                    %s|%s            %s|
-                    %s|       %s       |
-                    %s|%s            %s|
-                    %s‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾%s
+                %s__________________
+                %s|%s            %s|
+                %s|       %s       |
+                %s|%s            %s|
+                %s‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾%s
                 """,color, color, verticesStrings.get(0), verticesStrings.get(1)+color,color,centralRes+color,color,
                 verticesStrings.get(3), verticesStrings.get(2)+color,color,Colors.RESET.getCode());
         return show;

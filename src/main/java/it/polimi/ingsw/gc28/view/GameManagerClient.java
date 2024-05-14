@@ -134,6 +134,9 @@ public class GameManagerClient {
             }
             */
             this.writeInConsole(String.format("Your hand is composed of cards: \n%s", show));
+            for (int i = 0; i< repr.getHand().size(); i++){
+                this.writeInConsole("card "+ (i+1) +": "+ repr.getHand().get(i).toString() );
+            }
 
 
 
@@ -159,6 +162,7 @@ public class GameManagerClient {
         }else{
             String show = this.mergeCards(cardInitial.toString(true), cardInitial.toString(false));
             this.writeInConsole(String.format("You card initial is (left:front right:back): \n%s", show));
+            this.writeInConsole("cardId: "+cardInitial.toString());
         }
     }
 
@@ -199,18 +203,34 @@ public class GameManagerClient {
     public void showDrawableCards(){
         GameRepresentation rep = getCurrentRepresentation();
 
+        int i;
+
         ArrayList<String> visibleGolds = rep.getFaceUpGoldCards();
         ArrayList<String> visibleResource = rep.getFaceUpResourceCards();
         String nextResource = rep.getNextResourceCard();
         String nextGold = rep.getNextGoldCard();
 
         this.writeInConsole(String.format("Drawable face up gold cards are:\n%s", this.drawableCard(visibleGolds)));
+        this.cardsArrayId(visibleGolds);
         this.writeInConsole(String.format("Drawable face up resource cards are:\n%s", this.drawableCard(visibleResource)));
+        this.cardsArrayId(visibleResource);
         this.writeInConsole(String.format("next gold cards is:\n%s", this.drawableCard(nextGold)));
         this.writeInConsole(String.format("next resource cards is:\n%s", this.drawableCard(nextResource)));
 
 
     }
+
+    private void cardsArrayId(ArrayList <String> card){
+        for (int i = 0; i < card.size(); i++){
+            this.cardId(card.get(i),i);
+        }
+    }
+    private void cardId (String card, int i){
+        if (CardsManager.getInstance().getCardGameFromId(card).isPresent()){
+            this.writeInConsole("card "+ (i+1)+": "+CardsManager.getInstance().getCardGameFromId(card).get());
+        }
+    }
+
     private String drawableCard(ArrayList <String> cards){
         String show = (" \n \n \n \n ");
         for(String s : cards){

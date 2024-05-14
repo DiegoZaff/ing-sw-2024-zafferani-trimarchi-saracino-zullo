@@ -167,14 +167,14 @@ public class CardInitial extends CardGame {
 
          */
         ArrayList<String> verticesStrings = TuiStringHelper.getVerticesStringInfo(this, isFront);
-        String centralRes = this.getCentralResourceStringInfo(isFront);
+
 
         String show = String.format("""
-                            __________________
-                            |%s            %s|
-                            |       %s       |
-                            |%s            %s|
-                            ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+                        __________________
+                        |%s            %s|
+                        |       %s       |
+                        |%s            %s|
+                        ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
                         """, verticesStrings.get(0), verticesStrings.get(1), this.getCentralResourceStringInfo(isFront),
                 verticesStrings.get(3), verticesStrings.get(2));
 
@@ -182,15 +182,16 @@ public class CardInitial extends CardGame {
         StringBuffer s = new StringBuffer(show);
         int offset = this.getCentralResourceNumber(isFront)-1;
 
+
         /*
-        to check the offset values
         for(int i = 0; i<s.length(); i++){
             System.out.println("char at "+i+": "+ s.charAt(i));
         }
         */
-        s.delete(70,70+offset);
 
-        int x = 74+11*getCentralResourceNumber(isFront)+1;
+        s.delete(58,58+offset);
+
+        int x = 62+11*getCentralResourceNumber(isFront)+1;
         s.delete(x,x+offset);
 
         return s.toString();

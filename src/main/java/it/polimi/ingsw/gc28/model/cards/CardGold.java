@@ -106,7 +106,7 @@ public class CardGold extends CardResource {
             System.out.println("char at "+i+": "+show.charAt(i));
         }
          */
-        show.replace(53,57, "gold");
+        show.replace(45,49, "gold");
         return show.toString();
     }
 
