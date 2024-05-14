@@ -11,6 +11,7 @@ public class MsgOnGameStarted extends MessageS2C{
     GameRepresentation gameRepresentation;
 
     public MsgOnGameStarted(GameRepresentation gameRepresentation){
+        super(MessageTypeS2C.GAME_STARTED);
         this.gameRepresentation = gameRepresentation;
     }
 

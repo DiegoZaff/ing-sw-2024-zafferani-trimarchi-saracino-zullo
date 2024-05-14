@@ -12,6 +12,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class GuiApplication extends Application {
     @Override
@@ -28,7 +29,7 @@ public class GuiApplication extends Application {
         Scene scene = new Scene(root);
 
         // set default font
-        scene.getStylesheets().add(getClass().getResource("/it/polimi/ingsw/gc28/css/application.css").toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/gc28/css/application.css")).toExternalForm());
 
         stage.setScene(scene);
 

@@ -9,6 +9,8 @@ import it.polimi.ingsw.gc28.model.resources.utils.ResourceSpecialType;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class Table implements Serializable {
@@ -388,6 +390,18 @@ public class Table implements Serializable {
 
             firstLayer = firstLayer1 + "_" + firstLayer2;
             secondLayer = secondLayer1 + " " + secondLayer2;
+
+            //\u1490[32mLu\u1404[0m
+            String regex = "\\p{L}\\[\\d{2}m([a-zA-Z]+)\\p{L}\\[0m";
+
+            // Compile the pattern
+            Pattern pattern = Pattern.compile(regex, Pattern.UNICODE_CHARACTER_CLASS);
+
+            // Create a matcher for the input string
+            Matcher matcher = pattern.matcher(centralRes);
+
+
+
 
             int lengthResString = centralRes.length();
             int leftPadding = (11 - lengthResString) / 2;

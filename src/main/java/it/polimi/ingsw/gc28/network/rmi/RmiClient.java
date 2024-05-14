@@ -1,18 +1,20 @@
 package it.polimi.ingsw.gc28.network.rmi;
-import java.io.IOException;
 import java.util.*;
 
+import it.polimi.ingsw.gc28.controller.GameController;
+import it.polimi.ingsw.gc28.controller.GamesManager;
 import it.polimi.ingsw.gc28.gui.GuiApplication;
+import it.polimi.ingsw.gc28.network.messages.server.MessageTypeS2C;
+import it.polimi.ingsw.gc28.network.messages.server.MsgOnGameCreated;
+import it.polimi.ingsw.gc28.network.messages.server.MsgOnGameJoined;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.MessageToServer;
 import it.polimi.ingsw.gc28.network.messages.client.*;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
 import javafx.application.Application;
-import javafx.stage.Stage;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
@@ -20,11 +22,16 @@ import java.rmi.server.UnicastRemoteObject;
 public class RmiClient extends UnicastRemoteObject implements VirtualView {
     final VirtualServer server;
 
+    VirtualStub virtualGameStub;
+
+    private Registry registry;
+
     final String id;
 
     MessageToServer messageToServer = MessageToServer.getInstance();
 
-    protected RmiClient(VirtualServer server) throws RemoteException {
+    protected RmiClient(VirtualServer server, Registry registry) throws RemoteException {
+        this.registry = registry;
         this.server = server;
         this.id = UUID.randomUUID().toString();
     }
@@ -87,11 +94,13 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
                 GameManagerClient.getInstance().showObjectivesToChoose();
             }else if(action.equals("showChat")){
                 GameManagerClient.getInstance().showGlobalChat();
-            }else{
+            } else{
                 if (commandsList.size() < 2) {
                     System.out.println("Give me a valid command plz.");
                     continue;
                 }
+
+
 
                 Optional<MessageC2S> message;
 
@@ -102,7 +111,18 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
 
                 if (message.isPresent()) {
                     MessageC2S messageToSend = message.get();
-                    server.sendMessage(messageToSend);
+
+                    if(messageToSend.getType().equals(MessageTypeC2S.CREATE_GAME) || messageToSend.getType().equals(MessageTypeC2S.JOIN_GAME)){
+                        if(GameManagerClient.getInstance().canICreateOrJoinAGame()){
+                            server.sendMessage(messageToSend);
+                        }
+                    }else{
+                        if(virtualGameStub == null){
+                            System.out.println("Looks like you're not in a game!");
+                        }
+
+                        virtualGameStub.sendMessage(messageToSend);
+                    }
                 }
             }
         }
@@ -112,17 +132,42 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
         Application.launch(GuiApplication.class);
     }
 
-    public static void startClientRMI(String host, int port, boolean isCli) throws RemoteException, NotBoundException {
-        Registry registry = LocateRegistry.getRegistry(host, port);
+    public static void startClientRMI(boolean isCli, Registry registry) throws RemoteException, NotBoundException {
         VirtualServer server = (VirtualServer) registry.lookup("VirtualServer");
 
-        new RmiClient(server).run(isCli);
+        new RmiClient(server, registry).run(isCli);
+    }
+
+    private void connectToGame(String path) {
+        try {
+            virtualGameStub = (VirtualStub) registry.lookup(path);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void sendMessage(MessageS2C message) {
+        //connect to game stub
+//        if (message.getType().equals(MessageTypeS2C.GAME_CREATED)){
+//            MsgOnGameCreated msg = (MsgOnGameCreated) message;
+//            String path = String.format("game/%s", msg.getGameId());
+//
+//            connectToGame(path);
+//        }else if(message.getType().equals(MessageTypeS2C.GAME_JOINED)){
+//            MsgOnGameJoined msg = (MsgOnGameJoined) message;
+//            String path = String.format("game/%s", msg.getGameId());
+//
+//            connectToGame(path);
+//        }
+
         GameManagerClient.getInstance().addMessageToQueue(message);
     }
 
-
+    // empty method
+    @Override
+    public void attachGameStub(VirtualStub gameStub) throws RemoteException {
+        virtualGameStub = gameStub;
+        System.out.println("Attached Game Stub To Client RMI");
+    }
 }

@@ -5,11 +5,17 @@ import it.polimi.ingsw.gc28.view.GameManagerClient;
 
 public class MsgOnGameJoined extends MessageS2C{
 
-    private String gameId;
+    private final String gameId;
+
+    public String getGameId() {
+        return gameId;
+    }
+
     String playerName;
     int playersLeftToJoin;
 
     public MsgOnGameJoined(String gameId, String playerName, int playersLeftToJoin){
+        super(MessageTypeS2C.GAME_JOINED);
         this.gameId = gameId;
         this.playerName = playerName;
         this.playersLeftToJoin = playersLeftToJoin;

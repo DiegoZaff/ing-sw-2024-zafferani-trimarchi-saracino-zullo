@@ -14,4 +14,8 @@ import java.rmi.RemoteException;
  */
 public interface VirtualServer extends Remote {
      void sendMessage(MessageC2S message) throws RemoteException;
+
+//     String createGame(VirtualView client, String playerName, int numberOfPlayers) throws RemoteException;
+
+ //    void joinGame(VirtualView client, String playerName, String id) throws  RemoteException;
 }

@@ -4,13 +4,13 @@ import it.polimi.ingsw.gc28.controller.GameController;
 import it.polimi.ingsw.gc28.network.rmi.VirtualView;
 
 public class MsgCreateGame extends MessageC2S{
-    private final VirtualView client;
+    private  VirtualView client;
 
     private final String userName;
     private final int numberOfPlayers;
 
     public MsgCreateGame(String gameId, String userName, int numberOfPlayers, VirtualView client) {
-        super(gameId);
+        super(MessageTypeC2S.CREATE_GAME, gameId);
         this.client = client;
         this.userName = userName;
         this.numberOfPlayers = numberOfPlayers;
@@ -31,6 +31,10 @@ public class MsgCreateGame extends MessageC2S{
 
     public VirtualView getClient(){
         return client;
+    }
+
+    public void setClient(VirtualView client){
+        this.client = client;
     }
 
 }

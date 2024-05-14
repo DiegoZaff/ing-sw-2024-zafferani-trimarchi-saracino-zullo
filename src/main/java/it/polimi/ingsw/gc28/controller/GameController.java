@@ -1,4 +1,5 @@
 package it.polimi.ingsw.gc28.controller;
+import it.polimi.ingsw.gc28.network.messages.client.MessageC2S;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
 import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.model.Game;
@@ -18,15 +19,55 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class GameController {
     final Game gameModel;
 
     private final Map<String, VirtualView> clients;
 
+    private final BlockingQueue<MessageC2S> messageQueue;
+
+
+
+
     public GameController(Game gameModel) {
         this.gameModel = gameModel;
         this.clients = new HashMap<>();
+        messageQueue = new LinkedBlockingQueue<>();
+        this.processIncomingMessages();
+    }
+
+
+    private void processIncomingMessages() {
+        new Thread(() -> {
+            while (true) {
+                try {
+                    MessageC2S message = messageQueue.take(); // Blocking call
+                    try{
+                        message.execute(this);
+                    }catch (RemoteException e){
+                        System.err.println("Remote Exception while executing a message!");
+                        System.err.println(e.getMessage());
+                    }
+                } catch (InterruptedException e) {
+                    System.err.println("Thread was interrupted while taking a message!");
+                    System.err.println(e.getMessage());
+                    throw new RuntimeException(e);
+                }
+            }
+        }).start();
+    }
+
+    public void addMessageToQueue(MessageC2S message){
+        try {
+            messageQueue.put(message);
+        } catch (InterruptedException e) {
+            System.err.println("Thread was interrupted while inserting a message!");
+            System.err.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
     }
 
     public void addPlayerToGame(String name, VirtualView client, boolean notifyJoin) throws RemoteException {

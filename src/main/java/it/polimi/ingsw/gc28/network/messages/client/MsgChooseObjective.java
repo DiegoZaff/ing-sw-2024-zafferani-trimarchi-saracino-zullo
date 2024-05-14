@@ -8,7 +8,7 @@ public class MsgChooseObjective extends MessageC2S {
     private final String playerName;
     private final String cardId;
     public MsgChooseObjective(String playerName, String gameId, String cardId) {
-        super(gameId);
+        super(MessageTypeC2S.CHOOSE_OBJ ,gameId);
         this.playerName = playerName;
         this.cardId = cardId;
     }
