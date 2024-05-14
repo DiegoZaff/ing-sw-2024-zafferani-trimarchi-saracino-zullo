@@ -43,7 +43,7 @@ public class ClientApplication {
         if (isRmi) {
             System.out.println("Starting RMI connection...");
             try {
-
+                System.setProperty("java.rmi.server.hostname", "192.168.114.38");
                 Registry registry = LocateRegistry.getRegistry(host, port);
                 RmiClient.startClientRMI(isCli, registry);
             } catch (RemoteException | NotBoundException e) {
