@@ -78,7 +78,7 @@ public class GameController {
                 this.clients.put(name, client);
             }catch (PlayerActionError e){
                 // notify error to player
-                MsgReportError message = new MsgReportError(name, e.getMessage());
+                MsgReportError message = new MsgReportError(name, e.getError());
                 client.sendMessage(message);
                 return;
             }
@@ -205,7 +205,7 @@ public class GameController {
                 notifyOfCardPlayed(playerName, cardToPlay.get().getId());
 
             }catch (PlayerActionError e){
-                MsgReportError message = new MsgReportError(playerName, e.getMessage());
+                MsgReportError message = new MsgReportError(playerName, e.getError());
                 try {
                     clients.get(playerName).sendMessage(message);
                     return;
