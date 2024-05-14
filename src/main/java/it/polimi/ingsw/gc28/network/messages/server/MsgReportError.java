@@ -7,6 +7,7 @@ public class MsgReportError extends MessageS2C{
 
     private final String details;
     public MsgReportError(String playerName, String details){
+        super(MessageTypeS2C.ERROR);
         this.details = details;
     }
 

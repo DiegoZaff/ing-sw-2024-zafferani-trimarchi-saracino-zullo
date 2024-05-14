@@ -4,11 +4,25 @@ import it.polimi.ingsw.gc28.view.GameManagerClient;
 
 public class MsgOnGameCreated extends MessageS2C{
 
-    String gameId;
-    String playerName;
-    int playersLeftToJoin;
+    private final String gameId;
+    public String getGameId() {
+        return gameId;
+    }
+
+    private final String playerName;
+
+    public String getPlayerName(){
+        return this.playerName;
+    }
+
+
+    private final int playersLeftToJoin;
+    public int getPlayersLeftToJoin() {
+        return playersLeftToJoin;
+    }
 
     public MsgOnGameCreated(String gameId, String playerName, int playersLeftToJoin){
+        super(MessageTypeS2C.GAME_CREATED);
         this.gameId = gameId;
         this.playerName = playerName;
         this.playersLeftToJoin = playersLeftToJoin;

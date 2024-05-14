@@ -10,10 +10,12 @@ import java.util.Optional;
  * Message sent from Client To Server
  */
 public abstract class MessageC2S implements Serializable {
+    private final MessageTypeC2S type;
 
     private final String gameId;
 
-    protected MessageC2S(String gameId) {
+    protected MessageC2S(MessageTypeC2S messageType, String gameId) {
+        this.type = messageType;
         this.gameId = gameId;
     }
 
@@ -23,4 +25,7 @@ public abstract class MessageC2S implements Serializable {
 
     public abstract void execute(GameController controller) throws RemoteException;
 
+    public MessageTypeC2S getType() {
+        return type;
+    }
 }

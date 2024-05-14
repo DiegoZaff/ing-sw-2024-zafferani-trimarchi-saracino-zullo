@@ -7,6 +7,7 @@ public class MsgReportMessage extends MessageS2C{
 
     private final String details;
      public MsgReportMessage(String details){
+         super(MessageTypeS2C.REPORT);
          this.details = details;
      }
 

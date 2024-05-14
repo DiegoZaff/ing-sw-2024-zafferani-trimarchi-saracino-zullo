@@ -5,6 +5,9 @@ import it.polimi.ingsw.gc28.model.Player;
 import it.polimi.ingsw.gc28.model.Table;
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.network.messages.server.*;
+import it.polimi.ingsw.gc28.network.rmi.GameStub;
+import it.polimi.ingsw.gc28.network.rmi.VirtualServer;
+import it.polimi.ingsw.gc28.network.rmi.VirtualStub;
 import it.polimi.ingsw.gc28.network.rmi.VirtualView;
 
 import java.io.IOException;
@@ -26,6 +29,11 @@ public class ClientProxy implements VirtualView {
         }catch (IOException e){
             System.err.println("Error writing object to output stream: " + e.getMessage());
         }
+    }
+
+    @Override
+    public void attachGameStub(VirtualStub gameStub) throws RemoteException {
+
     }
 
    /* @Override

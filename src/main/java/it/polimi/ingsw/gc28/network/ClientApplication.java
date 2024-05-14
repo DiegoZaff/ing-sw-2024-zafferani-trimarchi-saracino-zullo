@@ -6,6 +6,8 @@ import it.polimi.ingsw.gc28.network.socket.ClientTCP;
 import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.Arrays;
 
 /**
@@ -41,7 +43,8 @@ public class ClientApplication {
         if (isRmi) {
             System.out.println("Starting RMI connection...");
             try {
-                RmiClient.startClientRMI(host, port, isCli);
+                Registry registry = LocateRegistry.getRegistry(host, port);
+                RmiClient.startClientRMI(isCli, registry);
             } catch (RemoteException | NotBoundException e) {
                 throw new RuntimeException(e);
             }

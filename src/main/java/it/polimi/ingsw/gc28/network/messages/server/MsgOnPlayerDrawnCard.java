@@ -13,6 +13,7 @@ public class MsgOnPlayerDrawnCard extends MessageS2C{
     private final Boolean fromGoldDeck;
 
     public MsgOnPlayerDrawnCard(GameRepresentation gameRepresentation, String playerName, String cardId, Boolean fromGoldDeck){
+        super(MessageTypeS2C.DRAW_CARD);
         this.gameRepresentation = gameRepresentation;
         this.playerName = playerName;
         this.cardId = cardId;

@@ -9,6 +9,7 @@ public class MsgOnPlayerChooseObjective extends MessageS2C{
     private final GameRepresentation gameRepresentation;
 
     public MsgOnPlayerChooseObjective(String playerName, GameRepresentation gameRepresentation){
+        super(MessageTypeS2C.CHOOSE_OBJ);
         this.playerName = playerName;
         this.gameRepresentation = gameRepresentation;
     }

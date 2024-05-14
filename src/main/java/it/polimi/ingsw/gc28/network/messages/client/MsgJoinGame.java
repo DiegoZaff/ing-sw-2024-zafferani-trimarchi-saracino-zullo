@@ -6,10 +6,24 @@ import it.polimi.ingsw.gc28.network.rmi.VirtualView;
 import java.rmi.RemoteException;
 
 public class MsgJoinGame extends MessageC2S{
-    VirtualView client;
-    String userName;
+    private  VirtualView client;
+
+    public void setClient(VirtualView client) {
+        this.client = client;
+    }
+
+    public VirtualView getClient(){
+        return client;
+    }
+
+    private String userName;
+
+    public String getUserName(){
+        return userName;
+    }
+
     public MsgJoinGame(VirtualView client, String gameId, String userName) {
-        super(gameId);
+        super(MessageTypeC2S.JOIN_GAME ,gameId);
         this.client = client;
         this.userName = userName;
 

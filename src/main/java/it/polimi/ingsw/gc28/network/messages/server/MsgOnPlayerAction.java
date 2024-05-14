@@ -9,6 +9,7 @@ public class MsgOnPlayerAction extends MessageS2C{
 
 
     public MsgOnPlayerAction(GameRepresentation gameRep){
+        super(MessageTypeS2C.PLAYER_ACTION);
         this.gameRepresentation = gameRep;
     }
 

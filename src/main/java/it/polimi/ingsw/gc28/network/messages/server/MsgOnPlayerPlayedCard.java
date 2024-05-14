@@ -12,6 +12,7 @@ public class MsgOnPlayerPlayedCard extends MessageS2C{
     private final  String playerWhoPlayed;
 
     public MsgOnPlayerPlayedCard(GameRepresentation gameRep, String cardPlayedId, String playerWhoPlayed){
+        super(MessageTypeS2C.PLAY_CARD);
         this.gameRepresentation = gameRep;
         this.cardPlayedId = cardPlayedId;
         this.playerWhoPlayed = playerWhoPlayed;

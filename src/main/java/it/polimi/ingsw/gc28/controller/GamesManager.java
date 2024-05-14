@@ -2,11 +2,18 @@ package it.polimi.ingsw.gc28.controller;
 
 import it.polimi.ingsw.gc28.model.Game;
 import it.polimi.ingsw.gc28.network.messages.client.MessageC2S;
+import it.polimi.ingsw.gc28.network.messages.client.MessageTypeC2S;
 import it.polimi.ingsw.gc28.network.messages.client.MsgCreateGame;
+import it.polimi.ingsw.gc28.network.messages.client.MsgJoinGame;
+import it.polimi.ingsw.gc28.network.rmi.GameStub;
+import it.polimi.ingsw.gc28.network.rmi.VirtualServer;
+import it.polimi.ingsw.gc28.network.rmi.VirtualStub;
+import it.polimi.ingsw.gc28.network.rmi.utils.StubRegister;
 import it.polimi.ingsw.gc28.network.rmi.VirtualView;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -77,27 +84,64 @@ public class GamesManager {
      * @param message is the message coming from the client.
      */
     private void executeClientMessage(MessageC2S message) throws RemoteException {
-        Optional<String> gameId = message.getGameId();
 
-        if(gameId.isEmpty()){
-            MsgCreateGame messageCreateGame = (MsgCreateGame) message;
+        if(message.getType().equals(MessageTypeC2S.CREATE_GAME)){
+            MsgCreateGame msg = (MsgCreateGame) message;
+            createGame(msg.getClient(), msg.getUserName(), msg.getNumberOfPlayers());
+        }else if(message.getType().equals(MessageTypeC2S.JOIN_GAME)){
+            MsgJoinGame msg = (MsgJoinGame) message;
 
-            int nPlayers = messageCreateGame.getNumberOfPlayers();
-            String playerName = messageCreateGame.getUserName();
-            VirtualView client = messageCreateGame.getClient();
-
-            createGame(client, playerName, nPlayers);
-        }
-        else {
-            Optional<GameController> controller = getGameController(message.getGameId().get());
-
-            if(controller.isEmpty()){
-                System.err.println("Error");
+            if(msg.getGameId().isEmpty()){
+                System.err.println("No game id in joinGame message!");
                 return;
             }
 
-            message.execute(controller.get());
+            Optional<GameController> controller = getGameController(msg.getGameId().get());
+
+            if(controller.isEmpty()) {
+               System.err.println("Error");
+               return;
+           }
+
+
+            try{
+                msg.execute(controller.get());
+
+                VirtualStub stub = new GameStub(controller.get(), msg.getUserName(), msg.getGameId().get());
+
+                msg.getClient().attachGameStub(stub);
+
+            }catch (RemoteException e){
+                System.err.println(e.getMessage());
+            }
+
+
+            } else{
+            System.err.printf("Message of type %s directed to gamesManager!%n", message.getType());
+
+
         }
+//        Optional<String> gameId = message.getGameId();
+//
+//        if(gameId.isEmpty()){
+//            MsgCreateGame messageCreateGame = (MsgCreateGame) message;
+//
+//            int nPlayers = messageCreateGame.getNumberOfPlayers();
+//            String playerName = messageCreateGame.getUserName();
+//            VirtualView client = messageCreateGame.getClient();
+//
+//            createGame(client, playerName, nPlayers);
+//        }
+//        else {
+//            Optional<GameController> controller = getGameController(message.getGameId().get());
+//
+//            if(controller.isEmpty()){
+//                System.err.println("Error");
+//                return;
+//            }
+//
+//            message.execute(controller.get());
+//        }
     }
 
     public void createGame(VirtualView client, String playerName, int numberOfPlayers)  {
@@ -110,12 +154,30 @@ public class GamesManager {
             throw new RuntimeException(e);
         }
 
+//        GameStub stub = null;
+////        VirtualServer stubExported;
+//        try {
+//
+////            stubExported = (VirtualServer) UnicastRemoteObject.exportObject(stub, 0);
+////            String name = String.format("game/%s", gameId);
+////            StubRegister.register(stubExported, name);
+//        } catch (RemoteException e) {
+//            throw new RuntimeException(e);
+//        }
+
+
         try{
             newController.addPlayerToGame(playerName, client, false);
+            VirtualStub stub = new GameStub(newController, playerName, gameId);
+            client.attachGameStub(stub);
         }catch (RemoteException e){
             System.err.println(e.getMessage());
             return;
+        } catch (Exception e){
+            System.err.println(e.getMessage());
+            return;
         }
+
         mapGames.put(gameId, newController);
 
         try {

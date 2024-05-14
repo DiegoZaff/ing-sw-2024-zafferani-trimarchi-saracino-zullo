@@ -8,6 +8,7 @@ public class MsgOnChatMessage extends MessageS2C{
 
 
     public MsgOnChatMessage(GameRepresentation gameRep){
+        super(MessageTypeS2C.CHAT);
         this.gameRepresentation = gameRep;
     }
 

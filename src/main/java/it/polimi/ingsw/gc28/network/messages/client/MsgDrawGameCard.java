@@ -8,7 +8,7 @@ public class MsgDrawGameCard extends MessageC2S{
     String playerName;
     boolean fromGoldDeck;
     public MsgDrawGameCard(String playerName, String gameId, boolean fromGoldDeck) {
-        super(gameId);
+        super(MessageTypeC2S.DRAW_CARD_DECK ,gameId);
         this.playerName = playerName;
         this.fromGoldDeck = fromGoldDeck;
     }

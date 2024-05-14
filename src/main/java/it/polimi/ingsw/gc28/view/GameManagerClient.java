@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc28.view;
 
+import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.model.cards.*;
 import it.polimi.ingsw.gc28.view.utils.TuiStringHelper;
 import it.polimi.ingsw.gc28.model.Table;
@@ -67,6 +68,17 @@ public class GameManagerClient {
             System.err.println(e.getMessage());
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Check if game is still active
+     */
+    public boolean canICreateOrJoinAGame(){
+        if(currentRepresentation == null){
+            return true;
+        }
+
+        return !currentRepresentation.getActionExpected().equals(ActionType.GAME_ENDED);
     }
 
     /**
