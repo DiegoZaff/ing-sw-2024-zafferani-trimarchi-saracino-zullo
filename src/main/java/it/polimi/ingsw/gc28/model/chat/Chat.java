@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Chat implements Serializable {
     private List<ChatMessage> chat;
-    private final int maxVisibleMessages = 8;
+    private final int maxVisibleMessages = 20;
 
     /**
      * Constructor.
@@ -54,3 +54,5 @@ public class Chat implements Serializable {
 // già inviati precedentemente, dopo aver fatto questo, in controller può fare la notify
 //e quindi restituire al client un aggiornamento della game representation che contiene anche la
 //chat che quindi viene aggiornata con il nuovo messaggio inviato
+
+//in to string posso passare un parametro del receiver, se chiede global chat, printo filtrando all, altrimenti filtro per playername.

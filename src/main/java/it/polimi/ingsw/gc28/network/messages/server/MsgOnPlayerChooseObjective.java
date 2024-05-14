@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc28.network.messages.server;
 
+import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
 
@@ -41,6 +42,13 @@ public class MsgOnPlayerChooseObjective extends MessageS2C{
                 """, playerName);
         }
 
+        String nextPlayer = gameManagerClient.getCurrentRepresentation().getPlayerToPlay();
+        String playerName = gameManagerClient.getPlayerName();
+        ActionType actionType = gameManagerClient.getCurrentRepresentation().getActionExpected();
+
+        if(nextPlayer.equals(playerName) && actionType.equals(ActionType.CHOOSE_OBJ)){
+            gameManagerClient.showObjectivesToChoose();
+        }
         gameManagerClient.writeInConsole(text);
     }
 }

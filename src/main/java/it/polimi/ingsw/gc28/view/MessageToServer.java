@@ -130,7 +130,7 @@ public class MessageToServer {
                 MsgPlayGameCard message = new MsgPlayGameCard(userName, cardId, gameId, isFront, new Coordinate(x,y));
                 return Optional.of(message);
             }
-            case "chatMessage" -> {
+            case "sendChatMessage" -> {
                 StringBuilder builder = new StringBuilder();
                 commandsList.removeFirst();
                 for (String str : commandsList) {
@@ -140,10 +140,31 @@ public class MessageToServer {
                 if (!builder.isEmpty()) {
                     builder.deleteCharAt(builder.length() - 1);
                 }
-                ChatMessage chatMessage = new ChatMessage(builder.toString(), userName);
+                ChatMessage chatMessage = new ChatMessage(builder.toString(), userName, "all",false);
 
                 MsgChatMessage message = new MsgChatMessage(gameId, chatMessage);
                 return Optional.of(message);
+            }
+            case "sendPrivateChatMessage" -> {
+                StringBuilder builder = new StringBuilder();
+                commandsList.removeFirst();
+                String receiver = commandsList.get(1);
+                commandsList.removeFirst();
+
+                for (String str : commandsList) {
+                    builder.append(str).append(" ");
+                }
+
+                if (!builder.isEmpty()) {
+                    builder.deleteCharAt(builder.length() - 1);
+                }
+                ChatMessage chatMessage = new ChatMessage(builder.toString(), userName, receiver, true);
+
+                MsgChatMessage message = new MsgChatMessage(gameId, chatMessage);
+                //do not use a different type of message for private but try to use a flag isPrivate and a receiver whose null/*/all to simplify.
+                //maybe done
+                MsgChatMessage msgChatMessage = new MsgChatMessage(gameId, chatMessage);
+                return Optional.of(msgChatMessage);
             }
             default -> {
                 System.out.println("Invalid command");

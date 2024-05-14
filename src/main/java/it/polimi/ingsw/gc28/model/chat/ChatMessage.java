@@ -6,17 +6,21 @@ import java.time.LocalTime;
 public class ChatMessage implements Serializable {
     private String text;
     private String sender;
+    private String receiver;
     private LocalTime time;
+    private boolean isPrivate;
 
     /**
      * Constructor.
      * @param text is the body of the message.
      * @param sender is the player who sent the message.
      */
-    public ChatMessage(String text, String sender){
+    public ChatMessage(String text, String sender, String receiver, boolean isPrivate){
         this.text = text;
         this.sender = sender;
+        this.receiver = receiver;
         this.time = java.time.LocalTime.now();
+        this.isPrivate = isPrivate;
     }
     public String getText(){
         return text;

@@ -30,6 +30,10 @@ public class MsgOnGameStarted extends MessageS2C{
                 Action Expected: %s.
                 """,playerOfTurn, actionType);
 
+        if(playerOfTurn.equals(gameManagerClient.getPlayerName())){
+            gameManagerClient.showCardInitial();
+        }
+
         gameManagerClient.writeInConsole(text);
     }
 }
