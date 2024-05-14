@@ -391,19 +391,20 @@ public class Table implements Serializable {
             firstLayer = firstLayer1 + "_" + firstLayer2;
             secondLayer = secondLayer1 + " " + secondLayer2;
 
-            //\u1490[32mLu\u1404[0m
-            String regex = "\\p{L}\\[\\d{2}m([a-zA-Z]+)\\p{L}\\[0m";
+            //Match something like: \u1490[32mLu\u1404[0m
+            String regex = "\\X\\[\\d{2}m([a-zA-Z\\s]+)\\X\\[0m"; //
 
             // Compile the pattern
-            Pattern pattern = Pattern.compile(regex, Pattern.UNICODE_CHARACTER_CLASS);
+            Pattern pattern = Pattern.compile(regex);
 
             // Create a matcher for the input string
             Matcher matcher = pattern.matcher(centralRes);
 
+            int lengthResString = 0;
+            while(matcher.find()){
+                lengthResString += 2;
+            }
 
-
-
-            int lengthResString = centralRes.length();
             int leftPadding = (11 - lengthResString) / 2;
             int rightPadding = 11 - leftPadding - lengthResString;
             thirdLayer ="|" + " ".repeat(leftPadding) + centralRes + " ".repeat(rightPadding) + "|" ;

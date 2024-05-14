@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc28.network.messages.server;
 
+import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
 
@@ -37,7 +38,26 @@ public class MsgOnPlayerPlayedCard extends MessageS2C{
                 """, playerWhoPlayed, cardPlayedId);
         }
 
-        gameManagerClient.writeInConsole(text);    }
+
+
+        gameManagerClient.writeInConsole(text);
+
+        String me = gameManagerClient.getPlayerName();
+
+        ActionType nextAction = gameManagerClient.getCurrentRepresentation().getActionExpected();
+
+        String nextPlayer = gameManagerClient.getCurrentRepresentation().getPlayerToPlay();
+
+
+        if(playerWhoPlayed.equals(me) && nextAction.equals(ActionType.DRAW_CARD)){
+            gameManagerClient.showDrawableCards();
+        }else if(nextPlayer.equals(me) && nextAction.equals(ActionType.CHOOSE_OBJ)){
+            gameManagerClient.showObjectivesToChoose();
+        }else if(nextPlayer.equals(me) && nextAction.equals(ActionType.PLAY_INITIAL_CARD)){
+            gameManagerClient.showCardInitial();
+        }
+
+    }
 
 
     public String getCardPlayedId() {
