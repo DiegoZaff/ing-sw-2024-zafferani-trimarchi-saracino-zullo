@@ -126,5 +126,11 @@ public class CardResource extends CardGame {
          */
 
     }
+
+    @Override
+    public boolean checkHand(ArrayList<CardResource> hand, CardInitial cardInitial){
+        return !(hand.contains(this));
+    }
+
 }
 

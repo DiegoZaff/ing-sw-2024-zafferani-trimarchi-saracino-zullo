@@ -304,6 +304,7 @@ public class Game {
         actionManager.validatesMove(player.get(), actionRequested);
 
         // this can throw errors.
+
         player.get().playCard(playedCard, isFront, coordinates);
 
         // set up attributes for next turn.

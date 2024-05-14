@@ -164,6 +164,7 @@ public abstract class CardGame extends Card implements Serializable {
     }
      */
 
+    public abstract boolean checkHand(ArrayList<CardResource> hand, CardInitial cardInitial);
 
 
 }

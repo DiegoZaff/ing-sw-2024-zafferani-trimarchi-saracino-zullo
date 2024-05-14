@@ -199,6 +199,11 @@ public class CardInitial extends CardGame {
 
     }
 
+    @Override
+    public boolean checkHand(ArrayList<CardResource> hand, CardInitial cardInitial){
+        return !(this.equals(cardInitial));
+    }
+
 }
 
 

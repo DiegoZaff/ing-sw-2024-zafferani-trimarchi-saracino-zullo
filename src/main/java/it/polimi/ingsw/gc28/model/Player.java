@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc28.model;
 
+import it.polimi.ingsw.gc28.model.errors.types.NotOwnedCard;
 import it.polimi.ingsw.gc28.view.PrivateRepresentation;
 import it.polimi.ingsw.gc28.model.cards.CardGame;
 import it.polimi.ingsw.gc28.model.cards.CardInitial;
@@ -121,6 +122,10 @@ public class Player {
      * @param coordinates indicates the coordinate where the card has to be played
      */
     public void playCard(CardGame playedCard, boolean isFront, Coordinate coordinates) throws PlayerActionError {
+        if (playedCard.checkHand(hand, cardInitial)){
+            throw new NotOwnedCard(playedCard);
+        }
+
         if (!table.checkPlayability(coordinates)){
             // TODO : maybe make more granular, why cant be played...
             throw new UnplayableCoordinate(coordinates);
