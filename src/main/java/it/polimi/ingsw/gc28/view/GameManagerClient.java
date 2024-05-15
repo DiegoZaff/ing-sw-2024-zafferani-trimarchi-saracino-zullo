@@ -301,7 +301,9 @@ public class GameManagerClient {
     }
 
     public void showPrivateChat(String player){
-
+        GameRepresentation rep = getCurrentRepresentation();
+        String chat = rep.getChat().toString(playerName, player);
+        this.writeInConsole(String.format("%s", chat));
     }
 
     private PrivateRepresentation getPrivateRepresentation(String name){

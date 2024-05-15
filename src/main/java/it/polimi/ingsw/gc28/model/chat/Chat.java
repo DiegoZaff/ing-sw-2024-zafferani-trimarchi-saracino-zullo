@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Chat implements Serializable {
     private List<ChatMessage> chat;
-    private final int maxVisibleMessages = 20;
+    private final int maxVisibleMessages = 40;
 
     /**
      * Constructor.
@@ -34,9 +34,11 @@ public class Chat implements Serializable {
             }
         }
         for (ChatMessage message : chat) {
-            builder.append(message.toString(c, maxLen, false));
-            builder.append("\n");
-            c++;
+            if(!message.isPrivate()) {
+                builder.append(message.toString(c, maxLen, false));
+                builder.append("\n");
+                c++;
+            }
         }
         String result = null;
         if (builder.toString().endsWith("\n")) {
@@ -44,6 +46,36 @@ public class Chat implements Serializable {
         }
         return result;
     }
+
+    public String toString(String viewer, String player) {
+        StringBuilder builder = new StringBuilder();
+        int c = 0;
+        int maxLen = 0;
+        for (ChatMessage message : chat) {
+            int messageLength = message.getText().length();
+            if (messageLength > maxLen) {
+                maxLen = messageLength;
+            }
+        }
+        for (ChatMessage message : chat) {
+            boolean isBetweenViewerAndPlayer =
+                    (message.getSender().equals(viewer) && message.getReceiver().equals(player)) ||
+                            (message.getSender().equals(player) && message.getReceiver().equals(viewer));
+
+            if (isBetweenViewerAndPlayer) {
+                builder.append(message.toString(c, maxLen, true));
+                builder.append("\n");
+                c++;
+            }
+        }
+        String result = null;
+        if (builder.toString().endsWith("\n")) {
+            result = builder.substring(0, builder.toString().length() - 1);
+        }
+        return result;
+    }
+
+
 
     public List<ChatMessage> getChat(){
         return chat;

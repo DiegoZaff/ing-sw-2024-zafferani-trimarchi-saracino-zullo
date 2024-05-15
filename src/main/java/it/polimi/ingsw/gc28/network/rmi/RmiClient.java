@@ -4,6 +4,7 @@ import java.util.*;
 import it.polimi.ingsw.gc28.controller.GameController;
 import it.polimi.ingsw.gc28.controller.GamesManager;
 import it.polimi.ingsw.gc28.gui.GuiApplication;
+import it.polimi.ingsw.gc28.model.Player;
 import it.polimi.ingsw.gc28.network.messages.server.MessageTypeS2C;
 import it.polimi.ingsw.gc28.network.messages.server.MsgOnGameCreated;
 import it.polimi.ingsw.gc28.network.messages.server.MsgOnGameJoined;
@@ -94,6 +95,14 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
                 GameManagerClient.getInstance().showObjectivesToChoose();
             }else if(action.equals("showChat")){
                 GameManagerClient.getInstance().showGlobalChat();
+            }else if(action.equals("showPrivateChat")){
+                String player = commandsList.get(1);
+                if(player.isEmpty()){
+                    System.out.println("insert a valid name");
+                } else {
+                    //TODO: verificare che esista un gioctore con tale nome.
+                    GameManagerClient.getInstance().showPrivateChat(player);
+                }
             }else if (action.equals("?")){
                 System.out.println("command List:\n" +
                         "-showCardInitial: print your initial card  \n" +

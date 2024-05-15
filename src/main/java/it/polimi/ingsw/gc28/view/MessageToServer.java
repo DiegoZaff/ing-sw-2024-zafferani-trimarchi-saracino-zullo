@@ -148,7 +148,8 @@ public class MessageToServer {
             case "sendPrivateChatMessage" -> {
                 StringBuilder builder = new StringBuilder();
                 commandsList.removeFirst();
-                String receiver = commandsList.get(1);
+                String receiver = commandsList.getFirst();
+                //TODO: verificare che esista un gicatore con tale nome.
                 commandsList.removeFirst();
 
                 for (String str : commandsList) {
@@ -161,8 +162,6 @@ public class MessageToServer {
                 ChatMessage chatMessage = new ChatMessage(builder.toString(), userName, receiver, true);
 
                 MsgChatMessage message = new MsgChatMessage(gameId, chatMessage);
-                //do not use a different type of message for private but try to use a flag isPrivate and a receiver whose null/*/all to simplify.
-                //maybe done
                 MsgChatMessage msgChatMessage = new MsgChatMessage(gameId, chatMessage);
                 return Optional.of(msgChatMessage);
             }

@@ -28,13 +28,26 @@ public class ChatMessage implements Serializable {
 
     public String toString(int i, int len, boolean isPrivate){
         String priv = "[Private] ";
-        if (!isPrivate)
+        if (!isPrivate){
             priv = "";
+        }
+
         String time = String.format("[%02d:%02d:%02d] ", this.time.getHour(), this.time.getMinute(), this.time.getSecond());
         String messageText = priv + time + sender + ": " + this.text;
         int paddingLength = Math.max(0, len - messageText.length());
         String padding = " ".repeat(paddingLength);
         return messageText + padding;
+    }
+    public boolean isPrivate() {
+        return isPrivate;
+    }
+
+    public String getReceiver() {
+        return receiver;
+    }
+
+    public String getSender() {
+        return sender;
     }
 }
 
