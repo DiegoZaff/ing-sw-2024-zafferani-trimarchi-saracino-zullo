@@ -62,7 +62,11 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
                 continue;
             }
 
-            showSomething.showSomething(commandsList);
+            if (commandsList.size() == 1)
+            {
+                showSomething.showSomething(commandsList);
+            }
+            else {
 
 /*
             String action = commandsList.getFirst();
@@ -126,13 +130,11 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
                         "-drawCard: draw a card, add goldDeck/resourceDeck to draw a random card from the selected deck or the cardId to draw the selected card\n" +
                         "-playCard cardId up/down x y: play the card at the specified coordinate\n" +
                         "-chat, da implementare");
-            }else{*/
-                if (commandsList.size() < 2) {
+            }else{
+            else if (commandsList.size() < 2) {
                     System.out.println("Give me a valid command plz.");
                     continue;
-                }
-
-
+                }*/
 
                 Optional<MessageC2S> message;
 
@@ -144,19 +146,19 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
                 if (message.isPresent()) {
                     MessageC2S messageToSend = message.get();
 
-                    if(messageToSend.getType().equals(MessageTypeC2S.CREATE_GAME) || messageToSend.getType().equals(MessageTypeC2S.JOIN_GAME)){
-                        if(GameManagerClient.getInstance().canICreateOrJoinAGame()){
+                    if (messageToSend.getType().equals(MessageTypeC2S.CREATE_GAME) || messageToSend.getType().equals(MessageTypeC2S.JOIN_GAME)) {
+                        if (GameManagerClient.getInstance().canICreateOrJoinAGame()) {
                             server.sendMessage(messageToSend);
                         }
-                    }else{
-                        if(virtualGameStub == null){
+                    } else {
+                        if (virtualGameStub == null) {
                             System.out.println("Looks like you're not in a game!");
                         }
 
                         virtualGameStub.sendMessage(messageToSend);
                     }
                 }
-
+            }
         }
     }
 

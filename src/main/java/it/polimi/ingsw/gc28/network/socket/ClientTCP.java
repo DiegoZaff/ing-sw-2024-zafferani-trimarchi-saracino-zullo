@@ -1,10 +1,12 @@
 package it.polimi.ingsw.gc28.network.socket;
 
 import it.polimi.ingsw.gc28.gui.GuiApplication;
+import it.polimi.ingsw.gc28.network.rmi.VirtualStub;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.network.messages.client.*;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
+import it.polimi.ingsw.gc28.view.MessageToServer;
 import it.polimi.ingsw.gc28.view.ShowSomething;
 import javafx.application.Application;
 
@@ -13,6 +15,7 @@ import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class ClientTCP {
@@ -20,6 +23,8 @@ public class ClientTCP {
     final ServerProxy server;
     String userName;
     String gameId;
+    MessageToServer messageToServer = MessageToServer.getInstance();
+    VirtualStub virtualGameStub;
 
     ShowSomething showSomething = ShowSomething.getInstance();
 
@@ -72,7 +77,7 @@ public class ClientTCP {
         }
     }
 
-    private void runCli() {
+    private void runCli() throws RemoteException {
         Scanner scan = new Scanner(System.in);
         while (true) {
             System.out.print("> ");
@@ -81,14 +86,48 @@ public class ClientTCP {
             String[] commands = line.split(" ");
             ArrayList<String> commandsList = new ArrayList<>(Arrays.asList(commands));
 
-            if (commandsList.size() < 2) {
-                System.err.println("Give me a valid command plz.");
+            if (commandsList.isEmpty()) {
+                System.out.println("Give me a valid command plz.");
                 continue;
             }
 
-            showSomething.showSomething(commandsList);
+            if (commandsList.size() == 1)
+            {
+                showSomething.showSomething(commandsList);
+            }
+            else {
 
 
+                Optional<MessageC2S> message;
+
+                String gameId = GameManagerClient.getInstance().getGameId();
+                String userName = GameManagerClient.getInstance().getPlayerName();
+
+                message = messageToServer.createMessage(commandsList, null, gameId, userName); //non so se sia corretto,
+                // in precedenza non veniva passato nulla come client e ho fatto
+                // in questo modo che passo null, se va passato qualcosa
+                // non ho idea di cosa sia e di come si passi senza modificare
+                // tutto il metodo
+
+
+                if (message.isPresent()) {
+                    MessageC2S messageToSend = message.get();
+
+                    if (messageToSend.getType().equals(MessageTypeC2S.CREATE_GAME) || messageToSend.getType().equals(MessageTypeC2S.JOIN_GAME)) {
+                        if (GameManagerClient.getInstance().canICreateOrJoinAGame()) {
+                            server.sendMessage(messageToSend);
+                        }
+                    } else {
+                        if (virtualGameStub == null) {
+                            System.out.println("Looks like you're not in a game!");
+                        }
+
+                        virtualGameStub.sendMessage(messageToSend);
+                    }
+                }
+            }
+
+/*
             String action = commandsList.getFirst();
 
             switch (action) {
@@ -189,7 +228,7 @@ public class ClientTCP {
                     System.err.println("Invalid First Argument!");
                     break;
                     
-            }
+            }*/
         }
     }
 

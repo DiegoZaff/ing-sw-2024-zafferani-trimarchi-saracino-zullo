@@ -63,6 +63,7 @@ public class ShowSomething {
                         "-drawCard: draw a card, add goldDeck/resourceDeck to draw a random card from the selected deck or the cardId to draw the selected card\n" +
                         "-playCard cardId up/down x y: play the card at the specified coordinate\n" +
                         "-chat, da implementare");
+
             }
         }
     }
