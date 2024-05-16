@@ -12,6 +12,7 @@ import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.MessageToServer;
 import it.polimi.ingsw.gc28.network.messages.client.*;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
+import it.polimi.ingsw.gc28.view.ShowSomething;
 import javafx.application.Application;
 
 import java.rmi.NotBoundException;
@@ -30,6 +31,8 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
     final String id;
 
     MessageToServer messageToServer = MessageToServer.getInstance();
+    ShowSomething showSomething = ShowSomething.getInstance();
+
 
     protected RmiClient(VirtualServer server, Registry registry) throws RemoteException {
         this.registry = registry;
@@ -59,6 +62,9 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
                 continue;
             }
 
+            showSomething.showSomething(commandsList);
+
+/*
             String action = commandsList.getFirst();
 
             if(action.equals("showHand")){
@@ -120,7 +126,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
                         "-drawCard: draw a card, add goldDeck/resourceDeck to draw a random card from the selected deck or the cardId to draw the selected card\n" +
                         "-playCard cardId up/down x y: play the card at the specified coordinate\n" +
                         "-chat, da implementare");
-            }else{
+            }else{*/
                 if (commandsList.size() < 2) {
                     System.out.println("Give me a valid command plz.");
                     continue;
@@ -150,7 +156,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
                         virtualGameStub.sendMessage(messageToSend);
                     }
                 }
-            }
+
         }
     }
 

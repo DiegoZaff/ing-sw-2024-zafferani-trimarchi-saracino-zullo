@@ -5,6 +5,7 @@ import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.network.messages.client.*;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
+import it.polimi.ingsw.gc28.view.ShowSomething;
 import javafx.application.Application;
 
 import java.io.*;
@@ -19,6 +20,9 @@ public class ClientTCP {
     final ServerProxy server;
     String userName;
     String gameId;
+
+    ShowSomething showSomething = ShowSomething.getInstance();
+
 
     protected ClientTCP(ObjectInputStream input, ObjectOutputStream output) {
         this.input = input;
@@ -81,6 +85,9 @@ public class ClientTCP {
                 System.err.println("Give me a valid command plz.");
                 continue;
             }
+
+            showSomething.showSomething(commandsList);
+
 
             String action = commandsList.getFirst();
 
