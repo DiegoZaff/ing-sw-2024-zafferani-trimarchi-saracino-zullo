@@ -100,7 +100,6 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
                 if(player.isEmpty()){
                     System.out.println("insert a valid name");
                 } else {
-                    //TODO: verificare che esista un gioctore con tale nome.
                     GameManagerClient.getInstance().showPrivateChat(player);
                 }
             }else if (action.equals("?")){

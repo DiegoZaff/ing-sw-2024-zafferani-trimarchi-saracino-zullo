@@ -300,11 +300,22 @@ public class GameManagerClient {
         this.writeInConsole(String.format("%s", chat));
     }
 
-    public void showPrivateChat(String player){
+    public void showPrivateChat(String player) {
         GameRepresentation rep = getCurrentRepresentation();
-        String chat = rep.getChat().toString(playerName, player);
-        this.writeInConsole(String.format("%s", chat));
+        String chat = null;
+        ArrayList<String> nicknames = rep.getNicknames();
+        for (String name : nicknames) {
+            if (name.equals(player)) {
+                chat = rep.getChat().toString(playerName, player);
+            }
+        }
+        if (chat != null) {
+            this.writeInConsole(String.format("%s", chat));
+        } else {
+            this.writeInConsole(String.format("Player %s doesn't exist", player));
+        }
     }
+
 
     private PrivateRepresentation getPrivateRepresentation(String name){
         PrivateRepresentation repr = currentRepresentation.getRepresentations().get(playerName);

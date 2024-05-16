@@ -1,4 +1,5 @@
 package it.polimi.ingsw.gc28.controller;
+import it.polimi.ingsw.gc28.model.errors.types.InvalidReceiverName;
 import it.polimi.ingsw.gc28.network.messages.client.MessageC2S;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
 import it.polimi.ingsw.gc28.model.Coordinate;
@@ -15,10 +16,7 @@ import it.polimi.ingsw.gc28.network.messages.server.*;
 import it.polimi.ingsw.gc28.network.rmi.VirtualView;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -221,6 +219,17 @@ public class GameController {
 
     public void sendMessage(ChatMessage chatMessage) throws RemoteException {
         synchronized (gameModel) {
+            if(chatMessage.getReceiver().equals("all")){
+                gameModel.sendMessage(chatMessage);
+                notifyChatMessage();
+                return;
+            }
+
+            Optional<Player> receiver = gameModel.getPlayerOfName(chatMessage.getReceiver());
+            if (receiver.isEmpty()){
+                notifyError(chatMessage.getSender(), new InvalidReceiverName(), "choose a correct player name to send the message");
+                return;
+            }
             gameModel.sendMessage(chatMessage);
         }
         notifyChatMessage();
