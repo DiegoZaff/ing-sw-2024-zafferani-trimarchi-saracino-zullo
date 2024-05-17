@@ -62,11 +62,15 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
                 continue;
             }
 
-            if (commandsList.size() == 1)
+
+                boolean complete = showSomething.showSomething(commandsList);
+
+            if (complete)
             {
-                showSomething.showSomething(commandsList);
+                continue;
             }
-            else {
+
+
 
 /*
             String action = commandsList.getFirst();
@@ -158,7 +162,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
                         virtualGameStub.sendMessage(messageToSend);
                     }
                 }
-            }
+
         }
     }
 

@@ -91,11 +91,14 @@ public class ClientTCP {
                 continue;
             }
 
-            if (commandsList.size() == 1)
+
+            boolean complete = showSomething.showSomething(commandsList);
+
+            if (complete)
             {
-                showSomething.showSomething(commandsList);
+                continue;
             }
-            else {
+
 
 
                 Optional<MessageC2S> message;
@@ -125,7 +128,7 @@ public class ClientTCP {
                         virtualGameStub.sendMessage(messageToSend);
                     }
                 }
-            }
+
 
 /*
             String action = commandsList.getFirst();
