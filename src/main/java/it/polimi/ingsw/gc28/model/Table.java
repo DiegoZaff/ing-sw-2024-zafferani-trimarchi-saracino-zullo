@@ -293,7 +293,7 @@ public class Table implements Serializable {
 
 
     @Override
-    public String toString(){
+    public String toString () throws NoSuchElementException{
         ArrayList<Coordinate> coords = new ArrayList<>(mapPositions.keySet());
 
         // TODO : useless, remember to remove this

@@ -137,11 +137,11 @@ public class ShowSomething {
                         "-showGlobalObjectives: print the global objectives\n" +
                         "-showObjective: print your private objective\n" +
                         "-showObjectivesToChoose: print the objectives that you can choose\n" +
-                        "-showChat: show the global chat\n " +
-                        "-showPrivateChat: show the private chat, add a player nickname to print his table\n " +
-                        "-joinGame gameId myNickname: join the game that has the selected gameId\n " +
-                        "-createGame myNickname numberOfPlayers: create a new game\n " +
-                        "-chooseObj OBJ_id: choose the selected objective\n " +
+                        "-showChat: show the global chat\n" +
+                        "-showPrivateChat: show the private chat, add a player nickname to print his table\n" +
+                        "-joinGame gameId myNickname: join the game that has the selected gameId\n" +
+                        "-createGame myNickname numberOfPlayers: create a new game\n" +
+                        "-chooseObj OBJ_id: choose the selected objective\n" +
                         "-drawCard: draw a card, add goldDeck/resourceDeck to draw a random card from the selected deck or the cardId to draw the selected card\n" +
                         "-playCard cardId up/down x y: play the card at the specified coordinate\n");
                 return true;

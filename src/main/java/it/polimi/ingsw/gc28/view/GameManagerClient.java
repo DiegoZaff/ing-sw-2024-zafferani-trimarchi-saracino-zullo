@@ -9,6 +9,7 @@ import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -181,7 +182,11 @@ public class GameManagerClient {
     public void showTable(String name){
         Table table = getPrivateRepresentation(name).getTable();
 
-        this.writeInConsole(table.toString());
+        try {
+            this.writeInConsole(table.toString());
+        }catch (NoSuchElementException e){
+            this.writeInConsole(e.getMessage());
+        }
     }
 
     public void showTable(){
