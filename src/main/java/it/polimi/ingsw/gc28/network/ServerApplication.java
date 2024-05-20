@@ -9,12 +9,12 @@ import java.rmi.RemoteException;
 
 /**
  * @example arguments.
- * args:  1234 (port tcp)  1235 (port RMI)
+ * args:  8887 (port tcp)  8886 (port RMI)
  */
 public class ServerApplication {
     public static void main(String[] args) throws IOException {
-        int portTCP; // 1234
-        int portRMI; // 1235
+        int portTCP; // 8886
+        int portRMI; // 8887
         String host = null;
         try{
             portTCP = Integer.parseInt(args[0]);

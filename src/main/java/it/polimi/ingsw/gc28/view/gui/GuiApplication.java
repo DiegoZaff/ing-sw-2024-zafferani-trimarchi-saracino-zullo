@@ -1,4 +1,4 @@
-package it.polimi.ingsw.gc28.gui;
+package it.polimi.ingsw.gc28.view.gui;
 
 import javafx.application.Application;
 import javafx.beans.binding.DoubleBinding;

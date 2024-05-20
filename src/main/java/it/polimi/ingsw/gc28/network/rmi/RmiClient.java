@@ -1,13 +1,7 @@
 package it.polimi.ingsw.gc28.network.rmi;
 import java.util.*;
 
-import it.polimi.ingsw.gc28.controller.GameController;
-import it.polimi.ingsw.gc28.controller.GamesManager;
-import it.polimi.ingsw.gc28.gui.GuiApplication;
-import it.polimi.ingsw.gc28.model.Player;
-import it.polimi.ingsw.gc28.network.messages.server.MessageTypeS2C;
-import it.polimi.ingsw.gc28.network.messages.server.MsgOnGameCreated;
-import it.polimi.ingsw.gc28.network.messages.server.MsgOnGameJoined;
+import it.polimi.ingsw.gc28.view.gui.GuiApplication;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.MessageToServer;
 import it.polimi.ingsw.gc28.network.messages.client.*;

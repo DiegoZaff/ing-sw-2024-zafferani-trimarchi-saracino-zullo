@@ -19,10 +19,16 @@ public class ClientApplication {
     public static void main(String[] args) {
         // for now, it's always CLI
 
-        String host = args[0];
+        if(args.length < 3){
+            System.err.println("You need to supply three arguments: [ip-server] [ip-client] [port]");
+        }
+
+        String hostServer = args[0];
+        String hostClient = args[1];
+
         int port;
         try {
-            port = Integer.parseInt(args[1]);
+            port = Integer.parseInt(args[2]);
         } catch (NumberFormatException e) {
             System.out.println(e.getMessage());
             return;
@@ -43,8 +49,8 @@ public class ClientApplication {
         if (isRmi) {
             System.out.println("Starting RMI connection...");
             try {
-                System.setProperty("java.rmi.server.hostname", "localhost");
-                Registry registry = LocateRegistry.getRegistry(host, port);
+                System.setProperty("java.rmi.server.hostname", hostClient);
+                Registry registry = LocateRegistry.getRegistry(hostServer, port);
                 RmiClient.startClientRMI(isCli, registry);
             } catch (RemoteException | NotBoundException e) {
                 throw new RuntimeException(e);
@@ -52,7 +58,7 @@ public class ClientApplication {
         } else {
             System.out.println("Starting TCP connection...");
             try {
-                ClientTCP.startClientSocket(host, port, isCli);
+                ClientTCP.startClientSocket(hostServer, port, isCli);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
