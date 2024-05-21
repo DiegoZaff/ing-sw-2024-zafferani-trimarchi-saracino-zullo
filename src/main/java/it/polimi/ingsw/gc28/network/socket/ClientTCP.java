@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc28.network.socket;
 
+import it.polimi.ingsw.gc28.network.rmi.VirtualView;
 import it.polimi.ingsw.gc28.view.gui.GuiApplication;
 import it.polimi.ingsw.gc28.network.rmi.VirtualStub;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
@@ -44,14 +45,15 @@ public class ClientTCP {
 
         if(isCli){
             runCli();
-        }else{
-            runGui();
         }
+//        else{
+//            runGui();
+//        }
     }
 
-    private void runGui(){
-        Application.launch(GuiApplication.class);
-    }
+//    private void runGui(){
+//        Application.launch(GuiApplication.class);
+//    }
 
     /**
      * This continually listens for messages coming from the server.
@@ -234,7 +236,7 @@ public class ClientTCP {
         }
     }
 
-    public static void startClientSocket (String host, int port, boolean isCli) throws IOException {
+    public static ClientTCP startClientSocket (String host, int port, boolean isCli) throws IOException {
         Socket serverSocket = null;
         try{
             serverSocket = new Socket(host, port);
@@ -247,9 +249,16 @@ public class ClientTCP {
             socketTx = new ObjectOutputStream(serverSocket.getOutputStream());
             socketRx = new ObjectInputStream(serverSocket.getInputStream());
 
-            new ClientTCP(socketRx, socketTx).run(isCli);
+            ClientTCP client = new ClientTCP(socketRx, socketTx);
+
+            client.run(isCli);
+
+            // TODO : make client implement same interface of rmiClient so that we can establish connection for GUI
+            // TODO : and call methods on it to send messages to server.
+            return client;
         }catch (IOException e){
             System.out.println(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 }

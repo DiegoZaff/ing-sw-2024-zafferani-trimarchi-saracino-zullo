@@ -2,6 +2,8 @@ package it.polimi.ingsw.gc28.network;
 
 import it.polimi.ingsw.gc28.network.rmi.RmiClient;
 import it.polimi.ingsw.gc28.network.socket.ClientTCP;
+import it.polimi.ingsw.gc28.view.gui.GuiApplication;
+import javafx.application.Application;
 
 import java.io.IOException;
 import java.rmi.NotBoundException;
@@ -46,22 +48,27 @@ public class ClientApplication {
             }
         }
 
-        if (isRmi) {
-            System.out.println("Starting RMI connection...");
-            try {
-                System.setProperty("java.rmi.server.hostname", hostClient);
-                Registry registry = LocateRegistry.getRegistry(hostServer, port);
-                RmiClient.startClientRMI(isCli, registry);
-            } catch (RemoteException | NotBoundException e) {
-                throw new RuntimeException(e);
+        if(isCli){
+            if (isRmi) {
+                System.out.println("Starting RMI connection...");
+                try {
+                    // TODO : probabilmente si può togliere?
+                    System.setProperty("java.rmi.server.hostname", hostClient);
+
+                    RmiClient.startClientRMI(isCli, hostServer, port);
+                } catch (RemoteException | NotBoundException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                System.out.println("Starting TCP connection...");
+                try {
+                    ClientTCP.startClientSocket(hostServer, port, isCli);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
-        } else {
-            System.out.println("Starting TCP connection...");
-            try {
-                ClientTCP.startClientSocket(hostServer, port, isCli);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        }else{
+            Application.launch(GuiApplication.class);
         }
     }
 }
