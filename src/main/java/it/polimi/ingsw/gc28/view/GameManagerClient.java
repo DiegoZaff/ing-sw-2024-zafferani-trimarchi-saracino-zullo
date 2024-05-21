@@ -317,7 +317,7 @@ public class GameManagerClient {
         if (chat != null) {
             this.writeInConsole(String.format("%s", chat));
         } else {
-            this.writeInConsole(String.format("Player %s doesn't exist", player));
+            this.writeInConsole(String.format("Private chat with %s is empty", player));
         }
     }
 
