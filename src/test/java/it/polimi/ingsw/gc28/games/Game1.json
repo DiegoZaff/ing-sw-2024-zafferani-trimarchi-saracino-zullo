@@ -725,7 +725,7 @@
     {
       "player":  "Ale",
       "action" : "PLAY_CARD",
-      "cardId" : "RES_16",
+      "cardId" : "GOLD_16",
       "isFront" : false,
       "x" : 3,
       "y" : 1,
