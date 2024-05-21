@@ -24,7 +24,6 @@ public class ClientTCP {
     String userName;
     String gameId;
     MessageToServer messageToServer = MessageToServer.getInstance();
-    VirtualStub virtualGameStub;
 
     ShowSomething showSomething = ShowSomething.getInstance();
 
@@ -121,12 +120,10 @@ public class ClientTCP {
                         if (GameManagerClient.getInstance().canICreateOrJoinAGame()) {
                             server.sendMessage(messageToSend);
                         }
-                    } else {
-                        if (virtualGameStub == null) {
-                            System.out.println("Looks like you're not in a game!");
-                        }
-
-                        virtualGameStub.sendMessage(messageToSend);
+                    }
+                    else
+                    {
+                        server.sendMessage(messageToSend);
                     }
                 }
 

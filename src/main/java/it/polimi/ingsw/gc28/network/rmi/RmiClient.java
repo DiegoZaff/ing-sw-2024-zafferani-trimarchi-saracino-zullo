@@ -55,7 +55,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
             }
 
 
-                boolean complete = showSomething.showSomething(commandsList);
+            boolean complete = showSomething.showSomething(commandsList);
 
             if (complete)
             {
