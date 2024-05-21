@@ -1,14 +1,9 @@
 package it.polimi.ingsw.gc28.network.socket;
 
-import it.polimi.ingsw.gc28.network.rmi.VirtualView;
-import it.polimi.ingsw.gc28.view.gui.GuiApplication;
-import it.polimi.ingsw.gc28.network.rmi.VirtualStub;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.network.messages.client.*;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
-import it.polimi.ingsw.gc28.view.MessageToServer;
-import it.polimi.ingsw.gc28.view.ShowSomething;
-import javafx.application.Application;
+import it.polimi.ingsw.gc28.view.MessageUtils;
 
 import java.io.*;
 import java.net.Socket;
@@ -23,9 +18,7 @@ public class ClientTCP {
     final ServerProxy server;
     String userName;
     String gameId;
-    MessageToServer messageToServer = MessageToServer.getInstance();
 
-    ShowSomething showSomething = ShowSomething.getInstance();
 
 
     protected ClientTCP(ObjectInputStream input, ObjectOutputStream output) {
@@ -92,7 +85,7 @@ public class ClientTCP {
             }
 
 
-            boolean complete = showSomething.showSomething(commandsList);
+            boolean complete = MessageUtils.showSomething(commandsList);
 
             if (complete)
             {
@@ -106,7 +99,7 @@ public class ClientTCP {
                 String gameId = GameManagerClient.getInstance().getGameId();
                 String userName = GameManagerClient.getInstance().getPlayerName();
 
-                message = messageToServer.createMessage(commandsList, null, gameId, userName); //non so se sia corretto,
+                message = MessageUtils.createMessage(commandsList, null, gameId, userName); //non so se sia corretto,
                 // in precedenza non veniva passato nulla come client e ho fatto
                 // in questo modo che passo null, se va passato qualcosa
                 // non ho idea di cosa sia e di come si passi senza modificare

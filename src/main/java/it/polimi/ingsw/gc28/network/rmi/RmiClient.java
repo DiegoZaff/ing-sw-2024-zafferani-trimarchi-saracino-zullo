@@ -2,13 +2,10 @@ package it.polimi.ingsw.gc28.network.rmi;
 import java.rmi.registry.LocateRegistry;
 import java.util.*;
 
-import it.polimi.ingsw.gc28.view.gui.GuiApplication;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
-import it.polimi.ingsw.gc28.view.MessageToServer;
+import it.polimi.ingsw.gc28.view.MessageUtils;
 import it.polimi.ingsw.gc28.network.messages.client.*;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
-import it.polimi.ingsw.gc28.view.ShowSomething;
-import javafx.application.Application;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -25,8 +22,6 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
 
     final String id;
 
-    MessageToServer messageToServer = MessageToServer.getInstance();
-    ShowSomething showSomething = ShowSomething.getInstance();
 
 
     protected RmiClient(VirtualServer server) throws RemoteException {
@@ -55,7 +50,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
             }
 
 
-            boolean complete = showSomething.showSomething(commandsList);
+            boolean complete = MessageUtils.showSomething(commandsList);
 
             if (complete)
             {
@@ -137,7 +132,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView {
                 String gameId = GameManagerClient.getInstance().getGameId();
                 String userName = GameManagerClient.getInstance().getPlayerName();
 
-                message = messageToServer.createMessage(commandsList, this, gameId, userName);
+                message = MessageUtils.createMessage(commandsList, this, gameId, userName);
 
                 if (message.isPresent()) {
                     MessageC2S messageToSend = message.get();
