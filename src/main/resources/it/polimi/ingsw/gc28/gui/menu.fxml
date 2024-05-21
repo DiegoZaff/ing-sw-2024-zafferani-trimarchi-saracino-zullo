@@ -88,7 +88,5 @@
         </VBox>
 
         <Button fx:id="playButton" onMouseClicked="#handlePlayButton" text="PLAY" style="-fx-background-color: transparent;-fx-font-size: 24pt; -fx-font-weight: bold"/>
-
-
     </VBox>
 </AnchorPane>

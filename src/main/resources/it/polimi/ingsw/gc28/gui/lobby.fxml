@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.effect.GaussianBlur?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="it.polimi.ingsw.gc28.view.gui.controllers.LobbyController"
+            prefHeight="400.0" prefWidth="600.0">
+
+    <ImageView fx:id="backgroundImageView" preserveRatio="true">
+        <effect>
+            <GaussianBlur radius="8"/> <!-- Adjust the blur radius as needed -->
+        </effect>
+        <Image url="@../img/background5.png"/>
+    </ImageView>
+    <HBox AnchorPane.leftAnchor="32" AnchorPane.topAnchor="32" alignment="CENTER">
+        <VBox onMouseClicked="#onBackArrowClicked">
+            <ImageView   fitWidth="48" fitHeight="48">
+                <Image url="@../img/backarrow.png" />
+            </ImageView>
+        </VBox>
+        <Label  text="Lobby" style="-fx-font-size: 36"/>
+    </HBox>
+    <VBox AnchorPane.topAnchor="120" AnchorPane.leftAnchor="64" AnchorPane.rightAnchor="64">
+        <Label text="Username" style="-fx-padding: 0 0 8 0"/>
+        <TextField  fx:id="usernameTextField" promptText="Tell me your beautiful name..." minHeight="48" style="-fx-background-color: #EDEDED;-fx-background-radius: 16;-fx-prompt-text-fill: derive(-fx-control-inner-background,-30%);" />
+    </VBox>
+</AnchorPane>

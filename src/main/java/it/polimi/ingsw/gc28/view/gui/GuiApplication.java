@@ -17,7 +17,7 @@ import java.util.Objects;
 
 public class GuiApplication extends Application {
 
-    public static VirtualView connection;
+    public static GuiCallable connection;
 
     public static Scene mainScene;
 

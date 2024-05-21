@@ -15,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
+import java.io.IOException;
 import java.net.URL;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -119,7 +120,7 @@ public class MenuController  implements Initializable {
             if (!isSocketSelected) {
                 initializeRMIConn(ip, port);
             } else {
-                System.err.println("Not implemented yet");
+                initializeSocketConn(ip, port);
             }
         }
 
@@ -131,13 +132,26 @@ public class MenuController  implements Initializable {
             try {
                 GuiApplication.connection = RmiClient.startClientRMI(false, hostServer, port);
                 // TODO : make lobby page
-                Platform.runLater(() -> GuiApplication.setRootPage("menu"));
+                Platform.runLater(() -> GuiApplication.setRootPage("lobby"));
             } catch (RemoteException e) {
                 // TODO : show snackBar error
                 System.err.println("Remote exception!");
             } catch (NotBoundException e) {
                 // TODO : show snackbar error
                 System.err.println("lookup of 'VirtualServer' is failing!");
+            }
+        }).start();
+    }
+
+
+    private void initializeSocketConn(String hostServer, int port) {
+        new Thread(() -> {
+            try {
+                GuiApplication.connection = ClientTCP.startClientSocket(hostServer, port, false);
+                Platform.runLater(() -> GuiApplication.setRootPage("lobby"));
+            } catch (IOException e) {
+                // TODO :snackbar error?
+                System.err.println("Could not establish TCP connection");
             }
         }).start();
     }
