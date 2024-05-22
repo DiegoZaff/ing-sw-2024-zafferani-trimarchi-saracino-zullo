@@ -52,7 +52,7 @@
                     <TextField alignment="CENTER" fx:id="portTextField" minHeight="48" style="-fx-background-color: #EDEDED;-fx-background-radius: 16;-fx-prompt-text-fill: derive(-fx-control-inner-background,-30%);" />
                 </VBox>
             </HBox>
-            <HBox spacing="20">
+            <HBox spacing="20" >
                     <Button onMouseClicked="#handleButtonSocket" style="-fx-background-color: #EDEDED;-fx-background-radius: 16;" minWidth="240" minHeight="48">
                         <graphic>
                             <HBox alignment="CENTER" spacing="10">
