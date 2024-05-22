@@ -6,6 +6,8 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.effect.GaussianBlur?>
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="it.polimi.ingsw.gc28.view.gui.controllers.LobbyController"
@@ -28,5 +30,18 @@
     <VBox AnchorPane.topAnchor="120" AnchorPane.leftAnchor="64" AnchorPane.rightAnchor="64">
         <Label text="Username" style="-fx-padding: 0 0 8 0"/>
         <TextField  fx:id="usernameTextField" promptText="Tell me your beautiful name..." minHeight="48" style="-fx-background-color: #EDEDED;-fx-background-radius: 16;-fx-prompt-text-fill: derive(-fx-control-inner-background,-30%);" />
+        <Region minHeight="50"/> <!-- Aggiunge uno spazio di 50 pixel -->
+        <Label text="Number of players" style="-fx-padding: 0 0 8 0"/>
+        <ChoiceBox>
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="2" />
+                    <String fx:value="3" />
+                    <String fx:value="4" />
+                </FXCollections>
+            </items>
+        </ChoiceBox>
+
+        <Button fx:id="createButton" onMouseClicked="#handleCreateButton" text="CREATE" style="-fx-background-color: transparent;-fx-font-size: 24pt; -fx-font-weight: bold"/>
     </VBox>
 </AnchorPane>
