@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc28.model.objectives;
 import it.polimi.ingsw.gc28.model.Cell;
 import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.model.resources.Resource;
+import it.polimi.ingsw.gc28.view.utils.Colors;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -48,5 +49,43 @@ public class ObjectiveResources extends Objective implements Serializable {
         }
 
         return min * points;
+    }
+
+    private String resourceNeededToString (){
+        int i;
+        StringBuffer s = new StringBuffer();
+        for (Resource r : resourcesNeeded.keySet()){
+            for (i = 0; i< resourcesNeeded.get(r); i++){
+                s.append(r.toString());
+            }
+        }
+        return s.toString();
+    }
+
+    private int resourceNeededCounter(){
+        int i = 0;
+        for (Resource r : resourcesNeeded.keySet()){
+            i += resourcesNeeded.get(r);
+        }
+
+        return i;
+    }
+
+
+    @Override
+    public String toString(){
+        String card = String.format("""
+                __________________
+                |       %s        |
+                |       %s       |
+                |                |
+                ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+                """, points, resourceNeededToString());
+        StringBuffer show = new StringBuffer(card);
+        int offset = resourceNeededCounter();
+        show.delete(39,39+offset-1);
+        show.delete(45+11*offset,45+11*offset+(offset-1));
+
+        return show.toString();
     }
 }

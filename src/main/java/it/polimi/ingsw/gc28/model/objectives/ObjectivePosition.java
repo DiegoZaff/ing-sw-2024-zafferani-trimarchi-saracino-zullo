@@ -106,5 +106,19 @@ public class ObjectivePosition extends Objective implements Serializable {
             }
         }
         return true;
-    };
+    }
+
+    @Override
+    public String toString(){
+         StringBuffer show = new StringBuffer(positionType.toString(patternPosition[0].getType().getResourceColor(),
+                 patternPosition[1].getType().getResourceColor(),
+                 patternPosition[2].getType().getResourceColor()));
+
+
+         show.replace(20,21, ""+points);
+
+         return show.toString();
+    }
+
+
 }

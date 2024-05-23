@@ -21,4 +21,9 @@ public class ResourceChallenge extends Challenge implements Serializable {
     public int challengePoints(Table table, Coordinate coordinate){
         return table.getResourceCounters().get(this.resourceChallenge);
     }
+
+    @Override
+    public String toString(){
+        return "1/r"+resourceChallenge.toString();
+    }
 }

@@ -41,10 +41,8 @@ public class CardObjective extends Card {
                 resourceCard[i] = new ResourceSpecial(ResourceSpecialType.FEATHER);
             } else if (resourceNeeded[i] == ResourceType.PARCHMENT) {
                 resourceCard[i] = new ResourceSpecial(ResourceSpecialType.PARCHMENT);
-            } else if (resourceNeeded[i] == ResourceType.POTION) {
-                resourceCard[i] = new ResourceSpecial(ResourceSpecialType.POTION);
             } else {
-                resourceCard[i] = null;
+                resourceCard[i] = new ResourceSpecial(ResourceSpecialType.POTION);
             }
         }
         HashMap<Resource, Integer> FinalResources = new HashMap<>();
@@ -94,6 +92,11 @@ public class CardObjective extends Card {
             posType = new Stack(PositionStackType.S_W_STACK);
         }
         this.objective = new ObjectivePosition(posType, points, resourceCard);
+    }
+
+    @Override
+    public String toString(){
+        return objective.toString();
     }
 
 
