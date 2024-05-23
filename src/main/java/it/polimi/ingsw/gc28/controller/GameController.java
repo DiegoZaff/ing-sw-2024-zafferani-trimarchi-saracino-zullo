@@ -386,12 +386,22 @@ public class GameController {
 
 
     public void notifyPlayerJoined(String gameId, String playerName, int playersLeft) throws RemoteException {
-        MsgOnPlayerReconnected msg = new MsgOnPlayerReconnected(gameId, playerName, playersLeft);
 
         for(Map.Entry<String, VirtualView> entry : clients.entrySet()){
 
             VirtualView client = entry.getValue();
-            client.sendMessage(msg);
+
+            String name = entry.getKey();
+
+
+            if(name.equals(playerName)){
+                MsgOnGameJoined msg = new MsgOnGameJoined(gameId, playerName, playersLeft);
+                client.sendMessage(msg);
+            }else{
+                MsgOnSomeoneElseJoined msg= new MsgOnSomeoneElseJoined(gameId, playerName, playersLeft);
+                client.sendMessage(msg);
+            }
+
         }
     }
 

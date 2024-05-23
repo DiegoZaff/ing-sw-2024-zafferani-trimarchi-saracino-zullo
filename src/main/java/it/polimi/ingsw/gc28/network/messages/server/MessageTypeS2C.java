@@ -13,5 +13,6 @@ public enum MessageTypeS2C {
     ERROR,
     REPORT,
     RECONNECTED,
-    GAME_RESTARTED
+    GAME_RESTARTED,
+    SOMEONE_ELSE_JOINED
 }
