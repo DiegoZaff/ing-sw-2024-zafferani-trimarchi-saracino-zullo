@@ -68,6 +68,17 @@ public class MessageUtils {
                 }
                 return Optional.of(message);
             }
+            case "chooseColor" -> {
+                if (commandsList.size() != 2) {
+                    System.out.println("Invalid format in choose color");
+                    return Optional.empty();
+                }
+
+                String color = commandsList.get(1);
+
+                MsgChooseColor message = new MsgChooseColor(userName, gameId, color);
+                return Optional.of(message);
+            }
             case "chooseObj" -> {
                 if (commandsList.size() != 2) {
                     System.out.println("Invalid format in choose objective");
@@ -177,6 +188,14 @@ public class MessageUtils {
         String action = commandsList.getFirst();
 
         switch (action) {
+            case "showColor" : {
+                if (commandsList.size()!= 1) {
+                    System.out.println("No parameters are needed after 'showColor'\n");
+                    return true;
+                }
+                GameManagerClient.getInstance().showColor();
+                return true;
+            }
             case "showHand" : {
                 boolean isFront = true;
                 if (commandsList.size() == 2) {

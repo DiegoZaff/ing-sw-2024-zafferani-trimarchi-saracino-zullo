@@ -238,10 +238,10 @@ public class GameController {
         synchronized (gameModel) {
             try {
                 gameModel.chooseColor(playerName, color);
+                notifyChooseColor(playerName);
             } catch (PlayerActionError e) {
                 notifyError(playerName, e, "Error in choosing color");
             }
-
         }
     }
 
@@ -335,6 +335,19 @@ public class GameController {
             VirtualView client = entry.getValue();
 
             MsgOnChatMessage message = new MsgOnChatMessage(gameRepresentation);
+
+            client.sendMessage(message);
+        }
+    }
+
+    public void notifyChooseColor(String name) throws RemoteException {
+        GameRepresentation gameRepresentation = getGameRepresentation();
+
+        for(Map.Entry<String, VirtualView> entry : clients.entrySet()){
+
+            VirtualView client = entry.getValue();
+
+            MsgOnChooseColor message = new MsgOnChooseColor(name, gameRepresentation);
 
             client.sendMessage(message);
         }

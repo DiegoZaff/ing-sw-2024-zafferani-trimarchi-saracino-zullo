@@ -1,7 +1,10 @@
 package it.polimi.ingsw.gc28.view;
 
+import it.polimi.ingsw.gc28.model.Player;
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.model.cards.*;
+import it.polimi.ingsw.gc28.model.errors.types.InvalidColor;
+import it.polimi.ingsw.gc28.model.utils.PlayerColor;
 import it.polimi.ingsw.gc28.view.utils.TuiStringHelper;
 import it.polimi.ingsw.gc28.model.Table;
 
@@ -282,6 +285,18 @@ public class GameManagerClient {
         this.writeInConsole(String.format("Your secret objective is %s", cardId));
     }
 
+    public void showColor(){
+        PrivateRepresentation rep = getPrivateRepresentation(playerName);
+
+        String col;
+        PlayerColor color = rep.getColor();
+        if(color == null){
+            col = "null";
+        } else {
+            col = String.valueOf(color);
+        }
+        this.writeInConsole("Your color is " + col);
+    }
     public void showObjectivesToChoose(){
         PrivateRepresentation rep = getPrivateRepresentation(playerName);
 

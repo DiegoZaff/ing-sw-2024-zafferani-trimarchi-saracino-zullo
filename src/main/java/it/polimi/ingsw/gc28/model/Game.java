@@ -641,10 +641,11 @@ public class Game {
             throw new InvalidColor(color);
         }
 
-        boolean isColorTaken = this.players.stream().anyMatch(p -> p.getColor().equals(col));
+        boolean isColorTaken = this.players.stream().anyMatch(p -> col.equals(p.getColor()));
         if(isColorTaken){
             throw new ColorTakenError();
         }
         player.get().setColor(col);
+        actionManager.nextMove();
     }
 }
