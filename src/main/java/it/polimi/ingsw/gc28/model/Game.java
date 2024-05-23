@@ -671,6 +671,14 @@ public class Game {
         actionManager.nextMove();
     }
 
+
+    public int getNPlayersToReconnect(){
+        return (int) players.stream().filter(p -> !p.isConnected()).count();
+    }
+
+    public int getPlayersToJoin(){
+        return getNPlayers() - getActualNumPlayers();
+    }
     public boolean isEveryoneReconnected(){
         return players.stream().allMatch(Player::isConnected);
     }

@@ -32,7 +32,7 @@ public class MsgJoinGame extends MessageC2S{
 
     @Override
     public void execute(GameController controller) throws RemoteException, FailedActionManaged {
-        boolean isSuccessful = controller.addPlayerToGame(userName, client, true);
+        boolean isSuccessful = controller.addPlayerToGame(userName, client);
 
         if(!isSuccessful){
             throw new FailedActionManaged("Could not join game");

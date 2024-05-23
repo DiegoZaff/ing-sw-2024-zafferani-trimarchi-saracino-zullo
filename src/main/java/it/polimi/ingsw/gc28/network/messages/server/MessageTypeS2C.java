@@ -11,5 +11,8 @@ public enum MessageTypeS2C {
     DRAW_CARD,
     PLAY_CARD,
     ERROR,
-    REPORT
+    REPORT,
+    RECONNECTED,
+    GAME_RESTARTED,
+    SOMEONE_ELSE_JOINED
 }
