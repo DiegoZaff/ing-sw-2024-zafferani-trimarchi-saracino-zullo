@@ -10,6 +10,7 @@ import it.polimi.ingsw.gc28.model.challenge.ResourceChallenge;
 import it.polimi.ingsw.gc28.model.challenge.utils.ChallengeType;
 import it.polimi.ingsw.gc28.model.errors.types.NotDrawableCardError;
 import it.polimi.ingsw.gc28.model.errors.PlayerActionError;
+import it.polimi.ingsw.gc28.model.resources.Resource;
 import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
 import it.polimi.ingsw.gc28.model.resources.ResourceSpecial;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
@@ -98,6 +99,18 @@ public class CardGold extends CardResource {
        player.addCardToHand(this);
     }
 
+
+    private String resourceNeededToString (){
+        int i;
+        StringBuffer s = new StringBuffer();
+        for (ResourcePrimary r : playability.keySet()){
+            for (i = 0; i< playability.get(r); i++){
+                s.append(r.toString());
+            }
+        }
+        return s.toString();
+    }
+
     @Override
     public String toString(boolean isFront){
         StringBuffer show = new StringBuffer(super.toString(isFront));
@@ -105,9 +118,22 @@ public class CardGold extends CardResource {
         for (int i = 0; i<show.length(); i++){
             System.out.println("char at "+i+": "+show.charAt(i));
         }
+
+        punteggio a 46
          */
-        show.replace(45,49, "gold");
+        if (getChallenge().isPresent() && isFront){
+            show.replace(45,50, challenge.toString());
+        }
+        if (!isFront){
+            show.replace(45, 49, "gold");
+        }
+
         return show.toString();
+    }
+
+    @Override
+    public String toString(){
+        return super.toString()+", resource needed: "+resourceNeededToString();
     }
 
 
