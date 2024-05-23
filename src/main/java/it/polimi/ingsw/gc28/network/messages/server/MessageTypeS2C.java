@@ -5,6 +5,7 @@ public enum MessageTypeS2C {
     GAME_CREATED,
     GAME_JOINED,
     GAME_STARTED,
+    CHOOSE_COLOR,
     PLAYER_ACTION,
     CHOOSE_OBJ,
     DRAW_CARD,

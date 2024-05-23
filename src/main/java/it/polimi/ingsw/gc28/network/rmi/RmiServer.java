@@ -19,7 +19,7 @@ public class RmiServer  implements VirtualServer {
             StubRegister.init(portRMI, host);
             VirtualServer engine = new RmiServer();
             VirtualServer stub =
-                    (VirtualServer) UnicastRemoteObject.exportObject(engine, portRMI);
+                    (VirtualServer) UnicastRemoteObject.exportObject(engine, 0);
             StubRegister.register(stub, name);
             System.out.println("server RMI stub bound");
         }catch (Exception e){

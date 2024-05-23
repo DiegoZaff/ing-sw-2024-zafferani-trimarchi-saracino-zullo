@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc28.controller;
-import it.polimi.ingsw.gc28.model.errors.types.InvalidReceiverName;
+import it.polimi.ingsw.gc28.model.errors.types.*;
 import it.polimi.ingsw.gc28.network.messages.client.MessageC2S;
+import it.polimi.ingsw.gc28.network.persistence.BackupManager;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
 import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.model.Game;
@@ -10,7 +11,6 @@ import it.polimi.ingsw.gc28.model.cards.CardObjective;
 import it.polimi.ingsw.gc28.model.cards.CardResource;
 import it.polimi.ingsw.gc28.model.cards.CardsManager;
 import it.polimi.ingsw.gc28.model.chat.ChatMessage;
-import it.polimi.ingsw.gc28.model.errors.types.NoSuchCardId;
 import it.polimi.ingsw.gc28.model.errors.PlayerActionError;
 import it.polimi.ingsw.gc28.network.messages.server.*;
 import it.polimi.ingsw.gc28.network.rmi.VirtualView;
@@ -27,16 +27,12 @@ public class GameController {
 
     private final BlockingQueue<MessageC2S> messageQueue;
 
-
-
-
     public GameController(Game gameModel) {
         this.gameModel = gameModel;
         this.clients = new HashMap<>();
         messageQueue = new LinkedBlockingQueue<>();
         this.processIncomingMessages();
     }
-
 
     private void processIncomingMessages() {
         new Thread(() -> {
@@ -48,6 +44,8 @@ public class GameController {
                     }catch (RemoteException e){
                         System.err.println("Remote Exception while executing a message!");
                         System.err.println(e.getMessage());
+                    } catch (PlayerActionError e) {
+                        System.err.println("Error should be already managed!");
                     }
                 } catch (InterruptedException e) {
                     System.err.println("Thread was interrupted while taking a message!");
@@ -68,7 +66,7 @@ public class GameController {
         }
     }
 
-    public void addPlayerToGame(String name, VirtualView client, boolean notifyJoin) throws RemoteException {
+    public boolean addPlayerToGame(String name, VirtualView client, boolean notifyJoin) throws RemoteException {
 
         synchronized (gameModel){
             try{
@@ -78,7 +76,7 @@ public class GameController {
                 // notify error to player
                 MsgReportError message = new MsgReportError(name, e.getError());
                 client.sendMessage(message);
-                return;
+                return false;
             }
 
 
@@ -102,6 +100,8 @@ public class GameController {
                     cli.sendMessage(m);
                 }
             }
+
+            return true;
         }
     }
 
@@ -143,6 +143,9 @@ public class GameController {
                 gameModel.chooseObjective(name, chosen.get());
 
                 notifyObjChosen(name);
+
+                // back up game
+                backUpGame(gameModel);
             }catch (PlayerActionError e){
                 notifyError(name, e, "ChooseObjective");
             }
@@ -155,6 +158,9 @@ public class GameController {
                 CardResource card = gameModel.drawGameCard(name, fromGoldDeck);
 
                 notifyOfCardDrawn(name, card, fromGoldDeck);
+
+                // back up game
+                backUpGame(gameModel);
             }catch (PlayerActionError e){
                 notifyError(name, e, "DrawCardFromDeck");
             }
@@ -174,6 +180,9 @@ public class GameController {
                 gameModel.drawGameCard(playerName, cardToDraw.get());
 
                 notifyOfCardDrawn(playerName, cardToDraw.get());
+
+                // back up game
+                backUpGame(gameModel);
             } catch (PlayerActionError e) {
                 notifyError(playerName, e, "DrawCardFromCardId");
             }
@@ -202,6 +211,9 @@ public class GameController {
 
                 notifyOfCardPlayed(playerName, cardToPlay.get().getId());
 
+                // back up game
+                backUpGame(gameModel);
+
             }catch (PlayerActionError e){
                 MsgReportError message = new MsgReportError(playerName, e.getError());
                 try {
@@ -217,6 +229,9 @@ public class GameController {
         }
     }
 
+    /**
+     * This method is for sending chat messages
+     */
     public void sendMessage(ChatMessage chatMessage) throws RemoteException {
         synchronized (gameModel) {
             if(chatMessage.getReceiver().equals("all")){
@@ -233,6 +248,44 @@ public class GameController {
             gameModel.sendMessage(chatMessage);
         }
         notifyChatMessage();
+
+        // back up game
+        backUpGame(gameModel);
+    }
+
+    public void chooseColor(String playerName, String color) throws RemoteException {
+        synchronized (gameModel) {
+            try {
+                gameModel.chooseColor(playerName, color);
+                notifyChooseColor(playerName);
+            } catch (PlayerActionError e) {
+                notifyError(playerName, e, "Error in choosing color");
+            }
+        }
+    }
+
+
+    public void waitForReconnections(){
+        synchronized (gameModel){
+            try {
+                gameModel.setWaitForReconnections();
+            } catch (UnrestorableGameError e) {
+                System.err.printf("Game %s could not be restored!\n%s%n", gameModel.getGameId(), e.getMessage());
+            }
+        }
+    }
+
+
+    public boolean reconnect(String playerName) throws RemoteException {
+        synchronized (gameModel){
+            try {
+                gameModel.reconnectPlayer(playerName);
+                return true;
+            } catch (PlayerActionError e) {
+                notifyError(playerName, e, "error while reconnecting");
+            }
+            return false;
+        }
     }
 
     public void notifyOfCardDrawn(String playerName, CardResource card, Boolean fromGoldDeck) throws RemoteException {
@@ -328,11 +381,35 @@ public class GameController {
 
             client.sendMessage(message);
         }
+
+
+    }
+
+    public void notifyChooseColor(String name) throws RemoteException {
+        GameRepresentation gameRepresentation = getGameRepresentation();
+
+        for(Map.Entry<String, VirtualView> entry : clients.entrySet()){
+
+            VirtualView client = entry.getValue();
+
+            MsgOnChooseColor message = new MsgOnChooseColor(name, gameRepresentation);
+
+            client.sendMessage(message);
+        }
     }
 
     public GameRepresentation getGameRepresentation(){
         synchronized (gameModel){
             return gameModel.getGameRepresentation();
         }
+    }
+
+
+    /**
+     * This method starts a thread using [BackUpManager]
+     * @param game the game to be back-upped
+     */
+    private void backUpGame(Game game){
+        new BackupManager(game).start();
     }
 }

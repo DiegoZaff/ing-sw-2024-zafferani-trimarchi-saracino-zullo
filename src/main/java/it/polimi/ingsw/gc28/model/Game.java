@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc28.model;
 
+import it.polimi.ingsw.gc28.model.utils.PlayerColor;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
 import it.polimi.ingsw.gc28.view.PrivateRepresentation;
 import it.polimi.ingsw.gc28.model.actions.ActionManager;
@@ -624,4 +625,54 @@ public class Game {
     public Chat getChat(){
         return chat;
     }
+
+    public void chooseColor(String playerName, String color) throws NoSuchPlayerError, ColorTakenError, InvalidColor {
+        Optional<Player> player;
+        player = getPlayerOfName(playerName);
+
+        if(player.isEmpty()){
+            throw new NoSuchPlayerError();
+        }
+
+        PlayerColor col;
+        try{
+            col = PlayerColor.customValueOf(color);
+        } catch (IllegalArgumentException e){
+            throw new InvalidColor(color);
+        }
+
+        boolean isColorTaken = this.players.stream().anyMatch(p -> col.equals(p.getColor()));
+        if(isColorTaken){
+            throw new ColorTakenError();
+        }
+        player.get().setColor(col);
+        actionManager.nextMove();
+    }
+
+    public void setWaitForReconnections() throws UnrestorableGameError {
+        actionManager.setWaitForReconnections();
+    }
+
+
+
+    public void reconnectPlayer(String name) throws NoSuchPlayerError, PlayerIsAlreadyConnectedError {
+        Optional<Player> player = getPlayerOfName(name);
+
+        if(player.isEmpty()){
+            throw new NoSuchPlayerError();
+        }
+
+        if(player.get().isConnected()){
+            throw new PlayerIsAlreadyConnectedError(name);
+        }
+
+        player.get().setConnected(true);
+
+        actionManager.nextMove();
+    }
+
+    public boolean isEveryoneReconnected(){
+        return players.stream().allMatch(Player::isConnected);
+    }
+
 }

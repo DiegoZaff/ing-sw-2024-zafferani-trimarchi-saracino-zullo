@@ -1,20 +1,28 @@
 package it.polimi.ingsw.gc28.network;
 
+import it.polimi.ingsw.gc28.model.Game;
 import it.polimi.ingsw.gc28.network.rmi.RmiServer;
 import it.polimi.ingsw.gc28.network.socket.ServerTCP;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 
 /**
  * @example arguments.
- * args:  1234 (port tcp)  1235 (port RMI)
+ * args:  8887 (port tcp)  8886 (port RMI) (serverIP)
  */
 public class ServerApplication {
     public static void main(String[] args) throws IOException {
-        int portTCP; // 1234
-        int portRMI; // 1235
+        int portTCP; // 8886
+        int portRMI; // 8887
         String host = null;
         try{
             portTCP = Integer.parseInt(args[0]);
@@ -27,6 +35,10 @@ public class ServerApplication {
             System.out.println(e.getMessage());
             return;
         }
+
+
+        // wait to restore games before allowing reconnections
+        restoreBackUppedGames();
 
         try{
             System.out.println("Waiting for tcp connections...");
@@ -44,5 +56,47 @@ public class ServerApplication {
             System.out.println(e.getMessage());
         }
 
+    }
+
+    /**
+     * This method restores back-upped games
+     */
+    public static void restoreBackUppedGames() {
+
+        String directoryName = "backups";
+
+        Path path = Paths.get(directoryName);
+
+        if (!Files.exists(path)) {
+            System.out.println("Backup directory does not exist.");
+            return;
+        }
+
+        ArrayList<Game> games = new ArrayList<>();
+
+        File directory = new File(directoryName);
+        File[] files = directory.listFiles((dir, name) -> name.endsWith(".backup"));
+
+        if (files != null) {
+            for (File file : files) {
+                try (FileInputStream fileIn = new FileInputStream(file);
+                     ObjectInputStream in = new ObjectInputStream(fileIn)) {
+                    Game game = (Game) in.readObject();
+                    games.add(game);
+                    System.out.println("Game object deserialized: " + file.getName());
+                } catch (IOException | ClassNotFoundException e) {
+                    System.err.println(e.getMessage());
+                    // delete if file cannot be restored
+                    //noinspection ResultOfMethodCallIgnored
+                    file.delete();
+                }
+            }
+        } else {
+            System.out.println("No backup files found.");
+        }
+
+        for (Game game : games) {
+            System.out.println("Restored game: " + game);
+        }
     }
 }

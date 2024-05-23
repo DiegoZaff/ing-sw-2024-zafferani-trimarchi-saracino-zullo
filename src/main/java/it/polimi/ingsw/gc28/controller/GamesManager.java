@@ -1,10 +1,8 @@
 package it.polimi.ingsw.gc28.controller;
 
 import it.polimi.ingsw.gc28.model.Game;
-import it.polimi.ingsw.gc28.network.messages.client.MessageC2S;
-import it.polimi.ingsw.gc28.network.messages.client.MessageTypeC2S;
-import it.polimi.ingsw.gc28.network.messages.client.MsgCreateGame;
-import it.polimi.ingsw.gc28.network.messages.client.MsgJoinGame;
+import it.polimi.ingsw.gc28.model.errors.types.FailedActionManaged;
+import it.polimi.ingsw.gc28.network.messages.client.*;
 import it.polimi.ingsw.gc28.network.rmi.GameStub;
 import it.polimi.ingsw.gc28.network.rmi.VirtualServer;
 import it.polimi.ingsw.gc28.network.rmi.VirtualStub;
@@ -84,67 +82,25 @@ public class GamesManager {
      * @param message is the message coming from the client.
      */
     private void executeClientMessage(MessageC2S message) throws RemoteException {
-
         if(message.getType().equals(MessageTypeC2S.CREATE_GAME)){
             MsgCreateGame msg = (MsgCreateGame) message;
-            createGame(msg.getClient(), msg.getUserName(), msg.getNumberOfPlayers());
+            createGame(msg);
         }else if(message.getType().equals(MessageTypeC2S.JOIN_GAME)){
             MsgJoinGame msg = (MsgJoinGame) message;
-
-            if(msg.getGameId().isEmpty()){
-                System.err.println("No game id in joinGame message!");
-                return;
-            }
-
-            Optional<GameController> controller = getGameController(msg.getGameId().get());
-
-            if(controller.isEmpty()) {
-               System.err.println("Error");
-               return;
-           }
-
-
-            try{
-                msg.execute(controller.get());
-
-                VirtualStub stub = new GameStub(controller.get(), msg.getUserName(), msg.getGameId().get());
-
-                msg.getClient().attachGameStub(stub);
-
-            }catch (RemoteException e){
-                System.err.println(e.getMessage());
-            }
-
-
-            } else{
-            System.err.printf("Message of type %s directed to gamesManager!%n", message.getType());
-
-
-        }
-//        Optional<String> gameId = message.getGameId();
-//
-//        if(gameId.isEmpty()){
-//            MsgCreateGame messageCreateGame = (MsgCreateGame) message;
-//
-//            int nPlayers = messageCreateGame.getNumberOfPlayers();
-//            String playerName = messageCreateGame.getUserName();
-//            VirtualView client = messageCreateGame.getClient();
-//
-//            createGame(client, playerName, nPlayers);
-//        }
-//        else {
-//            Optional<GameController> controller = getGameController(message.getGameId().get());
-//
-//            if(controller.isEmpty()){
-//                System.err.println("Error");
-//                return;
-//            }
-//
-//            message.execute(controller.get());
-//        }
+            joinGame(msg);
+        }else if(message.getType().equals(MessageTypeC2S.RECONNECT)){
+            MsgReconnect msg = (MsgReconnect) message;
+            reconnectToGame(msg);
+        }else {
+        System.err.printf("Message of type %s directed to gamesManager!%n", message.getType());
+    }
     }
 
-    public void createGame(VirtualView client, String playerName, int numberOfPlayers)  {
+    public void createGame(MsgCreateGame msg)  {
+        int numberOfPlayers = msg.getNumberOfPlayers();
+        String playerName = msg.getUserName();
+        VirtualView client = msg.getClient();
+
         String gameId = UUID.randomUUID().toString();
         GameController newController = null;
         try {
@@ -154,25 +110,10 @@ public class GamesManager {
             throw new RuntimeException(e);
         }
 
-//        GameStub stub = null;
-////        VirtualServer stubExported;
-//        try {
-//
-////            stubExported = (VirtualServer) UnicastRemoteObject.exportObject(stub, 0);
-////            String name = String.format("game/%s", gameId);
-////            StubRegister.register(stubExported, name);
-//        } catch (RemoteException e) {
-//            throw new RuntimeException(e);
-//        }
-
-
         try{
             newController.addPlayerToGame(playerName, client, false);
             VirtualStub stub = new GameStub(newController, playerName, gameId);
             client.attachGameStub(stub);
-        }catch (RemoteException e){
-            System.err.println(e.getMessage());
-            return;
         } catch (Exception e){
             System.err.println(e.getMessage());
             return;
@@ -188,13 +129,81 @@ public class GamesManager {
         }
     }
 
+    private void joinGame(MsgJoinGame msg)  {
+        if(msg.getGameId().isEmpty()){
+            System.err.println("No game id in joinGame message!");
+            return;
+        }
+
+        Optional<GameController> controller = getGameController(msg.getGameId().get());
+
+        if(controller.isEmpty()) {
+            System.err.println("Error");
+            return;
+        }
+        try{
+            msg.execute(controller.get());
+
+            VirtualStub stub = new GameStub(controller.get(), msg.getUserName(), msg.getGameId().get());
+
+            msg.getClient().attachGameStub(stub);
+
+        }catch (RemoteException e){
+            System.err.println(e.getMessage());
+        } catch (FailedActionManaged e) {
+            System.err.println("Error already managed by controller: " + e.getMessage());
+        }
+    }
+
+    public void reconnectToGame(MsgReconnect msg){
+        if(msg.getGameId().isEmpty()){
+            System.err.println("No game id in reconnect message!");
+            return;
+        }
+
+        Optional<GameController> controller = getGameController(msg.getGameId().get());
+
+        if(controller.isEmpty()) {
+            System.err.println("Error, no controller associated to gameId " + msg.getGameId());
+            return;
+        }
+
+        try{
+            msg.execute(controller.get());
+
+            VirtualStub stub = new GameStub(controller.get(), msg.getPlayerName(), msg.getGameId().get());
+
+            msg.getClient().attachGameStub(stub);
+
+        }catch (RemoteException e){
+            System.err.println(e.getMessage());
+        } catch (FailedActionManaged e) {
+            System.err.println("Error already managed by controller: " + e.getMessage());
+        }
+    }
+
+
+    public void restoreGame(Game game){
+
+        if(game == null){
+            throw new RuntimeException("Game is null, wake up!");
+        }
+
+        String gameId = game.getGameId();
+
+        GameController controller = new GameController(game);
+
+
+        mapGames.put(gameId, controller);
+
+        controller.waitForReconnections();
+
+    }
+
 
     public Optional<GameController> getGameController(String id){
         GameController controller = mapGames.get(id);
 
         return Optional.ofNullable(controller);
     }
-
-
-
 }

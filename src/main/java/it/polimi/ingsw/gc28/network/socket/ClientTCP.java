@@ -1,14 +1,10 @@
 package it.polimi.ingsw.gc28.network.socket;
 
-import it.polimi.ingsw.gc28.gui.GuiApplication;
-import it.polimi.ingsw.gc28.network.rmi.VirtualStub;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
-import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.network.messages.client.*;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
-import it.polimi.ingsw.gc28.view.MessageToServer;
-import it.polimi.ingsw.gc28.view.ShowSomething;
-import javafx.application.Application;
+import it.polimi.ingsw.gc28.view.MessageUtils;
+import it.polimi.ingsw.gc28.view.gui.GuiCallable;
 
 import java.io.*;
 import java.net.Socket;
@@ -18,15 +14,12 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.Scanner;
 
-public class ClientTCP {
+public class ClientTCP implements GuiCallable {
     final ObjectInputStream input;
     final ServerProxy server;
     String userName;
     String gameId;
-    MessageToServer messageToServer = MessageToServer.getInstance();
-    VirtualStub virtualGameStub;
 
-    ShowSomething showSomething = ShowSomething.getInstance();
 
 
     protected ClientTCP(ObjectInputStream input, ObjectOutputStream output) {
@@ -45,14 +38,15 @@ public class ClientTCP {
 
         if(isCli){
             runCli();
-        }else{
-            runGui();
         }
+//        else{
+//            runGui();
+//        }
     }
 
-    private void runGui(){
-        Application.launch(GuiApplication.class);
-    }
+//    private void runGui(){
+//        Application.launch(GuiApplication.class);
+//    }
 
     /**
      * This continually listens for messages coming from the server.
@@ -92,7 +86,7 @@ public class ClientTCP {
             }
 
 
-            boolean complete = showSomething.showSomething(commandsList);
+            boolean complete = MessageUtils.showSomething(commandsList);
 
             if (complete)
             {
@@ -106,7 +100,7 @@ public class ClientTCP {
                 String gameId = GameManagerClient.getInstance().getGameId();
                 String userName = GameManagerClient.getInstance().getPlayerName();
 
-                message = messageToServer.createMessage(commandsList, null, gameId, userName); //non so se sia corretto,
+                message = MessageUtils.createMessage(commandsList, null, gameId, userName); //non so se sia corretto,
                 // in precedenza non veniva passato nulla come client e ho fatto
                 // in questo modo che passo null, se va passato qualcosa
                 // non ho idea di cosa sia e di come si passi senza modificare
@@ -120,122 +114,16 @@ public class ClientTCP {
                         if (GameManagerClient.getInstance().canICreateOrJoinAGame()) {
                             server.sendMessage(messageToSend);
                         }
-                    } else {
-                        if (virtualGameStub == null) {
-                            System.out.println("Looks like you're not in a game!");
-                        }
-
-                        virtualGameStub.sendMessage(messageToSend);
+                    }
+                    else
+                    {
+                        server.sendMessage(messageToSend);
                     }
                 }
-
-
-/*
-            String action = commandsList.getFirst();
-
-            switch (action) {
-                case "createGame": {
-                    if (commandsList.size() != 3) {
-                        System.err.println("Invalid format");
-                        return;
-                    }
-
-                    userName = commandsList.get(1);
-
-                    //qui va controllato che venga inserito un numero compreso tra 2 e 4;
-                    Integer nPlayers = null;
-                    try {
-                        nPlayers = Integer.parseInt(commandsList.get(2));
-                    } catch (NumberFormatException e) {
-                        System.err.println(e.getMessage());
-                        return;
-                    }
-
-                    if (nPlayers < 2 || nPlayers > 4) {
-                        System.out.println("Select a number of player between 2 and 4");
-                        break;
-                    }
-
-                    // TODO : remember to attach client inside clientHandler
-                    MsgCreateGame message = new MsgCreateGame(null, userName, nPlayers, null);
-                    server.sendMessage(message);
-
-                    break;
-                }
-                case "joinGame": {
-
-                    if (commandsList.size() != 3) {
-                        System.err.println("Invalid format");
-                        return;
-                    }
-
-                    String gameIdToJoin = commandsList.get(1);
-                    userName = commandsList.get(2);
-
-                    MsgJoinGame JGMess = new MsgJoinGame(null, gameIdToJoin, userName);
-                    server.sendMessage(JGMess);
-
-                    break;
-                }
-                case "chooseObj": {
-
-                    if (commandsList.size() != 3) {
-                        System.err.println("Invalid format");
-                        return;
-                    }
-
-                    String cardId = commandsList.get(1);
-                    gameId = commandsList.get(2);
-
-                    MsgChooseObjective COMess = new MsgChooseObjective(userName, gameId, cardId);
-                    server.sendMessage(COMess);
-
-                    break;
-                }
-                case "playCard": {
-
-                    if (commandsList.size() != 5) {
-                        System.err.println("Invalid format");
-                        return;
-                    }
-
-                    String cardId = commandsList.get(1);
-
-                    String isFrontString = commandsList.get(2);
-
-                    if (!isFrontString.equals("up") && !isFrontString.equals("down")) {
-                        System.err.println("Invalid isFront format");
-                        return;
-                    }
-
-                    boolean isFront = isFrontString.equals("up");
-
-                    Integer x = null;
-                    Integer y = null;
-
-                    try {
-                        x = Integer.parseInt(commandsList.get(3));
-                        y = Integer.parseInt(commandsList.get(4));
-                    } catch (NumberFormatException e) {
-                        System.err.println(e.getMessage());
-                        return;
-                    }
-
-
-                    MsgPlayGameCard PGCMess = new MsgPlayGameCard( userName, cardId, gameId, isFront, new Coordinate(x,y));
-                    server.sendMessage(PGCMess);
-
-                    break;
-                }
-                default:
-                    System.err.println("Invalid First Argument!");
-                    break;
-                    
-            }*/
         }
     }
 
-    public static void startClientSocket (String host, int port, boolean isCli) throws IOException {
+    public static ClientTCP startClientSocket (String host, int port, boolean isCli) throws IOException {
         Socket serverSocket = null;
         try{
             serverSocket = new Socket(host, port);
@@ -248,9 +136,34 @@ public class ClientTCP {
             socketTx = new ObjectOutputStream(serverSocket.getOutputStream());
             socketRx = new ObjectInputStream(serverSocket.getInputStream());
 
-            new ClientTCP(socketRx, socketTx).run(isCli);
+            ClientTCP client = new ClientTCP(socketRx, socketTx);
+
+            client.run(isCli);
+
+            // TODO : make client implement same interface of rmiClient so that we can establish connection for GUI
+            // TODO : and call methods on it to send messages to server.
+            return client;
         }catch (IOException e){
             System.out.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void closeConnection() {
+        server.closeConnection();
+    }
+
+    @Override
+    public void sendMessageToServer(MessageC2S messageToSend) {
+        if (messageToSend.getType().equals(MessageTypeC2S.CREATE_GAME) || messageToSend.getType().equals(MessageTypeC2S.JOIN_GAME)) {
+            if (GameManagerClient.getInstance().canICreateOrJoinAGame()) {
+                server.sendMessage(messageToSend);
+            }
+        }
+        else
+        {
+            server.sendMessage(messageToSend);
         }
     }
 }

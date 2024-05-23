@@ -1,6 +1,8 @@
 package it.polimi.ingsw.gc28.network.messages.client;
 
 import it.polimi.ingsw.gc28.controller.GameController;
+import it.polimi.ingsw.gc28.model.errors.PlayerActionError;
+import it.polimi.ingsw.gc28.model.errors.types.FailedActionManaged;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
@@ -23,7 +25,7 @@ public abstract class MessageC2S implements Serializable {
         return Optional.ofNullable(gameId);
     }
 
-    public abstract void execute(GameController controller) throws RemoteException;
+    public abstract void execute(GameController controller) throws RemoteException, FailedActionManaged;
 
     public MessageTypeC2S getType() {
         return type;

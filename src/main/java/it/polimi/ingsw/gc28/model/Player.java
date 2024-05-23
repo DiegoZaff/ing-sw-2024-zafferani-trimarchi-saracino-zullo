@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc28.model;
 
 import it.polimi.ingsw.gc28.model.errors.types.NotOwnedCard;
+import it.polimi.ingsw.gc28.model.utils.PlayerColor;
 import it.polimi.ingsw.gc28.view.PrivateRepresentation;
 import it.polimi.ingsw.gc28.model.cards.CardGame;
 import it.polimi.ingsw.gc28.model.cards.CardInitial;
@@ -19,15 +20,12 @@ public class Player {
 
     private int points, objectivePoints;
 
-/*
-    //setter per test calculatewinner è una schifezza si puo togliere;
-    public void setPoints (int pointstoset) {points = pointstoset;};
-    public void setObjectrivePoints (int pointstoset) {objectivePoints = pointstoset;};
-*/
-
     private boolean winner = false;
 
+    private boolean connected;
+
     private final String name;
+    private PlayerColor color;
     private CardObjective objectiveChosen;
 
     private  ArrayList<CardObjective> objectivesToChoose;
@@ -45,7 +43,7 @@ public class Player {
         this.objectivePoints = 0;
         this.hand = new ArrayList<>();
         this.table = new Table();
-
+        this.connected = true;
     }
 
     public Optional<ArrayList<CardObjective>> getObjectivesToChoose(){
@@ -194,6 +192,22 @@ public class Player {
     }
 
     public PrivateRepresentation getState(){
-        return new PrivateRepresentation(objectiveChosen, table, hand, cardInitial, objectivesToChoose);
+        return new PrivateRepresentation(objectiveChosen, table, hand, cardInitial, objectivesToChoose, color);
+    }
+
+    public void setColor(PlayerColor color){
+        this.color = color;
+    }
+
+    public PlayerColor getColor(){
+        return color;
+    }
+
+    public boolean isConnected() {
+        return connected;
+    }
+
+    public void setConnected(boolean connected) {
+        this.connected = connected;
     }
 }

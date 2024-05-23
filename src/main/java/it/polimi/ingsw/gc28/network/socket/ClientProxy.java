@@ -1,19 +1,12 @@
 package it.polimi.ingsw.gc28.network.socket;
 
-import it.polimi.ingsw.gc28.model.Coordinate;
-import it.polimi.ingsw.gc28.model.Player;
-import it.polimi.ingsw.gc28.model.Table;
-import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.network.messages.server.*;
-import it.polimi.ingsw.gc28.network.rmi.GameStub;
-import it.polimi.ingsw.gc28.network.rmi.VirtualServer;
 import it.polimi.ingsw.gc28.network.rmi.VirtualStub;
 import it.polimi.ingsw.gc28.network.rmi.VirtualView;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 
 public class ClientProxy implements VirtualView {
     final ObjectOutputStream output;
