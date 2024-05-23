@@ -41,7 +41,7 @@ public class CardObjective extends Card {
                 resourceCard[i] = new ResourceSpecial(ResourceSpecialType.FEATHER);
             } else if (resourceNeeded[i] == ResourceType.PARCHMENT) {
                 resourceCard[i] = new ResourceSpecial(ResourceSpecialType.PARCHMENT);
-            } else {
+            } else if (resourceNeeded[i] == ResourceType.POTION){
                 resourceCard[i] = new ResourceSpecial(ResourceSpecialType.POTION);
             }
         }
@@ -52,10 +52,12 @@ public class CardObjective extends Card {
 
     public void createMap(Map<Resource, Integer> TableResources, Resource[] Resources){
         for(Resource resource: Resources){
-            if(TableResources.containsKey(resource)) {
-                TableResources.put(resource, TableResources.get(resource) + 1);
+            if (resource != null){
+                if(TableResources.containsKey(resource)) {
+                    TableResources.put(resource, TableResources.get(resource) + 1);
+                }
+                else TableResources.put(resource, 1);
             }
-            else TableResources.put(resource, 1);
         }
     }
 
