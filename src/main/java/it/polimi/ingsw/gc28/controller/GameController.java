@@ -66,7 +66,7 @@ public class GameController {
         }
     }
 
-    public boolean addPlayerToGame(String name, VirtualView client, boolean notifyJoin) throws RemoteException {
+    public boolean addPlayerToGame(String name, VirtualView client) throws RemoteException {
 
         synchronized (gameModel){
             try{
@@ -79,35 +79,39 @@ public class GameController {
                 return false;
             }
 
-
-            if(notifyJoin){
-                int playersLeftToJoin = gameModel.getNPlayers() - gameModel.getActualNumPlayers();
-
-                MsgOnGameJoined message = new MsgOnGameJoined(this.gameModel.getGameId() ,name, playersLeftToJoin);
-
-                clients.get(name).sendMessage(message);
-            }
-
-            if(hasGameStarted()){
-                for(Map.Entry<String, VirtualView> entry : clients.entrySet()){
-
-                    VirtualView cli = entry.getValue();
-
-                    GameRepresentation representation = getGameRepresentation();
-
-                    MsgOnGameStarted m = new MsgOnGameStarted(representation);
-
-                    cli.sendMessage(m);
-                }
-            }
-
             return true;
         }
     }
 
-    public boolean hasGameStarted(){
+    /**
+     * This is called after a player has joined. If the game has started this method notifies all client.
+     */
+    public void hasGameStarted() throws RemoteException {
         synchronized (gameModel){
-            return gameModel.getHasGameStarted();
+            if (gameModel.getHasGameStarted()){
+                GameRepresentation representation = getGameRepresentation();
+                for(Map.Entry<String, VirtualView> entry : clients.entrySet()){
+                    VirtualView cli = entry.getValue();
+                    MsgOnGameStarted m = new MsgOnGameStarted(representation);
+                    cli.sendMessage(m);
+                }
+            }
+        }
+    }
+
+    /**
+     * This is called after a player has joined. If the game has started this method notifies all client.
+     */
+    public void hasGameRestarted() throws RemoteException {
+        synchronized (gameModel){
+            if (gameModel.isEveryoneReconnected()){
+                GameRepresentation representation = getGameRepresentation();
+                for(Map.Entry<String, VirtualView> entry : clients.entrySet()){
+                    VirtualView cli = entry.getValue();
+                    MsgOnGameRestarted m = new MsgOnGameRestarted(representation);
+                    cli.sendMessage(m);
+                }
+            }
         }
     }
 
@@ -370,6 +374,35 @@ public class GameController {
 
     }
 
+    public void notifyPlayerReconnected(String gameId, String playerName, int playersLeft) throws RemoteException {
+        MsgOnPlayerReconnected msg = new MsgOnPlayerReconnected(gameId, playerName, playersLeft);
+
+        for(Map.Entry<String, VirtualView> entry : clients.entrySet()){
+
+            VirtualView client = entry.getValue();
+            client.sendMessage(msg);
+        }
+    }
+
+
+    public void notifyPlayerJoined(String gameId, String playerName, int playersLeft) throws RemoteException {
+        MsgOnPlayerReconnected msg = new MsgOnPlayerReconnected(gameId, playerName, playersLeft);
+
+        for(Map.Entry<String, VirtualView> entry : clients.entrySet()){
+
+            VirtualView client = entry.getValue();
+            client.sendMessage(msg);
+        }
+    }
+
+    public int getPlayersToReconnect(){
+        return gameModel.getNPlayersToReconnect();
+    }
+
+    public int getPlayersToJoin(){
+        return gameModel.getPlayersToJoin();
+    }
+
     public void notifyChatMessage() throws RemoteException {
         GameRepresentation gameRepresentation = getGameRepresentation();
 
@@ -397,6 +430,8 @@ public class GameController {
             client.sendMessage(message);
         }
     }
+
+
 
     public GameRepresentation getGameRepresentation(){
         synchronized (gameModel){

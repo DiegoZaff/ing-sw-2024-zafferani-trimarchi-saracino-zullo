@@ -3,11 +3,13 @@ package it.polimi.ingsw.gc28.controller;
 import it.polimi.ingsw.gc28.model.Game;
 import it.polimi.ingsw.gc28.model.errors.types.FailedActionManaged;
 import it.polimi.ingsw.gc28.network.messages.client.*;
+import it.polimi.ingsw.gc28.network.messages.server.MsgOnGameStarted;
 import it.polimi.ingsw.gc28.network.rmi.GameStub;
 import it.polimi.ingsw.gc28.network.rmi.VirtualServer;
 import it.polimi.ingsw.gc28.network.rmi.VirtualStub;
 import it.polimi.ingsw.gc28.network.rmi.utils.StubRegister;
 import it.polimi.ingsw.gc28.network.rmi.VirtualView;
+import it.polimi.ingsw.gc28.view.GameRepresentation;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -111,7 +113,7 @@ public class GamesManager {
         }
 
         try{
-            newController.addPlayerToGame(playerName, client, false);
+            newController.addPlayerToGame(playerName, client);
             VirtualStub stub = new GameStub(newController, playerName, gameId);
             client.attachGameStub(stub);
         } catch (Exception e){
@@ -142,12 +144,16 @@ public class GamesManager {
             return;
         }
         try{
+            // TODO : mayber should separate these block of instructions in different try catchs
             msg.execute(controller.get());
 
             VirtualStub stub = new GameStub(controller.get(), msg.getUserName(), msg.getGameId().get());
-
             msg.getClient().attachGameStub(stub);
 
+            int playersLeft = controller.get().getPlayersToJoin();
+            controller.get().notifyPlayerJoined(msg.getGameId().get(), msg.getUserName(), playersLeft);
+
+            controller.get().hasGameStarted();
         }catch (RemoteException e){
             System.err.println(e.getMessage());
         } catch (FailedActionManaged e) {
@@ -172,9 +178,12 @@ public class GamesManager {
             msg.execute(controller.get());
 
             VirtualStub stub = new GameStub(controller.get(), msg.getPlayerName(), msg.getGameId().get());
-
             msg.getClient().attachGameStub(stub);
 
+            int playersLeft = controller.get().getPlayersToReconnect();
+            controller.get().notifyPlayerReconnected(msg.getGameId().get(), msg.getPlayerName(), playersLeft);
+
+            controller.get().hasGameRestarted();
         }catch (RemoteException e){
             System.err.println(e.getMessage());
         } catch (FailedActionManaged e) {

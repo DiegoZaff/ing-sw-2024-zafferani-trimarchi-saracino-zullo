@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc28.network;
 
+import it.polimi.ingsw.gc28.controller.GamesManager;
 import it.polimi.ingsw.gc28.model.Game;
 import it.polimi.ingsw.gc28.network.rmi.RmiServer;
 import it.polimi.ingsw.gc28.network.socket.ServerTCP;
@@ -95,8 +96,9 @@ public class ServerApplication {
             System.out.println("No backup files found.");
         }
 
+        GamesManager gmsManager = GamesManager.getInstance();
         for (Game game : games) {
-            System.out.println("Restored game: " + game);
+            gmsManager.restoreGame(game);
         }
     }
 }
