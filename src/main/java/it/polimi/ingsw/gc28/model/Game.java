@@ -636,7 +636,7 @@ public class Game {
 
         PlayerColor col;
         try{
-            col = PlayerColor.valueOf(color);
+            col = PlayerColor.customValueOf(color);
         } catch (IllegalArgumentException e){
             throw new InvalidColor(color);
         }
