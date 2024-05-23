@@ -44,6 +44,8 @@ public class GameController {
                     }catch (RemoteException e){
                         System.err.println("Remote Exception while executing a message!");
                         System.err.println(e.getMessage());
+                    } catch (PlayerActionError e) {
+                        System.err.println("Error should be already managed!");
                     }
                 } catch (InterruptedException e) {
                     System.err.println("Thread was interrupted while taking a message!");
@@ -64,7 +66,7 @@ public class GameController {
         }
     }
 
-    public void addPlayerToGame(String name, VirtualView client, boolean notifyJoin) throws RemoteException {
+    public boolean addPlayerToGame(String name, VirtualView client, boolean notifyJoin) throws RemoteException {
 
         synchronized (gameModel){
             try{
@@ -74,7 +76,7 @@ public class GameController {
                 // notify error to player
                 MsgReportError message = new MsgReportError(name, e.getError());
                 client.sendMessage(message);
-                return;
+                return false;
             }
 
 
@@ -98,6 +100,8 @@ public class GameController {
                     cli.sendMessage(m);
                 }
             }
+
+            return true;
         }
     }
 
@@ -261,12 +265,26 @@ public class GameController {
     }
 
 
-
-
-
     public void waitForReconnections(){
         synchronized (gameModel){
-            gameModel.setWaitForReconnections();
+            try {
+                gameModel.setWaitForReconnections();
+            } catch (UnrestorableGameError e) {
+                System.err.printf("Game %s could not be restored!\n%s%n", gameModel.getGameId(), e.getMessage());
+            }
+        }
+    }
+
+
+    public boolean reconnect(String playerName) throws RemoteException {
+        synchronized (gameModel){
+            try {
+                gameModel.reconnectPlayer(playerName);
+                return true;
+            } catch (PlayerActionError e) {
+                notifyError(playerName, e, "error while reconnecting");
+            }
+            return false;
         }
     }
 

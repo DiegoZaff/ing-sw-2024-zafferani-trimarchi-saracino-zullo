@@ -8,5 +8,6 @@ public enum MessageTypeC2S {
     DRAW_CARD_DECK,
     DRAW_CARD_VISIBLE,
     JOIN_GAME,
-    PLAY_CARD
+    PLAY_CARD,
+    RECONNECT
 }
