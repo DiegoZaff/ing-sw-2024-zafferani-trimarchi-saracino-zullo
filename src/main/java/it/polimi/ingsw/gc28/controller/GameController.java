@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc28.controller;
 import it.polimi.ingsw.gc28.model.errors.types.*;
 import it.polimi.ingsw.gc28.network.messages.client.MessageC2S;
+import it.polimi.ingsw.gc28.network.persistence.BackupManager;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
 import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.model.Game;
@@ -26,16 +27,12 @@ public class GameController {
 
     private final BlockingQueue<MessageC2S> messageQueue;
 
-
-
-
     public GameController(Game gameModel) {
         this.gameModel = gameModel;
         this.clients = new HashMap<>();
         messageQueue = new LinkedBlockingQueue<>();
         this.processIncomingMessages();
     }
-
 
     private void processIncomingMessages() {
         new Thread(() -> {
@@ -142,6 +139,9 @@ public class GameController {
                 gameModel.chooseObjective(name, chosen.get());
 
                 notifyObjChosen(name);
+
+                // back up game
+                backUpGame(gameModel);
             }catch (PlayerActionError e){
                 notifyError(name, e, "ChooseObjective");
             }
@@ -154,6 +154,9 @@ public class GameController {
                 CardResource card = gameModel.drawGameCard(name, fromGoldDeck);
 
                 notifyOfCardDrawn(name, card, fromGoldDeck);
+
+                // back up game
+                backUpGame(gameModel);
             }catch (PlayerActionError e){
                 notifyError(name, e, "DrawCardFromDeck");
             }
@@ -173,6 +176,9 @@ public class GameController {
                 gameModel.drawGameCard(playerName, cardToDraw.get());
 
                 notifyOfCardDrawn(playerName, cardToDraw.get());
+
+                // back up game
+                backUpGame(gameModel);
             } catch (PlayerActionError e) {
                 notifyError(playerName, e, "DrawCardFromCardId");
             }
@@ -201,6 +207,9 @@ public class GameController {
 
                 notifyOfCardPlayed(playerName, cardToPlay.get().getId());
 
+                // back up game
+                backUpGame(gameModel);
+
             }catch (PlayerActionError e){
                 MsgReportError message = new MsgReportError(playerName, e.getError());
                 try {
@@ -216,6 +225,9 @@ public class GameController {
         }
     }
 
+    /**
+     * This method is for sending chat messages
+     */
     public void sendMessage(ChatMessage chatMessage) throws RemoteException {
         synchronized (gameModel) {
             if(chatMessage.getReceiver().equals("all")){
@@ -232,6 +244,9 @@ public class GameController {
             gameModel.sendMessage(chatMessage);
         }
         notifyChatMessage();
+
+        // back up game
+        backUpGame(gameModel);
     }
 
     public void chooseColor(String playerName, String color) throws RemoteException {
@@ -242,6 +257,16 @@ public class GameController {
             } catch (PlayerActionError e) {
                 notifyError(playerName, e, "Error in choosing color");
             }
+        }
+    }
+
+
+
+
+
+    public void waitForReconnections(){
+        synchronized (gameModel){
+            gameModel.setWaitForReconnections();
         }
     }
 
@@ -338,6 +363,8 @@ public class GameController {
 
             client.sendMessage(message);
         }
+
+
     }
 
     public void notifyChooseColor(String name) throws RemoteException {
@@ -357,5 +384,14 @@ public class GameController {
         synchronized (gameModel){
             return gameModel.getGameRepresentation();
         }
+    }
+
+
+    /**
+     * This method starts a thread using [BackUpManager]
+     * @param game the game to be back-upped
+     */
+    private void backUpGame(Game game){
+        new BackupManager(game).start();
     }
 }

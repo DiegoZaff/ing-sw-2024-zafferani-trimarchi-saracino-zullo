@@ -6,6 +6,7 @@ import it.polimi.ingsw.gc28.model.errors.types.AlreadyChoseObjectiveError;
 import it.polimi.ingsw.gc28.model.errors.types.NotYourTurnError;
 import it.polimi.ingsw.gc28.model.errors.PlayerActionError;
 import it.polimi.ingsw.gc28.model.errors.types.UnexpectedMoveError;
+import it.polimi.ingsw.gc28.model.errors.types.UnrestorableGameError;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -33,6 +34,8 @@ public class ActionManager {
     }
 
     private ActionType actionType;
+
+    private ActionType savedAction;
 
     /**
      * This attribute is null until a player reaches 20 points, counting
@@ -155,6 +158,19 @@ public class ActionManager {
                 playerOfTurn = getNextPlayer();
                 updateRoundsLeft();
             }
+            case  WAIT_RECONNECTIONS -> {
+                boolean isAllReconnected = players.stream().allMatch(Player::isConnected);
+
+                if(isAllReconnected){
+                    if(savedAction != null){
+                        actionType = savedAction;
+                    }else{
+                        // should not happen
+                        throw  new RuntimeException();
+                    }
+
+                }
+            }
         }
     }
 
@@ -202,5 +218,28 @@ public class ActionManager {
         int additionalCircle = players.size();
 
         roundsLeft = additionalCircle + roundsToFinishCircle;
+    }
+
+
+    public void setWaitForReconnections() throws UnrestorableGameError {
+        if(actionType == null){
+            // looks like game never started in the first place.
+            throw new UnrestorableGameError(actionType);
+        }
+
+        if(!actionType.equals(ActionType.WAIT_RECONNECTIONS)){
+            savedAction = actionType;
+        }else if(savedAction == null){
+            // this is weird and should never happen.
+            throw new UnrestorableGameError(savedAction);
+
+        }
+        // else branch: game crashed after crashing, start reconnection process again
+
+        for(Player p : players){
+            p.setConnected(false);
+        }
+
+        actionType = ActionType.WAIT_RECONNECTIONS;
     }
 }
