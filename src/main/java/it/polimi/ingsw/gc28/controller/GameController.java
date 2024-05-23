@@ -1,5 +1,5 @@
 package it.polimi.ingsw.gc28.controller;
-import it.polimi.ingsw.gc28.model.errors.types.InvalidReceiverName;
+import it.polimi.ingsw.gc28.model.errors.types.*;
 import it.polimi.ingsw.gc28.network.messages.client.MessageC2S;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
 import it.polimi.ingsw.gc28.model.Coordinate;
@@ -10,7 +10,6 @@ import it.polimi.ingsw.gc28.model.cards.CardObjective;
 import it.polimi.ingsw.gc28.model.cards.CardResource;
 import it.polimi.ingsw.gc28.model.cards.CardsManager;
 import it.polimi.ingsw.gc28.model.chat.ChatMessage;
-import it.polimi.ingsw.gc28.model.errors.types.NoSuchCardId;
 import it.polimi.ingsw.gc28.model.errors.PlayerActionError;
 import it.polimi.ingsw.gc28.network.messages.server.*;
 import it.polimi.ingsw.gc28.network.rmi.VirtualView;
@@ -233,6 +232,17 @@ public class GameController {
             gameModel.sendMessage(chatMessage);
         }
         notifyChatMessage();
+    }
+
+    public void chooseColor(String playerName, String color) throws RemoteException {
+        synchronized (gameModel) {
+            try {
+                gameModel.chooseColor(playerName, color);
+            } catch (PlayerActionError e) {
+                notifyError(playerName, e, "Error in choosing color");
+            }
+
+        }
     }
 
     public void notifyOfCardDrawn(String playerName, CardResource card, Boolean fromGoldDeck) throws RemoteException {

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc28.model;
 
+import it.polimi.ingsw.gc28.model.utils.PlayerColor;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
 import it.polimi.ingsw.gc28.view.PrivateRepresentation;
 import it.polimi.ingsw.gc28.model.actions.ActionManager;
@@ -623,5 +624,27 @@ public class Game {
 
     public Chat getChat(){
         return chat;
+    }
+
+    public void chooseColor(String playerName, String color) throws NoSuchPlayerError, ColorTakenError, InvalidColor {
+        Optional<Player> player;
+        player = getPlayerOfName(playerName);
+
+        if(player.isEmpty()){
+            throw new NoSuchPlayerError();
+        }
+
+        PlayerColor col;
+        try{
+            col = PlayerColor.valueOf(color);
+        } catch (IllegalArgumentException e){
+            throw new InvalidColor(color);
+        }
+
+        boolean isColorTaken = this.players.stream().anyMatch(p -> p.getColor().equals(col));
+        if(isColorTaken){
+            throw new ColorTakenError();
+        }
+        player.get().setColor(col);
     }
 }

@@ -119,8 +119,14 @@ public class ActionManager {
         switch (actionType){
             case JOIN_GAME -> {
                 if(players.size() == nPlayers){
+                    actionType = ActionType.CHOOSE_COLOR;
+                }
+            }
+            case CHOOSE_COLOR -> {
+                if(isCurrentPlayerTheLastOneForTheAction()) {
                     actionType = ActionType.PLAY_INITIAL_CARD;
                 }
+                playerOfTurn = getNextPlayer();
             }
             case PLAY_INITIAL_CARD -> {
                 if(isCurrentPlayerTheLastOneForTheAction()) {
