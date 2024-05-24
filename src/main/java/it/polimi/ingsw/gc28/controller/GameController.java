@@ -74,7 +74,7 @@ public class GameController {
                 this.clients.put(name, client);
             }catch (PlayerActionError e){
                 // notify error to player
-                MsgReportError message = new MsgReportError(name, e.getError());
+                MsgReportError message = new MsgReportError(e.getError());
                 client.sendMessage(message);
                 return false;
             }
@@ -219,7 +219,7 @@ public class GameController {
                 backUpGame(gameModel);
 
             }catch (PlayerActionError e){
-                MsgReportError message = new MsgReportError(playerName, e.getError());
+                MsgReportError message = new MsgReportError(e.getError());
                 try {
                     clients.get(playerName).sendMessage(message);
                     return;
@@ -280,13 +280,14 @@ public class GameController {
     }
 
 
-    public boolean reconnect(String playerName) throws RemoteException {
+    public boolean reconnect(String playerName, VirtualView client) throws RemoteException {
         synchronized (gameModel){
             try {
                 gameModel.reconnectPlayer(playerName);
+                this.clients.put(playerName, client);
                 return true;
             } catch (PlayerActionError e) {
-                notifyError(playerName, e, "error while reconnecting");
+                notifyErrorSpecificClient(client, e);
             }
             return false;
         }
@@ -356,8 +357,13 @@ public class GameController {
             return;
         }
 
-        MsgReportError message = new MsgReportError(name, actionDetails);
+        MsgReportError message = new MsgReportError(e.getMessage());
         clients.get(name).sendMessage(message);
+    }
+
+    public void notifyErrorSpecificClient(VirtualView client, PlayerActionError e) throws RemoteException {
+        MsgReportError message = new MsgReportError(e.getMessage());
+        client.sendMessage(message);
     }
 
     public void notifyGameCreated(String gameId, String name, int numberOfPlayersLeftToJoin) throws RemoteException {
@@ -375,12 +381,23 @@ public class GameController {
     }
 
     public void notifyPlayerReconnected(String gameId, String playerName, int playersLeft) throws RemoteException {
-        MsgOnPlayerReconnected msg = new MsgOnPlayerReconnected(gameId, playerName, playersLeft);
+
 
         for(Map.Entry<String, VirtualView> entry : clients.entrySet()){
 
             VirtualView client = entry.getValue();
-            client.sendMessage(msg);
+
+            String name = entry.getKey();
+
+
+            if(name.equals(playerName)){
+                MsgOnPlayerReconnected msg = new MsgOnPlayerReconnected(gameId, playerName, playersLeft);
+                client.sendMessage(msg);
+            }else{
+                MsgOnSomeoneElseReconnected msg= new MsgOnSomeoneElseReconnected(playerName, playersLeft);
+                client.sendMessage(msg);
+            }
+
         }
     }
 

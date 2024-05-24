@@ -44,7 +44,7 @@ public class BackupManager extends Thread {
                 out.writeObject(game);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
     }
 }

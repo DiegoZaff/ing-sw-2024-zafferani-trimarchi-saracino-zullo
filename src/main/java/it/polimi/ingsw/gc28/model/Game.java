@@ -13,10 +13,11 @@ import it.polimi.ingsw.gc28.model.errors.types.*;
 
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Game {
+public class Game implements Serializable {
 
     private ActionManager actionManager;
     private ArrayList<CardObjective> globalObjectives;

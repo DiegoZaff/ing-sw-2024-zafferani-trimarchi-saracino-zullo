@@ -9,14 +9,6 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 public class MessageUtils {
-//    private static MessageToServer instance;
-//
-//    public static MessageToServer getInstance() {
-//        if (instance == null) {
-//            instance = new MessageToServer();
-//        }
-//        return instance;
-//    }
 
     public static Optional<MessageC2S> createMessage(ArrayList<String> commandsList, RmiClient rmiClient, String gameId, String userName) {
         String action = commandsList.getFirst();
@@ -65,6 +57,22 @@ public class MessageUtils {
                     message = new MsgJoinGame(null, newGameId, playerName);
                 } else {
                     message = new MsgJoinGame(rmiClient, newGameId, playerName);
+                }
+                return Optional.of(message);
+            }case "reconnect" -> {
+                if (commandsList.size() != 3) {
+                    System.out.println("Invalid format in reconnect");
+                    return Optional.empty();
+                }
+
+                String newGameId = commandsList.get(1);
+                playerName = commandsList.get(2);
+
+                MsgReconnect message;
+                if (rmiClient == null) {
+                    message = new MsgReconnect(newGameId,null, playerName);
+                } else {
+                    message = new MsgReconnect(newGameId, rmiClient , playerName);
                 }
                 return Optional.of(message);
             }
@@ -302,6 +310,11 @@ public class MessageUtils {
                     System.out.println("Too many arguments\n");
                     return true;
                 }
+            }
+            case "whoami" : {
+                String playerName = GameManagerClient.getInstance().getPlayerName();
+                System.out.printf("You are %s%n", playerName);
+                return true;
             }
             case "?" :{
                 System.out.println("command List:\n" +

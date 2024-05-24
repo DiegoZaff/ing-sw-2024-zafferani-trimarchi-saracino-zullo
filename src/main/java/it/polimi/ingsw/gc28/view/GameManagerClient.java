@@ -356,6 +356,7 @@ public class GameManagerClient {
         PrivateRepresentation repr = currentRepresentation.getRepresentations().get(playerName);
 
         if(repr == null){
+            // TODO : why throw exception?
             throw new RuntimeException();
         }
 

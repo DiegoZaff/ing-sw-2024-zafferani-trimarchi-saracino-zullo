@@ -6,7 +6,7 @@ import it.polimi.ingsw.gc28.view.GameManagerClient;
 public class MsgReportError extends MessageS2C{
 
     private final String details;
-    public MsgReportError(String playerName, String details){
+    public MsgReportError(String details){
         super(MessageTypeS2C.ERROR);
         this.details = details;
     }
