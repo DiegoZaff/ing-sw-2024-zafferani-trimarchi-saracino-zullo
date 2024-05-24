@@ -6,7 +6,9 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -14,10 +16,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class LobbyController implements Initializable {
+public class GamesController implements Initializable {
     private final Border borderBold = new Border(new BorderStroke(
             Color.web("#424242"), // Border color
             BorderStrokeStyle.SOLID, // Border style
@@ -33,8 +36,17 @@ public class LobbyController implements Initializable {
     public Button createGameButton;
     @FXML
     public Button joinGameButton;
+    @FXML
+    public Button TwoPlayers;
+    public Button ThreePlayers;
+    public Button FourPlayers;
+    public VBox createGameBox;
 
     private BooleanProperty isCreateGameSelected;
+
+    private BooleanProperty isTwoPlayersGame;
+    private BooleanProperty isThreePlayersGame;
+    private BooleanProperty isFourPlayersGame;
 
 
     @Override
@@ -71,11 +83,23 @@ public class LobbyController implements Initializable {
         if(!isCreateGameSelected.getValue()){
             isCreateGameSelected.set(true);
         }
+        createGameBox.setVisible(true);
     }
 
     public void handleSelectJoinGame(MouseEvent mouseEvent) {
         if(isCreateGameSelected.getValue()){
             isCreateGameSelected.set(false);
         }
+        createGameBox.setVisible(false);
+    }
+
+    public void handleSelectTwoPlayers(MouseEvent mouseEvent) {
+        if(isThreePlayersGame.getValue()){
+            isThreePlayersGame.set(false);
+        }
+        if(isFourPlayersGame.getValue()){
+            isFourPlayersGame.set(false);
+        }
+        isTwoPlayersGame.set(true);
     }
 }
