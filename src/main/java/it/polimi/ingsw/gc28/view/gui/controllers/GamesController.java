@@ -36,8 +36,6 @@ public class GamesController implements Initializable {
     private static final int FOUR = 4;
     @FXML
     public TextField usernameTextField;
-    @FXML
-    public TextField numberOfPlayersTextField;
     public ImageView backgroundImageView;
     @FXML
     public Button createGameButton;
@@ -136,6 +134,18 @@ public class GamesController implements Initializable {
     }
 
     public void handleCreateButton(MouseEvent mouseEvent) {
+        String playerName;
+        int nPlayers;
+
+        nPlayers = numberOfPlayers.getValue();
+        playerName = usernameTextField.getText();
+        if (playerName == null || playerName.trim().isEmpty()) {
+            System.err.println("Player name cannot be empty.");
+            return;
+        }
+    }
+
+    public void handleJoinButton(MouseEvent mouseEvent) {
 
     }
 }

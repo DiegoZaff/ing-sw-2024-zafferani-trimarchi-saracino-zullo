@@ -92,7 +92,7 @@
         <Region>
             <minHeight>158.0</minHeight>
         </Region>
-        <Button fx:id="joinButton" onMouseClicked="#handleCreateButton" prefHeight="64.0" prefWidth="322.0" style="-fx-background-color: transparent;-fx-font-size: 24pt; -fx-font-weight: bold" text="JOIN" layoutX="300" layoutY="300"/>
+        <Button fx:id="joinButton" onMouseClicked="#handleJoinButton" prefHeight="64.0" prefWidth="322.0" style="-fx-background-color: transparent;-fx-font-size: 24pt; -fx-font-weight: bold" text="JOIN" layoutX="300" layoutY="300"/>
     </VBox>
 
 </AnchorPane>
