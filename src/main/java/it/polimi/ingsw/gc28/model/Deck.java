@@ -14,6 +14,7 @@ import org.json.simple.parser.ParseException;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Random;
@@ -21,7 +22,7 @@ import java.util.Random;
 /**
  * Class that represents the deck of cards.
  */
-public class Deck {
+public class Deck implements Serializable {
     private final ArrayList<CardResource> cardResourceDeck;
     private final ArrayList<CardGold> cardGoldDeck;
     private final ArrayList<CardInitial> cardInitialDeck;

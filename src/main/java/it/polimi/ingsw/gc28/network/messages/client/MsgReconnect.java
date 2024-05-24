@@ -9,7 +9,7 @@ import java.rmi.RemoteException;
 public class MsgReconnect extends MessageC2S{
     private final VirtualView client;
     private final String playerName;
-    protected MsgReconnect(String gameId, VirtualView client, String playerName) {
+    public MsgReconnect(String gameId, VirtualView client, String playerName) {
         super(MessageTypeC2S.RECONNECT, gameId);
         this.client = client;
         this.playerName = playerName;
@@ -17,7 +17,7 @@ public class MsgReconnect extends MessageC2S{
 
     @Override
     public void execute(GameController controller) throws RemoteException, FailedActionManaged {
-        boolean isSuccessful = controller.reconnect(playerName);
+        boolean isSuccessful = controller.reconnect(playerName, client);
 
         if(!isSuccessful){
             throw new FailedActionManaged("Reconnection error was managed.");

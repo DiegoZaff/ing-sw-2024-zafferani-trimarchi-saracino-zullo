@@ -112,7 +112,9 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, GuiCa
     @Override
     public void sendMessageToServer(MessageC2S message) {
         try{
-            if (message.getType().equals(MessageTypeC2S.CREATE_GAME) || message.getType().equals(MessageTypeC2S.JOIN_GAME)) {
+            if (message.getType().equals(MessageTypeC2S.CREATE_GAME) ||
+                    message.getType().equals(MessageTypeC2S.JOIN_GAME) ||
+                    message.getType().equals(MessageTypeC2S.RECONNECT)) {
                 if (GameManagerClient.getInstance().canICreateOrJoinAGame()) {
                     server.sendMessage(message);
                 }
@@ -126,6 +128,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, GuiCa
         }catch (RemoteException e){
             // TODO: should we handle this?
             // TODO: maybe log error with snackbar
+            // TODO: server crashed, try reconnecting....
             System.err.println("Remote exception while sending message to server in RMI?");
             throw  new RuntimeException(e);
         }

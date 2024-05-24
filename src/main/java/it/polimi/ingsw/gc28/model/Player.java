@@ -12,11 +12,12 @@ import it.polimi.ingsw.gc28.model.errors.types.NotPlayableGoldCard;
 import it.polimi.ingsw.gc28.model.errors.types.UnplayableCoordinate;
 import it.polimi.ingsw.gc28.model.objectives.Objective;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Optional;
 
 
-public class Player {
+public class Player implements Serializable {
 
     private int points, objectivePoints;
 

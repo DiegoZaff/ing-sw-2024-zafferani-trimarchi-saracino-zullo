@@ -8,6 +8,7 @@ import it.polimi.ingsw.gc28.model.errors.PlayerActionError;
 import it.polimi.ingsw.gc28.model.errors.types.UnexpectedMoveError;
 import it.polimi.ingsw.gc28.model.errors.types.UnrestorableGameError;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Random;
@@ -17,7 +18,7 @@ import java.util.Random;
  * It's responsible for updating them accordingly so that it simplifies the
  * Game Class considerably
  */
-public class ActionManager {
+public class ActionManager implements Serializable {
 
     final private int nPlayers;
 
