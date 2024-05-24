@@ -132,7 +132,7 @@ public class MenuController  implements Initializable {
             try {
                 GuiApplication.connection = RmiClient.startClientRMI(false, hostServer, port);
                 // TODO : make lobby page
-                Platform.runLater(() -> GuiApplication.setRootPage("lobby"));
+                Platform.runLater(() -> GuiApplication.setRootPage("games"));
             } catch (RemoteException e) {
                 // TODO : show snackBar error
                 System.err.println("Remote exception!");
@@ -148,7 +148,7 @@ public class MenuController  implements Initializable {
         new Thread(() -> {
             try {
                 GuiApplication.connection = ClientTCP.startClientSocket(hostServer, port, false);
-                Platform.runLater(() -> GuiApplication.setRootPage("lobby"));
+                Platform.runLater(() -> GuiApplication.setRootPage("games"));
             } catch (IOException e) {
                 // TODO :snackbar error?
                 System.err.println("Could not establish TCP connection");
