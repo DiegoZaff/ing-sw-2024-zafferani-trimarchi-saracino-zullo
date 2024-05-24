@@ -32,4 +32,9 @@ public class PositionChallenge extends Challenge implements Serializable {
     public int challengePoints(Table table, Coordinate coordinate){
         return this.countAdjacent(table, coordinate) * 2;
     }
+
+    @Override
+    public String toString(){
+        return "2/cor";
+    }
 }

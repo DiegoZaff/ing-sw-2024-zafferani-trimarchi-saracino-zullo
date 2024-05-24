@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc28.controller;
 import it.polimi.ingsw.gc28.model.errors.types.*;
 import it.polimi.ingsw.gc28.network.messages.client.MessageC2S;
+import it.polimi.ingsw.gc28.network.persistence.BackupManager;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
 import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.model.Game;
@@ -26,16 +27,12 @@ public class GameController {
 
     private final BlockingQueue<MessageC2S> messageQueue;
 
-
-
-
     public GameController(Game gameModel) {
         this.gameModel = gameModel;
         this.clients = new HashMap<>();
         messageQueue = new LinkedBlockingQueue<>();
         this.processIncomingMessages();
     }
-
 
     private void processIncomingMessages() {
         new Thread(() -> {
@@ -47,6 +44,8 @@ public class GameController {
                     }catch (RemoteException e){
                         System.err.println("Remote Exception while executing a message!");
                         System.err.println(e.getMessage());
+                    } catch (PlayerActionError e) {
+                        System.err.println("Error should be already managed!");
                     }
                 } catch (InterruptedException e) {
                     System.err.println("Thread was interrupted while taking a message!");
@@ -67,7 +66,7 @@ public class GameController {
         }
     }
 
-    public void addPlayerToGame(String name, VirtualView client, boolean notifyJoin) throws RemoteException {
+    public boolean addPlayerToGame(String name, VirtualView client) throws RemoteException {
 
         synchronized (gameModel){
             try{
@@ -77,36 +76,42 @@ public class GameController {
                 // notify error to player
                 MsgReportError message = new MsgReportError(name, e.getError());
                 client.sendMessage(message);
-                return;
+                return false;
             }
 
+            return true;
+        }
+    }
 
-            if(notifyJoin){
-                int playersLeftToJoin = gameModel.getNPlayers() - gameModel.getActualNumPlayers();
-
-                MsgOnGameJoined message = new MsgOnGameJoined(this.gameModel.getGameId() ,name, playersLeftToJoin);
-
-                clients.get(name).sendMessage(message);
-            }
-
-            if(hasGameStarted()){
+    /**
+     * This is called after a player has joined. If the game has started this method notifies all client.
+     */
+    public void hasGameStarted() throws RemoteException {
+        synchronized (gameModel){
+            if (gameModel.getHasGameStarted()){
+                GameRepresentation representation = getGameRepresentation();
                 for(Map.Entry<String, VirtualView> entry : clients.entrySet()){
-
                     VirtualView cli = entry.getValue();
-
-                    GameRepresentation representation = getGameRepresentation();
-
                     MsgOnGameStarted m = new MsgOnGameStarted(representation);
-
                     cli.sendMessage(m);
                 }
             }
         }
     }
 
-    public boolean hasGameStarted(){
+    /**
+     * This is called after a player has joined. If the game has started this method notifies all client.
+     */
+    public void hasGameRestarted() throws RemoteException {
         synchronized (gameModel){
-            return gameModel.getHasGameStarted();
+            if (gameModel.isEveryoneReconnected()){
+                GameRepresentation representation = getGameRepresentation();
+                for(Map.Entry<String, VirtualView> entry : clients.entrySet()){
+                    VirtualView cli = entry.getValue();
+                    MsgOnGameRestarted m = new MsgOnGameRestarted(representation);
+                    cli.sendMessage(m);
+                }
+            }
         }
     }
 
@@ -142,6 +147,9 @@ public class GameController {
                 gameModel.chooseObjective(name, chosen.get());
 
                 notifyObjChosen(name);
+
+                // back up game
+                backUpGame(gameModel);
             }catch (PlayerActionError e){
                 notifyError(name, e, "ChooseObjective");
             }
@@ -154,6 +162,9 @@ public class GameController {
                 CardResource card = gameModel.drawGameCard(name, fromGoldDeck);
 
                 notifyOfCardDrawn(name, card, fromGoldDeck);
+
+                // back up game
+                backUpGame(gameModel);
             }catch (PlayerActionError e){
                 notifyError(name, e, "DrawCardFromDeck");
             }
@@ -173,6 +184,9 @@ public class GameController {
                 gameModel.drawGameCard(playerName, cardToDraw.get());
 
                 notifyOfCardDrawn(playerName, cardToDraw.get());
+
+                // back up game
+                backUpGame(gameModel);
             } catch (PlayerActionError e) {
                 notifyError(playerName, e, "DrawCardFromCardId");
             }
@@ -201,6 +215,9 @@ public class GameController {
 
                 notifyOfCardPlayed(playerName, cardToPlay.get().getId());
 
+                // back up game
+                backUpGame(gameModel);
+
             }catch (PlayerActionError e){
                 MsgReportError message = new MsgReportError(playerName, e.getError());
                 try {
@@ -216,6 +233,9 @@ public class GameController {
         }
     }
 
+    /**
+     * This method is for sending chat messages
+     */
     public void sendMessage(ChatMessage chatMessage) throws RemoteException {
         synchronized (gameModel) {
             if(chatMessage.getReceiver().equals("all")){
@@ -232,6 +252,9 @@ public class GameController {
             gameModel.sendMessage(chatMessage);
         }
         notifyChatMessage();
+
+        // back up game
+        backUpGame(gameModel);
     }
 
     public void chooseColor(String playerName, String color) throws RemoteException {
@@ -242,6 +265,30 @@ public class GameController {
             } catch (PlayerActionError e) {
                 notifyError(playerName, e, "Error in choosing color");
             }
+        }
+    }
+
+
+    public void waitForReconnections(){
+        synchronized (gameModel){
+            try {
+                gameModel.setWaitForReconnections();
+            } catch (UnrestorableGameError e) {
+                System.err.printf("Game %s could not be restored!\n%s%n", gameModel.getGameId(), e.getMessage());
+            }
+        }
+    }
+
+
+    public boolean reconnect(String playerName) throws RemoteException {
+        synchronized (gameModel){
+            try {
+                gameModel.reconnectPlayer(playerName);
+                return true;
+            } catch (PlayerActionError e) {
+                notifyError(playerName, e, "error while reconnecting");
+            }
+            return false;
         }
     }
 
@@ -327,6 +374,45 @@ public class GameController {
 
     }
 
+    public void notifyPlayerReconnected(String gameId, String playerName, int playersLeft) throws RemoteException {
+        MsgOnPlayerReconnected msg = new MsgOnPlayerReconnected(gameId, playerName, playersLeft);
+
+        for(Map.Entry<String, VirtualView> entry : clients.entrySet()){
+
+            VirtualView client = entry.getValue();
+            client.sendMessage(msg);
+        }
+    }
+
+
+    public void notifyPlayerJoined(String gameId, String playerName, int playersLeft) throws RemoteException {
+
+        for(Map.Entry<String, VirtualView> entry : clients.entrySet()){
+
+            VirtualView client = entry.getValue();
+
+            String name = entry.getKey();
+
+
+            if(name.equals(playerName)){
+                MsgOnGameJoined msg = new MsgOnGameJoined(gameId, playerName, playersLeft);
+                client.sendMessage(msg);
+            }else{
+                MsgOnSomeoneElseJoined msg= new MsgOnSomeoneElseJoined(gameId, playerName, playersLeft);
+                client.sendMessage(msg);
+            }
+
+        }
+    }
+
+    public int getPlayersToReconnect(){
+        return gameModel.getNPlayersToReconnect();
+    }
+
+    public int getPlayersToJoin(){
+        return gameModel.getPlayersToJoin();
+    }
+
     public void notifyChatMessage() throws RemoteException {
         GameRepresentation gameRepresentation = getGameRepresentation();
 
@@ -338,6 +424,8 @@ public class GameController {
 
             client.sendMessage(message);
         }
+
+
     }
 
     public void notifyChooseColor(String name) throws RemoteException {
@@ -353,9 +441,20 @@ public class GameController {
         }
     }
 
+
+
     public GameRepresentation getGameRepresentation(){
         synchronized (gameModel){
             return gameModel.getGameRepresentation();
         }
+    }
+
+
+    /**
+     * This method starts a thread using [BackUpManager]
+     * @param game the game to be back-upped
+     */
+    private void backUpGame(Game game){
+        new BackupManager(game).start();
     }
 }

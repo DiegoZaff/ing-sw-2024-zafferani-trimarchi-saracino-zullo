@@ -268,7 +268,10 @@ public class GameManagerClient {
         GameRepresentation rep = getCurrentRepresentation();
 
         ArrayList<String> globalObjectives = rep.getGlobalObjectives();
-        this.writeInConsole(String.format("Global objectives are %s and %s", globalObjectives.get(0), globalObjectives.get(1)));
+        String result = mergeCards(CardsManager.getInstance().getCardObjectiveFromId(globalObjectives.get(0)).get().toString(),
+                CardsManager.getInstance().getCardObjectiveFromId(globalObjectives.get(1)).get().toString());
+        this.writeInConsole(String.format("Global objectives are\n" +
+                "%s", result));
     }
 
     public void showYourObjective(){
@@ -302,15 +305,27 @@ public class GameManagerClient {
 
         ArrayList<CardObjective> cards = rep.getObjsToChoose();
 
-        String result;
+
+
+
 
         if(cards == null || cards.size() != 2){
-            result = "no cards to choose yet";
+            this.writeInConsole("no cards to choose yet");
         }else{
-            result = String.format("%s, %s", cards.get(0).getId(), cards.get(1).getId());
+            ArrayList<String>cardId = new ArrayList<>();
+            cardId.add(cards.get(0).getId());
+            cardId.add((cards.get(1).getId()));
+            String result = mergeCards(CardsManager.getInstance().getCardObjectiveFromId(cardId.get(0)).get().toString(),
+                    CardsManager.getInstance().getCardObjectiveFromId(cardId.get(1)).get().toString());
+            this.writeInConsole(result);
+            for (int i = 0; i< cards.size(); i++){
+                this.writeInConsole("card "+(i+1)+" id: "+cards.get(i).getId());
+            }
+
         }
 
-        this.writeInConsole(result);
+
+
 
     }
 

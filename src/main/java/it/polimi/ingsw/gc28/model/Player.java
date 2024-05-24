@@ -20,13 +20,9 @@ public class Player {
 
     private int points, objectivePoints;
 
-/*
-    //setter per test calculatewinner è una schifezza si puo togliere;
-    public void setPoints (int pointstoset) {points = pointstoset;};
-    public void setObjectrivePoints (int pointstoset) {objectivePoints = pointstoset;};
-*/
-
     private boolean winner = false;
+
+    private boolean connected;
 
     private final String name;
     private PlayerColor color;
@@ -47,7 +43,7 @@ public class Player {
         this.objectivePoints = 0;
         this.hand = new ArrayList<>();
         this.table = new Table();
-
+        this.connected = true;
     }
 
     public Optional<ArrayList<CardObjective>> getObjectivesToChoose(){
@@ -205,5 +201,13 @@ public class Player {
 
     public PlayerColor getColor(){
         return color;
+    }
+
+    public boolean isConnected() {
+        return connected;
+    }
+
+    public void setConnected(boolean connected) {
+        this.connected = connected;
     }
 }

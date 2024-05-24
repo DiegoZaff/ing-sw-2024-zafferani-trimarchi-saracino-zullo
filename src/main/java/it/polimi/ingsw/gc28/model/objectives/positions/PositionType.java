@@ -14,4 +14,6 @@ public abstract class PositionType {
      * pattern of the corresponding position.
      */
     public abstract ArrayList<Coordinate> getNeighborsCoordinates(Coordinate coord);
+
+    public abstract String toString(String color1, String color2, String color3);
 }

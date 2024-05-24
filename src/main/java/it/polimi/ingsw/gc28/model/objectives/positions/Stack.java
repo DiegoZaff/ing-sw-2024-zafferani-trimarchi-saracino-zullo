@@ -37,5 +37,9 @@ public class Stack extends PositionType implements Serializable {
         return coords;
     }
 
+    public String toString(String color1, String color2, String color3){
+        return type.toString(color1, color2, color3);
+    }
+
 
 }

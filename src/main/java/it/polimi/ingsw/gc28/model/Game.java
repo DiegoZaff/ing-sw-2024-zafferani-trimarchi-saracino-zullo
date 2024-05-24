@@ -648,4 +648,39 @@ public class Game {
         player.get().setColor(col);
         actionManager.nextMove();
     }
+
+    public void setWaitForReconnections() throws UnrestorableGameError {
+        actionManager.setWaitForReconnections();
+    }
+
+
+
+    public void reconnectPlayer(String name) throws NoSuchPlayerError, PlayerIsAlreadyConnectedError {
+        Optional<Player> player = getPlayerOfName(name);
+
+        if(player.isEmpty()){
+            throw new NoSuchPlayerError();
+        }
+
+        if(player.get().isConnected()){
+            throw new PlayerIsAlreadyConnectedError(name);
+        }
+
+        player.get().setConnected(true);
+
+        actionManager.nextMove();
+    }
+
+
+    public int getNPlayersToReconnect(){
+        return (int) players.stream().filter(p -> !p.isConnected()).count();
+    }
+
+    public int getPlayersToJoin(){
+        return getNPlayers() - getActualNumPlayers();
+    }
+    public boolean isEveryoneReconnected(){
+        return players.stream().allMatch(Player::isConnected);
+    }
+
 }

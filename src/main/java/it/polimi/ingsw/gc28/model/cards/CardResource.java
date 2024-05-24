@@ -110,20 +110,22 @@ public class CardResource extends CardGame {
 
         String show = String.format("""
                 %s__________________
-                %s|%s            %s|
+                %s|%s     %s      %s|
                 %s|       %s       |
                 %s|%s            %s|
                 %s‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾%s
-                """,color, color, verticesStrings.get(0), verticesStrings.get(1)+color,color,centralRes+color,color,
+                """,color, color, verticesStrings.get(0),""+pointsPerPlay ,verticesStrings.get(1)+color,color,centralRes+color,color,
                 verticesStrings.get(3), verticesStrings.get(2)+color,color,Colors.RESET.getCode());
+
+        if (!isFront){
+            StringBuffer s = new StringBuffer(show);
+            s.replace(46, 47, " ");
+            return s.toString();
+        }
+
         return show;
 
 
-        /*
-        StringBuffer show = new StringBuffer(super.toString(isFront));
-        show.replace(46,48, this.getCentralResourceStringInfo(isFront));
-        return show.toString();
-         */
 
     }
 
