@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc28.view.gui.controllers;
 
+import it.polimi.ingsw.gc28.network.messages.client.MsgCreateGame;
 import it.polimi.ingsw.gc28.view.gui.GuiApplication;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
@@ -21,6 +22,8 @@ import javafx.scene.paint.Color;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import static it.polimi.ingsw.gc28.view.gui.GuiApplication.connection;
 
 public class GamesController implements Initializable {
 
@@ -66,8 +69,8 @@ public class GamesController implements Initializable {
         backgroundImageView.fitWidthProperty().bind(GuiApplication.mainScene.widthProperty());
         changeButtonWidth(createGameButton, isCreateGameSelected.getValue());
         changeButtonWidth(TwoPlayersButton, numberOfPlayers.get() == TWO);
-
         joinGameBox.setVisible(false);
+
         isCreateGameSelected.addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
@@ -78,7 +81,7 @@ public class GamesController implements Initializable {
         });
         numberOfPlayers.addListener(new ChangeListener<Number>() {
             @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number newNumber) {
                 changeButtonWidth(TwoPlayersButton, numberOfPlayers.get() == TWO);
                 changeButtonWidth(ThreePlayersButton, numberOfPlayers.get() == THREE);
                 changeButtonWidth(FourPlayersButton, numberOfPlayers.get() == FOUR);
@@ -88,8 +91,8 @@ public class GamesController implements Initializable {
 
 
     public void onBackArrowClicked(MouseEvent mouseEvent) {
-        GuiApplication.connection.closeConnection();
-        GuiApplication.connection = null;
+        connection.closeConnection();
+        connection = null;
         GuiApplication.setRootPage("menu");
     }
 
@@ -122,11 +125,13 @@ public class GamesController implements Initializable {
             numberOfPlayers.set(TWO);
         }
     }
+
     public void handleSelectThreePlayers(MouseEvent mouseEvent) {
         if(numberOfPlayers.get() != THREE){
             numberOfPlayers.set(THREE);
         }
     }
+
     public void handleSelectFourPlayers(MouseEvent mouseEvent) {
         if(numberOfPlayers.get() != FOUR){
             numberOfPlayers.set(FOUR);
@@ -134,18 +139,27 @@ public class GamesController implements Initializable {
     }
 
     public void handleCreateButton(MouseEvent mouseEvent) {
-        String playerName;
-        int nPlayers;
+        new Thread(() -> {
+            String playerName;
+            int nPlayers;
 
-        nPlayers = numberOfPlayers.getValue();
-        playerName = usernameTextField.getText();
-        if (playerName == null || playerName.trim().isEmpty()) {
-            System.err.println("Player name cannot be empty.");
-            return;
-        }
+            nPlayers = numberOfPlayers.getValue();
+            playerName = usernameTextField.getText();
+            if (playerName == null || playerName.trim().isEmpty()) {
+                System.err.println("Player name cannot be empty.");
+                return;
+            }
+            //TODO: manage RMI case
+            MsgCreateGame message = new MsgCreateGame(null, playerName, nPlayers, null);
+            connection.sendMessageToServer(message);
+        }).start();
     }
 
     public void handleJoinButton(MouseEvent mouseEvent) {
+
+    }
+
+    public void receiveMessageFromServer(){
 
     }
 }
