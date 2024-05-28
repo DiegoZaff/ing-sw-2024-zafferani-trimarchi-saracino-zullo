@@ -2,6 +2,9 @@ package it.polimi.ingsw.gc28.view.gui.controllers;
 
 import it.polimi.ingsw.gc28.network.rmi.RmiClient;
 import it.polimi.ingsw.gc28.network.socket.ClientTCP;
+import it.polimi.ingsw.gc28.view.GameManagerClient;
+import it.polimi.ingsw.gc28.view.GameRepresentation;
+import it.polimi.ingsw.gc28.view.GuiObserver;
 import it.polimi.ingsw.gc28.view.gui.GuiApplication;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -23,7 +26,7 @@ import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MenuController  implements Initializable {
+public class MenuController  implements Initializable, GuiObserver {
 
     private static final String DEFAULT_PORT_RMI = "8887";
     private static final String DEFAULT_PORT_SOCKET = "8886";
@@ -154,6 +157,11 @@ public class MenuController  implements Initializable {
                 System.err.println("Could not establish TCP connection");
             }
         }).start();
+    }
+
+    @Override
+    public void update(GameRepresentation gameRepresentation) {
+
     }
 }
 

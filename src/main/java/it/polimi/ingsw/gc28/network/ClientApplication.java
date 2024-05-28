@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc28.network;
 
 import it.polimi.ingsw.gc28.network.rmi.RmiClient;
 import it.polimi.ingsw.gc28.network.socket.ClientTCP;
+import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.gui.GuiApplication;
 import javafx.application.Application;
 
@@ -47,6 +48,8 @@ public class ClientApplication {
                 isCli = false;
             }
         }
+
+        GameManagerClient.isCli = isCli;
 
         if(isCli){
             if (isRmi) {

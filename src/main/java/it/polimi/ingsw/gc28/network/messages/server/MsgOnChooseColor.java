@@ -15,7 +15,7 @@ public class MsgOnChooseColor extends MessageS2C{
         this.gameRepresentation = gameRepresentation;
     }
     @Override
-    public void update(GameManagerClient gameManagerClient) {
+    public void update(GameManagerClient gameManagerClient, boolean isCli) {
         gameManagerClient.setCurrentRepresentation(gameRepresentation);
         String text;
 

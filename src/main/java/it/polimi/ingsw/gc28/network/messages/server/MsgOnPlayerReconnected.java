@@ -1,7 +1,6 @@
 package it.polimi.ingsw.gc28.network.messages.server;
 
 import it.polimi.ingsw.gc28.view.GameManagerClient;
-import it.polimi.ingsw.gc28.view.GameRepresentation;
 
 public class MsgOnPlayerReconnected extends MessageS2C{
     private final String gameId;
@@ -23,7 +22,7 @@ public class MsgOnPlayerReconnected extends MessageS2C{
     }
 
     @Override
-    public void update(GameManagerClient gameManagerClient) {
+    public void update(GameManagerClient gameManagerClient, boolean isCli) {
         gameManagerClient.setGameId(gameId);
 
         gameManagerClient.setPlayerName(playerName);

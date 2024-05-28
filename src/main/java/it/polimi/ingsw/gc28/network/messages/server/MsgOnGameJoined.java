@@ -30,7 +30,7 @@ public class MsgOnGameJoined extends MessageS2C{
     }
 
     @Override
-    public void update(GameManagerClient gameManagerClient)  {
+    public void update(GameManagerClient gameManagerClient, boolean isCli)  {
         gameManagerClient.setGameId(gameId);
         gameManagerClient.setPlayerName(playerName);
 

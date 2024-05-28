@@ -1,11 +1,8 @@
 package it.polimi.ingsw.gc28.view;
 
-import it.polimi.ingsw.gc28.model.Player;
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.model.cards.*;
-import it.polimi.ingsw.gc28.model.errors.types.InvalidColor;
 import it.polimi.ingsw.gc28.model.utils.PlayerColor;
-import it.polimi.ingsw.gc28.view.utils.TuiStringHelper;
 import it.polimi.ingsw.gc28.model.Table;
 
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
@@ -28,11 +25,16 @@ public class GameManagerClient {
 
     private String playerName;
 
+    public static boolean isCli = true;
+
+    private ArrayList<GuiObserver> listeners;
+
 
     private GameManagerClient() {
         this.gameId = null;
         this.playerName = null;
         this.messageQueue = new LinkedBlockingQueue<>();
+        this.listeners = new ArrayList<GuiObserver>();
         processIncomingMessages();
     }
 
@@ -42,7 +44,7 @@ public class GameManagerClient {
                 try {
                     MessageS2C message = messageQueue.take(); // Blocking call
 
-                    message.update(this);
+                    message.update(this, isCli);
 
                 } catch (InterruptedException e) {
                     System.err.println("Thread was interrupted while taking a message!");
@@ -397,5 +399,15 @@ public class GameManagerClient {
 
     public void setPlayerName(String playerName) {
         this.playerName = playerName;
+    }
+
+    public void addListeners(GuiObserver obv){
+        this.listeners.add(obv);
+    }
+
+    public void updateListeners(){
+        for (GuiObserver obs : listeners){
+            obs.update(currentRepresentation);
+        }
     }
 }
