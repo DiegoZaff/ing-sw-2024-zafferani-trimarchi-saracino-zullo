@@ -5,6 +5,7 @@ import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
 import it.polimi.ingsw.gc28.view.GuiObserver;
 import it.polimi.ingsw.gc28.view.gui.GuiApplication;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -169,6 +170,8 @@ public class GamesController implements Initializable, GuiObserver {
 
     @Override
     public void update(GameRepresentation gameRepresentation) {
-
+        new Thread(() -> {
+            Platform.runLater(() -> GuiApplication.setRootPage("lobby"));
+        }).start();
     }
 }
