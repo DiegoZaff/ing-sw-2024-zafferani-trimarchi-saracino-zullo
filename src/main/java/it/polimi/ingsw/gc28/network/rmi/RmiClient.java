@@ -102,7 +102,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, GuiCa
     @Override
     public void attachGameStub(VirtualStub gameStub) throws RemoteException {
         virtualGameStub = gameStub;
-        System.out.println("Attached Game Stub To Client RMI");
+        System.out.println("Attached Game Stub To Client RMI|");
     }
 
 
