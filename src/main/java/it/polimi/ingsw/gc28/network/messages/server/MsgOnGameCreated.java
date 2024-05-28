@@ -29,18 +29,23 @@ public class MsgOnGameCreated extends MessageS2C{
     }
 
     @Override
-    public void update(GameManagerClient gameManagerClient) {
-        gameManagerClient.setGameId(gameId);
+    public void update(GameManagerClient gameManagerClient, boolean isCli) {
+        if(isCli) {
 
-        gameManagerClient.setPlayerName(playerName);
+            gameManagerClient.setGameId(gameId);
 
-        String text = String.format("""
-                Welcome %s, may the power be with you!!
-                The game has been created successfully with id: %s
-                
-                Waiting other %d to join...
-                """, playerName, gameId, playersLeftToJoin) ;
+            gameManagerClient.setPlayerName(playerName);
 
-        gameManagerClient.writeInConsole(text);
+            String text = String.format("""
+                    Welcome %s, may the power be with you!!
+                    The game has been created successfully with id: %s
+                                    
+                    Waiting other %d to join...
+                    """, playerName, gameId, playersLeftToJoin);
+
+            gameManagerClient.writeInConsole(text);
+        } else {
+            GameManagerClient.getInstance().updateListeners();
+        }
     }
 }

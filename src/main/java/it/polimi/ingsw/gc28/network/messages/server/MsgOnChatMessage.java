@@ -13,7 +13,7 @@ public class MsgOnChatMessage extends MessageS2C{
     }
 
     @Override
-    public void update(GameManagerClient gameManagerClient)  {
+    public void update(GameManagerClient gameManagerClient, boolean isCli)  {
         gameManagerClient.setCurrentRepresentation(gameRepresentation);
     }
 }

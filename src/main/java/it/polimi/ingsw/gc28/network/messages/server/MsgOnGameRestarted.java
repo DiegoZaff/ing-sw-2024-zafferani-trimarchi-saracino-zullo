@@ -13,20 +13,24 @@ public class MsgOnGameRestarted extends MessageS2C{
     }
 
     @Override
-    public void update(GameManagerClient gameManagerClient) {
-        gameManagerClient.setCurrentRepresentation(gameRepresentation);
+    public void update(GameManagerClient gameManagerClient, boolean isCli) {
+        if(isCli) {
+            gameManagerClient.setCurrentRepresentation(gameRepresentation);
 
-        String playerOfTurn = gameRepresentation.getPlayerToPlay();
+            String playerOfTurn = gameRepresentation.getPlayerToPlay();
 
-        ActionType actionType = gameRepresentation.getActionExpected();
+            ActionType actionType = gameRepresentation.getActionExpected();
 
-        String text =String.format("""
-                The game has RE-started! Let's continue where we left :)
-                
-                It's %s's Turn.
-                Action Expected: %s.
-                """,playerOfTurn, actionType);
+            String text = String.format("""
+                    The game has RE-started! Let's continue where we left :)
+                                    
+                    It's %s's Turn.
+                    Action Expected: %s.
+                    """, playerOfTurn, actionType);
 
-        gameManagerClient.writeInConsole(text);
+            gameManagerClient.writeInConsole(text);
+        } else {
+            GameManagerClient.getInstance().updateListeners();
+        }
     }
 }

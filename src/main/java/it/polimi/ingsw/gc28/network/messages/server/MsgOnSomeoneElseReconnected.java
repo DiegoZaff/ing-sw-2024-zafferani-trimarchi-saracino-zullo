@@ -17,7 +17,7 @@ public class MsgOnSomeoneElseReconnected extends  MessageS2C{
     }
 
     @Override
-    public void update(GameManagerClient gameManagerClient) {
+    public void update(GameManagerClient gameManagerClient, boolean isCli) {
         String text = String.format("""
             %s has reconnected to the game! I bet you missed him/her!
             """, playerName);

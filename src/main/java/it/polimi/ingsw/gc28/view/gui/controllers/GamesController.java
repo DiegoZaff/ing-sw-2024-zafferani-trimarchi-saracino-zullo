@@ -1,6 +1,9 @@
 package it.polimi.ingsw.gc28.view.gui.controllers;
 
 import it.polimi.ingsw.gc28.network.messages.client.MsgCreateGame;
+import it.polimi.ingsw.gc28.view.GameManagerClient;
+import it.polimi.ingsw.gc28.view.GameRepresentation;
+import it.polimi.ingsw.gc28.view.GuiObserver;
 import it.polimi.ingsw.gc28.view.gui.GuiApplication;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
@@ -25,7 +28,7 @@ import java.util.ResourceBundle;
 
 import static it.polimi.ingsw.gc28.view.gui.GuiApplication.connection;
 
-public class GamesController implements Initializable {
+public class GamesController implements Initializable, GuiObserver {
 
     private final Border borderBold = new Border(new BorderStroke(
             Color.web("#424242"), // Border color
@@ -70,6 +73,7 @@ public class GamesController implements Initializable {
         changeButtonWidth(createGameButton, isCreateGameSelected.getValue());
         changeButtonWidth(TwoPlayersButton, numberOfPlayers.get() == TWO);
         joinGameBox.setVisible(false);
+        GameManagerClient.getInstance().addListeners(this);
 
         isCreateGameSelected.addListener(new ChangeListener<Boolean>() {
             @Override
@@ -160,6 +164,11 @@ public class GamesController implements Initializable {
     }
 
     public void receiveMessageFromServer(){
+
+    }
+
+    @Override
+    public void update(GameRepresentation gameRepresentation) {
 
     }
 }

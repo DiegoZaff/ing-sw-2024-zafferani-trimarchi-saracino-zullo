@@ -28,15 +28,21 @@ public class MsgOnSomeoneElseJoined extends MessageS2C{
     }
 
     @Override
-    public void update(GameManagerClient gameManagerClient) {
-        String text = String.format("""
-            %s has joined the game!! Say hello to him!
-            """, playerName);
+    public void update(GameManagerClient gameManagerClient, boolean isCli) {
+        if(isCli) {
 
-        if(playersLeftToJoin > 0) {
-            text += String.format("Waiting for other %d players to join...", playersLeftToJoin);
+            String text = String.format("""
+                    %s has joined the game!! Say hello to him!
+                    """, playerName);
+
+            if (playersLeftToJoin > 0) {
+                text += String.format("Waiting for other %d players to join...", playersLeftToJoin);
+            }
+
+            gameManagerClient.writeInConsole(text);
         }
-
-        gameManagerClient.writeInConsole(text);
+        else {
+            GameManagerClient.getInstance().updateListeners();
+        }
     }
 }

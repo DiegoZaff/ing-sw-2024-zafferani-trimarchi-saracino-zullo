@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gc28.network.messages.server;
 
-import it.polimi.ingsw.gc28.network.messages.client.MessageTypeC2S;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
 
 
@@ -17,7 +16,7 @@ public abstract class MessageS2C implements Serializable {
     }
 
 
-    public abstract void update(GameManagerClient gameManagerClient);
+    public abstract void update(GameManagerClient gameManagerClient, boolean isCli);
 
     public MessageTypeS2C getType() {
         return type;
