@@ -32,8 +32,10 @@ public class MsgOnGameStarted extends MessageS2C{
 
         gameManagerClient.writeInConsole(text);
 
+        /*
         if(playerOfTurn.equals(gameManagerClient.getPlayerName())){
             gameManagerClient.showCardInitial();
         }
+         */
     }
 }

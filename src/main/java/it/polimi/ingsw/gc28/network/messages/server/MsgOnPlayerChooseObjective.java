@@ -46,10 +46,16 @@ public class MsgOnPlayerChooseObjective extends MessageS2C{
         String playerName = gameManagerClient.getPlayerName();
         ActionType actionType = gameManagerClient.getCurrentRepresentation().getActionExpected();
 
+        gameManagerClient.writeInConsole(text);
+        gameManagerClient.showPlayerAndAction();
+
         if(nextPlayer.equals(playerName) && actionType.equals(ActionType.CHOOSE_OBJ)){
             gameManagerClient.showObjectivesToChoose();
+        } else if (nextPlayer.equals(playerName) && actionType.equals(ActionType.PLAY_CARD)) {
+            gameManagerClient.showHand(true);
+            gameManagerClient.showTable();
         }
-        gameManagerClient.writeInConsole(text);
+
     }
 }
 

@@ -184,7 +184,11 @@ public class GameManagerClient {
 
     public void showTable(String name){
         Table table = getPrivateRepresentation(name).getTable();
-
+        if (playerName.equals(name)){
+            this.writeInConsole("your table:");
+        }else {
+            this.writeInConsole(name+" table:");
+        }
         try {
             this.writeInConsole(table.toString());
         }catch (NoSuchElementException e){
@@ -215,8 +219,16 @@ public class GameManagerClient {
 
         String playerToPlay = rep.getPlayerToPlay();
         String action = rep.getActionExpected().name();
+        String text;
 
-        this.writeInConsole(String.format("%s is playing and is acton is %s", playerToPlay, action));
+        if (playerToPlay.equals(playerName)){
+            text = String.format("It's your turn! your next action is %s", action);
+        } else{
+
+            text = String.format("%s is playing and his action is %s", playerToPlay, action);
+        }
+
+        this.writeInConsole(text);
 
     }
 

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc28.network.messages.server;
 
+import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
 
@@ -56,6 +57,17 @@ public class MsgOnPlayerDrawnCard extends MessageS2C{
             text += deck;
         }
         gameManagerClient.writeInConsole(text);
+        gameManagerClient.showPlayerAndAction();
+
+
+        String nextPlayer = gameManagerClient.getCurrentRepresentation().getPlayerToPlay();
+
+
+        if(nextPlayer.equals(gameManagerClient.getPlayerName())){
+            gameManagerClient.showHand(true);
+            gameManagerClient.showTable();
+        }
+
 
     }
 

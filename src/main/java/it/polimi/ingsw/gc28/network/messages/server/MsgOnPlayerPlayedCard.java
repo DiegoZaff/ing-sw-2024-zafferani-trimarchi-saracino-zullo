@@ -48,9 +48,11 @@ public class MsgOnPlayerPlayedCard extends MessageS2C{
 
         String nextPlayer = gameManagerClient.getCurrentRepresentation().getPlayerToPlay();
 
+        gameManagerClient.showPlayerAndAction();
 
         if(playerWhoPlayed.equals(me) && nextAction.equals(ActionType.DRAW_CARD)){
             gameManagerClient.showDrawableCards();
+
         }else if(nextPlayer.equals(me) && nextAction.equals(ActionType.CHOOSE_OBJ)){
             gameManagerClient.showObjectivesToChoose();
         }else if(nextPlayer.equals(me) && nextAction.equals(ActionType.PLAY_INITIAL_CARD)){
