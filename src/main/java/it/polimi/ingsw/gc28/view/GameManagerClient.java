@@ -410,4 +410,10 @@ public class GameManagerClient {
             obs.update(currentRepresentation);
         }
     }
+
+    public void updateListeners(MessageS2C message){
+        for (GuiObserver obs : listeners){
+            obs.update(message);
+        }
+    }
 }

@@ -49,6 +49,7 @@ public class ParsingHelper {
         ResourcePrimaryType resPrimary = ResourcePrimaryType.valueOf(resourcePrimary);
         int points = Integer.parseInt(pointsPerPlay);
 
+        //todo: mettere qui path immagini
         String id = (String) obj.get("id");
 
         return new CardResource(id, resources, resPrimary, points);

@@ -45,7 +45,7 @@ public class MsgOnGameCreated extends MessageS2C{
 
             gameManagerClient.writeInConsole(text);
         } else {
-            GameManagerClient.getInstance().updateListeners();
+            GameManagerClient.getInstance().updateListeners(this);
         }
     }
 }

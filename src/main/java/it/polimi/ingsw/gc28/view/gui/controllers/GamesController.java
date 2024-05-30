@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc28.view.gui.controllers;
 
 import it.polimi.ingsw.gc28.network.messages.client.MsgCreateGame;
+import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
 import it.polimi.ingsw.gc28.view.GuiObserver;
@@ -173,5 +174,10 @@ public class GamesController implements Initializable, GuiObserver {
         new Thread(() -> {
             Platform.runLater(() -> GuiApplication.setRootPage("lobby"));
         }).start();
+    }
+
+    @Override
+    public void update(MessageS2C message) {
+        
     }
 }

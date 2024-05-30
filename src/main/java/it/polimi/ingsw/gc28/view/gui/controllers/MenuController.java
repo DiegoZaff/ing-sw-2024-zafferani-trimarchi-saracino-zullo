@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc28.view.gui.controllers;
 
+import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
 import it.polimi.ingsw.gc28.network.rmi.RmiClient;
 import it.polimi.ingsw.gc28.network.socket.ClientTCP;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
@@ -161,6 +162,11 @@ public class MenuController  implements Initializable, GuiObserver {
 
     @Override
     public void update(GameRepresentation gameRepresentation) {
+
+    }
+
+    @Override
+    public void update(MessageS2C message) {
 
     }
 }

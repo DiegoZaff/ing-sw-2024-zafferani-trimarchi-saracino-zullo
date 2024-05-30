@@ -23,12 +23,13 @@
     </ImageView>
 
     <HBox alignment="CENTER" AnchorPane.leftAnchor="32" AnchorPane.topAnchor="32">
-        <Label style="-fx-font-size: 36" text="Games" />
+        <Label style="-fx-font-size: 36" text="Lobby" />
     </HBox>
 
     <VBox fx:id="lobbyBox" prefHeight="56.0" prefWidth="312.0" AnchorPane.leftAnchor="64" AnchorPane.rightAnchor="64" AnchorPane.topAnchor="250.0" alignment="CENTER">
         <HBox alignment="CENTER" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="200.0">
             <Label style="-fx-padding: 0 0 8 0" text="Waiting for players" />
+            <Label style="-fx-padding: 0 0 8 0" text="left" />
         </HBox>
     </VBox>
 

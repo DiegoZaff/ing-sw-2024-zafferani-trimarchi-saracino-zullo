@@ -1,5 +1,7 @@
 package it.polimi.ingsw.gc28.model.cards;
 
+import javafx.scene.image.ImageView;
+
 import java.io.Serializable;
 
 /**
@@ -9,9 +11,14 @@ import java.io.Serializable;
  */
 public abstract class Card implements Serializable {
     final private String id;
+    //private final ImageView frontImg;
+    //private final ImageView backImg;
+
 
     protected Card(String id) {
         this.id = id;
+        //this.frontImg = front;
+        //this.backImg = backImg;
     }
 
     public String getId(){
