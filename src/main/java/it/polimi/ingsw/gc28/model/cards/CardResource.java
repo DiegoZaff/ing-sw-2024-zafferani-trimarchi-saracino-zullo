@@ -9,6 +9,7 @@ import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceType;
 import it.polimi.ingsw.gc28.view.utils.Colors;
 import it.polimi.ingsw.gc28.view.utils.TuiStringHelper;
+import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,14 +21,14 @@ public class CardResource extends CardGame {
     private final ResourcePrimary resource;
     private final int pointsPerPlay;
 
-    public CardResource(String id, ResourceType[] resourceCard, ResourcePrimaryType resource, int pointsPerPlay){
-        super(id, resourceCard);
+    public CardResource(String id, ResourceType[] resourceCard, ResourcePrimaryType resource, int pointsPerPlay, ImageView frontImage, ImageView backImage){
+        super(id, resourceCard, frontImage, backImage);
         this.pointsPerPlay = pointsPerPlay;
         this.resource = new ResourcePrimary(resource);
     }
 
-    public CardResource(String id,ResourcePrimary resource, int pointsPerPlay, Vertex[] verticesFront){
-        super(id, verticesFront);
+    public CardResource(String id,ResourcePrimary resource, int pointsPerPlay, Vertex[] verticesFront, ImageView frontImage, ImageView backImage){
+        super(id, verticesFront, frontImage, backImage);
         this.resource = resource;
         this.pointsPerPlay = pointsPerPlay;
     }

@@ -16,6 +16,7 @@ import it.polimi.ingsw.gc28.model.resources.ResourceSpecial;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceSpecialType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceType;
+import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,8 +34,9 @@ public class CardGold extends CardResource {
 
 
     public CardGold(String id, ResourceType[] resourceCard, ResourcePrimaryType resourcePrimary, int pointsPerPlay,
-                    ResourcePrimaryType[] resourceNeeded, ChallengeType challenge, ResourceSpecialType resourceChallenge){
-        super(id, resourceCard, resourcePrimary, pointsPerPlay);
+                    ResourcePrimaryType[] resourceNeeded, ChallengeType challenge, ResourceSpecialType resourceChallenge,
+                    ImageView frontImg, ImageView backImg){
+        super(id, resourceCard, resourcePrimary, pointsPerPlay, frontImg, backImg);
         createPlayabilityMap(resourceNeeded);
         if(challenge != null){
             if(challenge.equals(ChallengeType.POINTS_PER_COVER)){

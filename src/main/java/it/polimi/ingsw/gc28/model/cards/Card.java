@@ -11,14 +11,14 @@ import java.io.Serializable;
  */
 public abstract class Card implements Serializable {
     final private String id;
-    //private final ImageView frontImg;
-    //private final ImageView backImg;
+    private final ImageView frontImg;
+    private final ImageView backImg;
 
 
-    protected Card(String id) {
+    protected Card(String id, ImageView frontImg, ImageView backImg) {
         this.id = id;
-        //this.frontImg = front;
-        //this.backImg = backImg;
+        this.frontImg = frontImg;
+        this.backImg = backImg;
     }
 
     public String getId(){

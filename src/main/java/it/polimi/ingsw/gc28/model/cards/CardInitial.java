@@ -11,6 +11,7 @@ import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceType;
 import it.polimi.ingsw.gc28.view.utils.Colors;
 import it.polimi.ingsw.gc28.view.utils.TuiStringHelper;
+import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,8 +22,9 @@ public class CardInitial extends CardGame {
 
     private final Vertex[] verticesBack;
     private final Map<Resource, Integer> centralResources;
-    public CardInitial(String id, ResourceType[] resourcesBack, ResourceType[] resourcesFront, ResourceType[] primaryResources){
-        super(id, resourcesFront);
+    public CardInitial(String id, ResourceType[] resourcesBack, ResourceType[] resourcesFront, ResourceType[] primaryResources,
+                       ImageView frontImg, ImageView backImg){
+        super(id, resourcesFront, frontImg, backImg);
 
         Vertex[] vertexBack = new Vertex[4];
         Resource[] resBack = new Resource[4];

@@ -9,7 +9,13 @@ import it.polimi.ingsw.gc28.model.objectives.positions.utils.GeneralPositionType
 import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceSpecialType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import org.json.simple.JSONObject;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.Objects;
 
 public class ParsingHelper {
     public static void stringToResourceType(String[] str, ResourceType[] res){
@@ -33,10 +39,19 @@ public class ParsingHelper {
         }
     }
 
+    public static ImageView stringPathToImageView(String path){
+        ImageView imageView = new ImageView();
+        //Image image = new Image(path);
+        //imageView.setImage(image);
+        return null;
+    }
+
 
     public static CardResource parseCardResource(JSONObject obj){
         String[] resourceCard = new String[4];
         ResourceType[] resources = new ResourceType[4];
+        ImageView frontImg;
+        ImageView backImg;
 
         resourceCard[0] = (String) obj.get("vertexOne");
         resourceCard[1] = (String) obj.get("vertexTwo");
@@ -49,10 +64,15 @@ public class ParsingHelper {
         ResourcePrimaryType resPrimary = ResourcePrimaryType.valueOf(resourcePrimary);
         int points = Integer.parseInt(pointsPerPlay);
 
-        //todo: mettere qui path immagini
+        String frontImgPath = (String) obj.get("frontImgPath");
+        String backImgPath = (String) obj.get("backImgPath");
+
+        frontImg = stringPathToImageView(frontImgPath);
+        backImg = stringPathToImageView(backImgPath);
+
         String id = (String) obj.get("id");
 
-        return new CardResource(id, resources, resPrimary, points);
+        return new CardResource(id, resources, resPrimary, points, frontImg, backImg);
     }
 
 
@@ -63,6 +83,8 @@ public class ParsingHelper {
         ResourcePrimaryType[] resNeeded = new ResourcePrimaryType[5];
         ChallengeType cha;
         ResourceSpecialType resChallenge;
+        ImageView frontImg;
+        ImageView backImg;
 
         resourceCard[0] = (String) obj.get("vertexOne");
         resourceCard[1] = (String) obj.get("vertexTwo");
@@ -95,9 +117,15 @@ public class ParsingHelper {
             resChallenge = null;
         }
 
+        String frontImgPath = (String) obj.get("frontImgPath");
+        String backImgPath = (String) obj.get("backImgPath");
+
+        frontImg = stringPathToImageView(frontImgPath);
+        backImg = stringPathToImageView(backImgPath);
+
         String id = (String) obj.get("id");
 
-        return new CardGold(id, resources, resPrimary, points, resNeeded, cha, resChallenge);
+        return new CardGold(id, resources, resPrimary, points, resNeeded, cha, resChallenge, frontImg, backImg);
     }
 
     public static CardInitial parseCardInitial(JSONObject obj){
@@ -108,6 +136,9 @@ public class ParsingHelper {
         ResourceType[] resBack = new ResourceType[4];
         ResourceType[] resFront = new ResourceType[4];
         ResourceType[] resCenter = new ResourceType[3];
+
+        ImageView frontImg;
+        ImageView backImg;
 
         resourceBack[0] = (String) obj.get("vertexBackOne");
         resourceBack[1] = (String) obj.get("vertexBackTwo");
@@ -125,14 +156,23 @@ public class ParsingHelper {
         ParsingHelper.stringToResourceType(resourceFront, resFront);
         ParsingHelper.stringToResourceType(resourceCenter, resCenter);
 
+        String frontImgPath = (String) obj.get("frontImgPath");
+        String backImgPath = (String) obj.get("backImgPath");
+
+        frontImg = stringPathToImageView(frontImgPath);
+        backImg = stringPathToImageView(backImgPath);
+
         String id = (String) obj.get("id");
 
-        return new CardInitial(id, resBack, resFront, resCenter);
+        return new CardInitial(id, resBack, resFront, resCenter, frontImg, backImg);
     }
 
     public static CardObjective parseObjectivePositional(JSONObject obj){
         String[] resourcePosition = new String[3];
         ResourcePrimaryType[] resPosition = new ResourcePrimaryType[3];
+
+        ImageView frontImg;
+        ImageView backImg;
 
         String pointsCard = (String) obj.get("points");
         String positionType = (String) obj.get("positionType");
@@ -146,12 +186,21 @@ public class ParsingHelper {
 
         String id = (String) obj.get("id");
 
-        return new CardObjective(id, posType, points, resPosition);
+        String frontImgPath = (String) obj.get("frontImgPath");
+        String backImgPath = (String) obj.get("backImgPath");
+
+        frontImg = stringPathToImageView(frontImgPath);
+        backImg = stringPathToImageView(backImgPath);
+
+        return new CardObjective(id, posType, points, resPosition, frontImg, backImg);
     }
 
     public static CardObjective parseObjectiveResources(JSONObject obj){
         String[] resourceNeeded = new String[3];
         ResourceType[] resNeeded = new ResourceType[3];
+
+        ImageView frontImg;
+        ImageView backImg;
 
         String pointsCard = (String) obj.get("points");
         resourceNeeded[0] = (String) obj.get("resourceNeededOne");
@@ -163,6 +212,12 @@ public class ParsingHelper {
 
         String id = (String) obj.get("id");
 
-        return new CardObjective(id, points, resNeeded);
+        String frontImgPath = (String) obj.get("frontImgPath");
+        String backImgPath = (String) obj.get("backImgPath");
+
+        frontImg = stringPathToImageView(frontImgPath);
+        backImg = stringPathToImageView(backImgPath);
+
+        return new CardObjective(id, points, resNeeded, frontImg, backImg);
     }
 }

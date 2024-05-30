@@ -15,6 +15,7 @@ import it.polimi.ingsw.gc28.model.resources.ResourceSpecial;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceSpecialType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceType;
+import javafx.scene.image.ImageView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,8 +25,8 @@ public class CardObjective extends Card {
     public Objective getObjective(){
         return objective;
     }
-    public CardObjective(String id,int points, ResourceType[] resourceNeeded) {
-        super(id);
+    public CardObjective(String id, int points, ResourceType[] resourceNeeded, ImageView frontImg, ImageView backImg) {
+        super(id, frontImg, backImg);
         Resource[] resourceCard = new Resource[3];
 
         for (int i=0; i<resourceNeeded.length; i++) {
@@ -61,8 +62,9 @@ public class CardObjective extends Card {
         }
     }
 
-    public CardObjective(String id,GeneralPositionType positionType, int points, ResourcePrimaryType[] resourcePosition){
-        super(id);
+    public CardObjective(String id,GeneralPositionType positionType, int points, ResourcePrimaryType[] resourcePosition,
+                         ImageView frontImg, ImageView backImg){
+        super(id, frontImg, backImg);
         ResourcePrimary[] resourceCard = new ResourcePrimary[3];
         PositionType posType = null;
 

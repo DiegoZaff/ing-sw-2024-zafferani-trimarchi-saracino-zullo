@@ -11,6 +11,7 @@ import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceSpecialType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceType;
 import it.polimi.ingsw.gc28.view.utils.TuiStringHelper;
+import javafx.scene.image.ImageView;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
@@ -23,8 +24,8 @@ public abstract class CardGame extends Card implements Serializable {
     private final Vertex[] verticesFront;
 
 
-    public CardGame(String id,ResourceType[] resourcesFront){
-        super(id);
+    public CardGame(String id, ResourceType[] resourcesFront, ImageView frontImg, ImageView backImg){
+        super(id, frontImg, backImg);
 
         Resource[] resourceInCard = new Resource[4];
         Vertex[] vertices = new Vertex[4];
@@ -67,8 +68,8 @@ public abstract class CardGame extends Card implements Serializable {
         this.verticesFront = vertices;
     }
 
-    public CardGame(String id, Vertex[] vertices){
-        super(id);
+    public CardGame(String id, Vertex[] vertices, ImageView frontImg, ImageView backImg){
+        super(id, frontImg, backImg);
         this.verticesFront = vertices;
     }
 
