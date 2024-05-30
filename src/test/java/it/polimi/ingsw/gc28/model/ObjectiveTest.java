@@ -17,6 +17,8 @@ import it.polimi.ingsw.gc28.model.resources.utils.ResourceSpecialType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceType;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import javafx.scene.image.ImageView;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -28,6 +30,8 @@ import java.util.Map;
  * and resourceCounters.
  */
 public class ObjectiveTest {
+    private ImageView im1;
+    private ImageView im2;
     private Objective objective;
 
     private Map<Coordinate, Cell> mapPositions;
@@ -48,10 +52,10 @@ public class ObjectiveTest {
 
         CardGame leafCard = new CardResource("UNKNOWN_1",new ResourceType[]{ResourceType.FEATHER, ResourceType.FOX, ResourceType.noResource, ResourceType.FOX},
                 ResourcePrimaryType.LEAF,
-                0);
+                0, im1, im2);
         CardGame foxCard = new CardResource("UNKNOWN_2",new ResourceType[]{ResourceType.FEATHER, ResourceType.FOX, ResourceType.noResource, ResourceType.FOX},
                 ResourcePrimaryType.FOX,
-                0);
+                0, im1, im2);
 
         // Simple case with a diagonal of three cards
         this.mapPositions = new HashMap<>(){{

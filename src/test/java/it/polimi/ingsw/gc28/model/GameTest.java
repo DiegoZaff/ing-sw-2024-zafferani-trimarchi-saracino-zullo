@@ -10,6 +10,7 @@ import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.model.cards.*;
 import it.polimi.ingsw.gc28.model.errors.PlayerActionError;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
+import it.polimi.ingsw.gc28.model.utils.PlayerColor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -111,14 +112,19 @@ public class GameTest {
                 CardInitial cardI = null;
                 CardResource cardR = null;
                 CardGold cardG = null;
+                String color = null;
 
                 Coordinate coord = null;
                 Boolean isFront = null;
                 Boolean fromGoldDeck = null;
                 String name = null;
 
+                if(action.equals(ActionType.CHOOSE_COLOR)) {
+                    Object colObj = moveObj.get("color");
+                    color = (String) colObj;
 
-                if(action.equals(ActionType.PLAY_INITIAL_CARD)){
+
+                }else if(action.equals(ActionType.PLAY_INITIAL_CARD)){
                     Object idObj = moveObj.get("cardId");
                     String cardId = (String) idObj;
                     cardInitial = deckCopy.getCardInitialFromId(cardId);
@@ -206,7 +212,12 @@ public class GameTest {
 
                             gameAssertion = new FirstPlayerGameAssertion(namePlayer);
                             gameAssertions.add(gameAssertion);
+                        }else if(type.equals(GameAssertionType.COLOR_CHOSEN)){
+                            String namePlayer = (String) astObj.get("nick");
+                            String colorChosen = (String) astObj.get("color");
 
+                            gameAssertion = new ColorChosenGameAssertion(namePlayer, colorChosen);
+                            gameAssertions.add(gameAssertion);
                         }else if(type.equals(GameAssertionType.GLOBAL_OBJ)){
                             String card1 = (String) astObj.get("card1");
                             String card2 = (String) astObj.get("card2");
@@ -299,7 +310,7 @@ public class GameTest {
                     }
                 }
 
-                Move moveObject =  Move.createMove(player, action, isFront, cardR, cardG, cardI,cardO, coord, fromGoldDeck, gameAssertions);
+                Move moveObject =  Move.createMove(player, action, isFront, cardR, cardG, cardI,cardO, coord, fromGoldDeck, gameAssertions, color);
                 moveList.add(moveObject);
             }
 

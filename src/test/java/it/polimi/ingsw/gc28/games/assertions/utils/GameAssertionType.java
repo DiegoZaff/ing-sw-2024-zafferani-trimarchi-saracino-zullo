@@ -8,6 +8,7 @@ public enum GameAssertionType {
     PLAYERS_REGISTERED,
     GAME_STARTED,
     FIRST_PLAYER,
+    COLOR_CHOSEN,
     GLOBAL_OBJ,
     FACE_UP_CARDS_RES,
     FACE_UP_CARDS_GOLD,

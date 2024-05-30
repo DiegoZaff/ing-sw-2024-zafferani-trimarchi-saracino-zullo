@@ -127,10 +127,16 @@ public class ActionManager implements Serializable {
                 }
             }
             case CHOOSE_COLOR -> {
-                if(isCurrentPlayerTheLastOneForTheAction()) {
-                    actionType = ActionType.PLAY_INITIAL_CARD;
+                if(!isCurrentPlayerTheLastOneForTheAction()) { //ho fixato mnegando la condizione, serve un test per 3
+                                                               // giocatori, probabilemtne darà problemi
+                    actionType = ActionType.PLAY_INITIAL_CARD; // prma non scattava, ora scatta quando si fulla la lobby
+                                                                // non so perchè isCurrentPlayer funziona così
                 }
-                playerOfTurn = getNextPlayer();
+                //playerOfTurn = getNextPlayer();               // durante la fase iniziale non cìè un ordine dei player
+                                                                // ma solo il player che inizia, quindi non serve dare
+                                                                //il turno al prossimo giocatore, lo tiene il primo che inizia e
+                                                                //quando il game comincia sarà il primo a giocare.
+
             }
             case PLAY_INITIAL_CARD -> {
                 if(isCurrentPlayerTheLastOneForTheAction()) {

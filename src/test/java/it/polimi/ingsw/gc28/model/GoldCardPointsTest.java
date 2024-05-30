@@ -12,36 +12,39 @@ import it.polimi.ingsw.gc28.model.resources.utils.ResourceSpecialType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceType;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import javafx.scene.image.ImageView;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 
 public class GoldCardPointsTest {
 
-
+    private ImageView im1;
+    private ImageView im2;
     private Player tester;
     int points;
-    CardGame bridge = new CardResource("UNKNOWN_0", new ResourceType[]{ResourceType.noResource,ResourceType.noResource,ResourceType.noResource,ResourceType.noResource}, ResourcePrimaryType.MUSHROOM, 0);
+    CardGame bridge = new CardResource("UNKNOWN_0", new ResourceType[]{ResourceType.noResource,ResourceType.noResource,ResourceType.noResource,ResourceType.noResource}, ResourcePrimaryType.MUSHROOM, 0, im1, im2);
 
     CardGame initialCard = new CardInitial("UNKNOWN_INIT", new ResourceType[]{ResourceType.noResource,ResourceType.noResource,ResourceType.noResource,ResourceType.noResource},
             new ResourceType[]{ResourceType.noResource,ResourceType.noResource,ResourceType.noResource,ResourceType.noResource},
-            new ResourceType[]{ResourceType.noResource,ResourceType.noResource,ResourceType.noResource} );
+            new ResourceType[]{ResourceType.noResource,ResourceType.noResource,ResourceType.noResource}, im1, im2 );
 
     CardGame leafCard = new CardResource("UNKNOWN_1", new ResourceType[]{ResourceType.FEATHER, ResourceType.FEATHER, ResourceType.noResource, ResourceType.FOX},
-            ResourcePrimaryType.LEAF, 0);
+            ResourcePrimaryType.LEAF, 0, im1, im2);
 
 
     CardGold goldFoxCard = new CardGold("UNKNOWN_4", new ResourceType[]{ResourceType.FEATHER, ResourceType.noResource, ResourceType.noResource, ResourceType.noResource},
             ResourcePrimaryType.FOX, 0, new ResourcePrimaryType[]{},
-            ChallengeType.POINTS_PER_RESOURCE, ResourceSpecialType.FEATHER);
+            ChallengeType.POINTS_PER_RESOURCE, ResourceSpecialType.FEATHER, im1, im2);
 
 
     CardGold goldMushroomCard = new CardGold("UNKNOWN_6", new ResourceType[]{ResourceType.noResource, ResourceType.noResource, ResourceType.noResource, ResourceType.noResource},
             ResourcePrimaryType.MUSHROOM, 0, new ResourcePrimaryType[]{},
-            ChallengeType.POINTS_PER_COVER, ResourceSpecialType.noResource);
+            ChallengeType.POINTS_PER_COVER, ResourceSpecialType.noResource, im1, im2);
 
     CardGold goldLeafCard = new CardGold("UNKNOWN_7", new ResourceType[]{ResourceType.noResource, ResourceType.noResource, ResourceType.noResource, ResourceType.noResource},
             ResourcePrimaryType.LEAF, 5, new ResourcePrimaryType[]{},
-            null, ResourceSpecialType.noResource);
+            null, ResourceSpecialType.noResource, im1, im2);
 
 
 
