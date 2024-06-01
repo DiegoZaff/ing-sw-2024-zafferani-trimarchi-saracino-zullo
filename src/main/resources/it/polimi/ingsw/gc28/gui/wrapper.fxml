@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.effect.GaussianBlur?>
+
+<?import javafx.geometry.Insets?>
+<?import it.polimi.ingsw.gc28.view.gui.components.SnackBar?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="it.polimi.ingsw.gc28.view.gui.controllers.WrapperController">
+    <ImageView fx:id="backgroundImageView" preserveRatio="true">
+        <effect>
+            <GaussianBlur radius="8"/> <!-- Adjust the blur radius as needed -->
+        </effect>
+        <Image url="@../img/background5.png"/>
+    </ImageView>
+
+
+    <HBox AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"  HBox.hgrow="ALWAYS">
+        <padding>
+            <Insets top="16" right="0" bottom="0" left="16"/>
+        </padding>
+        <VBox onMouseClicked="#handleGoBack">
+            <ImageView fitHeight="48" fitWidth="48">
+                <Image url="@../img/backarrow.png" />
+            </ImageView>
+        </VBox>
+        <Label style="-fx-font-size: 36" text="Games" />
+    </HBox>
+    <HBox AnchorPane.topAnchor="64" fx:id="innerContent"  AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"/>
+    <SnackBar AnchorPane.rightAnchor="32" />
+</AnchorPane>

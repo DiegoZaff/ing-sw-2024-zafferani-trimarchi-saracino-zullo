@@ -3,6 +3,8 @@ package it.polimi.ingsw.gc28.network.messages.server;
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
+import it.polimi.ingsw.gc28.view.utils.InformationType;
+import it.polimi.ingsw.gc28.view.utils.SnackBarMessage;
 
 public class MsgOnPlayerChooseObjective extends MessageS2C{
     private final String playerName;
@@ -45,15 +47,19 @@ public class MsgOnPlayerChooseObjective extends MessageS2C{
         String nextPlayer = gameManagerClient.getCurrentRepresentation().getPlayerToPlay();
         String playerName = gameManagerClient.getPlayerName();
         ActionType actionType = gameManagerClient.getCurrentRepresentation().getActionExpected();
+        if(isCli){
+            gameManagerClient.writeInConsole(text);
+            gameManagerClient.showPlayerAndAction();
 
-        gameManagerClient.writeInConsole(text);
-        gameManagerClient.showPlayerAndAction();
-
-        if(nextPlayer.equals(playerName) && actionType.equals(ActionType.CHOOSE_OBJ)){
-            gameManagerClient.showObjectivesToChoose();
-        } else if (nextPlayer.equals(playerName) && actionType.equals(ActionType.PLAY_CARD)) {
-            gameManagerClient.showHand(true);
-            gameManagerClient.showTable();
+            if(nextPlayer.equals(playerName) && actionType.equals(ActionType.CHOOSE_OBJ)){
+                gameManagerClient.showObjectivesToChoose();
+            } else if (nextPlayer.equals(playerName) && actionType.equals(ActionType.PLAY_CARD)) {
+                gameManagerClient.showHand(true);
+                gameManagerClient.showTable();
+            }
+        }else{
+            SnackBarMessage msg = new SnackBarMessage(text, InformationType.GAME_INFO);
+            gameManagerClient.updateSnackBarListener(msg);
         }
 
     }

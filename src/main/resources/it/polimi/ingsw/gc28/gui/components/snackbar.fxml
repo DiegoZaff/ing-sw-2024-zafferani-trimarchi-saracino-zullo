@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.text.Text?>
+<fx:root xmlns="http://javafx.com/javafx"
+         xmlns:fx="http://javafx.com/fxml"
+         stylesheets="@styles.css"
+         type="javafx.scene.layout.VBox">
+
+    <StackPane fx:id="wrapper" prefHeight="400" prefWidth="200"  alignment="TOP_RIGHT">
+        <HBox  fx:id="box" opacity="0" spacing="10" minWidth="800" maxHeight="60" minHeight="60" alignment="CENTER_LEFT" style="-fx-background-color: lightblue; -fx-padding: 10; -fx-border-radius: 16; -fx-background-radius: 10;">
+            <ImageView  cache="true" cacheHint="SPEED" fitWidth="36" fitHeight="36">
+                <Image  url="@../../img/error_outline.png"/>
+            </ImageView>
+            <Text fx:id="innerText" text="Prova" style="-fx-fill: #424242;-fx-font-size: 16;"/>
+        </HBox>
+    </StackPane>
+</fx:root>

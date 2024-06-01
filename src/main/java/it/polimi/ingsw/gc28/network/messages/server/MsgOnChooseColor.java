@@ -3,6 +3,8 @@ package it.polimi.ingsw.gc28.network.messages.server;
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
+import it.polimi.ingsw.gc28.view.utils.InformationType;
+import it.polimi.ingsw.gc28.view.utils.SnackBarMessage;
 
 public class MsgOnChooseColor extends MessageS2C{
 
@@ -20,18 +22,23 @@ public class MsgOnChooseColor extends MessageS2C{
         String text;
 
         if(playerName.equals(gameManagerClient.getPlayerName())){
-
             text = """
                 You have chosen your color:
                 """;
-
         }else{
             text = String.format("""
                 %s has chosen his color!
                 """, playerName);
         }
-        gameManagerClient.writeInConsole(text);
-        gameManagerClient.showPlayerAndAction();
+
+        if(isCli){
+            gameManagerClient.writeInConsole(text);
+            gameManagerClient.showPlayerAndAction();
+        }else{
+            SnackBarMessage msg = new SnackBarMessage(text, InformationType.GAME_INFO);
+            gameManagerClient.updateSnackBarListener(msg);
+        }
+
 
         String me = gameManagerClient.getPlayerName();
 

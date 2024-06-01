@@ -1,6 +1,8 @@
 package it.polimi.ingsw.gc28.network.messages.server;
 
 import it.polimi.ingsw.gc28.view.GameManagerClient;
+import it.polimi.ingsw.gc28.view.utils.InformationType;
+import it.polimi.ingsw.gc28.view.utils.SnackBarMessage;
 
 
 public class MsgOnGameJoined extends MessageS2C{
@@ -42,6 +44,11 @@ public class MsgOnGameJoined extends MessageS2C{
             text += String.format("Waiting for other %d players to join...", playersLeftToJoin);
         }
 
-        gameManagerClient.writeInConsole(text);
+        if(isCli){
+            gameManagerClient.writeInConsole(text);
+        }else{
+            SnackBarMessage msg = new SnackBarMessage(text, InformationType.GAME_INFO);
+            gameManagerClient.updateSnackBarListener(msg);
+        }
     }
 }

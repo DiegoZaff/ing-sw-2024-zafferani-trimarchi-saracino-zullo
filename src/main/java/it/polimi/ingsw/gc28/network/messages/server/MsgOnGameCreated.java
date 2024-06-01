@@ -1,6 +1,8 @@
 package it.polimi.ingsw.gc28.network.messages.server;
 
 import it.polimi.ingsw.gc28.view.GameManagerClient;
+import it.polimi.ingsw.gc28.view.utils.InformationType;
+import it.polimi.ingsw.gc28.view.utils.SnackBarMessage;
 
 public class MsgOnGameCreated extends MessageS2C{
 
@@ -36,15 +38,22 @@ public class MsgOnGameCreated extends MessageS2C{
 
             gameManagerClient.setPlayerName(playerName);
 
-            String text = String.format("""
+            if(isCli){
+                String text = String.format("""
                     Welcome %s, may the power be with you!!
                     The game has been created successfully with id: %s
                                     
                     Waiting other %d to join...
                     """, playerName, gameId, playersLeftToJoin);
 
-            gameManagerClient.writeInConsole(text);
+
+                gameManagerClient.writeInConsole(text);
+            }
+
+
         } else {
+            SnackBarMessage msg = new SnackBarMessage("You have successfully created the game!", InformationType.GAME_INFO);
+            gameManagerClient.updateSnackBarListener(msg);
             GameManagerClient.getInstance().updateListeners(this);
         }
     }

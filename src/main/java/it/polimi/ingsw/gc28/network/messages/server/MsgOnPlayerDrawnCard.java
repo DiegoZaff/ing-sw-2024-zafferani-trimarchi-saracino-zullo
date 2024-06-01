@@ -1,8 +1,9 @@
 package it.polimi.ingsw.gc28.network.messages.server;
 
-import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
+import it.polimi.ingsw.gc28.view.utils.InformationType;
+import it.polimi.ingsw.gc28.view.utils.SnackBarMessage;
 
 
 public class MsgOnPlayerDrawnCard extends MessageS2C{
@@ -56,17 +57,24 @@ public class MsgOnPlayerDrawnCard extends MessageS2C{
             }
             text += deck;
         }
-        gameManagerClient.writeInConsole(text);
-        gameManagerClient.showPlayerAndAction();
+
+        if(isCli){
+            gameManagerClient.writeInConsole(text);
+            gameManagerClient.showPlayerAndAction();
 
 
-        String nextPlayer = gameManagerClient.getCurrentRepresentation().getPlayerToPlay();
+            String nextPlayer = gameManagerClient.getCurrentRepresentation().getPlayerToPlay();
 
 
-        if(nextPlayer.equals(gameManagerClient.getPlayerName())){
-            gameManagerClient.showHand(true);
-            gameManagerClient.showTable();
+            if(nextPlayer.equals(gameManagerClient.getPlayerName())){
+                gameManagerClient.showHand(true);
+                gameManagerClient.showTable();
+            }
+        }else{
+            SnackBarMessage msg = new SnackBarMessage(text, InformationType.GAME_INFO);
+            gameManagerClient.updateSnackBarListener(msg);
         }
+
 
 
     }
