@@ -127,15 +127,12 @@ public class ActionManager implements Serializable {
                 }
             }
             case CHOOSE_COLOR -> {
-                if(!isCurrentPlayerTheLastOneForTheAction()) { //ho fixato mnegando la condizione, serve un test per 3
-                                                               // giocatori, probabilemtne darà problemi
-                    actionType = ActionType.PLAY_INITIAL_CARD; // prma non scattava, ora scatta quando si fulla la lobby
-                                                                // non so perchè isCurrentPlayer funziona così
+                if(isCurrentPlayerTheLastOneForTheAction()) { //ora funziona correttamente
+
+                    actionType = ActionType.PLAY_INITIAL_CARD;
+                    playerOfTurn = getFirstPlayer();            // seleziona correttamente firstplayer
                 }
-                //playerOfTurn = getNextPlayer();               // durante la fase iniziale non cìè un ordine dei player
-                                                                // ma solo il player che inizia, quindi non serve dare
-                                                                //il turno al prossimo giocatore, lo tiene il primo che inizia e
-                                                                //quando il game comincia sarà il primo a giocare.
+                //playerOfTurn = getNextPlayer();             //inutile
 
             }
             case PLAY_INITIAL_CARD -> {
@@ -196,12 +193,18 @@ public class ActionManager implements Serializable {
      * This method chooses randomly the first player.
      */
     public void initFirstPlayer(){
-        if(indexFirstPlayer == null){
+        if(indexFirstPlayer == null){  //credo sia fatto per forzare che il primo player sia diego,
+                                       // va cambiato in == 0 per inserire randomicità
             Random rand = new Random();
             indexFirstPlayer = rand.nextInt(players.size());
         }
-        this.playerOfTurn = players.get(indexFirstPlayer);
+        //this.playerOfTurn = players.get(indexFirstPlayer);  //geenrava problemi perche il playerofturn era sempre quello iniziale
         this.firstPlayer = players.get(indexFirstPlayer);
+    }
+
+    public void initPlayerOfTurn(){             //aggiunta inizializzazione playerOfTurn
+        this.playerOfTurn = players.getLast();
+
     }
 
     public Player getFirstPlayer(){

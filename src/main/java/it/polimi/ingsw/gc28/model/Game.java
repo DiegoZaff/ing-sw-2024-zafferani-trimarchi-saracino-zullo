@@ -193,6 +193,7 @@ public class Game implements Serializable {
         }
 
         actionManager.initFirstPlayer();
+        actionManager.initPlayerOfTurn();  //aggiunta inizializzazione
 
         hasGameStarted = true;
     }
