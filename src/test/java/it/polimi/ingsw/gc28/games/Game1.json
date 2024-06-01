@@ -8,17 +8,34 @@
   "moves" : [
     {
       "player":  "Diego",
-      "action" : "JOIN_GAME",
+      "action" : "JOIN_GAME"
+    },
+    {
+      "player":  "Diego",
+      "action" : "CHOOSE_COLOR",
+      "color" : "RED",
+
       "assertions" : [
         {
           "type" : "PLAYERS_REGISTERED",
           "value" : 1
+        },
+        {
+          "type" : "COLOR_CHOSEN",
+          "nick": "Diego",
+          "color" : "RED"
         }
       ]
     },
     {
       "player":  "Ale",
-      "action" : "JOIN_GAME",
+      "action" : "JOIN_GAME"
+    },
+    {
+      "player":  "Ale",
+      "action" : "CHOOSE_COLOR",
+      "color" : "BLUE",
+
       "assertions" : [
         {
           "type" : "PLAYERS_REGISTERED",
@@ -46,9 +63,13 @@
           "type" : "FACE_UP_CARDS_GOLD",
           "card1" : "GOLD_21",
           "card2" : "GOLD_34"
+        },
+        {
+          "type" : "COLOR_CHOSEN",
+          "nick": "Ale",
+          "color" : "BLUE"
         }
       ]
-
     },
     {
       "player":  "Diego",

@@ -7,6 +7,7 @@ import it.polimi.ingsw.gc28.model.Player;
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.model.cards.*;
 import it.polimi.ingsw.gc28.model.errors.PlayerActionError;
+import it.polimi.ingsw.gc28.model.utils.PlayerColor;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -41,9 +42,11 @@ public abstract class Move {
 
     public abstract void play(Game game) throws PlayerActionError;
 
-    public static Move createMove(String player, ActionType action, Boolean isFront, CardResource cardRes, CardGold cardGold, CardInitial cardInitial, CardObjective cardObj, Coordinate coord, Boolean fromGoldDeck, ArrayList<GameAssertion> gameAssertions) throws IllegalArgumentException{
+    public static Move createMove(String player, ActionType action, Boolean isFront, CardResource cardRes, CardGold cardGold, CardInitial cardInitial, CardObjective cardObj, Coordinate coord, Boolean fromGoldDeck, ArrayList<GameAssertion> gameAssertions, String color) throws IllegalArgumentException{
         if(action.equals(ActionType.JOIN_GAME)){
             return new JoinGameMove(player, gameAssertions);
+        } else if (action.equals(ActionType.CHOOSE_COLOR)) {
+            return new ChooseColorMove(player, gameAssertions, color);
         } else if (action.equals(ActionType.PLAY_INITIAL_CARD)) {
             return new PlayCardGameMove(player, isFront, cardInitial, gameAssertions);
         } else if (action.equals(ActionType.PLAY_CARD)) {
