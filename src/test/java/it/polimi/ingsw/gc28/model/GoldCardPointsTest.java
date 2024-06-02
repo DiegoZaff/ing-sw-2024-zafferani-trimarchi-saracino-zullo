@@ -19,8 +19,8 @@ import org.junit.jupiter.api.BeforeEach;
 
 public class GoldCardPointsTest {
 
-    private ImageView im1;
-    private ImageView im2;
+    private String im1;
+    private String im2;
     private Player tester;
     int points;
     CardGame bridge = new CardResource("UNKNOWN_0", new ResourceType[]{ResourceType.noResource,ResourceType.noResource,ResourceType.noResource,ResourceType.noResource}, ResourcePrimaryType.MUSHROOM, 0, im1, im2);

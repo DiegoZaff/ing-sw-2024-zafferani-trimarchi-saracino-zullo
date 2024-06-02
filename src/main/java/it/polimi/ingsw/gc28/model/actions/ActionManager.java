@@ -37,6 +37,7 @@ public class ActionManager implements Serializable {
     private ActionType actionType;
 
     private ActionType savedAction;
+    int done = 1;
 
     /**
      * This attribute is null until a player reaches 20 points, counting
@@ -120,6 +121,8 @@ public class ActionManager implements Serializable {
      * 3) PlayInitialCard e ChooseObjective si fanno a turni.
      */
     public void nextMove(){
+
+
         switch (actionType){
             case JOIN_GAME -> {
                 if(players.size() == nPlayers){
@@ -127,13 +130,14 @@ public class ActionManager implements Serializable {
                 }
             }
             case CHOOSE_COLOR -> {
-                if(isCurrentPlayerTheLastOneForTheAction()) { //ora funziona correttamente
+                if(done == nPlayers) { //ora funziona correttamente
 
                     actionType = ActionType.PLAY_INITIAL_CARD;
                     playerOfTurn = getFirstPlayer();            // seleziona correttamente firstplayer
+                    break;
                 }
-                //playerOfTurn = getNextPlayer();             //inutile
-
+                playerOfTurn = getNextPlayer();//inutile
+                done++;
             }
             case PLAY_INITIAL_CARD -> {
                 if(isCurrentPlayerTheLastOneForTheAction()) {
@@ -203,7 +207,8 @@ public class ActionManager implements Serializable {
     }
 
     public void initPlayerOfTurn(){             //aggiunta inizializzazione playerOfTurn
-        this.playerOfTurn = players.getLast();
+        //this.playerOfTurn = players.getLast();
+        this.playerOfTurn = players.getFirst();
 
     }
 

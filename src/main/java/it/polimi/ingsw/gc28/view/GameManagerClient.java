@@ -50,9 +50,9 @@ public class GameManagerClient {
                 try {
                     MessageS2C message = messageQueue.take(); // Blocking call
 
-                    Platform.runLater(() -> {
+                    //Platform.runLater(() -> {
                         message.update(this, isCli);
-                    });
+                   // });
 
                 } catch (InterruptedException e) {
                     System.err.println("Thread was interrupted while taking a message!");
