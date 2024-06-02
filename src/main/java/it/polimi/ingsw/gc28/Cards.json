@@ -7,9 +7,7 @@
       "vertexThree": "noResource",
       "vertexFour": null,
       "resourcePrimary": "LEAF",
-      "pointsPerPlay": "0",
-      "frontImgPath" : "012.png",
-      "backImgPath" : "011.png"
+      "pointsPerPlay": "0"
     },
     {
       "id" : "RES_2",
@@ -89,8 +87,7 @@
       "vertexTwo": "LEAF",
       "vertexThree": "POTION",
       "vertexFour": null,
-      "resourcePrimary": "LEAF",
-      "pointsPerPlay": "0"
+      "resourcePrimary": "LEAF"
     },
     {
       "id" : "RES_11",

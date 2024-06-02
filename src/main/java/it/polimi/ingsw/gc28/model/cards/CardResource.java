@@ -21,13 +21,13 @@ public class CardResource extends CardGame {
     private final ResourcePrimary resource;
     private final int pointsPerPlay;
 
-    public CardResource(String id, ResourceType[] resourceCard, ResourcePrimaryType resource, int pointsPerPlay, ImageView frontImage, ImageView backImage){
+    public CardResource(String id, ResourceType[] resourceCard, ResourcePrimaryType resource, int pointsPerPlay, String frontImage, String backImage){
         super(id, resourceCard, frontImage, backImage);
         this.pointsPerPlay = pointsPerPlay;
         this.resource = new ResourcePrimary(resource);
     }
 
-    public CardResource(String id,ResourcePrimary resource, int pointsPerPlay, Vertex[] verticesFront, ImageView frontImage, ImageView backImage){
+    public CardResource(String id,ResourcePrimary resource, int pointsPerPlay, Vertex[] verticesFront, String frontImage, String backImage){
         super(id, verticesFront, frontImage, backImage);
         this.resource = resource;
         this.pointsPerPlay = pointsPerPlay;

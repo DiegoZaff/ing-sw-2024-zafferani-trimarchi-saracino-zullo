@@ -23,7 +23,7 @@ public class CardInitial extends CardGame {
     private final Vertex[] verticesBack;
     private final Map<Resource, Integer> centralResources;
     public CardInitial(String id, ResourceType[] resourcesBack, ResourceType[] resourcesFront, ResourceType[] primaryResources,
-                       ImageView frontImg, ImageView backImg){
+                       String frontImg, String backImg){
         super(id, resourcesFront, frontImg, backImg);
 
         Vertex[] vertexBack = new Vertex[4];

@@ -24,7 +24,7 @@ public abstract class CardGame extends Card implements Serializable {
     private final Vertex[] verticesFront;
 
 
-    public CardGame(String id, ResourceType[] resourcesFront, ImageView frontImg, ImageView backImg){
+    public CardGame(String id, ResourceType[] resourcesFront, String frontImg, String backImg){
         super(id, frontImg, backImg);
 
         Resource[] resourceInCard = new Resource[4];
@@ -68,7 +68,7 @@ public abstract class CardGame extends Card implements Serializable {
         this.verticesFront = vertices;
     }
 
-    public CardGame(String id, Vertex[] vertices, ImageView frontImg, ImageView backImg){
+    public CardGame(String id, Vertex[] vertices, String frontImg, String backImg){
         super(id, frontImg, backImg);
         this.verticesFront = vertices;
     }

@@ -35,7 +35,7 @@ public class CardGold extends CardResource {
 
     public CardGold(String id, ResourceType[] resourceCard, ResourcePrimaryType resourcePrimary, int pointsPerPlay,
                     ResourcePrimaryType[] resourceNeeded, ChallengeType challenge, ResourceSpecialType resourceChallenge,
-                    ImageView frontImg, ImageView backImg){
+                    String frontImg, String backImg){
         super(id, resourceCard, resourcePrimary, pointsPerPlay, frontImg, backImg);
         createPlayabilityMap(resourceNeeded);
         if(challenge != null){

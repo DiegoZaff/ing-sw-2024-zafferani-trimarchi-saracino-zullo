@@ -9,6 +9,7 @@ import it.polimi.ingsw.gc28.model.objectives.positions.utils.GeneralPositionType
 import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceSpecialType;
 import it.polimi.ingsw.gc28.model.resources.utils.ResourceType;
+import javafx.scene.effect.ImageInput;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.json.simple.JSONObject;
@@ -39,19 +40,36 @@ public class ParsingHelper {
         }
     }
 
-    public static ImageView stringPathToImageView(String path){
-        ImageView imageView = new ImageView();
-        //Image image = new Image(path);
-        //imageView.setImage(image);
-        return null;
+    public static String idToFrontPath(String id){
+        return ("@../img/cards/fronts/" + id + ".png");
+    }
+
+    public static String idToBackPath(String id){
+        return ("@../img/cards/backs/" + id + ".png");
+    }
+
+    public static String idToBackResPath(String resourceType){
+        return switch (resourceType) {
+            case "FOX" -> ("@../img/cards/backs/RES_F.png");
+            case "MUSHROOM" -> ("@../img/cards/backs/RES_M.png");
+            case "LEAF" -> ("@../img/cards/backs/RES_L.png");
+            default -> ("@../img/cards/backs/RES_B.png");
+        };
+    }
+
+    public static String idToBackGoldPath(String resourceType){
+        return switch (resourceType) {
+            case "FOX" -> ("@../img/cards/backs/GOLD_F.png");
+            case "MUSHROOM" -> ("@../img/cards/backs/GOLD_M.png");
+            case "LEAF" -> ("@../img/cards/backs/GOLD_L.png");
+            default -> ("@../img/cards/backs/GOLD_B.png");
+        };
     }
 
 
     public static CardResource parseCardResource(JSONObject obj){
         String[] resourceCard = new String[4];
         ResourceType[] resources = new ResourceType[4];
-        ImageView frontImg;
-        ImageView backImg;
 
         resourceCard[0] = (String) obj.get("vertexOne");
         resourceCard[1] = (String) obj.get("vertexTwo");
@@ -64,15 +82,11 @@ public class ParsingHelper {
         ResourcePrimaryType resPrimary = ResourcePrimaryType.valueOf(resourcePrimary);
         int points = Integer.parseInt(pointsPerPlay);
 
-        String frontImgPath = (String) obj.get("frontImgPath");
-        String backImgPath = (String) obj.get("backImgPath");
-
-        frontImg = stringPathToImageView(frontImgPath);
-        backImg = stringPathToImageView(backImgPath);
-
         String id = (String) obj.get("id");
+        String frontImgPath = idToFrontPath(id);
+        String backImgPath = idToBackResPath(resourcePrimary);
 
-        return new CardResource(id, resources, resPrimary, points, frontImg, backImg);
+        return new CardResource(id, resources, resPrimary, points, frontImgPath, backImgPath);
     }
 
 
@@ -83,8 +97,6 @@ public class ParsingHelper {
         ResourcePrimaryType[] resNeeded = new ResourcePrimaryType[5];
         ChallengeType cha;
         ResourceSpecialType resChallenge;
-        ImageView frontImg;
-        ImageView backImg;
 
         resourceCard[0] = (String) obj.get("vertexOne");
         resourceCard[1] = (String) obj.get("vertexTwo");
@@ -117,15 +129,12 @@ public class ParsingHelper {
             resChallenge = null;
         }
 
-        String frontImgPath = (String) obj.get("frontImgPath");
-        String backImgPath = (String) obj.get("backImgPath");
-
-        frontImg = stringPathToImageView(frontImgPath);
-        backImg = stringPathToImageView(backImgPath);
-
         String id = (String) obj.get("id");
 
-        return new CardGold(id, resources, resPrimary, points, resNeeded, cha, resChallenge, frontImg, backImg);
+        String frontImgPath = idToFrontPath(id);
+        String backImgPath = idToBackGoldPath(resourcePrimary);
+
+        return new CardGold(id, resources, resPrimary, points, resNeeded, cha, resChallenge, frontImgPath, backImgPath);
     }
 
     public static CardInitial parseCardInitial(JSONObject obj){
@@ -136,9 +145,6 @@ public class ParsingHelper {
         ResourceType[] resBack = new ResourceType[4];
         ResourceType[] resFront = new ResourceType[4];
         ResourceType[] resCenter = new ResourceType[3];
-
-        ImageView frontImg;
-        ImageView backImg;
 
         resourceBack[0] = (String) obj.get("vertexBackOne");
         resourceBack[1] = (String) obj.get("vertexBackTwo");
@@ -156,15 +162,11 @@ public class ParsingHelper {
         ParsingHelper.stringToResourceType(resourceFront, resFront);
         ParsingHelper.stringToResourceType(resourceCenter, resCenter);
 
-        String frontImgPath = (String) obj.get("frontImgPath");
-        String backImgPath = (String) obj.get("backImgPath");
-
-        frontImg = stringPathToImageView(frontImgPath);
-        backImg = stringPathToImageView(backImgPath);
-
         String id = (String) obj.get("id");
+        String frontImgPath = idToFrontPath(id);
+        String backImgPath = idToBackPath(id);
 
-        return new CardInitial(id, resBack, resFront, resCenter, frontImg, backImg);
+        return new CardInitial(id, resBack, resFront, resCenter, frontImgPath, backImgPath);
     }
 
     public static CardObjective parseObjectivePositional(JSONObject obj){
@@ -186,13 +188,10 @@ public class ParsingHelper {
 
         String id = (String) obj.get("id");
 
-        String frontImgPath = (String) obj.get("frontImgPath");
-        String backImgPath = (String) obj.get("backImgPath");
+        String frontImgPath = idToFrontPath(id);
+        String backImgPath = "@../img/cards/backs/OBJ.png";
 
-        frontImg = stringPathToImageView(frontImgPath);
-        backImg = stringPathToImageView(backImgPath);
-
-        return new CardObjective(id, posType, points, resPosition, frontImg, backImg);
+        return new CardObjective(id, posType, points, resPosition, frontImgPath, backImgPath);
     }
 
     public static CardObjective parseObjectiveResources(JSONObject obj){
@@ -212,12 +211,9 @@ public class ParsingHelper {
 
         String id = (String) obj.get("id");
 
-        String frontImgPath = (String) obj.get("frontImgPath");
-        String backImgPath = (String) obj.get("backImgPath");
+        String frontImgPath = idToFrontPath(id);
+        String backImgPath = "@../img/cards/backs/OBJ.png";
 
-        frontImg = stringPathToImageView(frontImgPath);
-        backImg = stringPathToImageView(backImgPath);
-
-        return new CardObjective(id, points, resNeeded, frontImg, backImg);
+        return new CardObjective(id, points, resNeeded, frontImgPath, backImgPath);
     }
 }
