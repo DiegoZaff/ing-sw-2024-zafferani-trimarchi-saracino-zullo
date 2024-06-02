@@ -19,42 +19,48 @@ public class MsgOnGameCreated extends MessageS2C{
 
 
     private final int playersLeftToJoin;
+
+    private final int nPlayers;
     public int getPlayersLeftToJoin() {
         return playersLeftToJoin;
     }
 
-    public MsgOnGameCreated(String gameId, String playerName, int playersLeftToJoin){
+    public MsgOnGameCreated(String gameId, String playerName, int playersLeftToJoin, int nPlayers){
         super(MessageTypeS2C.GAME_CREATED);
         this.gameId = gameId;
         this.playerName = playerName;
         this.playersLeftToJoin = playersLeftToJoin;
+        this.nPlayers = nPlayers;
     }
 
     @Override
     public void update(GameManagerClient gameManagerClient, boolean isCli) {
+        gameManagerClient.setNPlayers(nPlayers);
         if(isCli) {
 
             gameManagerClient.setGameId(gameId);
 
             gameManagerClient.setPlayerName(playerName);
 
-            if(isCli){
-                String text = String.format("""
-                    Welcome %s, may the power be with you!!
-                    The game has been created successfully with id: %s
+
+            String text = String.format("""
+                 Welcome %s, may the power be with you!!
+                 The game has been created successfully with id: %s
                                     
-                    Waiting other %d to join...
-                    """, playerName, gameId, playersLeftToJoin);
+                 Waiting other %d to join...
+                 """, playerName, gameId, playersLeftToJoin);
 
 
-                gameManagerClient.writeInConsole(text);
-            }
-
-
+            gameManagerClient.writeInConsole(text);
         } else {
             SnackBarMessage msg = new SnackBarMessage("You have successfully created the game!", InformationType.GAME_INFO);
+            System.out.println(gameId);
             gameManagerClient.updateSnackBarListener(msg);
             GameManagerClient.getInstance().updateListeners(this);
         }
+    }
+
+    public int getNPlayers() {
+        return nPlayers;
     }
 }

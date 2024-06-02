@@ -39,7 +39,7 @@ public class SnackBar extends VBox implements Initializable,InfoObserver {
     public SnackBar(){
         placedBoxes = new ArrayList<>();
         queue = new LinkedBlockingQueue<>();
-        URL fxmlResource = SnackBar.class.getResource("/it/polimi/ingsw/gc28/gui/components/snackbar.fxml");
+        URL fxmlResource = SnackBar.class.getResource("/it/polimi/ingsw/gc28/gui/components/snackbar/snackbar.fxml");
         FXMLLoader fxmlLoader = new FXMLLoader(fxmlResource);
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);

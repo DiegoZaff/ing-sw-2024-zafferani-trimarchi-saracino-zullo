@@ -20,15 +20,18 @@ public class MsgOnGameJoined extends MessageS2C{
     }
     private final int playersLeftToJoin;
 
+    private final int nPlayers;
+
     public int getPlayersLeftToJoin() {
         return playersLeftToJoin;
     }
 
-    public MsgOnGameJoined(String gameId, String playerName, int playersLeftToJoin){
+    public MsgOnGameJoined(String gameId, String playerName, int playersLeftToJoin, int nPlayers){
         super(MessageTypeS2C.GAME_JOINED);
         this.gameId = gameId;
         this.playerName = playerName;
         this.playersLeftToJoin = playersLeftToJoin;
+        this.nPlayers = nPlayers;
     }
 
     @Override
@@ -50,5 +53,9 @@ public class MsgOnGameJoined extends MessageS2C{
             SnackBarMessage msg = new SnackBarMessage(text, InformationType.GAME_INFO);
             gameManagerClient.updateSnackBarListener(msg);
         }
+    }
+
+    public int getnPlayers() {
+        return nPlayers;
     }
 }

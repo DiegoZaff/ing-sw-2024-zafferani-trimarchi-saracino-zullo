@@ -33,6 +33,8 @@ public class GameManagerClient {
 
     private InfoObserver snackBarListener;
 
+    private int nPlayers;
+
 
     private GameManagerClient() {
         this.gameId = null;
@@ -451,5 +453,13 @@ public class GameManagerClient {
                 this.snackBarListener.showInSnackBar(msg);
             });
         }
+    }
+
+    public int getNPlayers() {
+        return nPlayers;
+    }
+
+    public void setNPlayers(int nPlayers) {
+        this.nPlayers = nPlayers;
     }
 }
