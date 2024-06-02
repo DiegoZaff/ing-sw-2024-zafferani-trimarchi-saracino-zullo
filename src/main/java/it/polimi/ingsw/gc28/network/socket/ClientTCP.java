@@ -55,7 +55,7 @@ public class ClientTCP implements GuiCallable {
         try{
             MessageS2C receivedObj = null;
             while ((receivedObj = (MessageS2C) input.readObject()) != null) {
-                System.out.println("Received message from server: " + receivedObj);
+                //System.out.println("Received message from server: " + receivedObj);
 
                 GameManagerClient.getInstance().addMessageToQueue(receivedObj);
             }

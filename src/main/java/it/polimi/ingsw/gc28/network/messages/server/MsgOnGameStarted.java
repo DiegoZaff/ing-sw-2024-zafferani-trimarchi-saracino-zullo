@@ -3,7 +3,8 @@ package it.polimi.ingsw.gc28.network.messages.server;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
-
+import it.polimi.ingsw.gc28.view.utils.InformationType;
+import it.polimi.ingsw.gc28.view.utils.SnackBarMessage;
 
 
 public class MsgOnGameStarted extends MessageS2C{
@@ -23,14 +24,20 @@ public class MsgOnGameStarted extends MessageS2C{
 
         ActionType actionType = gameRepresentation.getActionExpected();
 
-        String text =String.format("""
+        if(isCli){
+            String text =String.format("""
                 The game has started! All players have joined!
                 
                 It's %s's Turn.
                 Action Expected: %s.
                 """,playerOfTurn, actionType);
 
-        gameManagerClient.writeInConsole(text);
+            gameManagerClient.writeInConsole(text);
+        }else{
+            SnackBarMessage msg = new SnackBarMessage("The game has started! Good Luck!", InformationType.GAME_INFO);
+            gameManagerClient.updateSnackBarListener(msg);
+        }
+
 
         /*
         if(playerOfTurn.equals(gameManagerClient.getPlayerName())){

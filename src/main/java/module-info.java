@@ -40,5 +40,5 @@ module it.polimi.ingsw.gc28 {
     opens it.polimi.ingsw.gc28.network.rmi.utils to java.rmi;
 
     opens it.polimi.ingsw.gc28.view.gui.controllers to javafx.fxml;
-
+    exports it.polimi.ingsw.gc28.view.gui.components to javafx.fxml;
 }

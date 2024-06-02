@@ -6,6 +6,8 @@ import it.polimi.ingsw.gc28.model.utils.PlayerColor;
 import it.polimi.ingsw.gc28.model.Table;
 
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
+import it.polimi.ingsw.gc28.view.utils.SnackBarMessage;
+import javafx.application.Platform;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -29,6 +31,8 @@ public class GameManagerClient {
 
     private ArrayList<GuiObserver> listeners;
 
+    private InfoObserver snackBarListener;
+
 
     private GameManagerClient() {
         this.gameId = null;
@@ -44,7 +48,9 @@ public class GameManagerClient {
                 try {
                     MessageS2C message = messageQueue.take(); // Blocking call
 
-                    message.update(this, isCli);
+                    Platform.runLater(() -> {
+                        message.update(this, isCli);
+                    });
 
                 } catch (InterruptedException e) {
                     System.err.println("Thread was interrupted while taking a message!");
@@ -407,13 +413,35 @@ public class GameManagerClient {
 
     public void updateListeners(){
         for (GuiObserver obs : listeners){
-            obs.update(currentRepresentation);
+            Platform.runLater(() -> {
+                obs.update(currentRepresentation);
+            });
         }
     }
 
+    // TODO : a cosa serve? non basta un metodo?
     public void updateListeners(MessageS2C message){
         for (GuiObserver obs : listeners){
-            obs.update(message);
+            Platform.runLater(() -> {
+                obs.update(message);
+            });
+        }
+    }
+
+    // todo : should we do some synchronization?
+    public void cleanAllListeners(){
+        listeners.clear();
+    }
+
+    public void addSnackBarListener(InfoObserver listener){
+        this.snackBarListener = listener;
+    }
+
+    public void updateSnackBarListener(SnackBarMessage msg){
+        if(this.snackBarListener != null){
+            Platform.runLater(() -> {
+                this.snackBarListener.showInSnackBar(msg);
+            });
         }
     }
 }

@@ -3,6 +3,8 @@ package it.polimi.ingsw.gc28.network.messages.server;
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
+import it.polimi.ingsw.gc28.view.utils.InformationType;
+import it.polimi.ingsw.gc28.view.utils.SnackBarMessage;
 
 public class MsgOnGameRestarted extends MessageS2C{
 
@@ -30,6 +32,7 @@ public class MsgOnGameRestarted extends MessageS2C{
 
             gameManagerClient.writeInConsole(text);
         } else {
+            SnackBarMessage msg = new SnackBarMessage("Game restarting...", InformationType.GAME_INFO);
             GameManagerClient.getInstance().updateListeners();
         }
     }

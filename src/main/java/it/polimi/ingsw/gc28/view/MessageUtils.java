@@ -332,6 +332,7 @@ public class MessageUtils {
                         "-joinGame gameId myNickname: join the game that has the selected gameId\n" +
                         "-createGame myNickname numberOfPlayers: create a new game\n" +
                         "-chooseObj OBJ_id: choose the selected objective\n" +
+                        "-chooseColor COLOR: choose the selected color\n" +
                         "-drawCard: draw a card, add goldDeck/resourceDeck to draw a random card from the selected deck or the cardId to draw the selected card\n" +
                         "-playCard cardId up/down x y: play the card at the specified coordinate\n");
                 return true;

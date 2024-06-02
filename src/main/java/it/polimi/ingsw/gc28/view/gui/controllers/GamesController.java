@@ -6,6 +6,7 @@ import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
 import it.polimi.ingsw.gc28.view.GuiObserver;
 import it.polimi.ingsw.gc28.view.gui.GuiApplication;
+import it.polimi.ingsw.gc28.view.gui.utils.WrapperControllable;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
@@ -30,7 +31,15 @@ import java.util.ResourceBundle;
 
 import static it.polimi.ingsw.gc28.view.gui.GuiApplication.connection;
 
-public class GamesController implements Initializable, GuiObserver {
+public class GamesController implements Initializable, GuiObserver, WrapperControllable {
+
+    private WrapperController wrapperController;
+
+    @Override
+    public void setWrapperController(WrapperController wrapperController) {
+        this.wrapperController = wrapperController;
+    }
+
 
     private final Border borderBold = new Border(new BorderStroke(
             Color.web("#424242"), // Border color
@@ -71,7 +80,6 @@ public class GamesController implements Initializable, GuiObserver {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         isCreateGameSelected = new SimpleBooleanProperty(true);
         numberOfPlayers = new SimpleIntegerProperty(TWO);
-        backgroundImageView.fitWidthProperty().bind(GuiApplication.mainScene.widthProperty());
         changeButtonWidth(createGameButton, isCreateGameSelected.getValue());
         changeButtonWidth(TwoPlayersButton, numberOfPlayers.get() == TWO);
         joinGameBox.setVisible(false);
@@ -96,11 +104,11 @@ public class GamesController implements Initializable, GuiObserver {
     }
 
 
-    public void onBackArrowClicked(MouseEvent mouseEvent) {
-        connection.closeConnection();
-        connection = null;
-        GuiApplication.setRootPage("menu");
-    }
+//    public void onBackArrowClicked(MouseEvent mouseEvent) {
+//        connection.closeConnection();
+//        connection = null;
+//        GuiApplication.setRootPage("menu");
+//    }
 
     private void changeButtonWidth(Button button ,boolean selected){
         if(selected){
@@ -172,7 +180,10 @@ public class GamesController implements Initializable, GuiObserver {
     @Override
     public void update(GameRepresentation gameRepresentation) {
         new Thread(() -> {
-            Platform.runLater(() -> GuiApplication.setRootPage("lobby"));
+            if(gameRepresentation != null){
+                // todo : maybe just use one thread
+                Platform.runLater(() -> GuiApplication.setRootPage("lobby"));
+            }
         }).start();
     }
 

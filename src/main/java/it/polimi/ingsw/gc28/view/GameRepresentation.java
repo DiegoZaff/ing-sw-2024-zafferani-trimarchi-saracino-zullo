@@ -23,6 +23,8 @@ public class GameRepresentation implements Serializable {
     private Map<String, PrivateRepresentation> representations;
     private Chat chat;
 
+    private boolean isGameAborted;
+
     public GameRepresentation (String playerToPlay, ActionType actionExpected, ArrayList<String> nicknames, ArrayList<String> globalObjectives,
                                ArrayList<String> faceUpResourceCards, ArrayList<String> faceUpGoldCards,
                                String nextResourceCard, String nextGoldCard,
@@ -38,6 +40,7 @@ public class GameRepresentation implements Serializable {
         this.points = points;
         this.representations = representations;
         this.chat = chat;
+        isGameAborted = false;
     }
 
     /**
@@ -90,5 +93,13 @@ public class GameRepresentation implements Serializable {
 
     public Chat getChat(){
         return chat;
+    }
+
+    public boolean isGameAborted() {
+        return isGameAborted;
+    }
+
+    public void setGameAborted(boolean gameAborted) {
+        isGameAborted = gameAborted;
     }
 }
