@@ -87,7 +87,8 @@
       "vertexTwo": "LEAF",
       "vertexThree": "POTION",
       "vertexFour": null,
-      "resourcePrimary": "LEAF"
+      "resourcePrimary": "LEAF",
+      "pointsPerPlay" : "0"
     },
     {
       "id" : "RES_11",
