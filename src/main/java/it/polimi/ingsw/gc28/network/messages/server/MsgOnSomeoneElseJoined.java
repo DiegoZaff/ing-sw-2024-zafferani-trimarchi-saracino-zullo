@@ -17,6 +17,7 @@ public class MsgOnSomeoneElseJoined extends MessageS2C{
     }
     private final int playersLeftToJoin;
 
+
     public int getPlayersLeftToJoin() {
         return playersLeftToJoin;
     }
@@ -42,7 +43,8 @@ public class MsgOnSomeoneElseJoined extends MessageS2C{
             gameManagerClient.writeInConsole(text);
         }
         else {
-            GameManagerClient.getInstance().updateListeners();
+            GameManagerClient.getInstance().updateListeners(this);
         }
     }
+
 }

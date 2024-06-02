@@ -374,7 +374,8 @@ public class GameController {
             return;
         }
 
-        MsgOnGameCreated message = new MsgOnGameCreated(gameId, name, numberOfPlayersLeftToJoin);
+        int nPlayers = gameModel.getNPlayers();
+        MsgOnGameCreated message = new MsgOnGameCreated(gameId, name, numberOfPlayersLeftToJoin, nPlayers);
 
         clients.get(name).sendMessage(message);
 
@@ -403,6 +404,7 @@ public class GameController {
 
 
     public void notifyPlayerJoined(String gameId, String playerName, int playersLeft) throws RemoteException {
+        int nPlayers = this.gameModel.getNPlayers();
 
         for(Map.Entry<String, VirtualView> entry : clients.entrySet()){
 
@@ -412,7 +414,7 @@ public class GameController {
 
 
             if(name.equals(playerName)){
-                MsgOnGameJoined msg = new MsgOnGameJoined(gameId, playerName, playersLeft);
+                MsgOnGameJoined msg = new MsgOnGameJoined(gameId, playerName, playersLeft, nPlayers );
                 client.sendMessage(msg);
             }else{
                 MsgOnSomeoneElseJoined msg= new MsgOnSomeoneElseJoined(gameId, playerName, playersLeft);

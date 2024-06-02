@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Text?>
+<fx:root xmlns="http://javafx.com/javafx"
+         xmlns:fx="http://javafx.com/fxml"
+         type="javafx.scene.layout.Pane">
+
+    <VBox fx:id="joinGameBox" prefHeight="256.0" prefWidth="1312.0"  alignment="CENTER">
+        <HBox alignment="CENTER" AnchorPane.leftAnchor="550.0">
+            <VBox alignment="CENTER">
+                <Label style="-fx-padding: 32 0 0 0" text="Game ID" />
+                <TextField fx:id="gameIdTextField" minHeight="64" prefWidth="700" promptText="Insert game ID..." style="-fx-background-color: #EDEDED;-fx-background-radius: 16;-fx-prompt-text-fill: derive(-fx-control-inner-background,-30%);" />
+            </VBox>
+        </HBox>
+        <Region>
+            <minHeight>158.0</minHeight>
+        </Region>
+        <Button fx:id="joinButton" prefHeight="64.0" prefWidth="322.0" style="-fx-background-color: transparent;-fx-font-size: 24pt; -fx-font-weight: bold" text="JOIN" layoutX="300" layoutY="300" onMouseClicked="#handleJoinButton">
+        </Button>
+    </VBox>
+</fx:root>

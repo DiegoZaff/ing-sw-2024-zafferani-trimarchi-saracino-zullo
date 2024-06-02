@@ -1,17 +1,17 @@
 package it.polimi.ingsw.gc28.view.gui.controllers;
 
-import it.polimi.ingsw.gc28.network.messages.client.MsgCreateGame;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
+import it.polimi.ingsw.gc28.network.messages.server.MessageTypeS2C;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
 import it.polimi.ingsw.gc28.view.GuiObserver;
-import it.polimi.ingsw.gc28.view.gui.GuiApplication;
+import it.polimi.ingsw.gc28.view.gui.components.CreateGame;
+import it.polimi.ingsw.gc28.view.gui.components.JoinGame;
+import it.polimi.ingsw.gc28.view.gui.utils.TabType;
 import it.polimi.ingsw.gc28.view.gui.utils.WrapperControllable;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -29,10 +29,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static it.polimi.ingsw.gc28.view.gui.GuiApplication.connection;
-
 public class GamesController implements Initializable, GuiObserver, WrapperControllable {
 
+    public Pane subView;
     private WrapperController wrapperController;
 
     @Override
@@ -48,67 +47,47 @@ public class GamesController implements Initializable, GuiObserver, WrapperContr
             new BorderWidths(2.5) // Border widths
     ));
 
-    private static final int TWO = 2;
-    private static final int THREE = 3;
-    private static final int FOUR = 4;
-    @FXML
-    public TextField usernameTextField;
-    public ImageView backgroundImageView;
     @FXML
     public Button createGameButton;
     @FXML
     public Button joinGameButton;
+
     @FXML
-    public Button TwoPlayersButton;
-    @FXML
-    public Button ThreePlayersButton;
-    @FXML
-    public Button FourPlayersButton;
-    @FXML
-    public VBox createGameBox;
-    @FXML
-    public VBox joinGameBox;
-    public TextField gameIdTextField;
-    public Button createButton;
-    public Button joinButton;
+    public TextField userNameTextField;
 
     private BooleanProperty isCreateGameSelected;
 
-    private IntegerProperty numberOfPlayers;
+    private Parent createGameView;
+
+    private Parent joinGameView;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        System.out.print("initializing GamesController");
+        loadSubViews();
         isCreateGameSelected = new SimpleBooleanProperty(true);
-        numberOfPlayers = new SimpleIntegerProperty(TWO);
+        replaceView(isCreateGameSelected.getValue());
         changeButtonWidth(createGameButton, isCreateGameSelected.getValue());
-        changeButtonWidth(TwoPlayersButton, numberOfPlayers.get() == TWO);
-        joinGameBox.setVisible(false);
         GameManagerClient.getInstance().addListeners(this);
 
         isCreateGameSelected.addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                System.out.println("listener!!");
                 // Perform action when property changes
                 changeButtonWidth(createGameButton, isCreateGameSelected.getValue());
                 changeButtonWidth(joinGameButton, !isCreateGameSelected.getValue());
+
+                replaceView(isCreateGameSelected.getValue());
             }
         });
-        numberOfPlayers.addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number newNumber) {
-                changeButtonWidth(TwoPlayersButton, numberOfPlayers.get() == TWO);
-                changeButtonWidth(ThreePlayersButton, numberOfPlayers.get() == THREE);
-                changeButtonWidth(FourPlayersButton, numberOfPlayers.get() == FOUR);
-            }
-        });
+
+        createGameButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::handleSelectCreateGame);
+        joinGameButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::handleSelectJoinGame);
+
     }
 
-
-//    public void onBackArrowClicked(MouseEvent mouseEvent) {
-//        connection.closeConnection();
-//        connection = null;
-//        GuiApplication.setRootPage("menu");
-//    }
 
     private void changeButtonWidth(Button button ,boolean selected){
         if(selected){
@@ -118,77 +97,55 @@ public class GamesController implements Initializable, GuiObserver, WrapperContr
         }
     }
 
+
     public void handleSelectCreateGame(MouseEvent mouseEvent) {
+        System.out.print("handle select create game");
         if(!isCreateGameSelected.getValue()){
             isCreateGameSelected.set(true);
         }
-        createGameBox.setVisible(true);
-        joinGameBox.setVisible(false);
     }
 
+
     public void handleSelectJoinGame(MouseEvent mouseEvent) {
+        System.out.print("handle select join game");
         if(isCreateGameSelected.getValue()){
             isCreateGameSelected.set(false);
         }
-        joinGameBox.setVisible(true);
-        createGameBox.setVisible(false);
-    }
-
-    public void handleSelectTwoPlayers(MouseEvent mouseEvent) {
-        if(numberOfPlayers.get() != TWO){
-            numberOfPlayers.set(TWO);
-        }
-    }
-
-    public void handleSelectThreePlayers(MouseEvent mouseEvent) {
-        if(numberOfPlayers.get() != THREE){
-            numberOfPlayers.set(THREE);
-        }
-    }
-
-    public void handleSelectFourPlayers(MouseEvent mouseEvent) {
-        if(numberOfPlayers.get() != FOUR){
-            numberOfPlayers.set(FOUR);
-        }
-    }
-
-    public void handleCreateButton(MouseEvent mouseEvent) {
-        new Thread(() -> {
-            String playerName;
-            int nPlayers;
-
-            nPlayers = numberOfPlayers.getValue();
-            playerName = usernameTextField.getText();
-            if (playerName == null || playerName.trim().isEmpty()) {
-                System.err.println("Player name cannot be empty.");
-                return;
-            }
-            //TODO: manage RMI case
-            MsgCreateGame message = new MsgCreateGame(null, playerName, nPlayers, null);
-            connection.sendMessageToServer(message);
-        }).start();
-    }
-
-    public void handleJoinButton(MouseEvent mouseEvent) {
-
-    }
-
-    public void receiveMessageFromServer(){
-
     }
 
     @Override
     public void update(GameRepresentation gameRepresentation) {
-        new Thread(() -> {
-            if(gameRepresentation != null){
-                // todo : maybe just use one thread
-                Platform.runLater(() -> GuiApplication.setRootPage("lobby"));
+
+        if(gameRepresentation != null){
+            if(wrapperController != null){
+                Platform.runLater(() -> wrapperController.setInnerContent(TabType.LOBBY));
             }
-        }).start();
+        }
     }
 
     @Override
     public void update(MessageS2C message) {
-        
+        if(message.getType().equals(MessageTypeS2C.GAME_CREATED)){
+            if(wrapperController != null){
+                Platform.runLater(() -> wrapperController.setInnerContent(TabType.LOBBY));
+            }
+        }
+    }
+
+
+
+    private void loadSubViews(){
+        System.out.println("Loading subviews");
+        createGameView = new CreateGame(userNameTextField);
+        joinGameView = new JoinGame(userNameTextField);
+    }
+
+    private void replaceView(boolean isGameCreatedSelected){
+        System.out.print("replacing");
+        if(isGameCreatedSelected){
+            subView.getChildren().setAll(createGameView);
+        }else{
+            subView.getChildren().setAll(joinGameView);
+        }
     }
 }

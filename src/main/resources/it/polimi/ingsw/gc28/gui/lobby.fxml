@@ -12,24 +12,12 @@
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="it.polimi.ingsw.gc28.view.gui.controllers.LobbyController"
-            prefHeight="800.0" prefWidth="600.0">
-
-    <!-- Immagine di sfondo a tutto schermo -->
-    <ImageView fx:id="backgroundImageView" preserveRatio="true">
-        <effect>
-            <GaussianBlur radius="8"/> <!-- Adjust the blur radius as needed -->
-        </effect>
-        <Image url="@../img/background5.png"/>
-    </ImageView>
-
-    <HBox alignment="CENTER" AnchorPane.leftAnchor="32" AnchorPane.topAnchor="32">
-        <Label style="-fx-font-size: 36" text="Lobby" />
-    </HBox>
+            AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" prefWidth="2000" prefHeight="800">
 
     <VBox fx:id="lobbyBox" prefHeight="56.0" prefWidth="312.0" AnchorPane.leftAnchor="64" AnchorPane.rightAnchor="64" AnchorPane.topAnchor="250.0" alignment="CENTER">
-        <HBox alignment="CENTER" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="200.0">
-            <Label style="-fx-padding: 0 0 8 0" text="Waiting for players" />
-            <Label style="-fx-padding: 0 0 8 0" text="left" />
+        <HBox spacing="16" alignment="CENTER" HBox.hgrow="ALWAYS">
+            <Label style="-fx-padding: 0 0 8 0" text="Waiting for players..." />
+            <Label fx:id="playersLeft" style="-fx-padding: 0 0 8 0" />
         </HBox>
     </VBox>
 

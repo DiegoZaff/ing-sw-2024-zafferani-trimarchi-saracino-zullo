@@ -617,7 +617,7 @@ public class Game implements Serializable {
         return new GameRepresentation(playerToPlayName, actionExpected ,this.getPlayersNickname(),
                 this.getObjectiveIDs(), this.getFaceUpResourceCardsIDs() ,this.getFaceUpGoldCardsIDs(),
                 deck.getNextResourceCard().getId(), deck.getNextGoldCard().getId(),
-                this.getPointsMap(), this.getPrivateRepresentationsMap(), this.getChat());
+                this.getPointsMap(), this.getPrivateRepresentationsMap(), this.getChat(), this.getNPlayers());
     }
 
     public void sendMessage(ChatMessage chatMessage){
