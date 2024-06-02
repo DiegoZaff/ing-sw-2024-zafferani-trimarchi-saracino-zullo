@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.Pane?>
 <AnchorPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc28.view.gui.controllers.GamesController" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" prefWidth="2000" prefHeight="800">
     <VBox AnchorPane.leftAnchor="32" AnchorPane.topAnchor="32" AnchorPane.rightAnchor="32" alignment="CENTER_LEFT">
@@ -32,9 +31,5 @@
 
         </HBox>
     </VBox>
-
-
-    <Pane fx:id="subView" AnchorPane.leftAnchor="64" AnchorPane.rightAnchor="64" AnchorPane.topAnchor="350" style="-fx-background-color: red"/>
-
-
+    <Pane fx:id="subView" AnchorPane.leftAnchor="64" AnchorPane.rightAnchor="64" AnchorPane.topAnchor="350"/>
 </AnchorPane>

@@ -37,9 +37,11 @@ public class WrapperController implements Initializable {
 
         currentTab = TabType.GAMES;
         setInnerContent(TabType.GAMES);
-
     }
 
+    /**
+     * This method sets the content inside the wrapper, so it performs page changes.
+     */
     public void setInnerContent(TabType tabType){
         String base = "/it/polimi/ingsw/gc28/gui/";
         innerContent.getChildren().clear();
@@ -53,6 +55,8 @@ public class WrapperController implements Initializable {
 
             innerContent.getChildren().setAll(node);
             updateGoBackButton(tabType);
+
+            System.out.print("Loaded " + tabType.toString());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -76,6 +80,9 @@ public class WrapperController implements Initializable {
     }
 
 
+    /**
+     * This method sets the correct name beside the Go Back Arrow
+     */
     private void updateGoBackButton(TabType tab){
         String tabTitle = tab.getTabTitle();
 
