@@ -21,19 +21,25 @@ public class TableTest {
     private String im2;
     @Test
     public void showMyTable() {
-
+        ResourceType[] resources = new ResourceType[]{ResourceType.FOX};
+        ResourceType[] resources4 = new ResourceType[]{ResourceType.BUTTERFLY};
+        ResourceType[] resources5 = new ResourceType[]{ResourceType.noResource};
 
         CardGame leafCard = new CardResource("UNKNOWN_1", new ResourceType[]{ResourceType.FEATHER, ResourceType.FOX, ResourceType.noResource, ResourceType.PARCHMENT},
                 ResourcePrimaryType.LEAF,
                 0, im1, im2);
         CardGold goldFoxCard = new CardGold("UNKNOWN_4", new ResourceType[]{ResourceType.BUTTERFLY, ResourceType.noResource, ResourceType.noResource, ResourceType.noResource},
-                ResourcePrimaryType.FOX, 0, new ResourcePrimaryType[]{},
+                ResourcePrimaryType.FOX, 2, new ResourcePrimaryType[]{},
                 ChallengeType.POINTS_PER_RESOURCE, ResourceSpecialType.FEATHER, im1, im2);
+        CardGold goldFoxCard2 = new CardGold("UNKNOWN_4", new ResourceType[]{ResourceType.BUTTERFLY, ResourceType.noResource, ResourceType.noResource, ResourceType.noResource},
+                ResourcePrimaryType.FOX, 2, new ResourcePrimaryType[]{},
+                ChallengeType.POINTS_PER_COVER, null, im1, im2);
+        CardInitial cardInitial = new CardInitial( "id", resources, resources, resources, im1, im2);
 
         Table table1 = new Table();
 
-        table1.addMapPosition(new Coordinate(0, 0), new Cell(leafCard, 0, true));
-        table1.addMapPosition(new Coordinate(1, 1), new Cell(leafCard, 0, true));
+        table1.addMapPosition(new Coordinate(0, 0), new Cell(cardInitial, 0, true));
+        table1.addMapPosition(new Coordinate(1, 1), new Cell(goldFoxCard, 0, true));
         table1.addMapPosition(new Coordinate(2, 2), new Cell(leafCard, 0, true));
         table1.addMapPosition(new Coordinate(3, 3), new Cell(leafCard, 0, true));
         table1.addMapPosition(new Coordinate(-1, 1), new Cell(goldFoxCard, 0, true));
@@ -48,9 +54,7 @@ public class TableTest {
         Player p3 = new Player("ccccc");
 
         ResourcePrimary res = new ResourcePrimary(ResourcePrimaryType.LEAF);
-        ResourceType[] resources = new ResourceType[]{ResourceType.FOX};
-        ResourceType[] resources4 = new ResourceType[]{ResourceType.BUTTERFLY, ResourceType.LEAF};
-        ResourceType[] resources5 = new ResourceType[]{ResourceType.PARCHMENT};
+
         GeneralPositionType generalPositionType;
         GeneralPositionType generalPositionType2;
         generalPositionType = GeneralPositionType.MAIN_DIAGONAL;
@@ -72,9 +76,13 @@ public class TableTest {
         p3.setObjectiveChosen(cardObjective3);
         System.out.println( p3.getObjectiveChosen().toString());
 
-        CardInitial cardInitial = new CardInitial( "id", resources, resources4, resources5, im1, im2);
         p1.setCardInitial(cardInitial);
-        System.out.println( p1.getCardInitial().toString()); //non viene mostrata
+        System.out.println( p1.getCardInitial().get().toString(true)); //non viene mostrata
+        //System.out.println( p1.getCardInitial().get().toString(false));
+        p1.addCardToHand( goldFoxCard2);
+        p1.addCardToHand( goldFoxCard2);
+        System.out.println( p1.gethand().get(1).toString(true));
+        System.out.println( p1.gethand().get(1).toString(false));
     }
 
 }
