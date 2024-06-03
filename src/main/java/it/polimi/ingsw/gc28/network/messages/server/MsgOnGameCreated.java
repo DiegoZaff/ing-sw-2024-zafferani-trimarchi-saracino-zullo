@@ -36,6 +36,7 @@ public class MsgOnGameCreated extends MessageS2C{
     @Override
     public void update(GameManagerClient gameManagerClient, boolean isCli) {
         gameManagerClient.setNPlayers(nPlayers);
+        gameManagerClient.setPlayersIn(1);
         if(isCli) {
 
             gameManagerClient.setGameId(gameId);

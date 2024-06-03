@@ -38,7 +38,8 @@ public class MsgOnGameJoined extends MessageS2C{
     public void update(GameManagerClient gameManagerClient, boolean isCli)  {
         gameManagerClient.setGameId(gameId);
         gameManagerClient.setPlayerName(playerName);
-
+        gameManagerClient.setNPlayers(nPlayers);
+        gameManagerClient.setPlayersIn(nPlayers - playersLeftToJoin);
         String text = String.format("""
             Welcome %s, you joined the game of id %s
             """, playerName, gameId);

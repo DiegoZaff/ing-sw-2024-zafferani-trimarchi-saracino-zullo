@@ -30,22 +30,21 @@ public class LobbyController implements Initializable, GuiObserver, WrapperContr
     @Override
     public void update(MessageS2C message) {
         if(message.getType().equals(MessageTypeS2C.SOMEONE_ELSE_JOINED)){
-            MsgOnSomeoneElseJoined msg = (MsgOnSomeoneElseJoined) message;
-            Integer playersLeftNumber = msg.getPlayersLeftToJoin();
-            Integer playersTotal = GameManagerClient.getInstance().getNPlayers();
-            Integer playersIn = playersTotal - playersLeftNumber;
-            playersLeft.setText(String.format("%s/%s", playersIn, playersTotal));
-
+            setPlayersLeft();
         }
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        GameManagerClient gameManagerClient= GameManagerClient.getInstance();
-        gameManagerClient.addListeners(this);
-        Integer playersTotal = gameManagerClient.getNPlayers();
+        GameManagerClient.getInstance().addListeners(this);
+        setPlayersLeft();
+    }
 
-        playersLeft.setText(String.format("1/%s", playersTotal));
+    public void setPlayersLeft(){
+        GameManagerClient gameManagerClient= GameManagerClient.getInstance();
+        Integer playersTotal = gameManagerClient.getNPlayers();
+        Integer playersIn = gameManagerClient.getPlayersIn();
+        playersLeft.setText(String.format("%d/%d",playersIn, playersTotal));
 
     }
 

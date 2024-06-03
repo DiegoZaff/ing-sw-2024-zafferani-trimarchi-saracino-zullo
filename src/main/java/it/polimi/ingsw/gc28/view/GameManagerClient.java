@@ -33,7 +33,9 @@ public class GameManagerClient {
 
     private InfoObserver snackBarListener;
 
-    private int nPlayers;
+    private Integer nPlayers;
+
+    private Integer playersIn;
 
 
     private GameManagerClient() {
@@ -453,5 +455,13 @@ public class GameManagerClient {
 
     public void setNPlayers(int nPlayers) {
         this.nPlayers = nPlayers;
+    }
+
+    public int getPlayersIn(){
+        return playersIn;
+    }
+
+    public void setPlayersIn(int playersIn) {
+        this.playersIn = playersIn;
     }
 }

@@ -90,7 +90,6 @@ public class JoinGame extends HBox implements Initializable, GuiObserver {
             @Override
             public void changed(ObservableValue<? extends JoinInfo> observable, JoinInfo oldValue, JoinInfo newValue) {
                 if (newValue != null) {
-                    System.out.println("Selected item: " + newValue);
                     selectedJoin = newValue;
                 }
             }
@@ -121,8 +120,6 @@ public class JoinGame extends HBox implements Initializable, GuiObserver {
     }
 
     public void onRefresh(MouseEvent event){
-        System.out.print("sending refresh");
-
         Platform.runLater(() -> {
             MsgJoinableGames msg = new MsgJoinableGames();
             connection.sendMessageToServer(msg);

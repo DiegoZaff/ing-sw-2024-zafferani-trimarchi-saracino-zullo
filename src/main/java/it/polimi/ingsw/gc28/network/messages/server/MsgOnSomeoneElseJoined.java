@@ -30,6 +30,7 @@ public class MsgOnSomeoneElseJoined extends MessageS2C{
 
     @Override
     public void update(GameManagerClient gameManagerClient, boolean isCli) {
+        gameManagerClient.setPlayersIn(gameManagerClient.getNPlayers() - playersLeftToJoin);
         if(isCli) {
 
             String text = String.format("""
