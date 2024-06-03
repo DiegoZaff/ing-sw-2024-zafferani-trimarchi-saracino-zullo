@@ -197,19 +197,16 @@ public class ActionManager implements Serializable {
      * This method chooses randomly the first player.
      */
     public void initFirstPlayer(){
-        if(indexFirstPlayer == null){  //credo sia fatto per forzare che il primo player sia diego,
-                                       // va cambiato in == 0 per inserire randomicità
+        if(indexFirstPlayer == null){
+
             Random rand = new Random();
             indexFirstPlayer = rand.nextInt(players.size());
         }
-        //this.playerOfTurn = players.get(indexFirstPlayer);  //geenrava problemi perche il playerofturn era sempre quello iniziale
         this.firstPlayer = players.get(indexFirstPlayer);
     }
 
     public void initPlayerOfTurn(){             //aggiunta inizializzazione playerOfTurn
-        //this.playerOfTurn = players.getLast();
-        this.playerOfTurn = players.getFirst();
-
+        this.playerOfTurn = firstPlayer;
     }
 
     public Player getFirstPlayer(){
