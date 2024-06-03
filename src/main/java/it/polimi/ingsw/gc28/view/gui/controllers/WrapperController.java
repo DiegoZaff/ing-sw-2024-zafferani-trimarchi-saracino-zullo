@@ -29,7 +29,7 @@ public class WrapperController implements Initializable {
     public Label labelGoBack;
     TabType currentTab;
     @FXML
-    public HBox innerContent;
+    public AnchorPane innerContent;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -56,7 +56,6 @@ public class WrapperController implements Initializable {
             innerContent.getChildren().setAll(node);
             updateGoBackButton(tabType);
 
-            System.out.print("Loaded " + tabType.toString());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

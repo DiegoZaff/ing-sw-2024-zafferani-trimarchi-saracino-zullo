@@ -52,6 +52,7 @@ public class MsgOnGameJoined extends MessageS2C{
         }else{
             SnackBarMessage msg = new SnackBarMessage(text, InformationType.GAME_INFO);
             gameManagerClient.updateSnackBarListener(msg);
+            gameManagerClient.updateListeners(this);
         }
     }
 

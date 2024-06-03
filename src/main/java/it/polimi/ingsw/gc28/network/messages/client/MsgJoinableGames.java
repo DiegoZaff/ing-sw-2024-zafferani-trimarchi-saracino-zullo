@@ -6,26 +6,15 @@ import it.polimi.ingsw.gc28.network.rmi.VirtualView;
 
 import java.rmi.RemoteException;
 
-public class MsgReconnect extends MessageC2S{
+public class MsgJoinableGames extends  MessageC2S{
     private  VirtualView client;
-    private final String playerName;
-    public MsgReconnect(String gameId, String playerName) {
-        super(MessageTypeC2S.RECONNECT, gameId);
-        this.playerName = playerName;
+    public MsgJoinableGames() {
+        super(MessageTypeC2S.JOINABLE_GAMES);
     }
 
     @Override
     public void execute(GameController controller) throws RemoteException, FailedActionManaged {
-        boolean isSuccessful = controller.reconnect(playerName, client);
 
-        if(!isSuccessful){
-            throw new FailedActionManaged("Reconnection error was managed.");
-        }
-
-    }
-
-    public String getPlayerName() {
-        return playerName;
     }
 
     public VirtualView getClient() {

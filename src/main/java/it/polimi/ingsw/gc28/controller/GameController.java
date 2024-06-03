@@ -1,5 +1,7 @@
 package it.polimi.ingsw.gc28.controller;
+import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.model.errors.types.*;
+import it.polimi.ingsw.gc28.model.utils.JoinInfo;
 import it.polimi.ingsw.gc28.network.messages.client.MessageC2S;
 import it.polimi.ingsw.gc28.network.persistence.BackupManager;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
@@ -475,5 +477,12 @@ public class GameController {
      */
     private void backUpGame(Game game){
         new BackupManager(game).start();
+    }
+
+
+    public Optional<JoinInfo> getJoinInfo(){
+        synchronized (gameModel){
+            return gameModel.getJoinInfo();
+        }
     }
 }

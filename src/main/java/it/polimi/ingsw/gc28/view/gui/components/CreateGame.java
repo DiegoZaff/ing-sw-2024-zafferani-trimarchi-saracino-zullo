@@ -61,6 +61,9 @@ public class CreateGame extends VBox implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        AnchorPane.setTopAnchor(this, 50.0);
+        AnchorPane.setRightAnchor(this, 0.0);
+        AnchorPane.setLeftAnchor(this, 0.0);
         numberOfPlayers = new SimpleIntegerProperty(TWO);
         changeButtonWidth(TwoPlayersButton, numberOfPlayers.get() == TWO);
 
@@ -106,7 +109,7 @@ public class CreateGame extends VBox implements Initializable {
                 return;
             }
             //TODO: manage RMI case
-            MsgCreateGame message = new MsgCreateGame(null, playerName, nPlayers, null);
+            MsgCreateGame message = new MsgCreateGame(null, playerName, nPlayers);
             connection.sendMessageToServer(message);
         }).start();
     }

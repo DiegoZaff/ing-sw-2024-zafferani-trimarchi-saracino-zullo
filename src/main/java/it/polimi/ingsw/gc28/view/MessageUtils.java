@@ -35,12 +35,8 @@ public class MessageUtils {
                     return Optional.empty();
                 }
 
-                MsgCreateGame message;
-                if (rmiClient == null) {
-                    message = new MsgCreateGame(null, playerName, nPlayers, null);
-                } else {
-                    message = new MsgCreateGame(null, playerName, nPlayers, rmiClient);
-                }
+                MsgCreateGame message =  new MsgCreateGame(null, playerName, nPlayers);
+
                 return Optional.of(message);
             }
             case "joinGame" -> {
@@ -52,12 +48,8 @@ public class MessageUtils {
                 String newGameId = commandsList.get(1);
                 playerName = commandsList.get(2);
 
-                MsgJoinGame message;
-                if (rmiClient == null) {
-                    message = new MsgJoinGame(null, newGameId, playerName);
-                } else {
-                    message = new MsgJoinGame(rmiClient, newGameId, playerName);
-                }
+                MsgJoinGame message = new MsgJoinGame(newGameId, playerName);
+
                 return Optional.of(message);
             }case "reconnect" -> {
                 if (commandsList.size() != 3) {
@@ -68,12 +60,8 @@ public class MessageUtils {
                 String newGameId = commandsList.get(1);
                 playerName = commandsList.get(2);
 
-                MsgReconnect message;
-                if (rmiClient == null) {
-                    message = new MsgReconnect(newGameId,null, playerName);
-                } else {
-                    message = new MsgReconnect(newGameId, rmiClient , playerName);
-                }
+                MsgReconnect message = new MsgReconnect(newGameId, playerName);
+
                 return Optional.of(message);
             }
             case "chooseColor" -> {
@@ -183,6 +171,13 @@ public class MessageUtils {
                 MsgChatMessage message = new MsgChatMessage(gameId, chatMessage);
                 MsgChatMessage msgChatMessage = new MsgChatMessage(gameId, chatMessage);
                 return Optional.of(msgChatMessage);
+            }
+            case "sendGames" -> {
+                MsgJoinableGames msg = new MsgJoinableGames();
+
+                return Optional.of(msg);
+
+
             }
             default -> {
                 System.out.println("Invalid command");

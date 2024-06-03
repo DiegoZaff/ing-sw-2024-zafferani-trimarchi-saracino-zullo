@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc28.model;
 
+import it.polimi.ingsw.gc28.model.utils.JoinInfo;
 import it.polimi.ingsw.gc28.model.utils.PlayerColor;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
 import it.polimi.ingsw.gc28.view.PrivateRepresentation;
@@ -683,6 +684,16 @@ public class Game implements Serializable {
     }
     public boolean isEveryoneReconnected(){
         return players.stream().allMatch(Player::isConnected);
+    }
+
+    public Optional<JoinInfo> getJoinInfo(){
+        if(!actionExpected().equals(ActionType.JOIN_GAME)){
+            return Optional.empty();
+        }
+
+        ArrayList<String> playersIn = getPlayersNickname();
+        JoinInfo info = new JoinInfo(getGameId(), playersIn, nPlayers);
+        return Optional.of(info);
     }
 
 }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<?import javafx.scene.text.Text?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.shape.Circle?>
+<fx:root xmlns="http://javafx.com/javafx"
+         xmlns:fx="http://javafx.com/fxml"
+         type="javafx.scene.layout.VBox">
+    <padding>
+        <Insets top="16" right="16" bottom="16" left="16"/>
+    </padding>
+    <HBox>
+        <Text text="Game id:" style="-fx-font-size: 14"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Circle fx:id="coloredCircle" radius="10" fill="#43C68F"/>
+    </HBox>
+    <Text fx:id="label" text="Label" style="-fx-font-size: 10"/>
+    <Region minHeight="16"/>
+    <HBox alignment="TOP_RIGHT">
+        <VBox fx:id="playersNameContainer"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Text fx:id="playersLeftTag" style="-fx-font-size: 14;-fx-background-color: #424242"/>
+    </HBox>
+</fx:root>
