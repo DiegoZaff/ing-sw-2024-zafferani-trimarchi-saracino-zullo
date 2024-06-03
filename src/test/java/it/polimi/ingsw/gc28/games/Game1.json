@@ -8,68 +8,71 @@
   "moves" : [
     {
       "player":  "Diego",
-      "action" : "JOIN_GAME"
-    },
-    {
-      "player":  "Diego",
-      "action" : "CHOOSE_COLOR",
-      "color" : "RED",
-
+      "action" : "JOIN_GAME",
       "assertions" : [
+      {
+        "type" : "PLAYERS_REGISTERED",
+        "value" : 1
+      }
+        ]
+    },
+      {
+        "player":  "Ale",
+        "action" : "JOIN_GAME",
+        "assertions" : [
+          {
+            "type" : "PLAYERS_REGISTERED",
+            "value" : 2
+          },
+          {
+            "type" : "GAME_STARTED",
+            "state" : true
+          },
+          {
+            "type" : "FIRST_PLAYER",
+            "value" : "Diego"
+          },
+          {
+            "type" : "GLOBAL_OBJ",
+            "card1" : "OBJ_10",
+            "card2" : "OBJ_15"
+          },
+          {
+            "type" : "FACE_UP_CARDS_RES",
+            "card1" : "RES_3",
+            "card2" : "RES_13"
+          },
+          {
+            "type" : "FACE_UP_CARDS_GOLD",
+            "card1" : "GOLD_21",
+            "card2" : "GOLD_34"
+          }
+        ]
+      },
         {
-          "type" : "PLAYERS_REGISTERED",
-          "value" : 1
+          "player":  "Diego",
+          "action" : "CHOOSE_COLOR",
+          "color" : "RED",
+          "assertions" : [
+            {
+              "type" : "COLOR_CHOSEN",
+              "nick": "Diego",
+              "color" : "RED"
+            }
+          ]
         },
-        {
-          "type" : "COLOR_CHOSEN",
-          "nick": "Diego",
-          "color" : "RED"
-        }
-      ]
-    },
-    {
-      "player":  "Ale",
-      "action" : "JOIN_GAME"
-    },
     {
       "player":  "Ale",
       "action" : "CHOOSE_COLOR",
       "color" : "BLUE",
-
       "assertions" : [
-        {
-          "type" : "PLAYERS_REGISTERED",
-          "value" : 2
-        },
-        {
-          "type" : "GAME_STARTED",
-          "state" : true
-        },
-        {
-          "type" : "FIRST_PLAYER",
-          "value" : "Diego"
-        },
-        {
-          "type" : "GLOBAL_OBJ",
-          "card1" : "OBJ_10",
-          "card2" : "OBJ_15"
-        },
-        {
-          "type" : "FACE_UP_CARDS_RES",
-          "card1" : "RES_3",
-          "card2" : "RES_13"
-        },
-        {
-          "type" : "FACE_UP_CARDS_GOLD",
-          "card1" : "GOLD_21",
-          "card2" : "GOLD_34"
-        },
         {
           "type" : "COLOR_CHOSEN",
           "nick": "Ale",
           "color" : "BLUE"
         }
-      ]
+        ]
+
     },
     {
       "player":  "Diego",
