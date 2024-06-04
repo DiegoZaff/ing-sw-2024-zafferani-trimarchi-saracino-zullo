@@ -19,7 +19,7 @@ public enum TabType {
                 return "lobby";
             }
             case IN_GAME -> {
-                return "table";
+                return "inGame";
             }
         }
         return super.toString();

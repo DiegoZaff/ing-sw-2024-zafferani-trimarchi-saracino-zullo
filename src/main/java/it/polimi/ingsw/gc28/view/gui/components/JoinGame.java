@@ -1,19 +1,13 @@
 package it.polimi.ingsw.gc28.view.gui.components;
 
 import it.polimi.ingsw.gc28.model.utils.JoinInfo;
-import it.polimi.ingsw.gc28.network.messages.client.MsgCreateGame;
 import it.polimi.ingsw.gc28.network.messages.client.MsgJoinGame;
 import it.polimi.ingsw.gc28.network.messages.client.MsgJoinableGames;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
 import it.polimi.ingsw.gc28.network.messages.server.MsgOnJoinableGames;
-import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
 import it.polimi.ingsw.gc28.view.GuiObserver;
-import it.polimi.ingsw.gc28.view.gui.GuiApplication;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
@@ -33,7 +27,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.gc28.view.gui.GuiApplication.connection;
 

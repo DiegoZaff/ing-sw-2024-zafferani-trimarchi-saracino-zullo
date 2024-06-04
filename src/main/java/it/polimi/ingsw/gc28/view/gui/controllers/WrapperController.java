@@ -27,6 +27,8 @@ public class WrapperController implements Initializable {
     public ImageView backgroundImageView;
     @FXML
     public Label labelGoBack;
+    @FXML
+    public HBox goBackContainer;
     TabType currentTab;
     @FXML
     public AnchorPane innerContent;
@@ -55,7 +57,8 @@ public class WrapperController implements Initializable {
 
             innerContent.getChildren().setAll(node);
             updateGoBackButton(tabType);
-
+            // hide go back button during game
+            hideGoBackButton(tabType.equals(TabType.IN_GAME));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -86,6 +89,13 @@ public class WrapperController implements Initializable {
         String tabTitle = tab.getTabTitle();
 
         labelGoBack.setText(tabTitle);
+    }
 
+    public void hideGoBackButton(boolean hide){
+        boolean isVisible = !hide;
+        if(goBackContainer.isVisible() != isVisible){
+            goBackContainer.setVisible(isVisible);
+
+        }
     }
 }

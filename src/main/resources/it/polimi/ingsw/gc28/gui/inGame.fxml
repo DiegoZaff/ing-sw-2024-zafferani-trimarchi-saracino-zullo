@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="it.polimi.ingsw.gc28.view.gui.controllers.InGameController"
+            AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+            style="-fx-background-color: red">
+
+    <HBox AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0">
+        <padding>
+            <Insets top="16" bottom="16" right="32" left="32"/>
+        </padding>
+        <VBox spacing="16">
+            <Button onMouseClicked="#handleTablePress"  style="-fx-background-color: #484848;-fx-background-radius: 16;" minWidth="280" minHeight="48">
+                <graphic>
+                    <HBox alignment="CENTER" spacing="10">
+                        <padding>
+                            <Insets right="16" left="20"/>
+                        </padding>
+                        <Text text="Table" fill="white" style="-fx-text-fill: white"/>
+                    </HBox>
+                </graphic>
+            </Button>
+            <Button onMouseClicked="#handleDecksPress"   style="-fx-background-color: #484848;-fx-background-radius: 16;" minWidth="280" minHeight="48">
+                <graphic>
+                    <HBox alignment="CENTER" spacing="10">
+                        <padding>
+                            <Insets right="16" left="20"/>
+                        </padding>
+                        <Text fill="white" text="Decks"/>
+                    </HBox>
+                </graphic>
+            </Button>
+            <Button onMouseClicked="#handleScoreboardPress"  style="-fx-background-color: #484848;-fx-background-radius: 16;" minWidth="280" minHeight="48">
+                <graphic>
+                    <HBox alignment="CENTER" spacing="10">
+                        <padding>
+                            <Insets right="16" left="20"/>
+                        </padding>
+                        <Text fill="white" text="Scoreboard" />
+                    </HBox>
+                </graphic>
+            </Button>
+            <Button onMouseClicked="#handleChatPress"  style="-fx-background-color: #484848;-fx-background-radius: 16;" minWidth="280" minHeight="48">
+                <graphic>
+                    <HBox alignment="CENTER" spacing="10">
+                        <padding>
+                            <Insets right="16" left="20"/>
+                        </padding>
+                        <Text fill="white" text="Chat" />
+                    </HBox>
+                </graphic>
+            </Button>
+            <Button onMouseClicked="#handleQuitPress"  style="-fx-background-color: #484848;-fx-background-radius: 16;" minWidth="280" minHeight="48">
+                <graphic>
+                    <HBox alignment="CENTER" spacing="10">
+                        <padding>
+                            <Insets right="16" left="20"/>
+                        </padding>
+                        <Text fill="white" text="Quit Game" />
+                    </HBox>
+                </graphic>
+            </Button>
+        </VBox>
+        <Region VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS"/>
+    </HBox>
+
+    <HBox AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" HBox.hgrow="ALWAYS" style="-fx-background-color: blue" prefHeight="200">
+        <Region HBox.hgrow="ALWAYS"/>
+    </HBox>
+</AnchorPane>

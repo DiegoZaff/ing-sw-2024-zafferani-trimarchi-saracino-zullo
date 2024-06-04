@@ -2,10 +2,10 @@ package it.polimi.ingsw.gc28.view.gui.controllers;
 
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
 import it.polimi.ingsw.gc28.network.messages.server.MessageTypeS2C;
-import it.polimi.ingsw.gc28.network.messages.server.MsgOnSomeoneElseJoined;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
 import it.polimi.ingsw.gc28.view.GuiObserver;
+import it.polimi.ingsw.gc28.view.gui.utils.TabType;
 import it.polimi.ingsw.gc28.view.gui.utils.WrapperControllable;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -31,6 +31,10 @@ public class LobbyController implements Initializable, GuiObserver, WrapperContr
     public void update(MessageS2C message) {
         if(message.getType().equals(MessageTypeS2C.SOMEONE_ELSE_JOINED)){
             setPlayersLeft();
+        }else if(message.getType().equals(MessageTypeS2C.GAME_STARTED)){
+            if(wrapperController != null){
+                wrapperController.setInnerContent(TabType.IN_GAME);
+            }
         }
     }
 

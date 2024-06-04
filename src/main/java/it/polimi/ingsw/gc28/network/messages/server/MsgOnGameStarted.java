@@ -36,6 +36,7 @@ public class MsgOnGameStarted extends MessageS2C{
         }else{
             SnackBarMessage msg = new SnackBarMessage("The game has started! Good Luck!", InformationType.GAME_INFO);
             gameManagerClient.updateSnackBarListener(msg);
+            gameManagerClient.updateListeners(this);
         }
 
 
