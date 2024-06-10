@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc28.controller;
 import it.polimi.ingsw.gc28.model.Game;
 import it.polimi.ingsw.gc28.network.messages.client.MsgCreateGame;
 import it.polimi.ingsw.gc28.network.messages.client.MsgJoinGame;
+import it.polimi.ingsw.gc28.network.messages.client.MsgJoinableGames;
 import it.polimi.ingsw.gc28.network.messages.client.MsgReconnect;
 import it.polimi.ingsw.gc28.network.rmi.VirtualView;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,9 +11,9 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
-import java.util.Optional;
+import java.util.List;
+import java.util.Map;
 
-import static org.mockito.Mockito.*;
 import static org.easymock.EasyMock.*;
 public class test3 {
 
@@ -36,13 +37,44 @@ public class test3 {
 
    }
 
-//    @Test
-//    public void testCreateGame() throws RemoteException {
-//        MsgCreateGame msg = new MsgCreateGame("0", "aaaa", 2);
-//        msg.setClient(mockView1);
-//        gamesManager.createGame(msg);
-//
-//    }
+    @Test
+    public void testCreateGame() throws RemoteException {
+        MsgCreateGame msg = new MsgCreateGame("0", "aaaa", 2);
+        msg.setClient(mockView1);
+        gamesManager.createGame(msg);
+        Map<String, GameController> partite;
+        partite = gamesManager.getMapGames();
+        List<Map.Entry<String, GameController>>lista = partite.entrySet().stream().toList();
+        String id = lista.get(0).getKey();
+
+
+
+        MsgJoinGame msgJoinGame = new MsgJoinGame(id, "bbbbb");
+        msgJoinGame.setClient(mockView2);
+        gamesManager.addMessageToQueue(msgJoinGame);
+
+
+
+        gamesManager.restoreGame(gamesManager.getGameController(id).get().gameModel);
+
+        gamesManager.getGameController(id).get().gameModel.getPlayers().get(1);
+        MsgReconnect msgReconnect = new MsgReconnect(id, "bbbbb");
+        msgReconnect.setClient(mockView2);
+        gamesManager.addMessageToQueue(msgReconnect);
+        gamesManager.addMessageToQueue(msgReconnect);
+
+
+        MsgJoinableGames msgJoinableGames = new MsgJoinableGames();
+        msgJoinableGames.setClient(mockView3);
+        gamesManager.addMessageToQueue(msgJoinableGames);
+
+
+        gamesManager.getGameController(id).get().addMessageToQueue(msgJoinableGames);
+        //GamesManager.getInstance().addMessageToQueue(msgJoinGame);
+
+
+        //gamesManager.getGameController(id).get().
+    }
 
     @Test
     public void testCreateGame2() throws IOException {

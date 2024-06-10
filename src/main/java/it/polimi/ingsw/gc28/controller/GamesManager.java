@@ -26,6 +26,10 @@ public class GamesManager {
 
     private static GamesManager instance;
 
+    public Map<String, GameController> getMapGames() {
+        return mapGames;
+    }
+
     private final Map<String, GameController> mapGames;
 
     private GamesManager() {

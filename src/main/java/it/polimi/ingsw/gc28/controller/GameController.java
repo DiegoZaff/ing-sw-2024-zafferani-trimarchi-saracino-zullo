@@ -121,17 +121,17 @@ public class GameController {
     /**
      * Overloading, in case we have already calculated Player.
      */
-    public Optional<ArrayList<CardObjective>> getPersonalObjectives(Player player){
-        synchronized (gameModel) {
-            return player.getObjectivesToChoose();
-        }
-    }
-
-    public ArrayList<CardResource> getPlayerHand(Player player){
-        synchronized (gameModel) {
-            return player.gethand();
-        }
-    }
+//    public Optional<ArrayList<CardObjective>> getPersonalObjectives(Player player){
+//        synchronized (gameModel) {
+//            return player.getObjectivesToChoose();
+//        }
+//    }
+//
+//    public ArrayList<CardResource> getPlayerHand(Player player){
+//        synchronized (gameModel) {
+//            return player.gethand();
+//        }
+//    }
 
 
     public void chooseObjectivePersonal(String name, String cardId) throws RemoteException {

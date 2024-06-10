@@ -7,6 +7,7 @@ import it.polimi.ingsw.gc28.model.cards.CardGame;
 import it.polimi.ingsw.gc28.model.cards.CardInitial;
 import it.polimi.ingsw.gc28.model.cards.CardObjective;
 import it.polimi.ingsw.gc28.model.chat.ChatMessage;
+import it.polimi.ingsw.gc28.network.messages.client.MsgJoinGame;
 import it.polimi.ingsw.gc28.network.rmi.VirtualView;
 import it.polimi.ingsw.gc28.model.errors.PlayerActionError;
 import org.junit.jupiter.api.BeforeEach;
@@ -187,13 +188,26 @@ public class GameControllerTest {
 
         ChatMessage chatMessage1 = new ChatMessage("siummico", p.getName(), p2.getName(), false);
         ChatMessage chatMessage2 = new ChatMessage("siummico privato", p.getName(), p2.getName(), true);
+        ChatMessage chatMessage3 = new ChatMessage("siummico all", p.getName(), "all", false);
+        ChatMessage chatMessage4 = new ChatMessage("errore", p.getName(), "Michele Trombetta", true);
 
 
         gameController.sendMessage(chatMessage1);
         gameController.sendMessage(chatMessage2);
+        gameController.sendMessage(chatMessage3);
+        gameController.sendMessage(chatMessage4);
 
         System.out.println(game.getChat());
         System.out.println(game.getChat().toString(p.getName(), p2.getName()));
+
+        gameController.waitForReconnections();
+
+        gameController.reconnect("player1", client);
+        gameController.reconnect("player2", client2);
+
+        gameController.hasGameRestarted();
+
+
         //game.
         //gameController.chooseObjectivePersonal("player1", "OBJ_1");
         //verify(game, times(1)).addPlayerToGame("player1");
