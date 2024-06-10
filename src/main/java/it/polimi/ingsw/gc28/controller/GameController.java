@@ -465,9 +465,7 @@ public class GameController {
 
 
     public GameRepresentation getGameRepresentation(){
-        synchronized (gameModel){
-            return gameModel.getGameRepresentation();
-        }
+        synchronized (gameModel){return gameModel.getGameRepresentation();}
     }
 
 
@@ -481,8 +479,6 @@ public class GameController {
 
 
     public Optional<JoinInfo> getJoinInfo(){
-        synchronized (gameModel){
-            return gameModel.getJoinInfo();
-        }
+        synchronized (gameModel){return gameModel.getJoinInfo();}
     }
 }

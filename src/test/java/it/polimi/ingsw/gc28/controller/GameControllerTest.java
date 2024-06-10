@@ -54,11 +54,10 @@ public class GameControllerTest {
         gameController.addPlayerToGame("player2", client2);
         gameController.hasGameStarted();
 
-        System.out.println("gioco inizia");
+//        System.out.println("gioco inizia");
 
         ArrayList<Player> playersCopy = game.getPlayers();
-//        System.out.println(players.get(0).getName());
-//        System.out.println(players.get(1).getName());
+
         Player p = (gameController.gameModel.playerToPlay().get());
 
 
@@ -72,130 +71,149 @@ public class GameControllerTest {
 
         players2.add(p);
 
-        System.out.println("p è " + p.getName());
-        System.out.println("p2 è " + p2.getName());
-
-        System.out.println("action_" + gameController.gameModel.actionExpected().toString());
-        System.out.println("First_" +gameController.gameModel.playerToPlay().get().getName());
-
-        //gameController.chooseColor(p.getName(), "RED");
-//        gameController.chooseColor("player1", "YELLOW");
-
-        gameController.chooseColor(p.getName().toString(), "RED");
-
-        System.out.println("dopo p1 colore");
-
-        System.out.println("action_" + gameController.gameModel.actionExpected().toString());
-        System.out.println("First_" + gameController.gameModel.playerToPlay().get().getName());
+//        System.out.println("p è " + p.getName());
+//        System.out.println("p2 è " + p2.getName());
+//
+//        System.out.println("action_" + gameController.gameModel.actionExpected().toString());
+//        System.out.println("First_" +gameController.gameModel.playerToPlay().get().getName());
 
 
-        gameController.chooseColor(p2.getName().toString(), "BLUE");
-        System.out.println("dopo che tutti hanno scelto il colore");
 
-        System.out.println("action_" + gameController.gameModel.actionExpected().toString());
-        System.out.println("First_" + gameController.gameModel.playerToPlay().get().getName());
+        gameController.chooseColor(p.getName(), "hhh"); //invalid color
+        gameController.chooseColor(p.getName(), "RED");
+        gameController.chooseColor(p.getName(), "BLUE"); //invalid move
+
+//        System.out.println("dopo p1 colore");
+
+//        System.out.println("action_" + gameController.gameModel.actionExpected().toString());
+//        System.out.println("First_" + gameController.gameModel.playerToPlay().get().getName());
+
+        gameController.chooseColor(p2.getName(), "RED"); // already used color
+        gameController.chooseColor(p2.getName(), "BLUE");
+////        System.out.println("dopo che tutti hanno scelto il colore");
+//
+//        System.out.println("action_" + gameController.gameModel.actionExpected().toString());
+//        System.out.println("First_" + gameController.gameModel.playerToPlay().get().getName());
 
         CardInitial c1 = p.getCardInitial().get();
         CardInitial c2 = p2.getCardInitial().get();
 
-        gameController.playCard(p.getName(), c1.getId().toString(), false, new Coordinate(0,0) );
+        gameController.playCard(p.getName(), c1.getId(), false, new Coordinate(0,0) );
 
-        System.out.println("dopo che p1 ha giocato carta iniziale");
-
-        System.out.println("action_" + gameController.gameModel.actionExpected().toString());
-        System.out.println("First_" + gameController.gameModel.playerToPlay().get().getName());
-
-
-
-        gameController.playCard(p2.getName(), c2.getId().toString(), false, new Coordinate(0,0) );
-
-        System.out.println("dopo che tutti hanno giocato carta iniziale");
-
-        System.out.println("action_" + gameController.gameModel.actionExpected().toString());
-        System.out.println("First_" + gameController.gameModel.playerToPlay().get().getName());
+//        System.out.println("dopo che p1 ha giocato carta iniziale");
+//
+//        System.out.println("action_" + gameController.gameModel.actionExpected().toString());
+//        System.out.println("First_" + gameController.gameModel.playerToPlay().get().getName());
 
 
+        gameController.playCard(p2.getName(), "INI_90", false, new Coordinate(0,0) ); //invalid id
+        gameController.playCard(p2.getName(), "INI_2", false, new Coordinate(0,0) ); // card not playable
 
-        CardObjective o1 = p.getObjectivesToChoose().get().get(0);
-        CardObjective o2 = p2.getObjectivesToChoose().get().get(0);
+        gameController.playCard(p2.getName(), c2.getId(), false, new Coordinate(0,0) );
+
+//        System.out.println("dopo che tutti hanno giocato carta iniziale");
+//
+//        System.out.println("action_" + gameController.gameModel.actionExpected().toString());
+//        System.out.println("First_" + gameController.gameModel.playerToPlay().get().getName());
 
 
 
-        gameController.chooseObjectivePersonal(p.getName().toString(), o1.getId().toString());
-        System.out.println("dopo che p1 ha scelto obiettivo");
-
-        System.out.println("action_" + gameController.gameModel.actionExpected().toString());
-        System.out.println("First_" + gameController.gameModel.playerToPlay().get().getName());
+        CardObjective o1 = p.getObjectivesToChoose().get().getFirst();
+        CardObjective o2 = p2.getObjectivesToChoose().get().getFirst();
 
 
-        gameController.chooseObjectivePersonal(p2.getName().toString(), o2.getId().toString());
-
-        System.out.println("dopo che p2 ha scelto obiettivo");
-
-        System.out.println("action_" + gameController.gameModel.actionExpected().toString());
-        System.out.println("First_" + gameController.gameModel.playerToPlay().get().getName());
-
-        CardGame cardGame1 = p.gethand().get(0);
-        CardGame cardGame2 = p2.gethand().get(0);
-
-        gameController.playCard(p.getName(), cardGame1.getId().toString(), false, new Coordinate(1,1));
-        gameController.drawCard(p.getName().toString(), true);
-
-        System.out.println("dopo che il primo ha giocato e pescato carta");
+        gameController.chooseObjectivePersonal(p.getName(), "OBJ_1"); // obj not owned
+        gameController.chooseObjectivePersonal(p.getName(), o1.getId());
+        gameController.chooseObjectivePersonal(p.getName(), o1.getId()); //not you turn
+//        System.out.println("dopo che p1 ha scelto obiettivo");
+//
+//        System.out.println("action_" + gameController.gameModel.actionExpected().toString());
+//        System.out.println("First_" + gameController.gameModel.playerToPlay().get().getName());
 
 
-        System.out.println("action_" + gameController.gameModel.actionExpected().toString());
-        System.out.println("First_" + gameController.gameModel.playerToPlay().get().getName());
+        gameController.chooseObjectivePersonal(p2.getName(), o2.getId());
+
+//        System.out.println("dopo che p2 ha scelto obiettivo");
+//
+//        System.out.println("action_" + gameController.gameModel.actionExpected().toString());
+//        System.out.println("First_" + gameController.gameModel.playerToPlay().get().getName());
+
+        CardGame cardGame1 = p.gethand().getFirst();
+        CardGame cardGame2 = p2.gethand().getFirst();
+
+        gameController.playCard(p.getName(), cardGame1.getId(), false, new Coordinate(9,9)); // invalid coords
+        gameController.playCard(p.getName(), "RES_20", false, new Coordinate(1,1)); // card not owned
+        gameController.playCard(p.getName(), cardGame1.getId(), false, new Coordinate(1,1));
+        gameController.playCard(p.getName(), cardGame1.getId(), false, new Coordinate(1,1)); // not your turn
+
+        gameController.drawCard(p.getName(), true);
+        gameController.playCard(p.getName(), cardGame1.getId(), false, new Coordinate(1,1)); // invalid action
+
+//        System.out.println("dopo che il primo ha giocato e pescato carta");
+//
+//
+//        System.out.println("action_" + gameController.gameModel.actionExpected().toString());
+//        System.out.println("First_" + gameController.gameModel.playerToPlay().get().getName());
 
 
 
-        gameController.playCard(p2.getName(), cardGame2.getId().toString(), false, new Coordinate(1,1));
+        gameController.playCard(p2.getName(), cardGame2.getId(), false, new Coordinate(1,1));
 
-        System.out.println("dopo aver giocato carta");
+//        System.out.println("dopo aver giocato carta");
+//
+//        System.out.println("action_" + gameController.gameModel.actionExpected().toString());
+//        System.out.println("First_" + gameController.gameModel.playerToPlay().get().getName());
 
-        System.out.println("action_" + gameController.gameModel.actionExpected().toString());
-        System.out.println("First_" + gameController.gameModel.playerToPlay().get().getName());
 
+        gameController.drawCard(p2.getName(), false);
 
-        gameController.drawCard(p2.getName().toString(), false);
-
-        System.out.println("dopo che p2 ha finito");
-
-        System.out.println("action_" + gameController.gameModel.actionExpected().toString());
-        System.out.println("First_" + gameController.gameModel.playerToPlay().get().getName());
+//        System.out.println("dopo che p2 ha finito");
+//
+//        System.out.println("action_" + gameController.gameModel.actionExpected().toString());
+//        System.out.println("First_" + gameController.gameModel.playerToPlay().get().getName());
 
         CardGame cardGame3 = p.gethand().get(1);
         CardGame cardGame4 = p2.gethand().get(1);
 
-        gameController.playCard(p.getName(), cardGame3.getId().toString(), false, new Coordinate(-1,-1));
+        gameController.playCard(p.getName(), cardGame3.getId(), false, new Coordinate(-1,-1));
 
-        System.out.println("AAAdopo che 1 ha giocato seconda carta");
+//        System.out.println("AAAdopo che 1 ha giocato seconda carta");
+//
+//        System.out.println("action_" + gameController.gameModel.actionExpected().toString());
+//        System.out.println("First_" + gameController.gameModel.playerToPlay().get().getName());
 
-        System.out.println("action_" + gameController.gameModel.actionExpected().toString());
-        System.out.println("First_" + gameController.gameModel.playerToPlay().get().getName());
+        CardGame cardToDraw1 = game.getFaceUpGoldCards().getFirst();
+        gameController.drawCard(p.getName(), cardToDraw1.getId());
 
-        CardGame cardToDraw1 = game.getFaceUpGoldCards().get(0);
-        gameController.drawCard(p.getName().toString(), cardToDraw1.getId());
+        gameController.playCard(p2.getName(), cardGame4.getId(), false, new Coordinate(-1,-1));
+        CardGame cardToDraw2 = game.getFaceUpResourceCards().getFirst();
 
+        gameController.drawCard(p2.getName(), "GOLD_100"); // invalid id
+        gameController.drawCard(p2.getName(), "GOLD_1"); // card not drawable
 
-        gameController.playCard(p2.getName(), cardGame4.getId().toString(), false, new Coordinate(-1,-1));
-        CardGame cardToDraw2 = game.getFaceUpResourceCards().get(0);
-        gameController.drawCard(p2.getName().toString(),cardToDraw2.getId().toString() );
+        gameController.drawCard(p2.getName(), cardToDraw2.getId());
+        gameController.drawCard(p2.getName(), cardToDraw2.getId()); // not your turn
 
-        System.out.println("dopo che tutti giocato e pescato la seconda carta");
-        System.out.println("action_" + gameController.gameModel.actionExpected().toString());
-        System.out.println("First_" + gameController.gameModel.playerToPlay().get().getName());
+//        System.out.println("dopo che tutti giocato e pescato la seconda carta");
+//        System.out.println("action_" + gameController.gameModel.actionExpected().toString());
+//        System.out.println("First_" + gameController.gameModel.playerToPlay().get().getName());
 
         ChatMessage chatMessage1 = new ChatMessage("siummico", p.getName(), p2.getName(), false);
         ChatMessage chatMessage2 = new ChatMessage("siummico privato", p.getName(), p2.getName(), true);
         ChatMessage chatMessage3 = new ChatMessage("siummico all", p.getName(), "all", false);
-        ChatMessage chatMessage4 = new ChatMessage("errore", p.getName(), "Michele Trombetta", true);
+        ChatMessage chatMessage5 = new ChatMessage("siummico all", p.getName(), "all", true);  //error
+
+        ChatMessage chatMessage4 = new ChatMessage("errore", p.getName(), "Michele Trombetta", true); //no reciever
+        ChatMessage chatMessage6 = new ChatMessage("errore", p.getName(), "Michele Trombetta", true); // no rieciever
+
 
 
         gameController.sendMessage(chatMessage1);
         gameController.sendMessage(chatMessage2);
         gameController.sendMessage(chatMessage3);
         gameController.sendMessage(chatMessage4);
+        gameController.sendMessage(chatMessage5);
+        gameController.sendMessage(chatMessage6);
 
         System.out.println(game.getChat());
         System.out.println(game.getChat().toString(p.getName(), p2.getName()));
@@ -208,46 +226,9 @@ public class GameControllerTest {
         gameController.hasGameRestarted();
 
 
-        //game.
-        //gameController.chooseObjectivePersonal("player1", "OBJ_1");
-        //verify(game, times(1)).addPlayerToGame("player1");
+
     }
 
-//    @Test
-//    public void testAddPlayerToGame_Failure() throws RemoteException, PlayerActionError {
-//        String playerName = "testPlayer";
-//        PlayerActionError error = new PlayerActionError("Error");
-//        doThrow(error).when(gameMock).addPlayerToGame(playerName);
-//
-//        boolean result = gameController.addPlayerToGame(playerName, clientMock);
-//
-//        assertFalse(result);
-//        verify(gameMock, times(1)).addPlayerToGame(playerName);
-//        verify(clientMock, times(1)).sendMessage(any());
-//    }
-//
-//    @Test
-//    public void testDrawCard_Success() throws RemoteException, PlayerActionError {
-//        String playerName = "testPlayer";
-//        CardResource cardMock = mock(CardResource.class);
-//        when(gameMock.drawGameCard(playerName, true)).thenReturn(cardMock);
-//
-//        gameController.drawCard(playerName, true);
-//
-//        verify(gameMock, times(1)).drawGameCard(playerName, true);
-//        verify(clientMock, never()).sendMessage(any());
-//    }
-//
-//    @Test
-//    public void testDrawCard_Failure() throws RemoteException, PlayerActionError {
-//        String playerName = "testPlayer";
-//        PlayerActionError error = new PlayerActionError("Error");
-//        doThrow(error).when(gameMock).drawGameCard(playerName, true);
-//
-//        gameController.drawCard(playerName, true);
-//
-//        verify(gameMock, times(1)).drawGameCard(playerName, true);
-//        verify(clientMock, times(1)).sendMessage(any());
-//    }
+
 }
 

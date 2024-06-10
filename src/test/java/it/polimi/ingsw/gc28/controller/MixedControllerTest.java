@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.easymock.EasyMock.*;
-public class test3 {
+public class MixedControllerTest {
 
 
     private GamesManager gamesManager;
@@ -42,6 +42,7 @@ public class test3 {
         MsgCreateGame msg = new MsgCreateGame("0", "aaaa", 2);
         msg.setClient(mockView1);
         gamesManager.createGame(msg);
+
         Map<String, GameController> partite;
         partite = gamesManager.getMapGames();
         List<Map.Entry<String, GameController>>lista = partite.entrySet().stream().toList();
@@ -70,18 +71,12 @@ public class test3 {
 
 
         gamesManager.getGameController(id).get().addMessageToQueue(msgJoinableGames);
-        //GamesManager.getInstance().addMessageToQueue(msgJoinGame);
 
-
-        //gamesManager.getGameController(id).get().
     }
 
     @Test
     public void testCreateGame2() throws IOException {
-//        MsgCreateGame msg = new MsgCreateGame("0", "aaaa", 2);
-//        msg.setClient(mockView);
-//        gamesManager.createGame(msg);
-//        System.out.println("tutto ok");
+
         Game gameModel = new Game( 2, "0");
         GameController gameController1 = new GameController(gameModel);
 
@@ -95,37 +90,6 @@ public class test3 {
 
 
     }
-//    @Test
-//    public void testJoinGame() throws RemoteException {
-//        MsgJoinGame msg = new MsgJoinGame("0", "aaaa");
-//        msg.setClient(mockView);
-//        gamesManager.(msg);
-//
-//
-//
-//
-//    }
 
-//    @Test
-//    public void testJoinGame() throws RemoteException {
-//
-//        MsgJoinGame msg = new MsgJoinGame("0", "aaaaa");
-//        msg.setClient(mockView);
-//
-//        gamesManager.joinGame(msg);
-//
-//
-//    }
-//
-//    @Test
-//    public void testReconnectToGame() throws RemoteException {
-//
-//
-//        MsgReconnect msg = new MsgReconnect("0","aaaaa");
-//        msg.setClient(mockView);
-//
-//        gamesManager.reconnectToGame(msg);
-//
-//    }
 }
 
