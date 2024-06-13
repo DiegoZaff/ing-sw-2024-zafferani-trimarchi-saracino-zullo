@@ -59,5 +59,8 @@ public class MsgOnPlayerChooseObjective extends MessageS2C{
         }
 
     }
+    public String getPlayerName() {
+        return playerName;
+    }
 }
 

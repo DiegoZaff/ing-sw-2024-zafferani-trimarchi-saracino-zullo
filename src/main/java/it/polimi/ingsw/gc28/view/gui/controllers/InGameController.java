@@ -1,9 +1,11 @@
 package it.polimi.ingsw.gc28.view.gui.controllers;
 
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
+import it.polimi.ingsw.gc28.model.cards.CardObjective;
 import it.polimi.ingsw.gc28.model.cards.CardResource;
 import it.polimi.ingsw.gc28.model.cards.utils.ParsingHelper;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
+import it.polimi.ingsw.gc28.network.messages.server.MessageTypeS2C;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
 import it.polimi.ingsw.gc28.view.GuiObserver;
@@ -54,6 +56,15 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
     @Override
     public void update(MessageS2C message) {
         changeContentBasedOnAction();
+        if(message.getType().equals(MessageTypeS2C.CHOOSE_OBJ)){
+            String playerName = GameManagerClient.getInstance().getPlayerName();
+            PrivateRepresentation rep = GameManagerClient.getInstance().getCurrentRepresentation().getRepresentations().get(playerName);
+            CardObjective cardObj = rep.getPrivateObjective();
+            if(cardObj != null) {
+                String id = cardObj.getId();
+                cardObjective.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(ParsingHelper.idToFrontPath(id)))));
+            }
+        }
     }
 
     private void changeContentBasedOnAction(){
