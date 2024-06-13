@@ -85,8 +85,7 @@
                 <Pane prefWidth="50" />
                 <StackPane>
                     <Rectangle arcHeight="20" arcWidth="20" fill="#484848" height="140.0" width="200.0" />
-                    <ImageView fitHeight="180.0" fitWidth="180.0" preserveRatio="true">
-                        <Image url="@../img/cards/fronts/GOLD_38.png"/>
+                    <ImageView fx:id="cardObjective" fitHeight="180.0" fitWidth="180.0" preserveRatio="true">
                     </ImageView>
                 </StackPane>
                 <Pane prefWidth="20" />
@@ -101,20 +100,17 @@
                 <Pane prefWidth="50" />
                 <StackPane>
                     <Rectangle arcHeight="20" arcWidth="20" fill="#484848" height="140.0" width="200.0" />
-                    <ImageView fitHeight="180.0" fitWidth="180.0" preserveRatio="true">
-                        <Image url="@../img/cards/fronts/GOLD_1.png"/>
+                    <ImageView fx:id="handOne" fitHeight="180.0" fitWidth="180.0" preserveRatio="true">
                     </ImageView>
                 </StackPane>
                 <StackPane>
                     <Rectangle arcHeight="20" arcWidth="20" fill="#484848" height="140.0" width="200.0" />
-                    <ImageView fitHeight="180.0" fitWidth="180.0" preserveRatio="true">
-                        <Image url="@../img/cards/fronts/OBJ_1.png"/>
+                    <ImageView fx:id="handTwo" fitHeight="180.0" fitWidth="180.0" preserveRatio="true">
                     </ImageView>
                 </StackPane>
                 <StackPane>
                     <Rectangle arcHeight="20" arcWidth="20" fill="#484848" height="140.0" width="200.0" />
-                    <ImageView fitHeight="180.0" fitWidth="180.0" preserveRatio="true">
-                        <Image url="@../img/cards/fronts/INI_2.png"/>
+                    <ImageView fx:id="handThree" fitHeight="180.0" fitWidth="180.0" preserveRatio="true">
                     </ImageView>
                 </StackPane>
                 <Pane prefWidth="20" />

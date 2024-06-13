@@ -1,6 +1,8 @@
 package it.polimi.ingsw.gc28.view.gui.controllers;
 
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
+import it.polimi.ingsw.gc28.model.cards.CardResource;
+import it.polimi.ingsw.gc28.model.cards.utils.ParsingHelper;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
@@ -13,6 +15,8 @@ import it.polimi.ingsw.gc28.view.gui.utils.WrapperControllable;
 import it.polimi.ingsw.gc28.view.utils.PlayerColorInfo;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -30,6 +34,10 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
     @FXML
     public HBox innerContent;
     public HBox cards;
+    public ImageView cardObjective;
+    public ImageView handOne;
+    public ImageView handTwo;
+    public ImageView handThree;
     private WrapperController wrapperController;
 
     @Override
@@ -99,7 +107,15 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
     }
 
     private void showCards(){
-        Map<String, PrivateRepresentation> reprs = GameManagerClient.getInstance().getCurrentRepresentation().getRepresentations();
+        String playerName = GameManagerClient.getInstance().getPlayerName();
+        PrivateRepresentation rep = GameManagerClient.getInstance().getCurrentRepresentation().getRepresentations().get(playerName);
+        ArrayList<CardResource> hand = rep.getHand();
+        String firstCard = hand.getFirst().getId();
+        String secondCard = hand.get(1).getId();
+        String thirdCard = hand.getLast().getId();
+        handOne.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(ParsingHelper.idToFrontPath(firstCard)))));
+        handTwo.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(ParsingHelper.idToFrontPath(secondCard)))));
+        handThree.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(ParsingHelper.idToFrontPath(thirdCard)))));
     }
 
     public void handleTablePress(MouseEvent mouseEvent) {
