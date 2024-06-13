@@ -41,28 +41,28 @@ public class ParsingHelper {
     }
 
     public static String idToFrontPath(String id){
-        return ("@../img/cards/fronts/" + id + ".png");
+        return ("/it/polimi/ingsw/gc28/img/cards/fronts/" + id + ".png");
     }
 
     public static String idToBackPath(String id){
-        return ("@../img/cards/backs/" + id + ".png");
+        return ("/it/polimi/ingsw/gc28/img/cards/backs/" + id + ".png");
     }
 
     public static String idToBackResPath(String resourceType){
         return switch (resourceType) {
-            case "FOX" -> ("@../img/cards/backs/RES_F.png");
-            case "MUSHROOM" -> ("@../img/cards/backs/RES_M.png");
-            case "LEAF" -> ("@../img/cards/backs/RES_L.png");
-            default -> ("@../img/cards/backs/RES_B.png");
+            case "FOX" -> ("/it/polimi/ingsw/gc28/img/cards/backs/RES_F.png");
+            case "MUSHROOM" -> ("/it/polimi/ingsw/gc28/img/cards/backs/RES_M.png");
+            case "LEAF" -> ("/it/polimi/ingsw/gc28/img/cards/backs/RES_L.png");
+            default -> ("/it/polimi/ingsw/gc28/img/cards/backs/RES_B.png");
         };
     }
 
     public static String idToBackGoldPath(String resourceType){
         return switch (resourceType) {
-            case "FOX" -> ("@../img/cards/backs/GOLD_F.png");
-            case "MUSHROOM" -> ("@../img/cards/backs/GOLD_M.png");
-            case "LEAF" -> ("@../img/cards/backs/GOLD_L.png");
-            default -> ("@../img/cards/backs/GOLD_B.png");
+            case "FOX" -> ("/it/polimi/ingsw/gc28/img/cards/backs/GOLD_F.png");
+            case "MUSHROOM" -> ("/it/polimi/ingsw/gc28/img/cards/backs/GOLD_M.png");
+            case "LEAF" -> ("/it/polimi/ingsw/gc28/img/cards/backs/GOLD_L.png");
+            default -> ("/it/polimi/ingsw/gc28/img/cards/backs/GOLD_B.png");
         };
     }
 
@@ -189,7 +189,7 @@ public class ParsingHelper {
         String id = (String) obj.get("id");
 
         String frontImgPath = idToFrontPath(id);
-        String backImgPath = "@../img/cards/backs/OBJ.png";
+        String backImgPath = "/it/polimi/ingsw/gc28/img/cards/backs/OBJ.png";
 
         return new CardObjective(id, posType, points, resPosition, frontImgPath, backImgPath);
     }
@@ -212,7 +212,7 @@ public class ParsingHelper {
         String id = (String) obj.get("id");
 
         String frontImgPath = idToFrontPath(id);
-        String backImgPath = "@../img/cards/backs/OBJ.png";
+        String backImgPath = "/it/polimi/ingsw/gc28/img/cards/backs/OBJ.png";
 
         return new CardObjective(id, points, resNeeded, frontImgPath, backImgPath);
     }

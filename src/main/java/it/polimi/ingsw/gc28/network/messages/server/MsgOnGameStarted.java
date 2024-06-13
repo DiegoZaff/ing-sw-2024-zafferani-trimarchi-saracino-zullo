@@ -46,4 +46,8 @@ public class MsgOnGameStarted extends MessageS2C{
         }
          */
     }
+
+    public GameRepresentation getGameRepresentation() {
+        return gameRepresentation;
+    }
 }
