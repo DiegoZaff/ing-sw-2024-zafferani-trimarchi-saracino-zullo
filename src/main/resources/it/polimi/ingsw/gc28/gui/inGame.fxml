@@ -75,7 +75,7 @@
         </VBox>
         <Region HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" />
     </HBox>
-    <HBox fx:id="innerContent" AnchorPane.leftAnchor="216" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="200" />
+    <HBox fx:id="innerContent" AnchorPane.leftAnchor="312" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="216"/>
 
     <HBox fx:id="cards" prefHeight="200" AnchorPane.bottomAnchor="16" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" HBox.hgrow="ALWAYS">
         <Pane prefWidth="70" />

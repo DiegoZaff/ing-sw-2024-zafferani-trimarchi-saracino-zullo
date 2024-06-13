@@ -13,6 +13,7 @@ import it.polimi.ingsw.gc28.view.PrivateRepresentation;
 import it.polimi.ingsw.gc28.view.gui.components.ChooseCardInitial;
 import it.polimi.ingsw.gc28.view.gui.components.ChooseColor;
 import it.polimi.ingsw.gc28.view.gui.components.ChooseObjective;
+import it.polimi.ingsw.gc28.view.gui.components.TableCards;
 import it.polimi.ingsw.gc28.view.gui.utils.WrapperControllable;
 import it.polimi.ingsw.gc28.view.utils.PlayerColorInfo;
 import javafx.beans.property.BooleanProperty;
@@ -78,6 +79,8 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
             showChooseCardInitial();
         }else if(act.equals(ActionType.CHOOSE_OBJ)){
             showChooseObjectives();
+        }else if(act.equals(ActionType.PLAY_CARD)){
+            showTable();
         }
     }
 
@@ -136,6 +139,14 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
         handOne.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(ParsingHelper.idToFrontPath(firstCard)))));
         handTwo.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(ParsingHelper.idToFrontPath(secondCard)))));
         handThree.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(ParsingHelper.idToFrontPath(thirdCard)))));
+    }
+
+    private void showTable(){
+        String playerName = GameManagerClient.getInstance().getPlayerName();
+        TableCards tableCardsComponent = new TableCards(playerName);
+
+        innerContent.getChildren().setAll(tableCardsComponent);
+
     }
 
     public void handleTablePress(MouseEvent mouseEvent) {
