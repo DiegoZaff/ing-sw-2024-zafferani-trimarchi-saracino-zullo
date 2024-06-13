@@ -629,13 +629,18 @@ public class Game implements Serializable {
         return chat;
     }
 
-    public void chooseColor(String playerName, String color) throws NoSuchPlayerError, ColorTakenError, InvalidColor, PlayerAlreadyChoseColorError {
+    public void chooseColor(String playerName, String color) throws PlayerActionError {
         Optional<Player> player;
         player = getPlayerOfName(playerName);
 
         if(player.isEmpty()){
             throw new NoSuchPlayerError();
         }
+
+        ActionType actionRequested =  ActionType.CHOOSE_COLOR;
+
+        // this throws errors if move is not valid
+        actionManager.validatesMove(player.get(), actionRequested);
 
         PlayerColor col;
         try{

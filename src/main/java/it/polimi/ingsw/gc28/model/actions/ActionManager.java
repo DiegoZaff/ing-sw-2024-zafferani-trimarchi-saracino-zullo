@@ -130,26 +130,35 @@ public class ActionManager implements Serializable {
                 }
             }
             case CHOOSE_COLOR -> {
-                if(done == nPlayers) { //ora funziona correttamente
+                if(isCurrentPlayerTheLastOneForTheAction()) {
 
                     actionType = ActionType.PLAY_INITIAL_CARD;
-                    playerOfTurn = getFirstPlayer();            // seleziona correttamente firstplayer
+                    playerOfTurn = getFirstPlayer();
                     break;
                 }
                 playerOfTurn = getNextPlayer();//inutile
-                done++;
             }
             case PLAY_INITIAL_CARD -> {
                 if(isCurrentPlayerTheLastOneForTheAction()) {
+
+
                     actionType = ActionType.CHOOSE_OBJ;
+                    playerOfTurn = getFirstPlayer();
+                    break;
                 }
                 playerOfTurn = getNextPlayer();
+
             }
             case CHOOSE_OBJ -> {
                 if(isCurrentPlayerTheLastOneForTheAction()) {
+
+
                     actionType = ActionType.PLAY_CARD;
+                    playerOfTurn = getFirstPlayer();
+                    break;
                 }
                 playerOfTurn = getNextPlayer();
+
             }
             case PLAY_CARD -> {
                 // TODO DONE : if roundsLeft <= numberOfPlayers - 1 => actionType = PLAY_CARD & nextPlayer aggiornato
