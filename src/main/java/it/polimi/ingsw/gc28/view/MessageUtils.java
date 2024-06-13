@@ -83,7 +83,7 @@ public class MessageUtils {
 
                 String cardId = commandsList.get(1);
 
-                MsgChooseObjective message = new MsgChooseObjective(userName, gameId, cardId);
+                MsgChooseObjective message = new MsgChooseObjective(userName, cardId);
                 return Optional.of(message);
             }
             case "drawCard" -> {

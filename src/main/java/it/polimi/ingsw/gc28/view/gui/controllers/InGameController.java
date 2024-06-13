@@ -8,6 +8,7 @@ import it.polimi.ingsw.gc28.view.GuiObserver;
 import it.polimi.ingsw.gc28.view.PrivateRepresentation;
 import it.polimi.ingsw.gc28.view.gui.components.ChooseCardInitial;
 import it.polimi.ingsw.gc28.view.gui.components.ChooseColor;
+import it.polimi.ingsw.gc28.view.gui.components.ChooseObjective;
 import it.polimi.ingsw.gc28.view.gui.utils.WrapperControllable;
 import it.polimi.ingsw.gc28.view.utils.PlayerColorInfo;
 import javafx.fxml.FXML;
@@ -50,6 +51,8 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
             showChooseColors();
         }else if(act.equals(ActionType.PLAY_INITIAL_CARD)){
             showChooseCardInitial();
+        }else if(act.equals(ActionType.CHOOSE_OBJ)){
+            showChooseObjectives();
         }
     }
 
@@ -83,6 +86,14 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
         ChooseCardInitial chooseCardInitialComponent = new ChooseCardInitial();
 
         innerContent.getChildren().setAll(chooseCardInitialComponent);
+        innerContent.setVisible(true);
+
+    }
+
+    private void showChooseObjectives(){
+        ChooseObjective chooseObjectiveComponent = new ChooseObjective();
+
+        innerContent.getChildren().setAll(chooseObjectiveComponent);
         innerContent.setVisible(true);
 
     }
