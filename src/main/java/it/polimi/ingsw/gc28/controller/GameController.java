@@ -1,5 +1,4 @@
 package it.polimi.ingsw.gc28.controller;
-import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.model.errors.types.*;
 import it.polimi.ingsw.gc28.model.utils.JoinInfo;
 import it.polimi.ingsw.gc28.network.messages.client.MessageC2S;
@@ -359,7 +358,7 @@ public class GameController {
             return;
         }
 
-        MsgReportError message = new MsgReportError(e.getMessage());
+        MsgReportError message = new MsgReportError(e.getError());
         clients.get(name).sendMessage(message);
     }
 

@@ -12,7 +12,8 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="it.polimi.ingsw.gc28.view.gui.controllers.InGameController"
             AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
-            style="-fx-background-color: red">
+            fx:id="outerPane">
+<!--    style="-fx-background-color: red"-->
 
     <HBox AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0">
         <padding>
@@ -72,6 +73,7 @@
         </VBox>
         <Region VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS"/>
     </HBox>
+    <HBox fx:id="innerContent" AnchorPane.leftAnchor="216" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="200"/>
 
     <HBox AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" HBox.hgrow="ALWAYS" style="-fx-background-color: blue" prefHeight="200">
         <Region HBox.hgrow="ALWAYS"/>

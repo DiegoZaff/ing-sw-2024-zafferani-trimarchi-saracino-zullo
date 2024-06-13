@@ -629,7 +629,7 @@ public class Game implements Serializable {
         return chat;
     }
 
-    public void chooseColor(String playerName, String color) throws NoSuchPlayerError, ColorTakenError, InvalidColor {
+    public void chooseColor(String playerName, String color) throws NoSuchPlayerError, ColorTakenError, InvalidColor, PlayerAlreadyChoseColorError {
         Optional<Player> player;
         player = getPlayerOfName(playerName);
 
@@ -648,6 +648,11 @@ public class Game implements Serializable {
         if(isColorTaken){
             throw new ColorTakenError();
         }
+
+        if(player.get().getColor() != null){
+            throw new PlayerAlreadyChoseColorError(player.get().getName());
+        }
+
         player.get().setColor(col);
         actionManager.nextMove();
     }

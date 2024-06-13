@@ -72,7 +72,7 @@ public class MessageUtils {
 
                 String color = commandsList.get(1);
 
-                MsgChooseColor message = new MsgChooseColor(userName, gameId, color);
+                MsgChooseColor message = new MsgChooseColor(userName, color);
                 return Optional.of(message);
             }
             case "chooseObj" -> {

@@ -37,13 +37,10 @@ public class MsgOnGameCreated extends MessageS2C{
     public void update(GameManagerClient gameManagerClient, boolean isCli) {
         gameManagerClient.setNPlayers(nPlayers);
         gameManagerClient.setPlayersIn(1);
+        gameManagerClient.setGameId(gameId);
+        gameManagerClient.setPlayerName(playerName);
+
         if(isCli) {
-
-            gameManagerClient.setGameId(gameId);
-
-            gameManagerClient.setPlayerName(playerName);
-
-
             String text = String.format("""
                  Welcome %s, may the power be with you!!
                  The game has been created successfully with id: %s
