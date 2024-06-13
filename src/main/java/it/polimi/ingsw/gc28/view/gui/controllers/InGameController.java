@@ -27,6 +27,7 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
     public AnchorPane outerPane;
     @FXML
     public HBox innerContent;
+    public HBox cards;
     private WrapperController wrapperController;
 
     @Override
@@ -58,6 +59,7 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
     public void initialize(URL url, ResourceBundle resourceBundle) {
         GameManagerClient.getInstance().addListeners(this);
         showChooseColors();
+        showCards();
     }
 
     private void showChooseColors(){
@@ -76,6 +78,10 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
         innerContent.getChildren().setAll(chooseColorComponent);
         innerContent.setVisible(true);
 
+    }
+
+    private void showCards(){
+        Map<String, PrivateRepresentation> reprs = GameManagerClient.getInstance().getCurrentRepresentation().getRepresentations();
     }
 
     public void handleTablePress(MouseEvent mouseEvent) {
