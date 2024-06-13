@@ -2,10 +2,10 @@ package it.polimi.ingsw.gc28.view.gui.controllers;
 
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
 import it.polimi.ingsw.gc28.network.messages.server.MessageTypeS2C;
-import it.polimi.ingsw.gc28.network.messages.server.MsgOnSomeoneElseJoined;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
 import it.polimi.ingsw.gc28.view.GuiObserver;
+import it.polimi.ingsw.gc28.view.gui.utils.TabType;
 import it.polimi.ingsw.gc28.view.gui.utils.WrapperControllable;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -30,22 +30,25 @@ public class LobbyController implements Initializable, GuiObserver, WrapperContr
     @Override
     public void update(MessageS2C message) {
         if(message.getType().equals(MessageTypeS2C.SOMEONE_ELSE_JOINED)){
-            MsgOnSomeoneElseJoined msg = (MsgOnSomeoneElseJoined) message;
-            Integer playersLeftNumber = msg.getPlayersLeftToJoin();
-            Integer playersTotal = GameManagerClient.getInstance().getNPlayers();
-            Integer playersIn = playersTotal - playersLeftNumber;
-            playersLeft.setText(String.format("%s/%s", playersIn, playersTotal));
-
+            setPlayersLeft();
+        }else if(message.getType().equals(MessageTypeS2C.GAME_STARTED)){
+            if(wrapperController != null){
+                wrapperController.setInnerContent(TabType.IN_GAME);
+            }
         }
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        GameManagerClient gameManagerClient= GameManagerClient.getInstance();
-        gameManagerClient.addListeners(this);
-        Integer playersTotal = gameManagerClient.getNPlayers();
+        GameManagerClient.getInstance().addListeners(this);
+        setPlayersLeft();
+    }
 
-        playersLeft.setText(String.format("1/%s", playersTotal));
+    public void setPlayersLeft(){
+        GameManagerClient gameManagerClient= GameManagerClient.getInstance();
+        Integer playersTotal = gameManagerClient.getNPlayers();
+        Integer playersIn = gameManagerClient.getPlayersIn();
+        playersLeft.setText(String.format("%d/%d",playersIn, playersTotal));
 
     }
 

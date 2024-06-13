@@ -9,9 +9,8 @@ public class MsgCreateGame extends MessageC2S{
     private final String userName;
     private final int numberOfPlayers;
 
-    public MsgCreateGame(String gameId, String userName, int numberOfPlayers, VirtualView client) {
+    public MsgCreateGame(String gameId, String userName, int numberOfPlayers) {
         super(MessageTypeC2S.CREATE_GAME, gameId);
-        this.client = client;
         this.userName = userName;
         this.numberOfPlayers = numberOfPlayers;
     }
@@ -37,4 +36,8 @@ public class MsgCreateGame extends MessageC2S{
         this.client = client;
     }
 
+    @Override
+    public void attachVirtualView(VirtualView client){
+        setClient(client);
+    }
 }

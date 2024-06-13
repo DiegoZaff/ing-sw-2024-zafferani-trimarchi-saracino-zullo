@@ -30,8 +30,8 @@ import java.util.Map;
  * and resourceCounters.
  */
 public class ObjectiveTest {
-    private ImageView im1;
-    private ImageView im2;
+    private String im1;
+    private String im2;
     private Objective objective;
 
     private Map<Coordinate, Cell> mapPositions;

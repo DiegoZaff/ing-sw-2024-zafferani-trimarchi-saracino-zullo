@@ -114,8 +114,10 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, GuiCa
         try{
             if (message.getType().equals(MessageTypeC2S.CREATE_GAME) ||
                     message.getType().equals(MessageTypeC2S.JOIN_GAME) ||
-                    message.getType().equals(MessageTypeC2S.RECONNECT)) {
+                    message.getType().equals(MessageTypeC2S.RECONNECT) ||
+                    message.getType().equals(MessageTypeC2S.JOINABLE_GAMES)) {
                 if (GameManagerClient.getInstance().canICreateOrJoinAGame()) {
+                    message.attachVirtualView(this);
                     server.sendMessage(message);
                 }
             } else {

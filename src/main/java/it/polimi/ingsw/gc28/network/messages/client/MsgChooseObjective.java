@@ -7,8 +7,8 @@ import java.rmi.RemoteException;
 public class MsgChooseObjective extends MessageC2S {
     private final String playerName;
     private final String cardId;
-    public MsgChooseObjective(String playerName, String gameId, String cardId) {
-        super(MessageTypeC2S.CHOOSE_OBJ ,gameId);
+    public MsgChooseObjective(String playerName, String cardId) {
+        super(MessageTypeC2S.CHOOSE_OBJ);
         this.playerName = playerName;
         this.cardId = cardId;
     }

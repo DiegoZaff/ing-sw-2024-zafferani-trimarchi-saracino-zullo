@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc28.model;
 
+import it.polimi.ingsw.gc28.model.utils.JoinInfo;
 import it.polimi.ingsw.gc28.model.utils.PlayerColor;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
 import it.polimi.ingsw.gc28.view.PrivateRepresentation;
@@ -628,13 +629,18 @@ public class Game implements Serializable {
         return chat;
     }
 
-    public void chooseColor(String playerName, String color) throws NoSuchPlayerError, ColorTakenError, InvalidColor {
+    public void chooseColor(String playerName, String color) throws PlayerActionError {
         Optional<Player> player;
         player = getPlayerOfName(playerName);
 
         if(player.isEmpty()){
             throw new NoSuchPlayerError();
         }
+
+        ActionType actionRequested =  ActionType.CHOOSE_COLOR;
+
+        // this throws errors if move is not valid
+        actionManager.validatesMove(player.get(), actionRequested);
 
         PlayerColor col;
         try{
@@ -647,6 +653,11 @@ public class Game implements Serializable {
         if(isColorTaken){
             throw new ColorTakenError();
         }
+
+        if(player.get().getColor() != null){
+            throw new PlayerAlreadyChoseColorError(player.get().getName());
+        }
+
         player.get().setColor(col);
         actionManager.nextMove();
     }
@@ -683,6 +694,16 @@ public class Game implements Serializable {
     }
     public boolean isEveryoneReconnected(){
         return players.stream().allMatch(Player::isConnected);
+    }
+
+    public Optional<JoinInfo> getJoinInfo(){
+        if(!actionExpected().equals(ActionType.JOIN_GAME)){
+            return Optional.empty();
+        }
+
+        ArrayList<String> playersIn = getPlayersNickname();
+        JoinInfo info = new JoinInfo(getGameId(), playersIn, nPlayers);
+        return Optional.of(info);
     }
 
 }

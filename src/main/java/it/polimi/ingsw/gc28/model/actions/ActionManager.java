@@ -37,6 +37,7 @@ public class ActionManager implements Serializable {
     private ActionType actionType;
 
     private ActionType savedAction;
+    int done = 1;
 
     /**
      * This attribute is null until a player reaches 20 points, counting
@@ -120,6 +121,8 @@ public class ActionManager implements Serializable {
      * 3) PlayInitialCard e ChooseObjective si fanno a turni.
      */
     public void nextMove(){
+
+
         switch (actionType){
             case JOIN_GAME -> {
                 if(players.size() == nPlayers){
@@ -127,25 +130,35 @@ public class ActionManager implements Serializable {
                 }
             }
             case CHOOSE_COLOR -> {
-                if(isCurrentPlayerTheLastOneForTheAction()) { //ora funziona correttamente
+                if(isCurrentPlayerTheLastOneForTheAction()) {
 
                     actionType = ActionType.PLAY_INITIAL_CARD;
-                    playerOfTurn = getFirstPlayer();            // seleziona correttamente firstplayer
+                    playerOfTurn = getFirstPlayer();
+                    break;
                 }
-                //playerOfTurn = getNextPlayer();             //inutile
-
+                playerOfTurn = getNextPlayer();//inutile
             }
             case PLAY_INITIAL_CARD -> {
                 if(isCurrentPlayerTheLastOneForTheAction()) {
+
+
                     actionType = ActionType.CHOOSE_OBJ;
+                    playerOfTurn = getFirstPlayer();
+                    break;
                 }
                 playerOfTurn = getNextPlayer();
+
             }
             case CHOOSE_OBJ -> {
                 if(isCurrentPlayerTheLastOneForTheAction()) {
+
+
                     actionType = ActionType.PLAY_CARD;
+                    playerOfTurn = getFirstPlayer();
+                    break;
                 }
                 playerOfTurn = getNextPlayer();
+
             }
             case PLAY_CARD -> {
                 // TODO DONE : if roundsLeft <= numberOfPlayers - 1 => actionType = PLAY_CARD & nextPlayer aggiornato
@@ -193,18 +206,16 @@ public class ActionManager implements Serializable {
      * This method chooses randomly the first player.
      */
     public void initFirstPlayer(){
-        if(indexFirstPlayer == null){  //credo sia fatto per forzare che il primo player sia diego,
-                                       // va cambiato in == 0 per inserire randomicità
+        if(indexFirstPlayer == null){
+
             Random rand = new Random();
             indexFirstPlayer = rand.nextInt(players.size());
         }
-        //this.playerOfTurn = players.get(indexFirstPlayer);  //geenrava problemi perche il playerofturn era sempre quello iniziale
         this.firstPlayer = players.get(indexFirstPlayer);
     }
 
     public void initPlayerOfTurn(){             //aggiunta inizializzazione playerOfTurn
-        this.playerOfTurn = players.getLast();
-
+        this.playerOfTurn = firstPlayer;
     }
 
     public Player getFirstPlayer(){

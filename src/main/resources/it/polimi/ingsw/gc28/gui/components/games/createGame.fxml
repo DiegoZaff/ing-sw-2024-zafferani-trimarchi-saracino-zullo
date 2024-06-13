@@ -11,7 +11,7 @@
          xmlns:fx="http://javafx.com/fxml"
          type="javafx.scene.layout.Pane">
 
-    <VBox fx:id="createGameBox" prefHeight="256.0" prefWidth="1312.0"  alignment="CENTER">
+    <VBox fx:id="createGameBox" prefHeight="256.0"  alignment="CENTER">
         <HBox alignment="CENTER" AnchorPane.leftAnchor="550.0">
             <Label style="-fx-padding: 0 0 8 0" text="Number of players" />
         </HBox>

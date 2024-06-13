@@ -2,8 +2,10 @@ package it.polimi.ingsw.gc28.controller;
 
 import it.polimi.ingsw.gc28.model.Game;
 import it.polimi.ingsw.gc28.model.errors.types.FailedActionManaged;
+import it.polimi.ingsw.gc28.model.utils.JoinInfo;
 import it.polimi.ingsw.gc28.network.messages.client.*;
 import it.polimi.ingsw.gc28.network.messages.server.MsgOnGameStarted;
+import it.polimi.ingsw.gc28.network.messages.server.MsgOnJoinableGames;
 import it.polimi.ingsw.gc28.network.rmi.GameStub;
 import it.polimi.ingsw.gc28.network.rmi.VirtualServer;
 import it.polimi.ingsw.gc28.network.rmi.VirtualStub;
@@ -14,10 +16,7 @@ import it.polimi.ingsw.gc28.view.GameRepresentation;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -26,6 +25,10 @@ public class GamesManager {
     private final BlockingQueue<MessageC2S> messageQueue;
 
     private static GamesManager instance;
+
+    public Map<String, GameController> getMapGames() {
+        return mapGames;
+    }
 
     private final Map<String, GameController> mapGames;
 
@@ -92,7 +95,10 @@ public class GamesManager {
             joinGame(msg);
         }else if(message.getType().equals(MessageTypeC2S.RECONNECT)){
             MsgReconnect msg = (MsgReconnect) message;
-            reconnectToGame(msg);
+            reconnectToGame(msg);}
+        else if(message.getType().equals(MessageTypeC2S.JOINABLE_GAMES)){
+            MsgJoinableGames msg = (MsgJoinableGames) message;
+            sendJoinableGames(msg);
         }else {
         System.err.printf("Message of type %s directed to gamesManager!%n", message.getType());
     }
@@ -207,6 +213,28 @@ public class GamesManager {
 
         controller.waitForReconnections();
 
+    }
+
+    private void sendJoinableGames(MsgJoinableGames msg){
+        VirtualView client = msg.getClient();
+
+        if(client == null){
+            return;
+        }
+
+        ArrayList<JoinInfo> res = new ArrayList<>();
+        mapGames.forEach((id, controller) -> {
+            Optional<JoinInfo> info = controller.getJoinInfo();
+            info.ifPresent(res::add);
+        });
+
+
+        MsgOnJoinableGames msgToSend = new MsgOnJoinableGames(res);
+        try {
+            client.sendMessage(msgToSend);
+        } catch (RemoteException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
 

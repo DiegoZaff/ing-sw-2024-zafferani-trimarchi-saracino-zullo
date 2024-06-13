@@ -7,8 +7,8 @@ import java.rmi.RemoteException;
 public class MsgChooseColor extends MessageC2S{
     private final String playerName;
     private final String color;
-    public MsgChooseColor(String playerName, String gameId, String color) {
-        super(MessageTypeC2S.CHOOSE_COLOR ,gameId);
+    public MsgChooseColor(String playerName, String color) {
+        super(MessageTypeC2S.CHOOSE_COLOR);
         this.playerName = playerName;
         this.color = color;
     }

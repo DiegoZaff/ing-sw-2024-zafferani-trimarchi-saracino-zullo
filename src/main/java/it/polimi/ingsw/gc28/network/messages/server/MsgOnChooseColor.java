@@ -22,32 +22,27 @@ public class MsgOnChooseColor extends MessageS2C{
         String text;
 
         if(playerName.equals(gameManagerClient.getPlayerName())){
-            text = """
-                You have chosen your color:
-                """;
+            text = "You have chosen your color";
         }else{
-            text = String.format("""
-                %s has chosen his color!
-                """, playerName);
+            text = String.format(" %s has chosen his color!", playerName);
         }
 
         if(isCli){
             gameManagerClient.writeInConsole(text);
             gameManagerClient.showPlayerAndAction();
+
+            String me = gameManagerClient.getPlayerName();
+            ActionType nextAction = gameManagerClient.getCurrentRepresentation().getActionExpected();
+            String nextPlayer = gameManagerClient.getCurrentRepresentation().getPlayerToPlay();
+            if(nextPlayer.equals(me) && nextAction.equals(ActionType.PLAY_INITIAL_CARD)){
+                gameManagerClient.showCardInitial();
+            }
+
         }else{
             SnackBarMessage msg = new SnackBarMessage(text, InformationType.GAME_INFO);
             gameManagerClient.updateSnackBarListener(msg);
+            gameManagerClient.updateListeners(this);
         }
 
-
-        String me = gameManagerClient.getPlayerName();
-
-        ActionType nextAction = gameManagerClient.getCurrentRepresentation().getActionExpected();
-
-        String nextPlayer = gameManagerClient.getCurrentRepresentation().getPlayerToPlay();
-
-        if(nextPlayer.equals(me) && nextAction.equals(ActionType.PLAY_INITIAL_CARD)){
-            gameManagerClient.showCardInitial();
-        }
     }
 }

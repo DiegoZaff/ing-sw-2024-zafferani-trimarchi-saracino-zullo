@@ -27,9 +27,11 @@ public class WrapperController implements Initializable {
     public ImageView backgroundImageView;
     @FXML
     public Label labelGoBack;
+    @FXML
+    public HBox goBackContainer;
     TabType currentTab;
     @FXML
-    public HBox innerContent;
+    public AnchorPane innerContent;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -37,9 +39,11 @@ public class WrapperController implements Initializable {
 
         currentTab = TabType.GAMES;
         setInnerContent(TabType.GAMES);
-
     }
 
+    /**
+     * This method sets the content inside the wrapper, so it performs page changes.
+     */
     public void setInnerContent(TabType tabType){
         String base = "/it/polimi/ingsw/gc28/gui/";
         innerContent.getChildren().clear();
@@ -53,6 +57,8 @@ public class WrapperController implements Initializable {
 
             innerContent.getChildren().setAll(node);
             updateGoBackButton(tabType);
+            // hide go back button during game
+            hideGoBackButton(tabType.equals(TabType.IN_GAME));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -76,10 +82,20 @@ public class WrapperController implements Initializable {
     }
 
 
+    /**
+     * This method sets the correct name beside the Go Back Arrow
+     */
     private void updateGoBackButton(TabType tab){
         String tabTitle = tab.getTabTitle();
 
         labelGoBack.setText(tabTitle);
+    }
 
+    public void hideGoBackButton(boolean hide){
+        boolean isVisible = !hide;
+        if(goBackContainer.isVisible() != isVisible){
+            goBackContainer.setVisible(isVisible);
+
+        }
     }
 }

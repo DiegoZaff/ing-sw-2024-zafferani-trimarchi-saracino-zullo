@@ -7,10 +7,7 @@ import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.model.Player;
 import it.polimi.ingsw.gc28.model.Table;
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
-import it.polimi.ingsw.gc28.network.messages.client.MessageC2S;
-import it.polimi.ingsw.gc28.network.messages.client.MessageTypeC2S;
-import it.polimi.ingsw.gc28.network.messages.client.MsgCreateGame;
-import it.polimi.ingsw.gc28.network.messages.client.MsgJoinGame;
+import it.polimi.ingsw.gc28.network.messages.client.*;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
 import it.polimi.ingsw.gc28.network.messages.server.MsgOnGameCreated;
 import it.polimi.ingsw.gc28.network.rmi.GameStub;
@@ -57,7 +54,16 @@ public class ClientHandler implements VirtualView {
 
                     GamesManager.getInstance().addMessageToQueue(msg);
 
-                }else{
+                }else if(receivedMessage.getType().equals(MessageTypeC2S.JOINABLE_GAMES)){
+
+                    MsgJoinableGames msg = (MsgJoinableGames) receivedMessage;
+                    msg.setClient(this);
+
+                    GamesManager.getInstance().addMessageToQueue(msg);
+
+                }
+
+                else{
                     if(controller != null){
                         controller.addMessageToQueue(receivedMessage);
                     }

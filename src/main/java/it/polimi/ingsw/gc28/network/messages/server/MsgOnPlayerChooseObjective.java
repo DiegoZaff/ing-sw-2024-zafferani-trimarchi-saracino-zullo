@@ -33,15 +33,10 @@ public class MsgOnPlayerChooseObjective extends MessageS2C{
                 throw new RuntimeException(e);
             }
 
-            text = String.format("""
-                You have chosen your objective: %s
-                Don't tell anyone!
-                """, personalObjId);
+            text = String.format("You have chosen your objective: %s\nDon't tell anyone!", personalObjId);
 
         }else{
-            text = String.format("""
-                %s has chosen his super secret objective!
-                """, playerName);
+            text = String.format("%s has chosen his super secret objective!", playerName);
         }
 
         String nextPlayer = gameManagerClient.getCurrentRepresentation().getPlayerToPlay();
@@ -60,8 +55,12 @@ public class MsgOnPlayerChooseObjective extends MessageS2C{
         }else{
             SnackBarMessage msg = new SnackBarMessage(text, InformationType.GAME_INFO);
             gameManagerClient.updateSnackBarListener(msg);
+            gameManagerClient.updateListeners(this);
         }
 
+    }
+    public String getPlayerName() {
+        return playerName;
     }
 }
 

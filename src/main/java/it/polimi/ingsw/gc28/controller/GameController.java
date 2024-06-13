@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc28.controller;
 import it.polimi.ingsw.gc28.model.errors.types.*;
+import it.polimi.ingsw.gc28.model.utils.JoinInfo;
 import it.polimi.ingsw.gc28.network.messages.client.MessageC2S;
 import it.polimi.ingsw.gc28.network.persistence.BackupManager;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
@@ -119,17 +120,17 @@ public class GameController {
     /**
      * Overloading, in case we have already calculated Player.
      */
-    public Optional<ArrayList<CardObjective>> getPersonalObjectives(Player player){
-        synchronized (gameModel) {
-            return player.getObjectivesToChoose();
-        }
-    }
-
-    public ArrayList<CardResource> getPlayerHand(Player player){
-        synchronized (gameModel) {
-            return player.gethand();
-        }
-    }
+//    public Optional<ArrayList<CardObjective>> getPersonalObjectives(Player player){
+//        synchronized (gameModel) {
+//            return player.getObjectivesToChoose();
+//        }
+//    }
+//
+//    public ArrayList<CardResource> getPlayerHand(Player player){
+//        synchronized (gameModel) {
+//            return player.gethand();
+//        }
+//    }
 
 
     public void chooseObjectivePersonal(String name, String cardId) throws RemoteException {
@@ -357,7 +358,7 @@ public class GameController {
             return;
         }
 
-        MsgReportError message = new MsgReportError(e.getMessage());
+        MsgReportError message = new MsgReportError(e.getError());
         clients.get(name).sendMessage(message);
     }
 
@@ -463,9 +464,7 @@ public class GameController {
 
 
     public GameRepresentation getGameRepresentation(){
-        synchronized (gameModel){
-            return gameModel.getGameRepresentation();
-        }
+        synchronized (gameModel){return gameModel.getGameRepresentation();}
     }
 
 
@@ -475,5 +474,10 @@ public class GameController {
      */
     private void backUpGame(Game game){
         new BackupManager(game).start();
+    }
+
+
+    public Optional<JoinInfo> getJoinInfo(){
+        synchronized (gameModel){return gameModel.getJoinInfo();}
     }
 }

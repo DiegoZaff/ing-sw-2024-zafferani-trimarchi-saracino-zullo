@@ -7,11 +7,10 @@ import it.polimi.ingsw.gc28.network.rmi.VirtualView;
 import java.rmi.RemoteException;
 
 public class MsgReconnect extends MessageC2S{
-    private final VirtualView client;
+    private  VirtualView client;
     private final String playerName;
-    public MsgReconnect(String gameId, VirtualView client, String playerName) {
+    public MsgReconnect(String gameId, String playerName) {
         super(MessageTypeC2S.RECONNECT, gameId);
-        this.client = client;
         this.playerName = playerName;
     }
 
@@ -31,5 +30,14 @@ public class MsgReconnect extends MessageC2S{
 
     public VirtualView getClient() {
         return client;
+    }
+
+    public void setClient(VirtualView client){
+        this.client = client;
+    }
+
+    @Override
+    public void attachVirtualView(VirtualView client){
+        setClient(client);
     }
 }

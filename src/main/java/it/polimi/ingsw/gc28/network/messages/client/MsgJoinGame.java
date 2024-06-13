@@ -23,9 +23,8 @@ public class MsgJoinGame extends MessageC2S{
         return userName;
     }
 
-    public MsgJoinGame(VirtualView client, String gameId, String userName) {
+    public MsgJoinGame(String gameId, String userName) {
         super(MessageTypeC2S.JOIN_GAME ,gameId);
-        this.client = client;
         this.userName = userName;
 
     }
@@ -37,5 +36,10 @@ public class MsgJoinGame extends MessageC2S{
         if(!isSuccessful){
             throw new FailedActionManaged("Could not join game");
         }
+    }
+
+    @Override
+    public void attachVirtualView(VirtualView client){
+        setClient(client);
     }
 }

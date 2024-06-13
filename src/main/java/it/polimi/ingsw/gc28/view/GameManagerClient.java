@@ -33,7 +33,9 @@ public class GameManagerClient {
 
     private InfoObserver snackBarListener;
 
-    private int nPlayers;
+    private Integer nPlayers;
+
+    private Integer playersIn;
 
 
     private GameManagerClient() {
@@ -50,23 +52,15 @@ public class GameManagerClient {
                 try {
                     MessageS2C message = messageQueue.take(); // Blocking call
 
-                    try {
-                        //used by GUI users
-                        Platform.runLater(() -> {
-                            message.update(this, isCli);
-                        });
-                    }catch (IllegalStateException e){
-                        //used by TUI users
+                    //Platform.runLater(() -> {
                         message.update(this, isCli);
-                    }
-
+                   // });
 
                 } catch (InterruptedException e) {
                     System.err.println("Thread was interrupted while taking a message!");
                     System.err.println(e.getMessage());
                     throw new RuntimeException(e);
                 }
-
             }
         }).start();
     }
@@ -461,5 +455,13 @@ public class GameManagerClient {
 
     public void setNPlayers(int nPlayers) {
         this.nPlayers = nPlayers;
+    }
+
+    public int getPlayersIn(){
+        return playersIn;
+    }
+
+    public void setPlayersIn(int playersIn) {
+        this.playersIn = playersIn;
     }
 }

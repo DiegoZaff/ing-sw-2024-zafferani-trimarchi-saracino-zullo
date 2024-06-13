@@ -1,10 +1,9 @@
 package it.polimi.ingsw.gc28.network.messages.server;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
-import it.polimi.ingsw.gc28.view.GameRepresentation;
 
-public class MessageOnGameAborted extends MessageS2C {
+public class MsgOnGameAborted extends MessageS2C {
     private final String playerWhoQuit;
-    protected MessageOnGameAborted(String playerWhoQuit) {
+    protected MsgOnGameAborted(String playerWhoQuit) {
         super(MessageTypeS2C.GAME_ABORTED);
         this.playerWhoQuit = playerWhoQuit;
     }

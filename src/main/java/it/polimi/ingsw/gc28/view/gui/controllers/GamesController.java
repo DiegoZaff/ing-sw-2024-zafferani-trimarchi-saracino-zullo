@@ -1,10 +1,13 @@
 package it.polimi.ingsw.gc28.view.gui.controllers;
 
+import it.polimi.ingsw.gc28.network.messages.client.MsgJoinableGames;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
 import it.polimi.ingsw.gc28.network.messages.server.MessageTypeS2C;
+import it.polimi.ingsw.gc28.network.messages.server.MsgOnJoinableGames;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
 import it.polimi.ingsw.gc28.view.GuiObserver;
+import it.polimi.ingsw.gc28.view.gui.GuiApplication;
 import it.polimi.ingsw.gc28.view.gui.components.CreateGame;
 import it.polimi.ingsw.gc28.view.gui.components.JoinGame;
 import it.polimi.ingsw.gc28.view.gui.utils.TabType;
@@ -31,7 +34,7 @@ import java.util.ResourceBundle;
 
 public class GamesController implements Initializable, GuiObserver, WrapperControllable {
 
-    public Pane subView;
+    public AnchorPane subView;
     private WrapperController wrapperController;
 
     @Override
@@ -57,14 +60,13 @@ public class GamesController implements Initializable, GuiObserver, WrapperContr
 
     private BooleanProperty isCreateGameSelected;
 
-    private Parent createGameView;
+    private CreateGame createGameView;
 
-    private Parent joinGameView;
+    private JoinGame joinGameView;
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.print("initializing GamesController");
         loadSubViews();
         isCreateGameSelected = new SimpleBooleanProperty(true);
         replaceView(isCreateGameSelected.getValue());
@@ -74,7 +76,6 @@ public class GamesController implements Initializable, GuiObserver, WrapperContr
         isCreateGameSelected.addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                System.out.println("listener!!");
                 // Perform action when property changes
                 changeButtonWidth(createGameButton, isCreateGameSelected.getValue());
                 changeButtonWidth(joinGameButton, !isCreateGameSelected.getValue());
@@ -99,7 +100,6 @@ public class GamesController implements Initializable, GuiObserver, WrapperContr
 
 
     public void handleSelectCreateGame(MouseEvent mouseEvent) {
-        System.out.print("handle select create game");
         if(!isCreateGameSelected.getValue()){
             isCreateGameSelected.set(true);
         }
@@ -107,9 +107,12 @@ public class GamesController implements Initializable, GuiObserver, WrapperContr
 
 
     public void handleSelectJoinGame(MouseEvent mouseEvent) {
-        System.out.print("handle select join game");
         if(isCreateGameSelected.getValue()){
             isCreateGameSelected.set(false);
+            Platform.runLater(() -> {
+                MsgJoinableGames msg = new MsgJoinableGames();
+                GuiApplication.connection.sendMessageToServer(msg);
+            });
         }
     }
 
@@ -129,19 +132,23 @@ public class GamesController implements Initializable, GuiObserver, WrapperContr
             if(wrapperController != null){
                 Platform.runLater(() -> wrapperController.setInnerContent(TabType.LOBBY));
             }
+        }else if(message.getType().equals(MessageTypeS2C.JOINABLE_GAMES)){
+            joinGameView.update(message);
+        }else if(message.getType().equals(MessageTypeS2C.GAME_JOINED)){
+            if(wrapperController != null){
+                Platform.runLater(() -> wrapperController.setInnerContent(TabType.LOBBY));
+            }
         }
     }
 
 
 
     private void loadSubViews(){
-        System.out.println("Loading subviews");
         createGameView = new CreateGame(userNameTextField);
         joinGameView = new JoinGame(userNameTextField);
     }
 
     private void replaceView(boolean isGameCreatedSelected){
-        System.out.print("replacing");
         if(isGameCreatedSelected){
             subView.getChildren().setAll(createGameView);
         }else{

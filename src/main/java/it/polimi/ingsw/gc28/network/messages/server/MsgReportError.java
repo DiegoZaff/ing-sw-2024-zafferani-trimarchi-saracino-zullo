@@ -1,6 +1,8 @@
 package it.polimi.ingsw.gc28.network.messages.server;
 
 import it.polimi.ingsw.gc28.view.GameManagerClient;
+import it.polimi.ingsw.gc28.view.utils.InformationType;
+import it.polimi.ingsw.gc28.view.utils.SnackBarMessage;
 
 
 public class MsgReportError extends MessageS2C{
@@ -13,6 +15,11 @@ public class MsgReportError extends MessageS2C{
 
     @Override
     public void update(GameManagerClient gameManagerClient, boolean isCli)  {
-        gameManagerClient.writeInConsole(details);
+        if(isCli){
+            gameManagerClient.writeInConsole(details);
+        }else{
+            SnackBarMessage msg = new SnackBarMessage(details, InformationType.ERROR);
+            gameManagerClient.updateSnackBarListener(msg);
+        }
     }
 }

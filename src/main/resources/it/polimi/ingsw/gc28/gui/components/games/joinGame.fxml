@@ -7,21 +7,25 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <fx:root xmlns="http://javafx.com/javafx"
          xmlns:fx="http://javafx.com/fxml"
-         type="javafx.scene.layout.Pane">
+         stylesheets="@joinGameStyles.css"
+         type="javafx.scene.layout.HBox">
 
-    <VBox fx:id="joinGameBox" prefHeight="256.0" prefWidth="1312.0"  alignment="CENTER">
-        <HBox alignment="CENTER" AnchorPane.leftAnchor="550.0">
-            <VBox alignment="CENTER">
-                <Label style="-fx-padding: 32 0 0 0" text="Game ID" />
-                <TextField fx:id="gameIdTextField" minHeight="64" prefWidth="700" promptText="Insert game ID..." style="-fx-background-color: #EDEDED;-fx-background-radius: 16;-fx-prompt-text-fill: derive(-fx-control-inner-background,-30%);" />
-            </VBox>
+    <VBox HBox.hgrow="ALWAYS" fx:id="joinGameBox" prefHeight="600"  alignment="CENTER">
+        <HBox fx:id="refreshBox" HBox.hgrow="ALWAYS" alignment="CENTER_LEFT">
+            <ImageView fitHeight="36" fitWidth="36">
+                <Image url="@../../../img/refresh.png" />
+            </ImageView>
+            <Text text="REFRESH" style="-fx-font-size: 20; -fx-font-weight: 300;-fx-background-color: #424242"/>
         </HBox>
-        <Region>
-            <minHeight>158.0</minHeight>
-        </Region>
+
+        <ListView fx:id="listView" prefHeight="300" orientation="HORIZONTAL" styleClass="list-view"/>
+        <Region minHeight="20"/>
         <Button fx:id="joinButton" prefHeight="64.0" prefWidth="322.0" style="-fx-background-color: transparent;-fx-font-size: 24pt; -fx-font-weight: bold" text="JOIN" layoutX="300" layoutY="300" onMouseClicked="#handleJoinButton">
         </Button>
+
     </VBox>
 </fx:root>
