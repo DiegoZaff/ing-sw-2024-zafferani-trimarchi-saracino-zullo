@@ -6,6 +6,7 @@ import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
 import it.polimi.ingsw.gc28.view.GuiObserver;
 import it.polimi.ingsw.gc28.view.PrivateRepresentation;
+import it.polimi.ingsw.gc28.view.gui.components.ChooseCardInitial;
 import it.polimi.ingsw.gc28.view.gui.components.ChooseColor;
 import it.polimi.ingsw.gc28.view.gui.utils.WrapperControllable;
 import it.polimi.ingsw.gc28.view.utils.PlayerColorInfo;
@@ -47,6 +48,8 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
         }
         if (act.equals(ActionType.CHOOSE_COLOR)) {
             showChooseColors();
+        }else if(act.equals(ActionType.PLAY_INITIAL_CARD)){
+            showChooseCardInitial();
         }
     }
 
@@ -63,10 +66,6 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
     }
 
     private void showChooseColors(){
-        ActionType act = GameManagerClient.getInstance().getCurrentRepresentation().getActionExpected();
-        if(!act.equals(ActionType.CHOOSE_COLOR)){
-            return;
-        }
         Map<String, PrivateRepresentation> reprs = GameManagerClient.getInstance().getCurrentRepresentation().getRepresentations();
         ArrayList<PlayerColorInfo> infos = new ArrayList<>();
         for(Map.Entry<String, PrivateRepresentation> entry: reprs.entrySet()){
@@ -76,6 +75,14 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
 
         ChooseColor chooseColorComponent = new ChooseColor(infos);
         innerContent.getChildren().setAll(chooseColorComponent);
+        innerContent.setVisible(true);
+
+    }
+
+    private void showChooseCardInitial(){
+        ChooseCardInitial chooseCardInitialComponent = new ChooseCardInitial();
+
+        innerContent.getChildren().setAll(chooseCardInitialComponent);
         innerContent.setVisible(true);
 
     }

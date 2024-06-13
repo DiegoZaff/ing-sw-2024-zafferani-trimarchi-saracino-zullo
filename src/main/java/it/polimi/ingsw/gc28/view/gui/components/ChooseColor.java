@@ -79,7 +79,7 @@ public class ChooseColor extends VBox implements Initializable {
 
     public ChooseColor(ArrayList<PlayerColorInfo> infos){
         this.infos = infos;
-        URL fxmlResource = SnackBar.class.getResource("/it/polimi/ingsw/gc28/gui/components/inGame/chooseColor.fxml");
+        URL fxmlResource = ChooseColor.class.getResource("/it/polimi/ingsw/gc28/gui/components/inGame/chooseColor.fxml");
         FXMLLoader fxmlLoader = new FXMLLoader(fxmlResource);
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);

@@ -134,7 +134,7 @@ public class MessageUtils {
                     return Optional.empty();
                 }
 
-                MsgPlayGameCard message = new MsgPlayGameCard(userName, cardId, gameId, isFront, new Coordinate(x,y));
+                MsgPlayGameCard message = new MsgPlayGameCard(userName, cardId, isFront, new Coordinate(x,y));
                 return Optional.of(message);
             }
             case "sendChatMessage" -> {

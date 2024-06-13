@@ -10,8 +10,8 @@ public class MsgPlayGameCard extends MessageC2S{
     String cardId;
     boolean isFront;
     Coordinate coordinate;
-    public MsgPlayGameCard(String playerName, String cardId, String gameId, boolean isFront, Coordinate coordinate) {
-        super(MessageTypeC2S.PLAY_CARD,gameId);
+    public MsgPlayGameCard(String playerName, String cardId, boolean isFront, Coordinate coordinate) {
+        super(MessageTypeC2S.PLAY_CARD);
         this.playerName = playerName;
         this.cardId = cardId;
         this.isFront = isFront;
