@@ -13,6 +13,8 @@ import it.polimi.ingsw.gc28.view.gui.components.ChooseColor;
 import it.polimi.ingsw.gc28.view.gui.components.ChooseObjective;
 import it.polimi.ingsw.gc28.view.gui.utils.WrapperControllable;
 import it.polimi.ingsw.gc28.view.utils.PlayerColorInfo;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
@@ -38,6 +40,10 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
     public ImageView handOne;
     public ImageView handTwo;
     public ImageView handThree;
+    public BooleanProperty isHandOneFront;
+    public BooleanProperty isHandTwoFront;
+    public BooleanProperty isHandThreeFront;
+
     private WrapperController wrapperController;
 
     @Override
@@ -113,6 +119,9 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
         String firstCard = hand.getFirst().getId();
         String secondCard = hand.get(1).getId();
         String thirdCard = hand.getLast().getId();
+        isHandOneFront = new SimpleBooleanProperty(true);
+        isHandTwoFront = new SimpleBooleanProperty(true);
+        isHandThreeFront = new SimpleBooleanProperty(true);
         handOne.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(ParsingHelper.idToFrontPath(firstCard)))));
         handTwo.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(ParsingHelper.idToFrontPath(secondCard)))));
         handThree.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(ParsingHelper.idToFrontPath(thirdCard)))));
@@ -131,5 +140,62 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
     }
 
     public void handleQuitPress(MouseEvent mouseEvent) {
+    }
+
+    public void showBackFirst(MouseEvent mouseEvent){
+        String playerName = GameManagerClient.getInstance().getPlayerName();
+        PrivateRepresentation rep = GameManagerClient.getInstance().getCurrentRepresentation().getRepresentations().get(playerName);
+        ArrayList<CardResource> hand = rep.getHand();
+        String firstCard = hand.getFirst().getId();
+        if(isHandOneFront.get()) {
+            String back = hand.getFirst().getBackImagePath();
+            if (firstCard.startsWith("G")) {
+                handOne.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(back))));
+            } else {
+                handOne.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(back))));
+            }
+            isHandOneFront.set(false);
+        } else {
+            handOne.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(ParsingHelper.idToFrontPath(firstCard)))));
+            isHandOneFront.set(true);
+        }
+    }
+
+    public void showBackSecond(MouseEvent mouseEvent) {
+        String playerName = GameManagerClient.getInstance().getPlayerName();
+        PrivateRepresentation rep = GameManagerClient.getInstance().getCurrentRepresentation().getRepresentations().get(playerName);
+        ArrayList<CardResource> hand = rep.getHand();
+        String secondCard = hand.get(1).getId();
+        if(isHandTwoFront.get()) {
+            String back = hand.get(1).getBackImagePath();
+            if (secondCard.startsWith("G")) {
+                handTwo.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(back))));
+            } else {
+                handTwo.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(back))));
+            }
+            isHandTwoFront.set(false);
+        } else {
+            handTwo.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(ParsingHelper.idToFrontPath(secondCard)))));
+            isHandTwoFront.set(true);
+        }
+    }
+
+    public void showBackThird(MouseEvent mouseEvent) {
+        String playerName = GameManagerClient.getInstance().getPlayerName();
+        PrivateRepresentation rep = GameManagerClient.getInstance().getCurrentRepresentation().getRepresentations().get(playerName);
+        ArrayList<CardResource> hand = rep.getHand();
+        String thirdCard = hand.getLast().getId();
+        if(isHandThreeFront.get()) {
+            String back = hand.getLast().getBackImagePath();
+            if (thirdCard.startsWith("G")) {
+                handThree.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(back))));
+            } else {
+                handThree.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(back))));
+            }
+            isHandThreeFront.set(false);
+        } else {
+            handThree.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(ParsingHelper.idToFrontPath(thirdCard)))));
+            isHandThreeFront.set(true);
+        }
     }
 }

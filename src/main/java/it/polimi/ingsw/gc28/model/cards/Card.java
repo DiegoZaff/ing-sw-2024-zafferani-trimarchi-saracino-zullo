@@ -36,6 +36,9 @@ public abstract class Card implements Serializable {
         Card other = (Card) obj;
         return this.id.equals(other.id);
     }
+    public String getBackImagePath() {
+        return backImagePath;
+    }
 
     @Override
     public String toString(){

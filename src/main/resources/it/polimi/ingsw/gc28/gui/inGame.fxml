@@ -100,17 +100,17 @@
                 <Pane prefWidth="50" />
                 <StackPane>
                     <Rectangle arcHeight="20" arcWidth="20" fill="#484848" height="140.0" width="200.0" />
-                    <ImageView fx:id="handOne" fitHeight="180.0" fitWidth="180.0" preserveRatio="true">
+                    <ImageView fx:id="handOne" onMouseClicked="#showBackFirst" fitHeight="180.0" fitWidth="180.0" preserveRatio="true">
                     </ImageView>
                 </StackPane>
                 <StackPane>
                     <Rectangle arcHeight="20" arcWidth="20" fill="#484848" height="140.0" width="200.0" />
-                    <ImageView fx:id="handTwo" fitHeight="180.0" fitWidth="180.0" preserveRatio="true">
+                    <ImageView fx:id="handTwo" onMouseClicked="#showBackSecond" fitHeight="180.0" fitWidth="180.0" preserveRatio="true">
                     </ImageView>
                 </StackPane>
                 <StackPane>
                     <Rectangle arcHeight="20" arcWidth="20" fill="#484848" height="140.0" width="200.0" />
-                    <ImageView fx:id="handThree" fitHeight="180.0" fitWidth="180.0" preserveRatio="true">
+                    <ImageView fx:id="handThree" onMouseClicked="#showBackThird" fitHeight="180.0" fitWidth="180.0" preserveRatio="true">
                     </ImageView>
                 </StackPane>
                 <Pane prefWidth="20" />
