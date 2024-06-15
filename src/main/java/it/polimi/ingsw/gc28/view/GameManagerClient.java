@@ -94,7 +94,7 @@ public class GameManagerClient {
             return true;
         }
 
-        return !currentRepresentation.getActionExpected().equals(ActionType.GAME_ENDED);
+        return currentRepresentation.getActionExpected().equals(ActionType.GAME_ENDED);
     }
 
     /**
@@ -393,6 +393,11 @@ public class GameManagerClient {
 
     public void setCurrentRepresentation(GameRepresentation currentRepresentation) {
         this.currentRepresentation = currentRepresentation;
+    }
+
+    public void terminateGame(){
+        this.writeInConsole("someone disconnected!! the game ended");
+        this.currentRepresentation = null;
     }
 
     public String getGameId() {

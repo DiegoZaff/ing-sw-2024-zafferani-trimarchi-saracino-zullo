@@ -57,6 +57,8 @@ public class GameController {
         }).start();
     }
 
+
+
     public void addMessageToQueue(MessageC2S message){
         try {
             messageQueue.put(message);
@@ -476,8 +478,29 @@ public class GameController {
         new BackupManager(game).start();
     }
 
+    public void sendPing() throws RemoteException {
+        for (VirtualView client : clients.values()){
+            client.sendMessage(new MsgPingS2c(MessageTypeS2C.PING));
+        }
+    }
+
+    public void notifyGameTermination() throws RemoteException {
+
+        for(Map.Entry<String, VirtualView> entry : clients.entrySet()){
+
+            VirtualView client = entry.getValue();
+          try{
+              client.sendMessage(new MsgOnGameTermination(MessageTypeS2C.TERMINATION));
+          }catch (RemoteException ignored){
+
+        }
+
+        }
+    }
+
 
     public Optional<JoinInfo> getJoinInfo(){
         synchronized (gameModel){return gameModel.getJoinInfo();}
     }
+
 }

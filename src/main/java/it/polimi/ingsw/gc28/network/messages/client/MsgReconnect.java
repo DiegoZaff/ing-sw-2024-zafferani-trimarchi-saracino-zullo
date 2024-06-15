@@ -14,6 +14,12 @@ public class MsgReconnect extends MessageC2S{
         this.playerName = playerName;
     }
 
+    public MsgReconnect(String gameId, String playerName, VirtualView client) {
+        super(MessageTypeC2S.RECONNECT, gameId);
+        this.playerName = playerName;
+        this.client = client;
+    }
+
     @Override
     public void execute(GameController controller) throws RemoteException, FailedActionManaged {
         boolean isSuccessful = controller.reconnect(playerName, client);

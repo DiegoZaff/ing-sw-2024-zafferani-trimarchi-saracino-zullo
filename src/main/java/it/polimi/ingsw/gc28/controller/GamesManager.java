@@ -4,21 +4,17 @@ import it.polimi.ingsw.gc28.model.Game;
 import it.polimi.ingsw.gc28.model.errors.types.FailedActionManaged;
 import it.polimi.ingsw.gc28.model.utils.JoinInfo;
 import it.polimi.ingsw.gc28.network.messages.client.*;
-import it.polimi.ingsw.gc28.network.messages.server.MsgOnGameStarted;
-import it.polimi.ingsw.gc28.network.messages.server.MsgOnJoinableGames;
+import it.polimi.ingsw.gc28.network.messages.server.*;
 import it.polimi.ingsw.gc28.network.rmi.GameStub;
-import it.polimi.ingsw.gc28.network.rmi.VirtualServer;
 import it.polimi.ingsw.gc28.network.rmi.VirtualStub;
-import it.polimi.ingsw.gc28.network.rmi.utils.StubRegister;
 import it.polimi.ingsw.gc28.network.rmi.VirtualView;
-import it.polimi.ingsw.gc28.view.GameRepresentation;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 public class GamesManager {
 
@@ -35,6 +31,7 @@ public class GamesManager {
     private GamesManager() {
         mapGames = new HashMap<>();
         messageQueue = new LinkedBlockingQueue<>();
+        this.sendPing();
         this.processIncomingMessages();
     }
 
@@ -64,6 +61,31 @@ public class GamesManager {
                     System.err.println("Thread was interrupted while taking a message!");
                     System.err.println(e.getMessage());
                     throw new RuntimeException(e);
+                }
+            }
+        }).start();
+    }
+
+    private void sendPing(){
+        new Thread(()->{
+            while (true){
+                try {
+                    TimeUnit.SECONDS.sleep(5);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                for(String gameId : mapGames.keySet()){
+                    try {
+                        mapGames.get(gameId).sendPing();
+                    } catch (RemoteException e) {
+                        System.err.println("someone disconnected from game: "+gameId);
+                        try {
+                            mapGames.get(gameId).notifyGameTermination();
+                        } catch (RemoteException ignored) {
+
+                        }
+                        mapGames.remove(gameId);
+                    }
                 }
             }
         }).start();
@@ -99,7 +121,9 @@ public class GamesManager {
         else if(message.getType().equals(MessageTypeC2S.JOINABLE_GAMES)){
             MsgJoinableGames msg = (MsgJoinableGames) message;
             sendJoinableGames(msg);
-        }else {
+        } else if (message.getType().equals(MessageTypeC2S.PING)) {
+            System.out.println("ping");
+        } else {
         System.err.printf("Message of type %s directed to gamesManager!%n", message.getType());
     }
     }
@@ -176,7 +200,7 @@ public class GamesManager {
         Optional<GameController> controller = getGameController(msg.getGameId().get());
 
         if(controller.isEmpty()) {
-            System.err.println("Error, no controller associated to gameId " + msg.getGameId());
+            System.err.println("Error, no controller associated to gameId " + msg.getGameId().get());
             return;
         }
 

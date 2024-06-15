@@ -18,5 +18,8 @@ public enum MessageTypeS2C {
     SOMEONE_ELSE_RECONNECTED,
     GAME_ABORTED,
 
-    JOINABLE_GAMES
+    JOINABLE_GAMES,
+
+    PING,
+    TERMINATION
 }

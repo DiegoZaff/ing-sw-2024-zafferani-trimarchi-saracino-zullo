@@ -1,5 +1,9 @@
 package it.polimi.ingsw.gc28.network.socket;
 
+import it.polimi.ingsw.gc28.network.messages.server.MessageTypeS2C;
+import it.polimi.ingsw.gc28.network.messages.server.MsgPingS2c;
+import it.polimi.ingsw.gc28.network.rmi.VirtualServer;
+import it.polimi.ingsw.gc28.network.rmi.VirtualView;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.network.messages.client.*;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
@@ -13,12 +17,26 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class ClientTCP implements GuiCallable {
-    final ObjectInputStream input;
-    final ServerProxy server;
-    String userName;
-    String gameId;
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    private String host;
+    private  int port;
+    private ObjectInputStream input;
+    private ServerProxy server;
+
+
+
+    private Boolean serverDown = false;
 
 
 
@@ -36,6 +54,26 @@ public class ClientTCP implements GuiCallable {
             }
         }).start();
 
+        new Thread(() -> {
+            try {
+                sendPing();
+            } catch (Exception e) {
+                System.err.println("Unable to reach the server");
+                serverDown = true;
+
+                try {
+                    reconnect();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+                try {
+                    run(isCli);
+                } catch (RemoteException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        }).start();
+
         if(isCli){
             runCli();
         }
@@ -48,13 +86,57 @@ public class ClientTCP implements GuiCallable {
 //        Application.launch(GuiApplication.class);
 //    }
 
+    private void sendPing () throws InterruptedException, IOException {
+        MessageC2S ping = new MsgPingC2S(MessageTypeC2S.PING);
+        while (!serverDown){
+            TimeUnit.SECONDS.sleep(5);
+            server.sendMessage(ping);
+        }
+    }
+
+    private void reconnect() throws IOException {
+
+        MsgReconnect msg = new MsgReconnect(GameManagerClient.getInstance().getGameId(), GameManagerClient.getInstance().getPlayerName());
+        boolean flag = true;
+        while (flag){
+            try{
+                TimeUnit.SECONDS.sleep(5);
+                System.out.println("trying to reconnect...");
+                Socket s = new Socket(host,port);
+                ObjectOutputStream socketTx = new ObjectOutputStream(s.getOutputStream());
+                ObjectInputStream socketRx = new ObjectInputStream(s.getInputStream());
+
+                this.server = new ServerProxy(socketTx);
+                this.input = socketRx;
+
+                flag = false;
+            }catch (Exception ignored){
+
+            }
+
+        }
+
+        server.sendMessage(msg);
+
+        serverDown = false;
+        new Thread(() -> {
+            try {
+                runVirtualServer();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }).start();
+
+    }
+
+
     /**
      * This continually listens for messages coming from the server.
      */
     private void runVirtualServer() {
         try{
             MessageS2C receivedObj = null;
-            while ((receivedObj = (MessageS2C) input.readObject()) != null) {
+            while ((receivedObj = (MessageS2C) input.readObject()) != null && !serverDown) {
                 //System.out.println("Received message from server: " + receivedObj);
 
                 GameManagerClient.getInstance().addMessageToQueue(receivedObj);
@@ -67,13 +149,13 @@ public class ClientTCP implements GuiCallable {
             System.out.println("Server disconnected.");
         } catch (IOException e) {
             // Handle IO exception
-            System.err.println("Error reading object from input stream.");
+            //System.err.println("Error reading object from input stream.");
         }
     }
 
     private void runCli() throws RemoteException {
         Scanner scan = new Scanner(System.in);
-        while (true) {
+        while (!serverDown) {
             System.out.print("> ");
             String line = scan.nextLine();
 
@@ -110,15 +192,7 @@ public class ClientTCP implements GuiCallable {
                 if (message.isPresent()) {
                     MessageC2S messageToSend = message.get();
 
-                    if (messageToSend.getType().equals(MessageTypeC2S.CREATE_GAME) || messageToSend.getType().equals(MessageTypeC2S.JOIN_GAME)) {
-                        if (GameManagerClient.getInstance().canICreateOrJoinAGame()) {
-                            server.sendMessage(messageToSend);
-                        }
-                    }
-                    else
-                    {
-                        server.sendMessage(messageToSend);
-                    }
+                    sendMessageToServer(messageToSend);
                 }
         }
     }
@@ -138,6 +212,9 @@ public class ClientTCP implements GuiCallable {
 
             ClientTCP client = new ClientTCP(socketRx, socketTx);
 
+            client.setHost(host);
+            client.setPort(port);
+
             client.run(isCli);
 
             // TODO : make client implement same interface of rmiClient so that we can establish connection for GUI
@@ -156,14 +233,22 @@ public class ClientTCP implements GuiCallable {
 
     @Override
     public void sendMessageToServer(MessageC2S messageToSend) {
-        if (messageToSend.getType().equals(MessageTypeC2S.CREATE_GAME) || messageToSend.getType().equals(MessageTypeC2S.JOIN_GAME)) {
-            if (GameManagerClient.getInstance().canICreateOrJoinAGame()) {
-                server.sendMessage(messageToSend);
+        if(!serverDown){
+            try {
+                if (messageToSend.getType().equals(MessageTypeC2S.CREATE_GAME) || messageToSend.getType().equals(MessageTypeC2S.JOIN_GAME)) {
+                    if (GameManagerClient.getInstance().canICreateOrJoinAGame()) {
+                        server.sendMessage(messageToSend);
+                    }
+                }
+                else
+                {
+                    server.sendMessage(messageToSend);
+                }
+            }catch (IOException e){
+                System.err.println("unable to reach the server");
+                serverDown = true;
             }
-        }
-        else
-        {
-            server.sendMessage(messageToSend);
+
         }
     }
 }

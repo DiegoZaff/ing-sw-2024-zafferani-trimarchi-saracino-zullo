@@ -13,13 +13,11 @@ public class ServerProxy implements VirtualServer {
         this.output = output;
     }
 
-    public void sendMessage(MessageC2S message) {
-        try{
+    public void sendMessage(MessageC2S message) throws IOException {
+
             output.writeObject(message);
             finishSending();
-        }catch (IOException e){
-            System.err.println("Error writing object to output stream: " + e.getMessage());
-        }
+
     }
 
 //    @Override
@@ -67,7 +65,7 @@ public class ServerProxy implements VirtualServer {
         } catch (IOException e) {
             //TODO : handle better
             System.err.println("Error while closing?");
-            throw new RuntimeException(e);
+            //throw new RuntimeException(e);
         }
     }
 }

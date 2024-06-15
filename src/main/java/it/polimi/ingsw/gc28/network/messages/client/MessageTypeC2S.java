@@ -12,5 +12,8 @@ public enum MessageTypeC2S {
     PLAY_CARD,
     RECONNECT,
     ABANDON_GAME,
-    JOINABLE_GAMES
+    JOINABLE_GAMES,
+
+    PING
+
 }
