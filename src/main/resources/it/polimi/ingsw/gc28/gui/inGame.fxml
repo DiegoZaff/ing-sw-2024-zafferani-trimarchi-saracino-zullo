@@ -75,47 +75,51 @@
         </VBox>
         <Region HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" />
     </HBox>
-    <HBox fx:id="innerContent" AnchorPane.leftAnchor="312" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="216"/>
-
-    <HBox fx:id="cards" prefHeight="200" AnchorPane.bottomAnchor="16" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" HBox.hgrow="ALWAYS">
-        <Pane prefWidth="70" />
-        <VBox alignment="CENTER" spacing="10" style="-fx-background-color: #EDEDED;-fx-background-radius: 16">
+    <HBox fx:id="cards" prefHeight="160" AnchorPane.bottomAnchor="16" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" spacing="16" HBox.hgrow="ALWAYS">
+        <padding>
+            <Insets  left="16"/>
+        </padding>
+        <VBox alignment="CENTER"  spacing="10" style="-fx-background-color: #EDEDED;-fx-background-radius: 16">
+            <padding>
+                <Insets top="16" left="48" right="48" bottom="16"/>
+            </padding>
             <Label text="Objective" style="-fx-text-fill: #484848; -fx-font-size: 18px;" />
-            <HBox alignment="CENTER_LEFT" prefWidth="200" spacing="80">
-                <Pane prefWidth="50" />
-                <StackPane>
+            <HBox alignment="CENTER_LEFT" prefWidth="200" VBox.vgrow="ALWAYS">
+                <StackPane prefHeight="140.0" prefWidth="200" >
                     <Rectangle arcHeight="20" arcWidth="20" fill="#484848" height="140.0" width="200.0" />
-                    <ImageView fx:id="cardObjective" fitHeight="180.0" fitWidth="180.0" preserveRatio="true">
+                    <ImageView  fx:id="cardObjective" fitWidth="180.0" preserveRatio="true">
                     </ImageView>
                 </StackPane>
-                <Pane prefWidth="20" />
             </HBox>
-            <Pane prefWidth="70" />
         </VBox>
         <Region HBox.hgrow="ALWAYS" />
         <VBox alignment="CENTER" spacing="10" style="-fx-background-color: #EDEDED;-fx-background-radius: 16">
+            <padding>
+                <Insets top="16" left="16" right="16" bottom="16"/>
+            </padding>
             <Label text="Your hand" style="-fx-text-fill: #484848; -fx-font-size: 18px;" />
-
-            <HBox alignment="CENTER" prefWidth="200" spacing="80">
-                <Pane prefWidth="50" />
-                <StackPane>
+            <HBox alignment="CENTER" VBox.vgrow="ALWAYS"  spacing="80">
+                <padding>
+                    <Insets left="16" right="16" />
+                </padding>
+                <StackPane prefHeight="140.0" prefWidth="200">
                     <Rectangle arcHeight="20" arcWidth="20" fill="#484848" height="140.0" width="200.0" />
-                    <ImageView fx:id="handOne" onMouseClicked="#showBackFirst" fitHeight="180.0" fitWidth="180.0" preserveRatio="true">
+                    <ImageView fx:id="handOne" onMouseClicked="#showBackFirst"  fitWidth="180.0" preserveRatio="true">
                     </ImageView>
                 </StackPane>
-                <StackPane>
+                <StackPane prefHeight="140.0" prefWidth="200">
                     <Rectangle arcHeight="20" arcWidth="20" fill="#484848" height="140.0" width="200.0" />
-                    <ImageView fx:id="handTwo" onMouseClicked="#showBackSecond" fitHeight="180.0" fitWidth="180.0" preserveRatio="true">
+                    <ImageView fx:id="handTwo" onMouseClicked="#showBackSecond" fitWidth="180.0" preserveRatio="true">
                     </ImageView>
                 </StackPane>
-                <StackPane>
+                <StackPane prefHeight="140.0" prefWidth="200">
                     <Rectangle arcHeight="20" arcWidth="20" fill="#484848" height="140.0" width="200.0" />
-                    <ImageView fx:id="handThree" onMouseClicked="#showBackThird" fitHeight="180.0" fitWidth="180.0" preserveRatio="true">
+                    <ImageView  fx:id="handThree" onMouseClicked="#showBackThird" fitWidth="180.0"  preserveRatio="true">
                     </ImageView>
                 </StackPane>
-                <Pane prefWidth="20" />
             </HBox>
         </VBox>
         <Pane prefWidth="70" />
     </HBox>
+    <HBox fx:id="innerContent" AnchorPane.leftAnchor="312" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="216"/>
 </AnchorPane>

@@ -66,6 +66,36 @@ public class ParsingHelper {
         };
     }
 
+    public static String idToBackResGoldPath(String id){
+        if(id.startsWith("RES")){
+            int num = Integer.parseInt(id.substring(4));
+
+            if(num <= 10){
+                return idToBackResPath(ResourceType.LEAF.toString());
+            }else if(num <= 20){
+                return idToBackResPath(ResourceType.MUSHROOM.toString());
+            }else if(num <= 30){
+                return idToBackResPath(ResourceType.BUTTERFLY.toString());
+            }else if(num <= 40){
+                return idToBackResPath(ResourceType.FOX.toString());
+            }
+        }else if(id.startsWith("GOLD")){
+            int num = Integer.parseInt(id.substring(5));
+
+            if(num <= 10){
+                return idToBackGoldPath(ResourceType.LEAF.toString());
+            }else if(num <= 20){
+                return idToBackGoldPath(ResourceType.FOX.toString());
+            }else if(num <= 30){
+                return idToBackGoldPath(ResourceType.MUSHROOM.toString());
+            }else if(num <= 40){
+                return idToBackGoldPath(ResourceType.BUTTERFLY.toString());
+            }
+        }
+
+        throw new RuntimeException("Only GOLD or RES cards allowed");
+    }
+
 
     public static CardResource parseCardResource(JSONObject obj){
         String[] resourceCard = new String[4];

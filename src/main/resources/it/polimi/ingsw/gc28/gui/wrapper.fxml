@@ -12,7 +12,8 @@
 <?import it.polimi.ingsw.gc28.view.gui.components.SnackBar?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="it.polimi.ingsw.gc28.view.gui.controllers.WrapperController">
+            fx:controller="it.polimi.ingsw.gc28.view.gui.controllers.WrapperController"
+            fx:id="outerAnchorPane">
     <ImageView fx:id="backgroundImageView" preserveRatio="true">
         <effect>
             <GaussianBlur radius="8"/> <!-- Adjust the blur radius as needed -->

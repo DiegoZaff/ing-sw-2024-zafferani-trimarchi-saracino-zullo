@@ -29,6 +29,8 @@ public class WrapperController implements Initializable {
     public Label labelGoBack;
     @FXML
     public HBox goBackContainer;
+    @FXML
+    public AnchorPane outerAnchorPane;
     TabType currentTab;
     @FXML
     public AnchorPane innerContent;

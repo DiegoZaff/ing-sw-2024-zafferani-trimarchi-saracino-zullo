@@ -291,6 +291,10 @@ public class Table implements Serializable {
         updateSWCoordinate(coordinate);
     }
 
+    public ArrayList<Coordinate> getPlayableCoords(){
+        return playableCoords;
+    }
+
 
     @Override
     public String toString () throws NoSuchElementException{

@@ -469,4 +469,8 @@ public class GameManagerClient {
     public void setPlayersIn(int playersIn) {
         this.playersIn = playersIn;
     }
+
+    public PrivateRepresentation getMyPrivateRepresentation(){
+        return getPrivateRepresentation(playerName);
+    }
 }

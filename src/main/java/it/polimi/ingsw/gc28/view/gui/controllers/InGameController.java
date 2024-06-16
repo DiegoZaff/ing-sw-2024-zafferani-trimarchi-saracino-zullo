@@ -43,11 +43,30 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
     public ImageView handOne;
     public ImageView handTwo;
     public ImageView handThree;
-    public BooleanProperty isHandOneFront;
-    public BooleanProperty isHandTwoFront;
-    public BooleanProperty isHandThreeFront;
 
+    public ArrayList<ImageView> imageViewsHand;
+    public BooleanProperty isHandOneFront = new SimpleBooleanProperty(true);
+    public BooleanProperty isHandTwoFront = new SimpleBooleanProperty(true);
+    public BooleanProperty isHandThreeFront = new SimpleBooleanProperty(true);
+
+    public ArrayList<BooleanProperty> isFronts;
+    private ArrayList<CardResource> hand;
+
+    private TableCards tableCardsComponent;
     private WrapperController wrapperController;
+    private Double screenX;
+    private Double screenY;
+
+    private ImageView draggableImage;
+
+    private final double aspectRatio = 1.5;
+
+    private double imgWidth = 180;
+
+    private double offset = 32;
+    private double imgHeight = imgWidth / aspectRatio;
+    private String draggedImageId;
+    private boolean isDraggedImageFront;
 
     @Override
     public void update(GameRepresentation gameRepresentation) {
@@ -57,13 +76,20 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
     @Override
     public void update(MessageS2C message) {
         changeContentBasedOnAction();
+        PrivateRepresentation rep = GameManagerClient.getInstance().getMyPrivateRepresentation();
         if(message.getType().equals(MessageTypeS2C.CHOOSE_OBJ)){
-            String playerName = GameManagerClient.getInstance().getPlayerName();
-            PrivateRepresentation rep = GameManagerClient.getInstance().getCurrentRepresentation().getRepresentations().get(playerName);
             CardObjective cardObj = rep.getPrivateObjective();
             if(cardObj != null) {
                 String id = cardObj.getId();
                 cardObjective.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(ParsingHelper.idToFrontPath(id)))));
+            }
+        }
+
+        if(message.getType().equals(MessageTypeS2C.PLAY_CARD) || message.getType().equals(MessageTypeS2C.DRAW_CARD)){
+            ArrayList<CardResource> myNewHand = rep.getHand();
+
+            if(!hand.equals(myNewHand)){
+                showCards(myNewHand);
             }
         }
     }
@@ -81,6 +107,8 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
             showChooseObjectives();
         }else if(act.equals(ActionType.PLAY_CARD)){
             showTable();
+        }else if(act.equals(ActionType.DRAW_CARD)){
+            showTable();
         }
     }
 
@@ -91,9 +119,72 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        imageViewsHand = new ArrayList<>(){{
+            add(handOne);
+            add(handTwo);
+            add(handThree);
+        }};
+
+        isFronts = new ArrayList<>(){{
+            add(isHandOneFront);
+            add(isHandTwoFront);
+            add(isHandThreeFront);
+        }};
         GameManagerClient.getInstance().addListeners(this);
         showChooseColors();
         showCards();
+        setHandImagesCallbacks();
+    }
+
+    private void setHandImagesCallbacks(){
+        handOne.setOnMousePressed((event) -> {
+            onImagePress(event, 0, isHandOneFront);
+        });
+        handTwo.setOnMousePressed((event) -> {
+            onImagePress(event, 1, isHandTwoFront);
+        });
+        handThree.setOnMousePressed((event) -> {
+            onImagePress(event, 2, isHandThreeFront);
+        });
+        handOne.setOnMouseDragged(event -> {
+            this.moveDraggableImage(event.getSceneX(), event.getSceneY());
+        });
+        handTwo.setOnMouseDragged(event -> {
+            this.moveDraggableImage(event.getSceneX(), event.getSceneY());
+        });
+        handThree.setOnMouseDragged(event -> {
+            this.moveDraggableImage(event.getSceneX(), event.getSceneY());
+        });
+        handOne.setOnMouseReleased(event -> {
+            this.release();
+        });
+        handTwo.setOnMouseReleased(event -> {
+            this.release();
+        });
+        handThree.setOnMouseReleased(event -> {
+            this.release();
+        });
+    }
+    private void onImagePress(MouseEvent event, int elementId, BooleanProperty prop){
+
+        if(elementId >= hand.size()){
+            // no card at that position
+            return;
+        }
+
+        String id = hand.get(elementId).getId();
+        boolean isFront = prop.get();
+        ImageView draggableImage = new ImageView();
+        draggableImage.setFitWidth(180);
+        draggableImage.setPreserveRatio(true);
+        String path = isFront? ParsingHelper.idToFrontPath(id) : ParsingHelper.idToBackResGoldPath(id);
+        Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(path)));
+        draggableImage.setImage(image);
+
+        double screenWidth = wrapperController.outerAnchorPane.getWidth();
+        double screenHeight = wrapperController.outerAnchorPane.getHeight();
+
+        this.spawnDraggableImage(event.getSceneX(), event.getSceneY(),screenWidth, screenHeight,  id, isFront, draggableImage);
     }
 
     private void showChooseColors(){
@@ -127,23 +218,34 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
     }
 
     private void showCards(){
-        String playerName = GameManagerClient.getInstance().getPlayerName();
-        PrivateRepresentation rep = GameManagerClient.getInstance().getCurrentRepresentation().getRepresentations().get(playerName);
-        ArrayList<CardResource> hand = rep.getHand();
-        String firstCard = hand.getFirst().getId();
-        String secondCard = hand.get(1).getId();
-        String thirdCard = hand.getLast().getId();
-        isHandOneFront = new SimpleBooleanProperty(true);
-        isHandTwoFront = new SimpleBooleanProperty(true);
-        isHandThreeFront = new SimpleBooleanProperty(true);
-        handOne.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(ParsingHelper.idToFrontPath(firstCard)))));
-        handTwo.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(ParsingHelper.idToFrontPath(secondCard)))));
-        handThree.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(ParsingHelper.idToFrontPath(thirdCard)))));
+        PrivateRepresentation rep = GameManagerClient.getInstance().getMyPrivateRepresentation();
+        ArrayList<CardResource> newHand = rep.getHand();
+
+        showCards(newHand);
+    }
+
+    private void showCards(ArrayList<CardResource> newHand){
+        for (int i = 0; i < 3; i ++){
+            CardResource newCardI = (newHand.size() - 1) >= i ? newHand.get(i) : null;
+            CardResource oldCardI = (hand != null && (hand.size() - 1 >= i)) ? hand.get(i) : null;
+
+            if(newCardI != null && !newCardI.equals(oldCardI)){
+                Image newImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(ParsingHelper.idToFrontPath(newCardI.getId()))));
+                imageViewsHand.get(i).setImage(newImage);
+                isFronts.get(i).set(true);
+            }else{
+                if(newCardI == null){
+                    imageViewsHand.get(i).setImage(null);
+                }
+            }
+        }
+
+        hand = newHand;
     }
 
     private void showTable(){
         String playerName = GameManagerClient.getInstance().getPlayerName();
-        TableCards tableCardsComponent = new TableCards(playerName);
+        tableCardsComponent = new TableCards(playerName);
 
         innerContent.getChildren().setAll(tableCardsComponent);
 
@@ -219,5 +321,62 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
             handThree.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(ParsingHelper.idToFrontPath(thirdCard)))));
             isHandThreeFront.set(true);
         }
+    }
+
+
+
+    public void spawnDraggableImage(double mouseX, double mouseY, double screenX,double screenY, String id, boolean isFront, ImageView draggableImage) {
+        draggableImage.toFront();
+        this.screenX = screenX;
+        this.screenY = screenY;
+        this.draggedImageId = id;
+        this.isDraggedImageFront = isFront;
+
+        double rightDistance = getDistanceRight(mouseX); // screeX - mouseX
+        double bottomDistance = getDistanceBottom(mouseY);
+
+        this.draggableImage = draggableImage;
+
+        AnchorPane.setBottomAnchor(this.draggableImage, bottomDistance);
+        AnchorPane.setRightAnchor(this.draggableImage, rightDistance);
+        outerPane.getChildren().add(this.draggableImage);
+    }
+
+    public void moveDraggableImage(double mouseX, double mouseY) {
+
+        double rightDistance = getDistanceRight(mouseX);
+        double bottomDistance = getDistanceBottom(mouseY);
+
+        AnchorPane.setBottomAnchor(this.draggableImage,bottomDistance);
+        AnchorPane.setRightAnchor(this.draggableImage, rightDistance);
+
+        if(tableCardsComponent != null){
+            tableCardsComponent.checkHighlightPosition(rightDistance, bottomDistance);
+        }
+    }
+
+    public void release() {
+        outerPane.getChildren().remove(this.draggableImage);
+
+        if(tableCardsComponent != null){
+            tableCardsComponent.tryPlayCard(draggedImageId, isDraggedImageFront);
+        }
+    }
+
+
+    private double getDistanceRight(double mouseX){
+        if(screenX == null){
+            System.err.println("ScreenX null while dragging");
+        }
+
+        return screenX - mouseX - imgWidth / 2;
+    }
+
+    private double getDistanceBottom(double mouseY){
+        if(screenY == null){
+            System.err.println("ScreenY null while dragging");
+        }
+
+        return screenY - mouseY - imgHeight / 2;
     }
 }

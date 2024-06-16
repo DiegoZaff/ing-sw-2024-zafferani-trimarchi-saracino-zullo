@@ -109,4 +109,8 @@ public class GameRepresentation implements Serializable {
     public int getNPlayers() {
         return nPlayers;
     }
+
+    public PrivateRepresentation getPrivateRepresentationOf(String name){
+        return getRepresentations().get(name);
+    }
 }
