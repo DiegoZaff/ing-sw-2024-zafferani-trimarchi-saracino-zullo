@@ -7,8 +7,8 @@ import java.rmi.RemoteException;
 public class MsgDrawnVisibleGameCard extends MessageC2S{
     String playerName;
     String cardId;
-    public MsgDrawnVisibleGameCard(String playerName, String gameId, String cardId) {
-        super(MessageTypeC2S.DRAW_CARD_VISIBLE ,gameId);
+    public MsgDrawnVisibleGameCard(String playerName, String cardId) {
+        super(MessageTypeC2S.DRAW_CARD_VISIBLE);
         this.playerName = playerName;
         this.cardId = cardId;
     }

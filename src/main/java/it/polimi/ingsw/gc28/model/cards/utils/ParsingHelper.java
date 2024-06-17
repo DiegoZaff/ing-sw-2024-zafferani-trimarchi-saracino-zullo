@@ -48,6 +48,28 @@ public class ParsingHelper {
         return ("/it/polimi/ingsw/gc28/img/cards/backs/" + id + ".png");
     }
 
+    public static String idAndIsFrontToPath(String id, boolean isFront){
+        if(id.startsWith("OBJ")){
+            if(isFront){
+                return idToFrontPath(id);
+            }else{
+                return idToBackPath("OBJ");
+            }
+        }else if(id.startsWith("INI")){
+            if(isFront){
+                return idToFrontPath(id);
+            }else{
+                return idToBackPath(id);
+            }
+        }else{
+            if(isFront){
+                return idToFrontPath(id);
+            }else{
+                return idToBackResGoldPath(id);
+            }
+        }
+    }
+
     public static String idToBackResPath(String resourceType){
         return switch (resourceType) {
             case "FOX" -> ("/it/polimi/ingsw/gc28/img/cards/backs/RES_F.png");

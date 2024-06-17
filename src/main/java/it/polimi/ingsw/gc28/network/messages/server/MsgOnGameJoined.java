@@ -40,12 +40,10 @@ public class MsgOnGameJoined extends MessageS2C{
         gameManagerClient.setPlayerName(playerName);
         gameManagerClient.setNPlayers(nPlayers);
         gameManagerClient.setPlayersIn(nPlayers - playersLeftToJoin);
-        String text = String.format("""
-            Welcome %s, you joined the game of id %s
-            """, playerName, gameId);
+        String text = String.format("Welcome %s", playerName);
 
         if(playersLeftToJoin > 0) {
-            text += String.format("Waiting for other %d players to join...", playersLeftToJoin);
+            text += String.format("\nWaiting for other %d players to join...", playersLeftToJoin);
         }
 
         if(isCli){

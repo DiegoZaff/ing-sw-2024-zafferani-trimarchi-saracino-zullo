@@ -7,6 +7,6 @@
          stylesheets="@styles.css"
          type="javafx.scene.layout.VBox">
 
-    <StackPane fx:id="wrapper" prefHeight="0" prefWidth="200"  alignment="TOP_RIGHT">
-    </StackPane>
+    <AnchorPane fx:id="wrapper" prefWidth="800">
+    </AnchorPane>
 </fx:root>

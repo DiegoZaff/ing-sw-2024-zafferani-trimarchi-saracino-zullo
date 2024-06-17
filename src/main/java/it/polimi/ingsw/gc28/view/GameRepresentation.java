@@ -18,7 +18,7 @@ public class GameRepresentation implements Serializable {
     private ArrayList<String> nicknames;
     private  ArrayList<String> globalObjectives, faceUpResourceCards, faceUpGoldCards;
     //next card to be drawn, needed to show the back of the card. Can be substituted with the card primary resource
-    private  String nextResourceCard, nextGoldCard;
+    private String nextResourceCard, nextGoldCard;
     private Map<String, Integer> points;
     private Map<String, PrivateRepresentation> representations;
     private Chat chat;

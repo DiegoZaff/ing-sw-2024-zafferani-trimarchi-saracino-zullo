@@ -13,9 +13,7 @@ import javafx.geometry.Pos;
 import javafx.scene.CacheHint;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -34,7 +32,7 @@ public class SnackBar extends VBox implements Initializable,InfoObserver {
     private ArrayList<HBox> placedBoxes;
 
     @FXML
-    public StackPane wrapper;
+    public AnchorPane wrapper;
 
     public SnackBar(){
         placedBoxes = new ArrayList<>();
@@ -80,6 +78,8 @@ public class SnackBar extends VBox implements Initializable,InfoObserver {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         GameManagerClient.getInstance().addSnackBarListener(this);
+        wrapper.setMouseTransparent(true);
+        wrapper.setPickOnBounds(true);
     }
 
     public void show(SnackBarMessage msg) {
@@ -126,7 +126,8 @@ public class SnackBar extends VBox implements Initializable,InfoObserver {
                 fadeOut.setOnFinished(eventFadeOut -> {
                     synchronized (this){
                         if(!placedBoxes.isEmpty()){
-                            placedBoxes.removeFirst();
+                            HBox boxRemoved = placedBoxes.removeFirst();
+                            wrapper.getChildren().remove(boxRemoved);
                         }
                     }
                 });
@@ -173,6 +174,7 @@ public class SnackBar extends VBox implements Initializable,InfoObserver {
         box.setMinHeight(60);
         box.setSpacing(10);
         box.setAlignment(Pos.CENTER_LEFT);
+        AnchorPane.setRightAnchor(box, 0.0);
 
         box.toFront();
         return box;

@@ -97,11 +97,11 @@ public class MessageUtils {
                 MessageC2S message = null;
 
                 if (arg.equals("goldDeck")) {
-                    message = new MsgDrawGameCard(userName, gameId, true);
+                    message = new MsgDrawGameCard(userName, true);
                 } else if (arg.equals("resourceDeck")) {
-                    message = new MsgDrawGameCard(userName, gameId, false);
+                    message = new MsgDrawGameCard(userName, false);
                 } else if (arg.startsWith("RES") || arg.startsWith("GOLD")) {
-                    message = new MsgDrawnVisibleGameCard(userName, gameId, arg);
+                    message = new MsgDrawnVisibleGameCard(userName, arg);
                 } else {
                     System.out.println("Invalid format in drawCard");
                 }

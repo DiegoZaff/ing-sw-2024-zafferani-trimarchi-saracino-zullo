@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc28.view.gui.controllers;
 
+import it.polimi.ingsw.gc28.model.Deck;
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.model.cards.CardObjective;
 import it.polimi.ingsw.gc28.model.cards.CardResource;
@@ -12,6 +13,7 @@ import it.polimi.ingsw.gc28.view.GuiObserver;
 import it.polimi.ingsw.gc28.view.PrivateRepresentation;
 import it.polimi.ingsw.gc28.view.gui.components.*;
 import it.polimi.ingsw.gc28.view.gui.utils.WrapperControllable;
+import it.polimi.ingsw.gc28.view.utils.InGameTabType;
 import it.polimi.ingsw.gc28.view.utils.PlayerColorInfo;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -69,6 +71,11 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
 
     private ChatView chatViewComponent;
 
+    private DecksComponent decksComponent;
+
+
+    private InGameTabType currentTabType = InGameTabType.INITIAL_FLOW;
+
     @Override
     public void update(GameRepresentation gameRepresentation) {
 
@@ -107,9 +114,18 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
         }else if(act.equals(ActionType.CHOOSE_OBJ)){
             showChooseObjectives();
         }else if(act.equals(ActionType.PLAY_CARD)){
-            showTable();
+            updateDeck();
+            if(currentTabType.equals(InGameTabType.INITIAL_FLOW)){
+                currentTabType = InGameTabType.TABLE;
+                showTable(true);
+            }else if(currentTabType.equals(InGameTabType.DECKS)){
+                showDecks(false);
+            }
         }else if(act.equals(ActionType.DRAW_CARD)){
-            showTable();
+            updateTable();
+            if(currentTabType.equals(InGameTabType.TABLE)){
+                showTable(false);
+            }
         }
     }
 
@@ -138,6 +154,7 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
     }
 
     private void setHandImagesCallbacks(){
+        // TODO make nicer using imageViewsHand
         handOne.setOnMousePressed((event) -> {
             onImagePress(event, 0, isHandOneFront);
         });
@@ -244,16 +261,20 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
         hand = newHand;
     }
 
-    private void showTable(){
+    private void updateTable(){
         String playerName = GameManagerClient.getInstance().getPlayerName();
         tableCardsComponent = new TableCards(playerName);
+    }
+    private void showTable(boolean anew){
+        if(anew || tableCardsComponent == null){
+            updateTable();
+        }
 
         innerContent.getChildren().setAll(tableCardsComponent);
-
     }
 
     public void handleTablePress(MouseEvent mouseEvent) {
-        showTable();
+        switchTab(InGameTabType.TABLE);
     }
 
     public void handleChatPress(MouseEvent mouseEvent) {
@@ -266,6 +287,42 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
     }
 
     public void handleDecksPress(MouseEvent mouseEvent) {
+        switchTab(InGameTabType.DECKS);
+    }
+
+    /**
+     * handles switches between internal tabs when user clicks on a button on the left
+     * @param inGameTabType destination
+     */
+    private void switchTab(InGameTabType inGameTabType) {
+        if(currentTabType.equals(InGameTabType.INITIAL_FLOW)){
+            System.out.println("cant switch now");
+            return;
+        }
+
+        if(inGameTabType.equals(InGameTabType.DECKS)){
+            currentTabType = inGameTabType;
+            showDecks(false);
+        }else if(inGameTabType.equals(InGameTabType.TABLE)){
+            currentTabType = inGameTabType;
+            showTable(false);
+        }
+        //TODO : add chat and leaderboards
+    }
+
+    private void updateDeck(){
+        decksComponent = new DecksComponent();
+    }
+
+    /**
+     * show the decks and global objectives
+     * @param anew if true creates a new component from scratch
+     */
+    private void showDecks(boolean anew) {
+        if(anew || decksComponent == null){
+            updateDeck();
+        }
+        innerContent.getChildren().setAll(decksComponent);
     }
 
     public void handleQuitPress(MouseEvent mouseEvent) {
