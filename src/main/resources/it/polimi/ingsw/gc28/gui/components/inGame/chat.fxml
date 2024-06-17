@@ -1,19 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.*?>
-
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
-<fx:root xmlns="http://javafx.com/javafx"
-         xmlns:fx="http://javafx.com/fxml"
-         type="javafx.scene.layout.VBox"
-         HBox.hgrow="ALWAYS"
-         alignment="TOP_CENTER"
-         spacing="16">
-    <VBox>
-        <HBox alignment="TOP_RIGHT" fx:id="text" spacing="32" style="-fx-padding: 0 80 0 0;">
-            <Text fx:id="title" style="-fx-font-size: 24;" fill="#424242" />
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.control.Button?>
+<fx:root alignment="TOP_CENTER" spacing="16" type="javafx.scene.layout.VBox" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+    <AnchorPane fx:id="anchor" style="-fx-background-color: yellow" VBox.vgrow="ALWAYS">
+        <HBox fx:id="text" alignment="TOP_RIGHT" spacing="32" AnchorPane.leftAnchor="400" AnchorPane.topAnchor="32" AnchorPane.rightAnchor="80" prefHeight="100.0" prefWidth="100.0" style="-fx-padding: 0 48 0 0" >
+            <Text fx:id="title" fill="#424242" style="-fx-font-size: 24;" />
         </HBox>
-        <HBox alignment="TOP_RIGHT" fx:id="container" spacing="64" style="-fx-padding: 0 32 0 0;"/>
-        <HBox alignment="CENTER" fx:id="messageSpace" style="-fx-padding: 0 160 0 0; -fx-background-color: yellow"/>
-    </VBox>
+        <HBox fx:id="container" alignment="TOP_RIGHT" spacing="64" AnchorPane.leftAnchor="400" AnchorPane.topAnchor="80" AnchorPane.rightAnchor="80" />
+        <HBox fx:id="messageSpace" AnchorPane.leftAnchor="64" AnchorPane.topAnchor="32" AnchorPane.rightAnchor="384" alignment="BOTTOM_LEFT" prefHeight="400.0" prefWidth="500.0" style=" -fx-background-color: blue">
+            <padding>
+                <Insets bottom="16" left="16" />
+            </padding>
+            <TextField fx:id="messageField" style="-fx-background-color: #EDEDED;-fx-background-radius: 16;-fx-prompt-text-fill: derive(-fx-control-inner-background,-30%);" />
+            <Button minHeight="40" minWidth="80" fx:id="sendMessage" style="-fx-background-color: #484848;-fx-background-radius: 16;"/>
+        </HBox>
+    </AnchorPane>
 </fx:root>
