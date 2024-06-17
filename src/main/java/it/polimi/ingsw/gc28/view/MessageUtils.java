@@ -149,7 +149,7 @@ public class MessageUtils {
                 }
                 ChatMessage chatMessage = new ChatMessage(builder.toString(), userName, "all",false);
 
-                MsgChatMessage message = new MsgChatMessage(gameId, chatMessage);
+                MsgChatMessage message = new MsgChatMessage(chatMessage);
                 return Optional.of(message);
             }
             case "sendPrivateChatMessage" -> {
@@ -168,8 +168,8 @@ public class MessageUtils {
                 }
                 ChatMessage chatMessage = new ChatMessage(builder.toString(), userName, receiver, true);
 
-                MsgChatMessage message = new MsgChatMessage(gameId, chatMessage);
-                MsgChatMessage msgChatMessage = new MsgChatMessage(gameId, chatMessage);
+                MsgChatMessage message = new MsgChatMessage(chatMessage);
+                MsgChatMessage msgChatMessage = new MsgChatMessage(chatMessage);
                 return Optional.of(msgChatMessage);
             }
             case "sendGames" -> {

@@ -51,6 +51,7 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
 
     public ArrayList<BooleanProperty> isFronts;
     public Button chatButton;
+    public Button scoreboardButton;
     private ArrayList<CardResource> hand;
 
     private TableCards tableCardsComponent;
@@ -70,6 +71,7 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
     private boolean isDraggedImageFront;
 
     private ChatView chatViewComponent;
+    private Scoreboard scoreboardComponent;
 
     private DecksComponent decksComponent;
 
@@ -284,6 +286,9 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
     }
 
     public void handleScoreboardPress(MouseEvent mouseEvent) {
+        changeButtonWidth(scoreboardButton, true);
+        scoreboardComponent = new Scoreboard();
+        innerContent.getChildren().setAll(scoreboardComponent);
     }
 
     public void handleDecksPress(MouseEvent mouseEvent) {
