@@ -243,18 +243,22 @@ public class GameController {
         synchronized (gameModel) {
             if(chatMessage.getReceiver().equals("all")){
                 gameModel.sendMessage(chatMessage);
-                notifyChatMessage();
+                String sender = chatMessage.getSender();
+                notifyChatMessage(sender, false);
                 return;
             }
 
-            Optional<Player> receiver = gameModel.getPlayerOfName(chatMessage.getReceiver());
-            if (receiver.isEmpty()){
-                notifyError(chatMessage.getSender(), new InvalidReceiverName(), "choose a correct player name to send the message");
-                return;
+            else {
+                Optional<Player> receiver = gameModel.getPlayerOfName(chatMessage.getReceiver());
+                if (receiver.isEmpty()){
+                    notifyError(chatMessage.getSender(), new InvalidReceiverName(), "choose a correct player name to send the message");
+                    return;
+                }
+                gameModel.sendMessage(chatMessage);
+                String sender = chatMessage.getSender();
+                notifyChatMessage(sender, true);
             }
-            gameModel.sendMessage(chatMessage);
         }
-        notifyChatMessage();
 
         // back up game
         backUpGame(gameModel);
@@ -435,14 +439,14 @@ public class GameController {
         return gameModel.getPlayersToJoin();
     }
 
-    public void notifyChatMessage() throws RemoteException {
+    public void notifyChatMessage(String sender, boolean isPrivate) throws RemoteException {
         GameRepresentation gameRepresentation = getGameRepresentation();
 
         for(Map.Entry<String, VirtualView> entry : clients.entrySet()){
 
             VirtualView client = entry.getValue();
 
-            MsgOnChatMessage message = new MsgOnChatMessage(gameRepresentation);
+            MsgOnChatMessage message = new MsgOnChatMessage(gameRepresentation, sender, isPrivate);
 
             client.sendMessage(message);
         }

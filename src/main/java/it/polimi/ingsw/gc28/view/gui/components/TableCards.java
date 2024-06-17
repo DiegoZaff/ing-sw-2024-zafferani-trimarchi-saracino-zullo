@@ -8,7 +8,7 @@ import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.PrivateRepresentation;
 import it.polimi.ingsw.gc28.view.gui.GuiApplication;
 import it.polimi.ingsw.gc28.view.utils.GuiCell;
-import it.polimi.ingsw.gc28.view.utils.TablePlayableCell;
+import it.polimi.ingsw.gc28.view.utils.*;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;

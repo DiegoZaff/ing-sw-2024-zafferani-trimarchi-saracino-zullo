@@ -10,21 +10,19 @@ import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
 import it.polimi.ingsw.gc28.view.GuiObserver;
 import it.polimi.ingsw.gc28.view.PrivateRepresentation;
-import it.polimi.ingsw.gc28.view.gui.components.ChooseCardInitial;
-import it.polimi.ingsw.gc28.view.gui.components.ChooseColor;
-import it.polimi.ingsw.gc28.view.gui.components.ChooseObjective;
-import it.polimi.ingsw.gc28.view.gui.components.TableCards;
+import it.polimi.ingsw.gc28.view.gui.components.*;
 import it.polimi.ingsw.gc28.view.gui.utils.WrapperControllable;
 import it.polimi.ingsw.gc28.view.utils.PlayerColorInfo;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -50,6 +48,7 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
     public BooleanProperty isHandThreeFront = new SimpleBooleanProperty(true);
 
     public ArrayList<BooleanProperty> isFronts;
+    public Button chatButton;
     private ArrayList<CardResource> hand;
 
     private TableCards tableCardsComponent;
@@ -67,6 +66,8 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
     private double imgHeight = imgWidth / aspectRatio;
     private String draggedImageId;
     private boolean isDraggedImageFront;
+
+    private ChatView chatViewComponent;
 
     @Override
     public void update(GameRepresentation gameRepresentation) {
@@ -252,9 +253,13 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
     }
 
     public void handleTablePress(MouseEvent mouseEvent) {
+        showTable();
     }
 
     public void handleChatPress(MouseEvent mouseEvent) {
+        changeButtonWidth(chatButton, true);
+        chatViewComponent = new ChatView();
+        innerContent.getChildren().setAll(chatViewComponent);
     }
 
     public void handleScoreboardPress(MouseEvent mouseEvent) {
@@ -379,4 +384,18 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
 
         return screenY - mouseY - imgHeight / 2;
     }
+
+    private void changeButtonWidth(Button button , boolean selected){
+        if(selected){
+            button.setBorder(borderBold);
+        }else{
+            button.setBorder(null);
+        }
+    }
+    private final Border borderBold = new Border(new BorderStroke(
+            Color.web("blue"), // Border color
+            BorderStrokeStyle.SOLID, // Border style
+            new CornerRadii(16), // Corner radii
+            new BorderWidths(2.5) // Border widths
+    ));
 }

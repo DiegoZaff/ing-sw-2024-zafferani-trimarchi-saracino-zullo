@@ -7,11 +7,15 @@ import it.polimi.ingsw.gc28.view.utils.SnackBarMessage;
 
 public class MsgOnChatMessage extends MessageS2C{
     private final GameRepresentation gameRepresentation;
+    private final String sender;
+    private final boolean isPrivate;
 
 
-    public MsgOnChatMessage(GameRepresentation gameRep){
+    public MsgOnChatMessage(GameRepresentation gameRep, String sender, boolean isPrivate){
         super(MessageTypeS2C.CHAT);
         this.gameRepresentation = gameRep;
+        this.sender = sender;
+        this.isPrivate = isPrivate;
     }
 
     @Override
@@ -19,8 +23,12 @@ public class MsgOnChatMessage extends MessageS2C{
         gameManagerClient.setCurrentRepresentation(gameRepresentation);
 
         if(!isCli){
-            // TODO : aggiungi informazioni su chi ha inviato un messaggio, oltre alla gameRepresentation, e se è globale o privato
-            SnackBarMessage msg = new SnackBarMessage("Player X has sent you a message", InformationType.CHAT_MESSAGE);
+            SnackBarMessage msg;
+            if(isPrivate){
+                msg = new SnackBarMessage(sender + "has sent you a private message", InformationType.CHAT_MESSAGE);
+            } else {
+                msg = new SnackBarMessage(sender + "has sent a global message", InformationType.CHAT_MESSAGE);
+            }
             gameManagerClient.updateSnackBarListener(msg);
         }
     }
