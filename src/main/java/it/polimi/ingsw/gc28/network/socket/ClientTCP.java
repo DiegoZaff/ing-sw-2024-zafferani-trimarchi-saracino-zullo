@@ -67,24 +67,19 @@ public class ClientTCP implements GuiCallable {
                     throw new RuntimeException(ex);
                 }
                 try {
-                    run(isCli);
+                    this.run(isCli);
                 } catch (RemoteException ex) {
                     throw new RuntimeException(ex);
                 }
             }
         }).start();
 
+        // start cli
         if(isCli){
             runCli();
         }
-//        else{
-//            runGui();
-//        }
     }
 
-//    private void runGui(){
-//        Application.launch(GuiApplication.class);
-//    }
 
     private void sendPing () throws InterruptedException, IOException {
         MessageC2S ping = new MsgPingC2S(MessageTypeC2S.PING);
@@ -111,22 +106,15 @@ public class ClientTCP implements GuiCallable {
 
                 flag = false;
             }catch (Exception ignored){
-
+//                System.err.println(ignored.getMessage());
             }
 
         }
 
+        System.out.println("Reconnected");
         server.sendMessage(msg);
 
         serverDown = false;
-        new Thread(() -> {
-            try {
-                runVirtualServer();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }).start();
-
     }
 
 
@@ -170,30 +158,27 @@ public class ClientTCP implements GuiCallable {
 
             boolean complete = MessageUtils.showSomething(commandsList);
 
-            if (complete)
-            {
+            if (complete) {
                 continue;
             }
 
+            Optional<MessageC2S> message;
+
+            String gameId = GameManagerClient.getInstance().getGameId();
+            String userName = GameManagerClient.getInstance().getPlayerName();
+
+            message = MessageUtils.createMessage(commandsList, null, gameId, userName); //non so se sia corretto,
+            // in precedenza non veniva passato nulla come client e ho fatto
+            // in questo modo che passo null, se va passato qualcosa
+            // non ho idea di cosa sia e di come si passi senza modificare
+            // tutto il metodo
 
 
-                Optional<MessageC2S> message;
+            if (message.isPresent()) {
+                MessageC2S messageToSend = message.get();
 
-                String gameId = GameManagerClient.getInstance().getGameId();
-                String userName = GameManagerClient.getInstance().getPlayerName();
-
-                message = MessageUtils.createMessage(commandsList, null, gameId, userName); //non so se sia corretto,
-                // in precedenza non veniva passato nulla come client e ho fatto
-                // in questo modo che passo null, se va passato qualcosa
-                // non ho idea di cosa sia e di come si passi senza modificare
-                // tutto il metodo
-
-
-                if (message.isPresent()) {
-                    MessageC2S messageToSend = message.get();
-
-                    sendMessageToServer(messageToSend);
-                }
+                sendMessageToServer(messageToSend);
+            }
         }
     }
 

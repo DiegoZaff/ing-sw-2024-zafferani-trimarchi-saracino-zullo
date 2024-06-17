@@ -61,6 +61,11 @@ public class ClientHandler implements VirtualView {
 
                     GamesManager.getInstance().addMessageToQueue(msg);
 
+                }else if (receivedMessage.getType().equals(MessageTypeC2S.RECONNECT)){
+                    MsgReconnect msg = (MsgReconnect) receivedMessage;
+                    msg.setClient(this);
+
+                    GamesManager.getInstance().addMessageToQueue(msg);
                 }
 
                 else{
