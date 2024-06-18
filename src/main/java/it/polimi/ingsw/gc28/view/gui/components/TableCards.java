@@ -45,8 +45,8 @@ public class TableCards extends VBox implements Initializable {
 
     private static final double ASPECT_RATIO = 1.5;
 
-    private static final double X_VERTEX_ASPECT_RATIO = 0.75;
-    private static final double Y_VERTEX_ASPECT_RATIO = 0.559;
+    private static final double X_VERTEX_ASPECT_RATIO = 0.78;
+    private static final double Y_VERTEX_ASPECT_RATIO = 0.59;
 
     private static final double IMG_WIDTH_START = 180;
 
