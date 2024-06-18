@@ -22,6 +22,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -77,6 +78,8 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
 
 
     private InGameTabType currentTabType = InGameTabType.INITIAL_FLOW;
+
+    boolean isDragStarted = false;
 
     @Override
     public void update(GameRepresentation gameRepresentation) {
@@ -158,31 +161,67 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
     private void setHandImagesCallbacks(){
         // TODO make nicer using imageViewsHand
         handOne.setOnMousePressed((event) -> {
-            onImagePress(event, 0, isHandOneFront);
+            if(event.getButton().equals(MouseButton.PRIMARY)){
+                isDragStarted = true;
+                onImagePress(event, 0, isHandOneFront);
+            }else{
+                if(!isDragStarted){
+                    showBackFirst(event);
+                }
+            }
         });
         handTwo.setOnMousePressed((event) -> {
-            onImagePress(event, 1, isHandTwoFront);
+            if(event.getButton().equals(MouseButton.PRIMARY)){
+                isDragStarted = true;
+                onImagePress(event, 1, isHandTwoFront);
+            }else{
+                if(!isDragStarted){
+                    showBackSecond(event);
+                }
+            }
         });
         handThree.setOnMousePressed((event) -> {
-            onImagePress(event, 2, isHandThreeFront);
+            if(event.getButton().equals(MouseButton.PRIMARY)){
+                isDragStarted = true;
+                onImagePress(event, 2, isHandThreeFront);}
+            else{
+                if(!isDragStarted){
+                    showBackThird(event);
+                }
+            }
         });
         handOne.setOnMouseDragged(event -> {
-            this.moveDraggableImage(event.getSceneX(), event.getSceneY());
+            if(event.getButton().equals(MouseButton.PRIMARY)){
+                this.moveDraggableImage(event.getSceneX(), event.getSceneY());
+            }
         });
         handTwo.setOnMouseDragged(event -> {
-            this.moveDraggableImage(event.getSceneX(), event.getSceneY());
+            if(event.getButton().equals(MouseButton.PRIMARY)){
+                this.moveDraggableImage(event.getSceneX(), event.getSceneY());
+            }
         });
         handThree.setOnMouseDragged(event -> {
+            if(event.getButton().equals(MouseButton.PRIMARY)){
             this.moveDraggableImage(event.getSceneX(), event.getSceneY());
+            }
         });
         handOne.setOnMouseReleased(event -> {
-            this.release();
+            if(isDragStarted){
+                this.release();
+                isDragStarted = false;
+            }
         });
         handTwo.setOnMouseReleased(event -> {
-            this.release();
+            if(isDragStarted){
+                this.release();
+                isDragStarted = false;
+            }
         });
         handThree.setOnMouseReleased(event -> {
-            this.release();
+            if(isDragStarted){
+                this.release();
+                isDragStarted = false;
+            }
         });
     }
     private void onImagePress(MouseEvent event, int elementId, BooleanProperty prop){
@@ -195,7 +234,7 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
         String id = hand.get(elementId).getId();
         boolean isFront = prop.get();
         ImageView draggableImage = new ImageView();
-        draggableImage.setFitWidth(180);
+        draggableImage.setFitWidth(TableCards.imgWidth.getValue());
         draggableImage.setPreserveRatio(true);
         String path = isFront? ParsingHelper.idToFrontPath(id) : ParsingHelper.idToBackResGoldPath(id);
         Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(path)));
@@ -332,6 +371,7 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
     }
 
     public void showBackFirst(MouseEvent mouseEvent){
+        System.err.println("SHOWBACKFIRST CLICK!");
         String playerName = GameManagerClient.getInstance().getPlayerName();
         PrivateRepresentation rep = GameManagerClient.getInstance().getCurrentRepresentation().getRepresentations().get(playerName);
         ArrayList<CardResource> hand = rep.getHand();
@@ -408,7 +448,6 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
     }
 
     public void moveDraggableImage(double mouseX, double mouseY) {
-
         double rightDistance = getDistanceRight(mouseX);
         double bottomDistance = getDistanceBottom(mouseY);
 
@@ -434,7 +473,7 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
             System.err.println("ScreenX null while dragging");
         }
 
-        return screenX - mouseX - imgWidth / 2;
+        return screenX - mouseX - TableCards.imgWidth.getValue() / 2;
     }
 
     private double getDistanceBottom(double mouseY){
@@ -442,7 +481,7 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
             System.err.println("ScreenY null while dragging");
         }
 
-        return screenY - mouseY - imgHeight / 2;
+        return screenY - mouseY - TableCards.imgHeight.getValue() / 2;
     }
 
     private void changeButtonWidth(Button button , boolean selected){

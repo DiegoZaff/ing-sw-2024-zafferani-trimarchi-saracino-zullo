@@ -104,17 +104,17 @@
                 </padding>
                 <StackPane prefHeight="140.0" prefWidth="200">
                     <Rectangle arcHeight="20" arcWidth="20" fill="#484848" height="140.0" width="200.0" />
-                    <ImageView fx:id="handOne" onMouseClicked="#showBackFirst"  fitWidth="180.0" preserveRatio="true">
+                    <ImageView fx:id="handOne"  fitWidth="180.0" preserveRatio="true">
                     </ImageView>
                 </StackPane>
                 <StackPane prefHeight="140.0" prefWidth="200">
                     <Rectangle arcHeight="20" arcWidth="20" fill="#484848" height="140.0" width="200.0" />
-                    <ImageView fx:id="handTwo" onMouseClicked="#showBackSecond" fitWidth="180.0" preserveRatio="true">
+                    <ImageView fx:id="handTwo" fitWidth="180.0" preserveRatio="true">
                     </ImageView>
                 </StackPane>
                 <StackPane prefHeight="140.0" prefWidth="200">
                     <Rectangle arcHeight="20" arcWidth="20" fill="#484848" height="140.0" width="200.0" />
-                    <ImageView  fx:id="handThree" onMouseClicked="#showBackThird" fitWidth="180.0"  preserveRatio="true">
+                    <ImageView  fx:id="handThree" fitWidth="180.0"  preserveRatio="true">
                     </ImageView>
                 </StackPane>
             </HBox>

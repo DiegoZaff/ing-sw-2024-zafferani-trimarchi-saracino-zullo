@@ -9,5 +9,5 @@
 <fx:root xmlns="http://javafx.com/javafx"
          xmlns:fx="http://javafx.com/fxml"
          type="javafx.scene.layout.VBox">
-    <AnchorPane fx:id="anchor" VBox.vgrow="ALWAYS"/>
+    <AnchorPane onMousePressed="#onAnchorPressed" onMouseDragged="#onMouseDragged" onScroll="#onScroll" fx:id="anchor" VBox.vgrow="ALWAYS"/>
 </fx:root>
