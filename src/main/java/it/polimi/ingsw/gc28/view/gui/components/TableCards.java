@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc28.view.gui.components;
 import it.polimi.ingsw.gc28.model.Cell;
 import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.model.Table;
+import it.polimi.ingsw.gc28.model.cards.utils.ParsingHelper;
 import it.polimi.ingsw.gc28.network.messages.client.MsgPlayGameCard;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.PrivateRepresentation;
@@ -10,12 +11,17 @@ import it.polimi.ingsw.gc28.view.gui.GuiApplication;
 import it.polimi.ingsw.gc28.view.utils.GuiCell;
 import it.polimi.ingsw.gc28.view.utils.*;
 import javafx.application.Platform;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Bounds;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -26,10 +32,7 @@ import javafx.scene.shape.Rectangle;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class TableCards extends VBox implements Initializable {
@@ -40,16 +43,21 @@ public class TableCards extends VBox implements Initializable {
 
     ArrayList<GuiCell> placedImages;
 
-    private final double aspectRatio = 1.5;
+    private static final double ASPECT_RATIO = 1.5;
 
-    private final double xVertexAspectRatio = 0.75;
-    private final double yVertexAspectRatio = 0.559;
+    private static final double X_VERTEX_ASPECT_RATIO = 0.75;
+    private static final double Y_VERTEX_ASPECT_RATIO = 0.559;
 
-    private double imgWidth = 180;
-    private double imgHeight = imgWidth / aspectRatio;
+    private static final double IMG_WIDTH_START = 180;
 
-    private double xOffset = imgWidth * xVertexAspectRatio;
-    private double yOffset = imgHeight * yVertexAspectRatio;
+    public static DoubleProperty imgWidth = new SimpleDoubleProperty(IMG_WIDTH_START);
+    public static DoubleProperty imgHeight = new SimpleDoubleProperty(IMG_WIDTH_START * ASPECT_RATIO);
+    private final DoubleProperty xOffset = new SimpleDoubleProperty();
+    private final DoubleProperty yOffset = new SimpleDoubleProperty();
+
+    private static double xBias = 0;
+
+    private static double yBias = 0;
 
     private ImageView draggableImage;
 
@@ -67,6 +75,8 @@ public class TableCards extends VBox implements Initializable {
 
     private Rectangle yellowRectangle;
 
+    private ArrayList<Coordinate> playableCoords;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         PrivateRepresentation repr = GameManagerClient.getInstance().getCurrentRepresentation().getRepresentations().get(this.selectedPlayer);
@@ -74,10 +84,15 @@ public class TableCards extends VBox implements Initializable {
             System.err.println("player non existent");
             return;
         }
-        
+
+        // bind everything to imgWidth
+        imgHeight.bind(imgWidth.divide(ASPECT_RATIO));
+        xOffset.bind(imgWidth.multiply(X_VERTEX_ASPECT_RATIO));
+        yOffset.bind(imgHeight.multiply(Y_VERTEX_ASPECT_RATIO));
+
         Table table = repr.getTable();
         Map<Coordinate, Cell> mapPositions = table.getMapPositions();
-        ArrayList<Coordinate> playableCoords = table.getPlayableCoords();
+        playableCoords = table.getPlayableCoords();
         highlightedCoord = new SimpleObjectProperty<>(null);
 
         // Add a change listener to the property
@@ -87,8 +102,8 @@ public class TableCards extends VBox implements Initializable {
                     yellowRectangle = getNewYellowRectangle(newValue);
                     anchor.getChildren().add(yellowRectangle);
                 }else{
-                    AnchorPane.setRightAnchor(yellowRectangle, newValue.rightDistance() - imgWidth / 2);
-                    AnchorPane.setBottomAnchor(yellowRectangle, newValue.bottomDistance() - imgHeight / 2);
+                    AnchorPane.setRightAnchor(yellowRectangle, newValue.rightDistance() - imgWidth.getValue() / 2);
+                    AnchorPane.setBottomAnchor(yellowRectangle, newValue.bottomDistance() - imgHeight.getValue() / 2);
                 }
             }else{
                 if(yellowRectangle != null){
@@ -98,17 +113,17 @@ public class TableCards extends VBox implements Initializable {
             }
         });
 
-        showCards(mapPositions, playableCoords);
+        showCards(mapPositions);
     }
 
     private Rectangle getNewYellowRectangle(TablePlayableCell pos){
-        Rectangle rectangle = new Rectangle(imgWidth, imgHeight);
+        Rectangle rectangle = new Rectangle(imgWidth.getValue(), imgHeight.getValue());
         rectangle.setFill(Color.rgb(255, 255, 0, 0.5)); // RGB for yellow with 50% opacity
         rectangle.setArcWidth(20);
         rectangle.setArcHeight(20);
 
-        AnchorPane.setRightAnchor(rectangle, pos.rightDistance() - imgWidth / 2);
-        AnchorPane.setBottomAnchor(rectangle, pos.bottomDistance() - imgHeight / 2);
+        AnchorPane.setRightAnchor(rectangle, pos.rightDistance() - imgWidth.getValue() / 2);
+        AnchorPane.setBottomAnchor(rectangle, pos.bottomDistance() - imgHeight.getValue() / 2);
         return rectangle;
     }
     public TableCards(String selectedPlayer){
@@ -137,16 +152,16 @@ public class TableCards extends VBox implements Initializable {
                 Cell cell = entry.getValue();
 
                 ImageView imageView = new ImageView();
-                imageView.setFitWidth(180);
+                imageView.setFitWidth(imgWidth.getValue());
                 imageView.setPreserveRatio(true);
 
                 String cardId = cell.getCard().getId();
-                String group = cell.getIsPlayedFront() ? "fronts" : "backs";
-                Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/it/polimi/ingsw/gc28/img/cards/" + group + "/" + cardId + ".png")));
+                String path = ParsingHelper.idAndIsFrontToPath(cardId, cell.getIsPlayedFront());
+                Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(path)));
 
                 imageView.setImage(image);
 
-                GuiCell guiCell = new GuiCell(imageView, coord);
+                GuiCell guiCell = new GuiCell(imageView, coord, cell.getOrderPlay());
 
                 this.placedImages.add(guiCell);
             }
@@ -154,49 +169,54 @@ public class TableCards extends VBox implements Initializable {
     }
 
 
-    private void showCards(Map<Coordinate, Cell> mapPositions, ArrayList<Coordinate> playableCoords){
+    private void showCards(Map<Coordinate, Cell> mapPositions){
         getImageViews(mapPositions);
 
         anchor.layoutBoundsProperty().addListener((observable, oldValue, newValue) -> {
-            double width = newValue.getWidth();
-            double height = newValue.getHeight();
-
-            double centerWidth = width / 2;
-            double centerHeight = height / 2;
-
-
-            for(GuiCell guiCell : placedImages){
-                Coordinate coord = guiCell.getCoordinate();
-                double rightDistance = centerWidth - coord.getX() * (xOffset) - (imgWidth / 2);
-                double bottomDistance = centerHeight + coord.getY() * (yOffset) - (imgHeight / 2);
-
-                AnchorPane.setRightAnchor(guiCell.getImageView(), rightDistance);
-                AnchorPane.setBottomAnchor(guiCell.getImageView(), bottomDistance);
-            }
-
-
-            ArrayList<ImageView> images = this.placedImages.stream().map(GuiCell::getImageView).collect(Collectors.toCollection(ArrayList::new));
-
-            anchor.getChildren().setAll(images);
-
-            highlightableCenters.clear();
-
-            for(Coordinate coord : playableCoords){
-                double rightDistance = centerWidth - coord.getX() * (xOffset)  ; // + Math.signum(coord.getX()) * (imgWidth/2)
-                double bottomDistance = centerHeight + coord.getY() * (yOffset) ; // - Math.signum(coord.getY()) * (imgHeight/2)
-
-                TablePlayableCell coordCentre = new TablePlayableCell(coord, rightDistance, bottomDistance); //Double[]{rightDistance, bottomDistance};
-
-                Circle circle = new Circle(5); // Center at (100, 100), radius 5
-                circle.setFill(Color.RED); // Set fill color to red
-                AnchorPane.setRightAnchor(circle,rightDistance);
-                AnchorPane.setBottomAnchor(circle, bottomDistance);
-                anchor.getChildren().add(circle);
-
-                highlightableCenters.add(coordCentre);
-            }
-
+            applyPositions(newValue);
         });
+    }
+
+
+    private void applyPositions(Bounds newValue){
+        double width = newValue.getWidth();
+        double height = newValue.getHeight();
+
+        double centerWidth = width / 2;
+        double centerHeight = height / 2;
+
+
+        for(GuiCell guiCell : placedImages){
+            Coordinate coord = guiCell.getCoordinate();
+            double rightDistance = centerWidth - coord.getX() * (xOffset.getValue()) - (imgWidth.getValue() / 2) - xBias;
+            double bottomDistance = centerHeight + coord.getY() * (yOffset.getValue()) - (imgHeight.getValue() / 2) - yBias;
+
+            AnchorPane.setRightAnchor(guiCell.getImageView(), rightDistance);
+            AnchorPane.setBottomAnchor(guiCell.getImageView(), bottomDistance);
+        }
+
+
+        ArrayList<ImageView> images = this.placedImages.stream().sorted(Comparator.comparingInt(GuiCell::getOrderPlay)).map(GuiCell::getImageView).collect(Collectors.toCollection(ArrayList::new));
+
+        anchor.getChildren().setAll(images);
+
+        highlightableCenters.clear();
+
+        for(Coordinate coord : playableCoords){
+            double rightDistance = centerWidth - coord.getX() * (xOffset.getValue()) -xBias ; // + Math.signum(coord.getX()) * (imgWidth/2)
+            double bottomDistance = centerHeight + coord.getY() * (yOffset.getValue()) -yBias; // - Math.signum(coord.getY()) * (imgHeight/2)
+
+            TablePlayableCell coordCentre = new TablePlayableCell(coord, rightDistance, bottomDistance); //Double[]{rightDistance, bottomDistance};
+
+            Circle circle = new Circle(5); // Center at (100, 100), radius 5
+            circle.setFill(Color.RED); // Set fill color to red
+            AnchorPane.setRightAnchor(circle,rightDistance);
+            AnchorPane.setBottomAnchor(circle, bottomDistance);
+            anchor.getChildren().add(circle);
+
+            highlightableCenters.add(coordCentre);
+        }
+
     }
 
 
@@ -205,7 +225,7 @@ public class TableCards extends VBox implements Initializable {
         bottomDistance = bottomDistance - 216 ;
         TablePlayableCell coordFound = null;
         for (TablePlayableCell coord : highlightableCenters){
-            if(distance(coord.rightDistance() - imgWidth / 2, coord.bottomDistance() - imgHeight / 2, rightDistance, bottomDistance) < 50){
+            if(distance(coord.rightDistance() - imgWidth.getValue() / 2, coord.bottomDistance() - imgHeight.getValue() / 2, rightDistance, bottomDistance) < 50){
                 coordFound = coord;
                 break;
             }
@@ -231,5 +251,49 @@ public class TableCards extends VBox implements Initializable {
 
     private double distance(double x1, double y1, double x2, double y2){
         return Math.sqrt((x1 -x2) * (x1-x2) + (y1 - y2) * (y1 - y2));
+    }
+
+    @FXML
+    public void onAnchorPressed(MouseEvent event){
+        initialX = event.getSceneX();
+        initialY = event.getSceneY();
+        System.out.println("ANCHOR PRESSED");
+    }
+
+    @FXML
+    public void onMouseDragged(MouseEvent event){
+        double dx = event.getSceneX() - initialX;
+        double dy = event.getSceneY() - initialY;
+
+        initialX = event.getSceneX();
+        initialY = event.getSceneY();
+        xBias+=dx;
+        yBias+=dy;
+
+        applyPositions(anchor.getLayoutBounds());
+        System.out.println("DRAGGED");
+    }
+
+
+
+    @FXML
+    public void onScroll(ScrollEvent scrollEvent){
+        double scrollAmount = scrollEvent.getDeltaY();
+        if(scrollAmount == 0){
+            return;
+        }
+        else if(scrollAmount > 0){
+            imgWidth.set(Math.min(300, imgWidth.getValue() + 10));
+        }else {
+            imgWidth.set(Math.max(80, imgWidth.getValue() - 10));
+        }
+        reapplyImageDimensions();
+        applyPositions(anchor.getLayoutBounds());
+    }
+
+    private void reapplyImageDimensions() {
+        for(GuiCell cell : placedImages){
+            cell.getImageView().setFitWidth(imgWidth.getValue());
+        }
     }
 }

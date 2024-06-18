@@ -9,9 +9,12 @@ public class GuiCell {
 
     private Coordinate coordinate;
 
-    public GuiCell(ImageView imageView, Coordinate coordinate) {
+    private final int orderPlay;
+
+    public GuiCell(ImageView imageView, Coordinate coordinate, int orderPlay) {
         this.imageView = imageView;
         this.coordinate = coordinate;
+        this.orderPlay = orderPlay;
     }
 
     public Coordinate getCoordinate() {
@@ -20,5 +23,9 @@ public class GuiCell {
 
     public ImageView getImageView() {
         return imageView;
+    }
+
+    public int getOrderPlay() {
+        return orderPlay;
     }
 }
