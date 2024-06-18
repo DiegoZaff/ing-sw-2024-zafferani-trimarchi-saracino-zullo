@@ -24,6 +24,6 @@
     </HBox>
     <HBox alignment="TOP_RIGHT">
         <Region HBox.hgrow="ALWAYS"/>
-        <Text fx:id="time" style="-fx-font-size: 14;-fx-background-color: #424242"/>
+        <Text fx:id="time" style="-fx-font-size: 10;-fx-background-color: #424242"/>
     </HBox>
 </fx:root>

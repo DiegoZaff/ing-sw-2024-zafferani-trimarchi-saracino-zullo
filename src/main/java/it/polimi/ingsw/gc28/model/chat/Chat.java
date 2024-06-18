@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Chat implements Serializable {
-    private List<ChatMessage> chat;
+    private ArrayList<ChatMessage> chat;
     private final int maxVisibleMessages = 40;
 
     /**
@@ -77,7 +77,7 @@ public class Chat implements Serializable {
 
 
 
-    public List<ChatMessage> getChat(){
+    public ArrayList<ChatMessage> getChat(){
         return chat;
     }
 }

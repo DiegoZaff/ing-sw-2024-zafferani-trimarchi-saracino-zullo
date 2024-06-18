@@ -1,0 +1,23 @@
+.list-view .scroll-bar {
+    -fx-scale-x: 0;
+}
+
+.list-view .scroll-bar .increment-arrow,
+.list-view .scroll-bar .decrement-arrow,
+.list-view .scroll-bar .increment-button,
+.list-view .scroll-bar .decrement-button {
+    -fx-padding: 0px;
+}
+
+.list-view .scroll-bar {
+    -fx-padding: 0px;
+}
+
+.list-view {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.list-cell {
+    -fx-background-color: transparent;
+}

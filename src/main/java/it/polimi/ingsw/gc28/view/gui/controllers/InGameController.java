@@ -105,6 +105,12 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
                 showCards(myNewHand);
             }
         }
+        if(message.getType().equals(MessageTypeS2C.CHAT)){
+            if(chatViewComponent == null){
+                chatViewComponent = new ChatView();
+            }
+            chatViewComponent.update(message);
+        }
     }
 
     private void changeContentBasedOnAction(){
@@ -320,13 +326,9 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
 
     public void handleChatPress(MouseEvent mouseEvent) {
         switchTab(InGameTabType.CHAT);
-        chatViewComponent = new ChatView();
-        innerContent.getChildren().setAll(chatViewComponent);
     }
 
     public void handleScoreboardPress(MouseEvent mouseEvent) {
-        scoreboardComponent = new Scoreboard();
-        innerContent.getChildren().setAll(scoreboardComponent);
     }
 
     public void handleDecksPress(MouseEvent mouseEvent) {

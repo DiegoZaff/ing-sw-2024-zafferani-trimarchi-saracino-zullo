@@ -4,7 +4,11 @@ import it.polimi.ingsw.gc28.model.chat.ChatMessage;
 import it.polimi.ingsw.gc28.model.utils.JoinInfo;
 import it.polimi.ingsw.gc28.network.messages.client.MsgChatMessage;
 import it.polimi.ingsw.gc28.network.messages.client.MsgJoinableGames;
+import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
+import it.polimi.ingsw.gc28.network.messages.server.MsgOnChatMessage;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
+import it.polimi.ingsw.gc28.view.GameRepresentation;
+import it.polimi.ingsw.gc28.view.GuiObserver;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -34,7 +38,7 @@ import java.util.ResourceBundle;
 
 import static it.polimi.ingsw.gc28.view.gui.GuiApplication.connection;
 
-public class ChatView extends VBox implements Initializable {
+public class ChatView extends VBox implements Initializable, GuiObserver {
     @FXML
     public Text title;
 
@@ -149,6 +153,21 @@ public class ChatView extends VBox implements Initializable {
             // Component is broken, not much that can be recovered from.
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void update(GameRepresentation gameRepresentation) {
+
+    }
+
+    @Override
+    public void update(MessageS2C message) {
+        MsgOnChatMessage msg = (MsgOnChatMessage) message;
+        ArrayList<ChatMessage> mex= ((MsgOnChatMessage) message).getGameRepresentation().getChat().getChat();
+        messages.setAll(mex);
+        System.out.println("sto provando a caricare i messaggi");
+        int len = mex.size();
+        System.out.println("ci sono "+ len + "messaggi");
     }
 
     static public class CustomChatMessage extends ListCell<ChatMessage> {

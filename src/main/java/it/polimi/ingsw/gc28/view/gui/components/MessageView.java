@@ -32,7 +32,7 @@ public class MessageView extends VBox implements Initializable {
     public Text time;
 
     public MessageView(){
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/polimi/ingsw/gc28/gui/components/games/message.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/polimi/ingsw/gc28/gui/components/inGame/messageChat.fxml"));
         loader.setRoot(this);
         loader.setController(this);
 
@@ -60,6 +60,6 @@ public class MessageView extends VBox implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        super.setStyle("-fx-background-color: #EDEDED;-fx-background-radius: 16;");
     }
 }

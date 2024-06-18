@@ -30,6 +30,11 @@ public class MsgOnChatMessage extends MessageS2C{
                 msg = new SnackBarMessage(sender + "has sent a global message", InformationType.CHAT_MESSAGE);
             }
             gameManagerClient.updateSnackBarListener(msg);
+            gameManagerClient.updateListeners(this);
         }
+    }
+
+    public GameRepresentation getGameRepresentation() {
+        return gameRepresentation;
     }
 }
