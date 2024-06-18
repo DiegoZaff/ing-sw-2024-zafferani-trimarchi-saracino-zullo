@@ -21,5 +21,6 @@ public enum MessageTypeS2C {
     JOINABLE_GAMES,
 
     PING,
-    TERMINATION
+    TERMINATION,
+    IS_WINNERS
 }

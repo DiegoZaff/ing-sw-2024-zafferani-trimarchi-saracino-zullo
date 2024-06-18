@@ -17,10 +17,16 @@ import java.nio.file.Files;
  */
 public class BackupManager extends Thread {
 
+    private final boolean needsSaving;
     private final Game game;
 
-    public BackupManager(Game game){
+    public BackupManager(Game game, boolean needsSaving){
+        this.needsSaving = needsSaving;
         this.game = game;
+    }
+
+    public BackupManager(Game game){
+        this(game, true);
     }
 
     public void run(){
@@ -29,22 +35,38 @@ public class BackupManager extends Thread {
             return;
         }
         String gameId = this.game.getGameId();
-
         String directoryPath = "backups/";
         Path path = Paths.get(directoryPath);
+        String filePath = directoryPath + gameId + ".backup";
 
-        try {
-            if (!Files.exists(path)) {
-                Files.createDirectories(path);
+        if(needsSaving){
+            try {
+                if (!Files.exists(path)) {
+                    Files.createDirectories(path);
+                }
+
+                try (FileOutputStream fileOut = new FileOutputStream(filePath);
+                     ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
+                    out.writeObject(game);
+                }
+            } catch (IOException e) {
+                System.err.println(e.getMessage());
+            }
+        }else{
+
+            Path backupPath = Paths.get(filePath);
+            if (Files.exists(backupPath)) {
+                try {
+                    Files.delete(backupPath);
+                } catch (IOException e) {
+                    System.out.println("Could not delete file.");
+                }
+                System.out.println("Backup deleted successfully.");
+            } else {
+                System.out.println("No backup found to delete.");
             }
 
-            String filePath = directoryPath + gameId + ".backup";
-            try (FileOutputStream fileOut = new FileOutputStream(filePath);
-                 ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
-                out.writeObject(game);
-            }
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
         }
+
     }
 }

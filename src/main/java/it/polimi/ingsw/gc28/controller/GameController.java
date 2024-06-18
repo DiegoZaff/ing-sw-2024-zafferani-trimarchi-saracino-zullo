@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc28.controller;
 import it.polimi.ingsw.gc28.model.errors.types.*;
+import it.polimi.ingsw.gc28.model.utils.GameEndedNotification;
 import it.polimi.ingsw.gc28.model.utils.JoinInfo;
 import it.polimi.ingsw.gc28.network.messages.client.MessageC2S;
 import it.polimi.ingsw.gc28.network.persistence.BackupManager;
@@ -20,6 +21,7 @@ import java.rmi.RemoteException;
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.stream.Collectors;
 
 public class GameController {
     final Game gameModel;
@@ -227,10 +229,18 @@ public class GameController {
                     clients.get(playerName).sendMessage(message);
                     return;
                 } catch (RemoteException ex) {
+                    //TODO : handle better?
                     System.err.println("Could not notify client! Maybe disconnected?");
                     System.err.println(e.getMessage());
                     throw new RuntimeException(ex);
                 }
+            } catch (GameEndedNotification e) {
+                ArrayList<String> playersWin = gameModel.getPlayers().stream().filter((Player::isWinner)).map(Player::getName).collect(Collectors.toCollection(ArrayList::new));
+
+                notifyGameEndedWinners(playersWin);
+
+                //delete backUp file
+                deleteBackUpGame(gameModel);
             }
 
         }
@@ -467,6 +477,16 @@ public class GameController {
         }
     }
 
+    public void notifyGameEndedWinners(ArrayList<String> players) throws RemoteException {
+        GameRepresentation gameRepresentation = getGameRepresentation();
+        MsgOnGameWinners msg = new MsgOnGameWinners(players, gameRepresentation);
+
+        for(Map.Entry<String, VirtualView> entry : clients.entrySet()){
+            VirtualView client = entry.getValue();
+            client.sendMessage(msg);
+        }
+    }
+
 
 
     public GameRepresentation getGameRepresentation(){
@@ -480,6 +500,10 @@ public class GameController {
      */
     private void backUpGame(Game game){
         new BackupManager(game).start();
+    }
+
+    private void deleteBackUpGame(Game game){
+        new BackupManager(game, false).start();
     }
 
     public void sendPing() throws RemoteException {
@@ -504,7 +528,8 @@ public class GameController {
 
 
     public Optional<JoinInfo> getJoinInfo(){
-        synchronized (gameModel){return gameModel.getJoinInfo();}
+        synchronized (gameModel){return gameModel.getJoinInfo();
+        }
     }
 
 }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc28.model;
 
+import it.polimi.ingsw.gc28.model.utils.GameEndedNotification;
 import it.polimi.ingsw.gc28.model.utils.JoinInfo;
 import it.polimi.ingsw.gc28.model.utils.PlayerColor;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
@@ -266,12 +267,8 @@ public class Game implements Serializable {
 
         if(has20points){
             actionManager.initRoundsLeft();
-        }
-
-        else if (this.deck.isResEmpty() && this.deck.isGoldEmpty()){ //implementazione fine partita con 0 carte in entrambi deck
-
+        }else if (this.deck.isResEmpty() && this.deck.isGoldEmpty()){ //implementazione fine partita con 0 carte in entrambi deck
             actionManager.initRoundsLeft();
-
         }
 
 
@@ -281,7 +278,7 @@ public class Game implements Serializable {
     /**
      * ! TODO : make it work also when deck is finished and no player has reached 20 points. IMPLEMENTED! LOOK ABOVE
      **/
-    private void endGame(){
+    private void endGame() throws GameEndedNotification {
         calculateObjectivePoints();
         calculateWinner();
     }
@@ -294,7 +291,7 @@ public class Game implements Serializable {
      * @param isFront indicate how the card has to be played, front if True, back if False
      * @param coordinates indicates the coordinate where the card has to be played
      */
-    public void playGameCard (String playerName, CardGame playedCard, boolean isFront, Coordinate coordinates ) throws  PlayerActionError{
+    public void playGameCard (String playerName, CardGame playedCard, boolean isFront, Coordinate coordinates ) throws PlayerActionError, GameEndedNotification {
 
         Optional<Player> player = getPlayerOfName(playerName);
 
@@ -333,9 +330,7 @@ public class Game implements Serializable {
      * This method calculates who's the winner at the end of the game.
      * ? maybe add a winner attribute Optional<Player> and set winner player.
      */
-    private void calculateWinner(){
-
-
+    private void calculateWinner() throws GameEndedNotification {
         int maxPoints = 0;
         ArrayList<Player> winners = new ArrayList<>();
 
@@ -378,6 +373,7 @@ public class Game implements Serializable {
 
         //posso farlo con functional
 
+        throw new GameEndedNotification();
     }
 
 
@@ -387,7 +383,7 @@ public class Game implements Serializable {
      * It also calls actionManager.nextMove() which updates the next turn's expected action and
      * playerOfTurn.
      */
-    private void setupNextMove(){
+    private void setupNextMove() throws GameEndedNotification {
         Optional<Integer> roundsLeft = getRoundsLeft();
 
         if(roundsLeft.isEmpty()) {
