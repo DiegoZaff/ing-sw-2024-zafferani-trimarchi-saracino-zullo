@@ -9,18 +9,26 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.Region?>
 <fx:root alignment="TOP_CENTER" spacing="16" type="javafx.scene.layout.VBox" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
-    <AnchorPane fx:id="anchor" style="-fx-background-color: yellow" VBox.vgrow="ALWAYS">
+    <AnchorPane fx:id="anchor" VBox.vgrow="ALWAYS">
         <HBox fx:id="text" alignment="TOP_RIGHT" spacing="32" AnchorPane.leftAnchor="400" AnchorPane.topAnchor="32" AnchorPane.rightAnchor="80" prefHeight="100.0" prefWidth="100.0" style="-fx-padding: 0 48 0 0" >
             <Text fx:id="title" fill="#424242" style="-fx-font-size: 24;" />
         </HBox>
         <HBox fx:id="container" alignment="TOP_RIGHT" spacing="64" AnchorPane.leftAnchor="400" AnchorPane.topAnchor="80" AnchorPane.rightAnchor="80" />
-        <HBox fx:id="messageSpace" AnchorPane.leftAnchor="64" AnchorPane.topAnchor="32" AnchorPane.rightAnchor="384" alignment="BOTTOM_LEFT" prefHeight="400.0" prefWidth="500.0" style=" -fx-background-color: blue">
+        <VBox fx:id="messageSpace" style="-fx-background-color: #EDEDED;-fx-background-radius: 16; -fx-border-color: #484848; -fx-border-width: 1px; -fx-border-radius: 8;"
+              AnchorPane.leftAnchor="64" AnchorPane.topAnchor="32" AnchorPane.rightAnchor="384" alignment="BOTTOM_LEFT" prefHeight="400.0" prefWidth="500.0">
             <padding>
-                <Insets bottom="16" left="16" />
+                <Insets bottom="16" left="16" right="16" top="16"/>
             </padding>
-            <TextField fx:id="messageField" style="-fx-background-color: #EDEDED;-fx-background-radius: 16;-fx-prompt-text-fill: derive(-fx-control-inner-background,-30%);" />
-            <Button minHeight="40" minWidth="80" fx:id="sendMessage" style="-fx-background-color: #484848;-fx-background-radius: 16;"/>
-        </HBox>
+            <ListView fx:id="listMessages" orientation="HORIZONTAL" HBox.hgrow="ALWAYS" styleClass="list-view"
+                      style="-fx-background-color: #EDEDED;-fx-background-radius: 16;-fx-prompt-text-fill: derive(-fx-control-inner-background,-30%); -fx-border-color: #484848; -fx-border-width: 1px; -fx-border-radius: 8;"/>
+            <Region minHeight="20"/>
+            <HBox>
+                <TextField fx:id="messageField" style="-fx-background-color: #EDEDED;-fx-background-radius: 16;-fx-prompt-text-fill: derive(-fx-control-inner-background,-30%); -fx-border-color: #484848; -fx-border-width: 1px; -fx-border-radius: 8;" />
+                <Button minHeight="40" minWidth="80" fx:id="sendMessage" style="-fx-background-color: #484848;-fx-background-radius: 16;"/>
+            </HBox>
+        </VBox>
     </AnchorPane>
 </fx:root>

@@ -280,13 +280,11 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
     }
 
     public void handleChatPress(MouseEvent mouseEvent) {
-        changeButtonWidth(chatButton, true);
         chatViewComponent = new ChatView();
         innerContent.getChildren().setAll(chatViewComponent);
     }
 
     public void handleScoreboardPress(MouseEvent mouseEvent) {
-        changeButtonWidth(scoreboardButton, true);
         scoreboardComponent = new Scoreboard();
         innerContent.getChildren().setAll(scoreboardComponent);
     }

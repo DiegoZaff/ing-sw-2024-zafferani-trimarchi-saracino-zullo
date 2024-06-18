@@ -95,8 +95,6 @@ public class CustomListItemController extends VBox implements Initializable {
         return view;
     }
 
-
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.setStyle("-fx-background-color: #EDEDED;-fx-background-radius: 16;");
