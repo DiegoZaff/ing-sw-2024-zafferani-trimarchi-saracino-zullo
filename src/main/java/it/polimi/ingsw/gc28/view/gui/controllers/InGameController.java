@@ -158,7 +158,7 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
             add(isHandTwoFront);
             add(isHandThreeFront);
         }};
-        GameManagerClient.getInstance().addListeners(this);
+        GameManagerClient.getInstance().addListenerAndRemoveOthers(this);
         showChooseColors();
         showCards();
         setHandImagesCallbacks();

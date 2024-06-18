@@ -16,9 +16,9 @@ public class MsgOnGameRestarted extends MessageS2C{
 
     @Override
     public void update(GameManagerClient gameManagerClient, boolean isCli) {
-        if(isCli) {
-            gameManagerClient.setCurrentRepresentation(gameRepresentation);
+        gameManagerClient.setCurrentRepresentation(gameRepresentation);
 
+        if(isCli) {
             String playerOfTurn = gameRepresentation.getPlayerToPlay();
 
             ActionType actionType = gameRepresentation.getActionExpected();
@@ -33,6 +33,7 @@ public class MsgOnGameRestarted extends MessageS2C{
             gameManagerClient.writeInConsole(text);
         } else {
             SnackBarMessage msg = new SnackBarMessage("Game restarting...", InformationType.GAME_INFO);
+            gameManagerClient.updateSnackBarListener(msg);
             GameManagerClient.getInstance().updateListeners();
         }
     }

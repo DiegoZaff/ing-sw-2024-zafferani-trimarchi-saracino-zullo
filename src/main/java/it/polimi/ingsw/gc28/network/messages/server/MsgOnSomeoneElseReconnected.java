@@ -1,6 +1,8 @@
 package it.polimi.ingsw.gc28.network.messages.server;
 
 import it.polimi.ingsw.gc28.view.GameManagerClient;
+import it.polimi.ingsw.gc28.view.utils.InformationType;
+import it.polimi.ingsw.gc28.view.utils.SnackBarMessage;
 
 public class MsgOnSomeoneElseReconnected extends  MessageS2C{
     private final String playerName;
@@ -18,14 +20,21 @@ public class MsgOnSomeoneElseReconnected extends  MessageS2C{
 
     @Override
     public void update(GameManagerClient gameManagerClient, boolean isCli) {
-        String text = String.format("""
+        if(isCli){
+            String text = String.format("""
             %s has reconnected to the game! I bet you missed him/her!
             """, playerName);
 
-        if(playersLeftToJoin > 0) {
-            text += String.format("Waiting for other %d players to reconnect...", playersLeftToJoin);
+            if(playersLeftToJoin > 0) {
+                text += String.format("Waiting for other %d players to reconnect...", playersLeftToJoin);
+            }
+            gameManagerClient.writeInConsole(text);
+
+        }else{
+            SnackBarMessage msg = new SnackBarMessage(String.format("%s has reconnected to the game!", playerName), InformationType.GAME_INFO);
+            gameManagerClient.updateSnackBarListener(msg);
         }
 
-        gameManagerClient.writeInConsole(text);
+
     }
 }

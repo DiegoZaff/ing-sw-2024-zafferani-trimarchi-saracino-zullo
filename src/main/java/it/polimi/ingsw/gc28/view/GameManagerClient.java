@@ -420,6 +420,10 @@ public class GameManagerClient {
         this.listeners.add(obv);
     }
 
+    public void addListenerAndRemoveOthers(GuiObserver obv){
+        cleanAllListeners();
+        addListeners(obv);
+    }
     public void updateListeners(){
         for (GuiObserver obs : listeners){
             Platform.runLater(() -> {
