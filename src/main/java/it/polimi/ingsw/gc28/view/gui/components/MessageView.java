@@ -43,10 +43,11 @@ public class MessageView extends VBox implements Initializable {
         }
     }
     public void setMessage(String text) {
-            message.setText(text);
+        message.setText(text);
     }
     public void setSender(String text) {
         playerName.setText(text);
+        playerName.setStyle("-fx-font-weight: bold;");
     }
 
     public Node getView(){

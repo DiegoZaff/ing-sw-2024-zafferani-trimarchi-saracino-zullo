@@ -254,7 +254,8 @@ public class GameController {
             if(chatMessage.getReceiver().equals("all")){
                 gameModel.sendMessage(chatMessage);
                 String sender = chatMessage.getSender();
-                notifyChatMessage(sender, false);
+                String receiver = chatMessage.getReceiver();
+                notifyChatMessage(sender, receiver, false);
                 return;
             }
 
@@ -266,7 +267,8 @@ public class GameController {
                 }
                 gameModel.sendMessage(chatMessage);
                 String sender = chatMessage.getSender();
-                notifyChatMessage(sender, true);
+                String rec = chatMessage.getReceiver();
+                notifyChatMessage(sender, rec, true);
             }
         }
 
@@ -449,14 +451,14 @@ public class GameController {
         return gameModel.getPlayersToJoin();
     }
 
-    public void notifyChatMessage(String sender, boolean isPrivate) throws RemoteException {
+    public void notifyChatMessage(String sender, String receiver, boolean isPrivate) throws RemoteException {
         GameRepresentation gameRepresentation = getGameRepresentation();
 
         for(Map.Entry<String, VirtualView> entry : clients.entrySet()){
 
             VirtualView client = entry.getValue();
 
-            MsgOnChatMessage message = new MsgOnChatMessage(gameRepresentation, sender, isPrivate);
+            MsgOnChatMessage message = new MsgOnChatMessage(gameRepresentation, sender, receiver, isPrivate);
 
             client.sendMessage(message);
         }
