@@ -319,6 +319,7 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
     }
 
     public void handleChatPress(MouseEvent mouseEvent) {
+        switchTab(InGameTabType.CHAT);
         chatViewComponent = new ChatView();
         innerContent.getChildren().setAll(chatViewComponent);
     }
@@ -348,8 +349,25 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
         }else if(inGameTabType.equals(InGameTabType.TABLE)){
             currentTabType = inGameTabType;
             showTable(false);
+        }else if(inGameTabType.equals(InGameTabType.CHAT)){
+            currentTabType = inGameTabType;
+            showChat(false);
+        } else if(inGameTabType.equals(InGameTabType.LEADERBOARDS)) {
+            currentTabType = inGameTabType;
+            showLeaderboards(false);
         }
-        //TODO : add chat and leaderboards
+
+    }
+
+    private void showLeaderboards(boolean anew){
+        if(anew || scoreboardComponent == null){
+            updateLeaderboards();
+        }
+        innerContent.getChildren().setAll(scoreboardComponent);
+    }
+
+    private void updateLeaderboards(){
+        scoreboardComponent = new Scoreboard();
     }
 
     private void updateDeck(){
@@ -365,6 +383,17 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
             updateDeck();
         }
         innerContent.getChildren().setAll(decksComponent);
+    }
+
+    private void showChat(boolean anew) {
+        if(anew || chatViewComponent == null){
+            updateChat();
+        }
+        innerContent.getChildren().setAll(chatViewComponent);
+    }
+
+    private void updateChat(){
+        chatViewComponent = new ChatView();
     }
 
     public void handleQuitPress(MouseEvent mouseEvent) {
