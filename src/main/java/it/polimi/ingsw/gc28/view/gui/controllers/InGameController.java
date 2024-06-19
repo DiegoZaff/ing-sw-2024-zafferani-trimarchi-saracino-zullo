@@ -114,7 +114,10 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
     }
 
     private void changeContentBasedOnAction(){
-        ActionType act = GameManagerClient.getInstance().getCurrentRepresentation().getActionExpected();
+        GameRepresentation repr = GameManagerClient.getInstance().getCurrentRepresentation();
+        ActionType act = repr.getActionExpected();
+
+
         if(act == null){
             return;
         }
@@ -125,16 +128,31 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
         }else if(act.equals(ActionType.CHOOSE_OBJ)){
             showChooseObjectives();
         }else if(act.equals(ActionType.PLAY_CARD)){
-            updateDeck();
-            if(currentTabType.equals(InGameTabType.INITIAL_FLOW)){
-                currentTabType = InGameTabType.TABLE;
-                showTable(true);
-            }else if(currentTabType.equals(InGameTabType.DECKS)){
-                showDecks(false);
+            Integer roundsLeft = repr.getRoundsLeft();
+            int nPlayers = repr.getNPlayers();
+
+            if(roundsLeft != null && roundsLeft <= nPlayers - 1){
+                updateTable();
+                if(currentTabType.equals(InGameTabType.TABLE)){
+                    showTable(false);
+                }
+            }else{
+                updateDeck();
+                if(currentTabType.equals(InGameTabType.INITIAL_FLOW)){
+                    currentTabType = InGameTabType.TABLE;
+                    showTable(true);
+                }else if(currentTabType.equals(InGameTabType.DECKS)){
+                    showDecks(false);
+                }
             }
         }else if(act.equals(ActionType.DRAW_CARD)){
             updateTable();
             if(currentTabType.equals(InGameTabType.TABLE)){
+                showTable(false);
+            }
+        }else if(act.equals(ActionType.GAME_ENDED)){
+            updateTable();
+            if (currentTabType.equals(InGameTabType.TABLE)){
                 showTable(false);
             }
         }

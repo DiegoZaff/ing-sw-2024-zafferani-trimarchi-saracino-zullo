@@ -28,10 +28,12 @@ public class GameRepresentation implements Serializable {
 
     private boolean isGameAborted;
 
+    private Integer roundsLeft;
+
     public GameRepresentation (String playerToPlay, ActionType actionExpected, ArrayList<String> nicknames, ArrayList<String> globalObjectives,
                                ArrayList<String> faceUpResourceCards, ArrayList<String> faceUpGoldCards,
                                String nextResourceCard, String nextGoldCard,
-                               Map<String, Integer> points, Map<String, PrivateRepresentation> representations, Chat chat, int nPlayers){
+                               Map<String, Integer> points, Map<String, PrivateRepresentation> representations, Chat chat, int nPlayers, Integer roundsLeft){
         this.playerToPlay = playerToPlay;
         this.actionExpected = actionExpected;
         this.nicknames = nicknames;
@@ -44,7 +46,8 @@ public class GameRepresentation implements Serializable {
         this.representations = representations;
         this.chat = chat;
         this.nPlayers = nPlayers;
-        isGameAborted = false;
+        this.roundsLeft = roundsLeft;
+        this.isGameAborted = false;
     }
 
     /**
@@ -112,5 +115,9 @@ public class GameRepresentation implements Serializable {
 
     public PrivateRepresentation getPrivateRepresentationOf(String name){
         return getRepresentations().get(name);
+    }
+
+    public Integer getRoundsLeft() {
+        return roundsLeft;
     }
 }
