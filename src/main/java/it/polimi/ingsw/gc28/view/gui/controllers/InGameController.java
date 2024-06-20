@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gc28.view.gui.controllers;
 
-import it.polimi.ingsw.gc28.model.Deck;
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.model.cards.CardObjective;
 import it.polimi.ingsw.gc28.model.cards.CardResource;
@@ -15,6 +14,8 @@ import it.polimi.ingsw.gc28.view.gui.components.*;
 import it.polimi.ingsw.gc28.view.gui.utils.WrapperControllable;
 import it.polimi.ingsw.gc28.view.utils.InGameTabType;
 import it.polimi.ingsw.gc28.view.utils.PlayerColorInfo;
+import it.polimi.ingsw.gc28.view.utils.PlayerStatusInfo;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
@@ -111,6 +112,15 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
             }
             chatViewComponent.update(message);
         }
+
+        Platform.runLater(() -> {
+            PlayerStatusInfo info = GameManagerClient.getInstance().getMyPlayerStatusInfo();
+
+
+            if(wrapperController != null && info.getColor() != null){
+                wrapperController.updatePlayerStatus(info);
+            }
+        });
     }
 
     private void changeContentBasedOnAction(){
@@ -420,7 +430,6 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
     }
 
     public void showBackFirst(MouseEvent mouseEvent){
-        System.err.println("SHOWBACKFIRST CLICK!");
         String playerName = GameManagerClient.getInstance().getPlayerName();
         PrivateRepresentation rep = GameManagerClient.getInstance().getCurrentRepresentation().getRepresentations().get(playerName);
         ArrayList<CardResource> hand = rep.getHand();

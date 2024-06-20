@@ -193,7 +193,7 @@ public class Player implements Serializable {
     }
 
     public PrivateRepresentation getState(){
-        return new PrivateRepresentation(objectiveChosen, table, hand, cardInitial, objectivesToChoose, color);
+        return new PrivateRepresentation(objectiveChosen, table, hand, cardInitial, objectivesToChoose, color, isWinner());
     }
 
     public void setColor(PlayerColor color){

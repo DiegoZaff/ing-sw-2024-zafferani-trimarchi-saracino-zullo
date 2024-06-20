@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc28.view;
 
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.model.chat.Chat;
+import it.polimi.ingsw.gc28.view.utils.PlayerStatusInfo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -119,5 +120,21 @@ public class GameRepresentation implements Serializable {
 
     public Integer getRoundsLeft() {
         return roundsLeft;
+    }
+
+    public PlayerStatusInfo getPlayerStatusInfo(String player){
+        PrivateRepresentation privateRep = getPrivateRepresentationOf(player);
+
+        if(privateRep == null){
+            return null;
+        }
+
+        if(points.get(player) == null){
+            System.err.println("Private repr has bad state! player has null points");
+            return null;
+        }
+
+        return  new PlayerStatusInfo(player, privateRep.getColor(), points.get(player), privateRep.isWinner(), getRoundsLeft(), actionExpected, playerToPlay);
+
     }
 }

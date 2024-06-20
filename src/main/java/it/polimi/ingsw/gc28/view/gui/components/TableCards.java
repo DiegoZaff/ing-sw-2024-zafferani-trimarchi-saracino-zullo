@@ -257,7 +257,6 @@ public class TableCards extends VBox implements Initializable {
     public void onAnchorPressed(MouseEvent event){
         initialX = event.getSceneX();
         initialY = event.getSceneY();
-        System.out.println("ANCHOR PRESSED");
     }
 
     @FXML
@@ -271,7 +270,6 @@ public class TableCards extends VBox implements Initializable {
         yBias+=dy;
 
         applyPositions(anchor.getLayoutBounds());
-        System.out.println("DRAGGED");
     }
 
 

@@ -6,6 +6,7 @@ import it.polimi.ingsw.gc28.model.utils.PlayerColor;
 import it.polimi.ingsw.gc28.model.Table;
 
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
+import it.polimi.ingsw.gc28.view.utils.PlayerStatusInfo;
 import it.polimi.ingsw.gc28.view.utils.SnackBarMessage;
 import javafx.application.Platform;
 
@@ -476,5 +477,9 @@ public class GameManagerClient {
 
     public PrivateRepresentation getMyPrivateRepresentation(){
         return getPrivateRepresentation(playerName);
+    }
+
+    public PlayerStatusInfo getMyPlayerStatusInfo(){
+        return getCurrentRepresentation().getPlayerStatusInfo(playerName);
     }
 }

@@ -7,6 +7,5 @@
          stylesheets="@styles.css"
          type="javafx.scene.layout.VBox">
 
-    <AnchorPane fx:id="wrapper" prefWidth="800">
-    </AnchorPane>
+    <AnchorPane fx:id="wrapper" prefWidth="800"/>
 </fx:root>

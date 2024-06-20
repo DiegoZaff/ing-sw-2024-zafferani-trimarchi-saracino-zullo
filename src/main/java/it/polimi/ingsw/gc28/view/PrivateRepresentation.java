@@ -23,13 +23,16 @@ public class PrivateRepresentation implements Serializable {
 
     private PlayerColor color;
 
-    public PrivateRepresentation (CardObjective objective, Table table, ArrayList<CardResource> hand, CardInitial cardInitial, ArrayList<CardObjective> objsToChoose, PlayerColor color){
+    private boolean isWinner;
+
+    public PrivateRepresentation (CardObjective objective, Table table, ArrayList<CardResource> hand, CardInitial cardInitial, ArrayList<CardObjective> objsToChoose, PlayerColor color, boolean isWinner){
         this.cardInitial = cardInitial;
         this.hand = hand;
         this.table = table;
         this.privateObjective = objective;
         this.objsToChoose = objsToChoose;
         this.color = color;
+        this.isWinner = isWinner;
     }
 
     public ArrayList<CardResource> getHand() {
@@ -54,5 +57,9 @@ public class PrivateRepresentation implements Serializable {
 
     public PlayerColor getColor() {
         return color;
+    }
+
+    public boolean isWinner() {
+        return isWinner;
     }
 }
