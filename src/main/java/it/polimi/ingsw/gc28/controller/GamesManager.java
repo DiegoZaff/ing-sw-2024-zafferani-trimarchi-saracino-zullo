@@ -229,12 +229,8 @@ public class GamesManager {
         }
 
         String gameId = game.getGameId();
-
         GameController controller = new GameController(game);
-
-
         mapGames.put(gameId, controller);
-
         controller.waitForReconnections();
 
     }

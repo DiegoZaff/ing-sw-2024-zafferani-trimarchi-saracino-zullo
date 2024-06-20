@@ -28,10 +28,6 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, GuiCa
 
     String id;
 
-
-    String currentNickname;
-
-
     Boolean serverDown = false;
 
     boolean isCli;
@@ -79,8 +75,8 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, GuiCa
     }
 
     private void reconnect() throws IOException {
-
-        MsgReconnect msg = new MsgReconnect(GameManagerClient.getInstance().getGameId(), currentNickname, this);
+        String me = GameManagerClient.getInstance().getPlayerName();
+        MsgReconnect msg = new MsgReconnect(GameManagerClient.getInstance().getGameId(), me, this);
         boolean flag = true;
         while (flag){
             try{
@@ -132,12 +128,6 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, GuiCa
             if (message.isPresent()) {
                 MessageC2S messageToSend = message.get();
 
-                if(messageToSend.getType().equals(MessageTypeC2S.CREATE_GAME)){
-                    this.currentNickname = commandsList.get(1);
-                }
-                if (messageToSend.getType().equals(MessageTypeC2S.JOIN_GAME)){
-                    this.currentNickname = commandsList.get(2);
-                }
                 sendMessageToServer(messageToSend);
             }
 
