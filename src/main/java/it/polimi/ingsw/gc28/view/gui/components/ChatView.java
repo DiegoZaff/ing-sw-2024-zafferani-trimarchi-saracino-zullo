@@ -270,7 +270,6 @@ public class ChatView extends VBox implements Initializable, GuiObserver {
                 controller.setMessage(text);
                 controller.setSender(sender);
                 controller.setTime(time);
-                controller.setBorderBold();
                 setGraphic(controller.getView());
 
                 if(sender.equals(GameManagerClient.getInstance().getPlayerName())){

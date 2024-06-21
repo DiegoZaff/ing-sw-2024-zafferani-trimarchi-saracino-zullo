@@ -16,12 +16,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class MessageView extends VBox implements Initializable {
-    private final Border borderBold = new Border(new BorderStroke(
-            Color.web("#424242"), // Border color
-            BorderStrokeStyle.SOLID, // Border style
-            new CornerRadii(16), // Corner radii
-            new BorderWidths(2.5) // Border widths
-    ));
 
     private final VBox view;
 
@@ -49,8 +43,8 @@ public class MessageView extends VBox implements Initializable {
     }
     public void setMessage(String text) {
         String newText = text;
-        if(text.length() > 40){
-            newText = insertNewLine(text, 40);
+        if(text.length() > 30){
+            newText = insertNewLines(text, 30);
         }
         message.setText(newText);
     }
@@ -67,18 +61,24 @@ public class MessageView extends VBox implements Initializable {
         time.setText(text);
     }
 
-    public void setBorderBold(){
-        boxMessage.setBorder(borderBold);
-    }
-
     public void setMyMessage(){
         this.view.setPadding(new Insets(5,5,5,100));
-        boxMessage.setStyle("-fx-background-color: #60bbce;");
+        boxMessage.setStyle("-fx-background-color: #60bbce; " +
+                "-fx-background-radius: 10; " +
+                "-fx-border-radius: 10; " +
+                "-fx-border-color: black; " +
+                "-fx-border-width: 2;"
+        );
     }
 
     public void setSomeoneElseMessage(){
         this.view.setPadding(new Insets(5,100,5,5));
-        boxMessage.setStyle("-fx-background-color: #d7d779;");
+        boxMessage.setStyle("-fx-background-color: #d7d779;" +
+                "-fx-background-radius: 10; " +
+                "-fx-border-radius: 10; " +
+                "-fx-border-color: black; " +
+                "-fx-border-width: 2;"
+        );
     }
 
 
@@ -88,13 +88,13 @@ public class MessageView extends VBox implements Initializable {
     }
 
 
-    public static String insertNewLine(String input, int charsPerLine) {
+    public static String insertNewLines(String input, int charsPerLine) {
         StringBuilder builder = new StringBuilder(input);
-
-        for (int i = charsPerLine; i < builder.length(); i += charsPerLine + 1) {
+        int i = charsPerLine;
+        while (i < builder.length()) {
             builder.insert(i, '\n');
+            i += charsPerLine + 1;
         }
-
         return builder.toString();
     }
 }
