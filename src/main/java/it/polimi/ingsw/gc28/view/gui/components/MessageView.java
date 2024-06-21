@@ -3,6 +3,8 @@ package it.polimi.ingsw.gc28.view.gui.components;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -31,6 +33,9 @@ public class MessageView extends VBox implements Initializable {
     @FXML
     public Text time;
 
+    @FXML
+    public VBox boxMessage;
+
     public MessageView(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/polimi/ingsw/gc28/gui/components/inGame/messageChat.fxml"));
         loader.setRoot(this);
@@ -43,7 +48,11 @@ public class MessageView extends VBox implements Initializable {
         }
     }
     public void setMessage(String text) {
-        message.setText(text);
+        String newText = text;
+        if(text.length() > 40){
+            newText = insertNewLine(text, 40);
+        }
+        message.setText(newText);
     }
     public void setSender(String text) {
         playerName.setText(text);
@@ -58,9 +67,34 @@ public class MessageView extends VBox implements Initializable {
         time.setText(text);
     }
 
+    public void setBorderBold(){
+        boxMessage.setBorder(borderBold);
+    }
+
+    public void setMyMessage(){
+        this.view.setPadding(new Insets(5,5,5,100));
+        boxMessage.setStyle("-fx-background-color: #60bbce;");
+    }
+
+    public void setSomeoneElseMessage(){
+        this.view.setPadding(new Insets(5,100,5,5));
+        boxMessage.setStyle("-fx-background-color: #d7d779;");
+    }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.setStyle("-fx-background-color: #EDEDED;-fx-background-radius: 16;");
+    }
+
+
+    public static String insertNewLine(String input, int charsPerLine) {
+        StringBuilder builder = new StringBuilder(input);
+
+        for (int i = charsPerLine; i < builder.length(); i += charsPerLine + 1) {
+            builder.insert(i, '\n');
+        }
+
+        return builder.toString();
     }
 }
