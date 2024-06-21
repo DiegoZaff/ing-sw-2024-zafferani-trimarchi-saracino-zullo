@@ -3,8 +3,10 @@ package it.polimi.ingsw.gc28.view.gui.controllers;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
 import it.polimi.ingsw.gc28.view.gui.GuiApplication;
+import it.polimi.ingsw.gc28.view.gui.components.PlayerStatus;
 import it.polimi.ingsw.gc28.view.gui.utils.TabType;
 import it.polimi.ingsw.gc28.view.gui.utils.WrapperControllable;
+import it.polimi.ingsw.gc28.view.utils.PlayerStatusInfo;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -34,6 +36,8 @@ public class WrapperController implements Initializable {
     TabType currentTab;
     @FXML
     public AnchorPane innerContent;
+
+    PlayerStatus playerStatusComponent;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -100,4 +104,28 @@ public class WrapperController implements Initializable {
 
         }
     }
+
+
+    public void showPlayerStatus(PlayerStatusInfo info){
+        clearPlayerStatusComponent();
+        playerStatusComponent = new PlayerStatus(info);
+        outerAnchorPane.getChildren().add(playerStatusComponent);
+    }
+
+    public void updatePlayerStatus(PlayerStatusInfo info){
+        if(playerStatusComponent == null){
+            showPlayerStatus(info);
+        }else{
+            playerStatusComponent.update(info);
+        }
+    }
+
+    public void clearPlayerStatusComponent(){
+        if(playerStatusComponent != null) {
+            outerAnchorPane.getChildren().remove(playerStatusComponent);
+            this.playerStatusComponent = null;
+        }
+    }
+
+
 }

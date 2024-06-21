@@ -203,8 +203,8 @@ public class TableCards extends VBox implements Initializable {
         highlightableCenters.clear();
 
         for(Coordinate coord : playableCoords){
-            double rightDistance = centerWidth - coord.getX() * (xOffset.getValue()) -xBias ; // + Math.signum(coord.getX()) * (imgWidth/2)
-            double bottomDistance = centerHeight + coord.getY() * (yOffset.getValue()) -yBias; // - Math.signum(coord.getY()) * (imgHeight/2)
+            double rightDistance = centerWidth - coord.getX() * (xOffset.getValue()) -xBias ;
+            double bottomDistance = centerHeight + coord.getY() * (yOffset.getValue()) -yBias;
 
             TablePlayableCell coordCentre = new TablePlayableCell(coord, rightDistance, bottomDistance); //Double[]{rightDistance, bottomDistance};
 
@@ -257,7 +257,6 @@ public class TableCards extends VBox implements Initializable {
     public void onAnchorPressed(MouseEvent event){
         initialX = event.getSceneX();
         initialY = event.getSceneY();
-        System.out.println("ANCHOR PRESSED");
     }
 
     @FXML
@@ -271,7 +270,6 @@ public class TableCards extends VBox implements Initializable {
         yBias+=dy;
 
         applyPositions(anchor.getLayoutBounds());
-        System.out.println("DRAGGED");
     }
 
 

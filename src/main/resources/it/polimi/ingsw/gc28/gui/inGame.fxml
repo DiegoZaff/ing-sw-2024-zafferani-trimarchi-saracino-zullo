@@ -19,7 +19,7 @@
 
     <HBox AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0">
         <padding>
-            <Insets bottom="16" left="32" right="32" top="16" />
+            <Insets bottom="16" left="32" right="32" top="32" />
         </padding>
         <VBox spacing="16">
             <Button minHeight="48" minWidth="280" onMouseClicked="#handleTablePress" style="-fx-background-color: #484848;-fx-background-radius: 16;">
@@ -73,7 +73,6 @@
                 </graphic>
             </Button>
         </VBox>
-        <Region HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" />
     </HBox>
     <HBox fx:id="cards" prefHeight="160" AnchorPane.bottomAnchor="16" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" spacing="16" HBox.hgrow="ALWAYS">
         <padding>

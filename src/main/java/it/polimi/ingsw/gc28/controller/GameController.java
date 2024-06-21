@@ -235,6 +235,9 @@ public class GameController {
                     throw new RuntimeException(ex);
                 }
             } catch (GameEndedNotification e) {
+
+                notifyOfCardPlayed(playerName, cardToPlay.get().getId());
+
                 ArrayList<String> playersWin = gameModel.getPlayers().stream().filter((Player::isWinner)).map(Player::getName).collect(Collectors.toCollection(ArrayList::new));
 
                 notifyGameEndedWinners(playersWin);

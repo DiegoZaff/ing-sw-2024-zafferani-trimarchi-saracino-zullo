@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gc28.view.gui.controllers;
 
-import it.polimi.ingsw.gc28.model.Deck;
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.model.cards.CardObjective;
 import it.polimi.ingsw.gc28.model.cards.CardResource;
@@ -15,6 +14,8 @@ import it.polimi.ingsw.gc28.view.gui.components.*;
 import it.polimi.ingsw.gc28.view.gui.utils.WrapperControllable;
 import it.polimi.ingsw.gc28.view.utils.InGameTabType;
 import it.polimi.ingsw.gc28.view.utils.PlayerColorInfo;
+import it.polimi.ingsw.gc28.view.utils.PlayerStatusInfo;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
@@ -111,10 +112,22 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
             }
             chatViewComponent.update(message);
         }
+
+        Platform.runLater(() -> {
+            PlayerStatusInfo info = GameManagerClient.getInstance().getMyPlayerStatusInfo();
+
+
+            if(wrapperController != null && info.getColor() != null){
+                wrapperController.updatePlayerStatus(info);
+            }
+        });
     }
 
     private void changeContentBasedOnAction(){
-        ActionType act = GameManagerClient.getInstance().getCurrentRepresentation().getActionExpected();
+        GameRepresentation repr = GameManagerClient.getInstance().getCurrentRepresentation();
+        ActionType act = repr.getActionExpected();
+
+
         if(act == null){
             return;
         }
@@ -125,16 +138,31 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
         }else if(act.equals(ActionType.CHOOSE_OBJ)){
             showChooseObjectives();
         }else if(act.equals(ActionType.PLAY_CARD)){
-            updateDeck();
-            if(currentTabType.equals(InGameTabType.INITIAL_FLOW)){
-                currentTabType = InGameTabType.TABLE;
-                showTable(true);
-            }else if(currentTabType.equals(InGameTabType.DECKS)){
-                showDecks(false);
+            Integer roundsLeft = repr.getRoundsLeft();
+            int nPlayers = repr.getNPlayers();
+
+            if(roundsLeft != null && roundsLeft <= nPlayers - 1){
+                updateTable();
+                if(currentTabType.equals(InGameTabType.TABLE)){
+                    showTable(false);
+                }
+            }else{
+                updateDeck();
+                if(currentTabType.equals(InGameTabType.INITIAL_FLOW)){
+                    currentTabType = InGameTabType.TABLE;
+                    showTable(true);
+                }else if(currentTabType.equals(InGameTabType.DECKS)){
+                    showDecks(false);
+                }
             }
         }else if(act.equals(ActionType.DRAW_CARD)){
             updateTable();
             if(currentTabType.equals(InGameTabType.TABLE)){
+                showTable(false);
+            }
+        }else if(act.equals(ActionType.GAME_ENDED)){
+            updateTable();
+            if (currentTabType.equals(InGameTabType.TABLE)){
                 showTable(false);
             }
         }
@@ -402,7 +430,6 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
     }
 
     public void showBackFirst(MouseEvent mouseEvent){
-        System.err.println("SHOWBACKFIRST CLICK!");
         String playerName = GameManagerClient.getInstance().getPlayerName();
         PrivateRepresentation rep = GameManagerClient.getInstance().getCurrentRepresentation().getRepresentations().get(playerName);
         ArrayList<CardResource> hand = rep.getHand();

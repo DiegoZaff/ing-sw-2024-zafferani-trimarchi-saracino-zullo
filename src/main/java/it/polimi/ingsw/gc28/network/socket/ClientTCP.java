@@ -9,6 +9,8 @@ import it.polimi.ingsw.gc28.network.messages.client.*;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
 import it.polimi.ingsw.gc28.view.MessageUtils;
 import it.polimi.ingsw.gc28.view.gui.GuiCallable;
+import it.polimi.ingsw.gc28.view.utils.InformationType;
+import it.polimi.ingsw.gc28.view.utils.SnackBarMessage;
 
 import java.io.*;
 import java.net.Socket;
@@ -34,18 +36,18 @@ public class ClientTCP implements GuiCallable {
     private ObjectInputStream input;
     private ServerProxy server;
 
-
+    boolean isCli;
 
     private Boolean serverDown = false;
 
 
 
-    protected ClientTCP(ObjectInputStream input, ObjectOutputStream output) {
+    protected ClientTCP(ObjectInputStream input, ObjectOutputStream output, boolean isCli) {
         this.input = input;
         this.server = new ServerProxy(output);
     }
 
-    private void run(boolean isCli) throws RemoteException {
+    private void run() throws RemoteException {
         new Thread(() -> {
             try {
                 runVirtualServer();
@@ -67,7 +69,7 @@ public class ClientTCP implements GuiCallable {
                     throw new RuntimeException(ex);
                 }
                 try {
-                    this.run(isCli);
+                    this.run();
                 } catch (RemoteException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -195,15 +197,13 @@ public class ClientTCP implements GuiCallable {
             socketTx = new ObjectOutputStream(serverSocket.getOutputStream());
             socketRx = new ObjectInputStream(serverSocket.getInputStream());
 
-            ClientTCP client = new ClientTCP(socketRx, socketTx);
+            ClientTCP client = new ClientTCP(socketRx, socketTx, isCli);
 
             client.setHost(host);
             client.setPort(port);
 
-            client.run(isCli);
+            client.run();
 
-            // TODO : make client implement same interface of rmiClient so that we can establish connection for GUI
-            // TODO : and call methods on it to send messages to server.
             return client;
         }catch (IOException e){
             System.out.println(e.getMessage());
@@ -230,10 +230,20 @@ public class ClientTCP implements GuiCallable {
                     server.sendMessage(messageToSend);
                 }
             }catch (IOException e){
-                System.err.println("unable to reach the server");
+                logSnackbarError();
                 serverDown = true;
             }
 
+        }else{
+            logSnackbarError();
         }
+    }
+
+    private void logSnackbarError(){
+        if(!isCli){
+            SnackBarMessage msg = new SnackBarMessage("Can't talk to server...", InformationType.ERROR);
+            GameManagerClient.getInstance().updateSnackBarListener(msg);
+        }else{
+            System.err.println("unable to reach the server");        }
     }
 }
