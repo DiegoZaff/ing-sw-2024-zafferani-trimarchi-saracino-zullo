@@ -65,6 +65,11 @@ public class CardGold extends CardResource {
         }
     }
 
+    /**
+     * this method checks whether the table has enough resources for a card to be played
+     * @param table
+     * @return
+     */
     private  boolean checkCardPlayability(Table table){
         for (ResourcePrimary r : playability.keySet()){
             if (playability.get(r) > table.getResourceCounters().get(r)){

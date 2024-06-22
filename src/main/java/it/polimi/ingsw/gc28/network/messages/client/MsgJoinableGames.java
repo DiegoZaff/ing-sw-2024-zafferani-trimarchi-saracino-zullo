@@ -5,7 +5,9 @@ import it.polimi.ingsw.gc28.model.errors.types.FailedActionManaged;
 import it.polimi.ingsw.gc28.network.rmi.VirtualView;
 
 import java.rmi.RemoteException;
-
+/**
+ * message sent from the client to the server to ask for joinable games
+ */
 public class MsgJoinableGames extends  MessageC2S{
     private  VirtualView client;
     public MsgJoinableGames() {

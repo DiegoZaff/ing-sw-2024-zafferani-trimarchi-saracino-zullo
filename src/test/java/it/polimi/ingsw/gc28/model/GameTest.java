@@ -23,6 +23,10 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * this class tests methods from the class Game
+ * this tests an entire game read from a json file
+ */
 public class GameTest {
 
     private Deck deck;

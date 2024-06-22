@@ -15,6 +15,10 @@ import java.util.List;
 import java.util.Map;
 
 import static org.easymock.EasyMock.*;
+
+/**
+ * this class tests the methods from both GameManager and GameController
+ */
 public class MixedControllerTest {
 
 

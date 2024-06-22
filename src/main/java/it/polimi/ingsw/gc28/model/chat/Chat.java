@@ -15,6 +15,10 @@ public class Chat implements Serializable {
         this.chat = new ArrayList<>();
     }
 
+    /**
+     * adds a message to the chat, removes the first message from the chat if there are to many
+     * @param message to add
+     */
     public void addMessage(ChatMessage message){
 
         if(chat.size() > maxVisibleMessages){

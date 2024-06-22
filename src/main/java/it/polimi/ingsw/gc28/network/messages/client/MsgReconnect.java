@@ -5,7 +5,9 @@ import it.polimi.ingsw.gc28.model.errors.types.FailedActionManaged;
 import it.polimi.ingsw.gc28.network.rmi.VirtualView;
 
 import java.rmi.RemoteException;
-
+/**
+ * message sent from the client to the server to reconnect to the game
+ */
 public class MsgReconnect extends MessageC2S{
     private  VirtualView client;
     private final String playerName;

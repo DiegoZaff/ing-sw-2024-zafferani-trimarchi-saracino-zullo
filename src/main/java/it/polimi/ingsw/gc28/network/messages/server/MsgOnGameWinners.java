@@ -6,7 +6,9 @@ import it.polimi.ingsw.gc28.view.utils.InformationType;
 import it.polimi.ingsw.gc28.view.utils.SnackBarMessage;
 
 import java.util.ArrayList;
-
+/**
+ * message sent from the server to the client to notify the winners of the game
+ */
 public class MsgOnGameWinners extends MessageS2C{
     private final GameRepresentation repr;
     private final ArrayList<String> players;

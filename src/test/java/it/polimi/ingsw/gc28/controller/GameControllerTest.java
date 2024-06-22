@@ -19,6 +19,9 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
+/**
+ * this class tests the methods from GameController
+ */
 public class GameControllerTest {
     private GameController gameController;
     private Game gameMock;

@@ -4,7 +4,9 @@ import it.polimi.ingsw.gc28.controller.GameController;
 import it.polimi.ingsw.gc28.model.Coordinate;
 
 import java.rmi.RemoteException;
-
+/**
+ * message sent from the client to the server to play a card
+ */
 public class MsgPlayGameCard extends MessageC2S{
     String playerName;
     String cardId;

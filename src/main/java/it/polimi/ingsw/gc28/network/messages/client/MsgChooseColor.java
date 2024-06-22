@@ -4,6 +4,9 @@ import it.polimi.ingsw.gc28.controller.GameController;
 
 import java.rmi.RemoteException;
 
+/**
+ * message sent from the client to the server to choose a color
+ */
 public class MsgChooseColor extends MessageC2S{
     private final String playerName;
     private final String color;

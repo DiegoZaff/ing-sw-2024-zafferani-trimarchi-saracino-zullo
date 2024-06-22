@@ -5,7 +5,9 @@ import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
 import it.polimi.ingsw.gc28.view.utils.InformationType;
 import it.polimi.ingsw.gc28.view.utils.SnackBarMessage;
-
+/**
+ * message sent from the server to the client to notify that a player ha splayed a card
+ */
 public class MsgOnPlayerPlayedCard extends MessageS2C{
 
     private final GameRepresentation gameRepresentation;

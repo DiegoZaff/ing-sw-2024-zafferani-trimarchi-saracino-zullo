@@ -4,7 +4,9 @@ import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.utils.InformationType;
 import it.polimi.ingsw.gc28.view.utils.SnackBarMessage;
 
-
+/**
+ * message sent from the server to the client to notify that the game has been joined
+ */
 public class MsgOnGameJoined extends MessageS2C{
 
     private final String gameId;

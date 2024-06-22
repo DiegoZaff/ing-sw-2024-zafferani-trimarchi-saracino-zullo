@@ -20,6 +20,12 @@ public class ObjectiveResources extends Objective implements Serializable {
         this.points = points;
     }
 
+    /**
+     * this method awards the correc tnumber of points for the resource objective
+     * @param mapPositions of the tabòe
+     * @param resourceCounters of the table
+     * @throws IllegalArgumentException
+     */
     @Override
     public int calculatePoints(Map<Coordinate, Cell> mapPositions,
                                Map<Resource, Integer> resourceCounters) throws IllegalArgumentException {

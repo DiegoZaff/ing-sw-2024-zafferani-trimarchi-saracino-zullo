@@ -37,7 +37,7 @@ public class ActionManager implements Serializable {
     private ActionType actionType;
 
     private ActionType savedAction;
-    int done = 1;
+
 
     /**
      * This attribute is null until a player reaches 20 points, counting
@@ -103,6 +103,10 @@ public class ActionManager implements Serializable {
         }
     }
 
+    /**
+     * this method checks if the current player is the last player to perform the action
+     * @return boolean
+     */
     private boolean isCurrentPlayerTheLastOneForTheAction(){
 
         int lastPlayerIndex = ((indexFirstPlayer - 1) % players.size());
@@ -116,9 +120,6 @@ public class ActionManager implements Serializable {
     /**
      * This method calculates the next expected actionType and playerOfTurn based
      * on the current ones.
-     * 1) join game asincrono
-     * 2) in game start avviene initFirstPLayer.
-     * 3) PlayInitialCard e ChooseObjective si fanno a turni.
      */
     public void nextMove(){
 
@@ -136,7 +137,7 @@ public class ActionManager implements Serializable {
                     playerOfTurn = getFirstPlayer();
                     break;
                 }
-                playerOfTurn = getNextPlayer();//inutile
+                playerOfTurn = getNextPlayer();
             }
             case PLAY_INITIAL_CARD -> {
                 if(isCurrentPlayerTheLastOneForTheAction()) {
@@ -232,6 +233,10 @@ public class ActionManager implements Serializable {
         }
     }
 
+    /**
+     * this method gets called when a player has reached 20 points
+     * or there are no more cards to be drawn
+     */
     public void initRoundsLeft(){
 
         int roundsToFinishCircle = ((indexFirstPlayer - players.indexOf(playerOfTurn) + players.size() - 1) % players.size()) * 2 + 1;

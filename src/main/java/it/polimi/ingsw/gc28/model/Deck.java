@@ -29,7 +29,8 @@ public class Deck implements Serializable {
     private final ArrayList<CardObjective> cardObjectiveDeck;
 
     /**
-     * This method shuffles each type of deck randomly.
+     * this method shuffles the deck inside the parameter
+     * @param card is the deck to be shuffled
      */
     public <T extends Card> void shuffle(ArrayList<T > card){
         Random random = new Random();
@@ -43,6 +44,9 @@ public class Deck implements Serializable {
         }
     }
 
+    /**
+     * shuffles all the decks of the game
+     */
     public void shuffleAll(){
        shuffle(this.cardResourceDeck);
        shuffle((this.cardGoldDeck));
@@ -98,10 +102,16 @@ public class Deck implements Serializable {
         return Optional.ofNullable(cardInitialDeck.removeFirst());
     }
 
+    /**
+     * this method is used only for testing more easily
+     */
     public boolean isResEmpty(){
         return cardResourceDeck.isEmpty();
     }
 
+    /**
+     * this method is used only for testing more easily
+     */
     public boolean isGoldEmpty(){
         return cardResourceDeck.isEmpty();
     }

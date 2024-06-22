@@ -2,7 +2,9 @@ package it.polimi.ingsw.gc28.model;
 
 import it.polimi.ingsw.gc28.model.cards.*;
 import org.junit.Test;
-
+/**
+ * this class tests CardsManager
+ */
 public class CardManagerTest {
 
     @Test

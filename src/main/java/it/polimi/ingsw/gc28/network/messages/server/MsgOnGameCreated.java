@@ -3,7 +3,9 @@ package it.polimi.ingsw.gc28.network.messages.server;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.utils.InformationType;
 import it.polimi.ingsw.gc28.view.utils.SnackBarMessage;
-
+/**
+ * message sent from the server to the client to notify that the game was created
+ */
 public class MsgOnGameCreated extends MessageS2C{
 
     private final String gameId;

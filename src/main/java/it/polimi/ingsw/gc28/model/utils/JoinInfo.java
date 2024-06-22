@@ -10,6 +10,7 @@ public class JoinInfo implements Serializable {
 
     private final Integer nPlayers;
 
+
     public JoinInfo(String gameId, ArrayList<String> playersAlreadyIn, Integer nPlayers) {
         this.gameId = gameId;
         this.playersAlreadyIn = playersAlreadyIn;

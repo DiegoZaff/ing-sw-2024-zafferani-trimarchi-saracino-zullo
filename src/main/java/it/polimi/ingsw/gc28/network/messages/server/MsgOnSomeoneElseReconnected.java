@@ -3,7 +3,9 @@ package it.polimi.ingsw.gc28.network.messages.server;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.utils.InformationType;
 import it.polimi.ingsw.gc28.view.utils.SnackBarMessage;
-
+/**
+ * message sent from the server to the client to notify that someone reconnected to the game
+ */
 public class MsgOnSomeoneElseReconnected extends  MessageS2C{
     private final String playerName;
 

@@ -19,6 +19,12 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * this is the most important class of the project, it contains the methods
+ * that make playing the game possible, every game ha shis own game class and there
+ * are a minimum of 2 to maximum of 4 players per game.
+ * In this class there are methods for every phase of the game from start to finish.
+ */
 public class Game implements Serializable {
 
     private ActionManager actionManager;
@@ -40,6 +46,9 @@ public class Game implements Serializable {
         return players;
     }
 
+    /**
+     * it's an alphanumerical string randomly generated and unique for every game
+     */
     private String gameId;
 
 
@@ -111,7 +120,12 @@ public class Game implements Serializable {
         this.actionManager = new ActionManager(nPlayers, this.players, firstPlayerIndex);
     }
 
-
+    /**
+     * this method adds the player in the parameter in the game only if there are still available spots in the game.
+     * it also checks whether the nickname is already taken in the game.
+     * @param name
+     * @throws PlayerActionError
+     */
     public void addPlayerToGame(String name) throws PlayerActionError {
         if(players.size() >= nPlayers){
             throw new LobbyFullError();
@@ -142,6 +156,11 @@ public class Game implements Serializable {
         }
     }
 
+    /**
+     * this method starts the game calling all the initialization methods for players, deck, and the
+     * flow of the game.
+     * @throws IllegalStateException
+     */
     private void gameStart() throws IllegalStateException {
 
         // initialize global objectives
@@ -285,7 +304,8 @@ public class Game implements Serializable {
 
 
     /**
-     * play a card in a player table
+     * this method plays a card in a player table, checks wheather the action requested is valid and
+     * sets up the next move to be played
      * @param playerName who is playing the card
      * @param playedCard the card to be played
      * @param isFront indicate how the card has to be played, front if True, back if False
@@ -404,6 +424,7 @@ public class Game implements Serializable {
     /**
      * This method take the card from the top of the deck and add that card to the player's hand
      * @param playerName name of playing player
+     * @param fromGoldDeck is a boolean that tells from which deck the card needs to be drawn
      */
     public CardResource drawGameCard(String playerName, boolean fromGoldDeck) throws PlayerActionError{
 
@@ -450,6 +471,12 @@ public class Game implements Serializable {
 
     }
 
+    /**
+     * this method draws a face up card form the table
+     * @param playerName that draws the card
+     * @param cardDrawn is the chosen card from the player to draw
+     * @throws PlayerActionError
+     */
     public void drawGameCard(String playerName, CardResource cardDrawn) throws PlayerActionError{
 
         Optional<Player> playingPlayer = getPlayerOfName(playerName);
@@ -470,6 +497,10 @@ public class Game implements Serializable {
 
     /**
      * This method is called when the user selects a personal objective card.
+     *
+     * @param playerName that has chosen the objective
+     * @param card objective chosen
+     * @throws PlayerActionError
      */
     public void chooseObjective(String playerName, CardObjective card) throws PlayerActionError{
         Optional<Player> playingPlayer = getPlayerOfName(playerName);
@@ -518,6 +549,9 @@ public class Game implements Serializable {
         return players.stream().filter(Player::isWinner).collect(Collectors.toCollection(ArrayList::new));
     }
 
+    /**
+     * Returns the player randomly selected as the firstPlayer
+     */
     public Player getFirstPlayer(){
         return actionManager.getFirstPlayer();
     }
@@ -537,9 +571,7 @@ public class Game implements Serializable {
         return Integer.toString(id);
     }
 
-    /**
-     * @return gameId
-     */
+
     public String getGameId(){
         return gameId;
     }
@@ -626,6 +658,12 @@ public class Game implements Serializable {
         return chat;
     }
 
+    /**
+     * this method chooses the color specified to the player passed as a parameter
+     * @param playerName that has chosen the color
+     * @param color chosen from the player
+     * @throws PlayerActionError
+     */
     public void chooseColor(String playerName, String color) throws PlayerActionError {
         Optional<Player> player;
         player = getPlayerOfName(playerName);
@@ -664,7 +702,12 @@ public class Game implements Serializable {
     }
 
 
-
+    /**
+     * this method is called when a player reconnects to he game and needs to be added back
+     * @param name
+     * @throws NoSuchPlayerError
+     * @throws PlayerIsAlreadyConnectedError
+     */
     public void reconnectPlayer(String name) throws NoSuchPlayerError, PlayerIsAlreadyConnectedError {
         Optional<Player> player = getPlayerOfName(name);
 
@@ -689,6 +732,11 @@ public class Game implements Serializable {
     public int getPlayersToJoin(){
         return getNPlayers() - getActualNumPlayers();
     }
+
+    /**
+     * this method checks if every player in the game is connected and the game can restart
+     * @return
+     */
     public boolean isEveryoneReconnected(){
         return players.stream().allMatch(Player::isConnected);
     }

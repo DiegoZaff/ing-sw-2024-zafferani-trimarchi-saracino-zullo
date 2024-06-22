@@ -33,6 +33,12 @@ public class ObjectivePosition extends Objective implements Serializable {
         this.positionType = positionType;
     }
 
+    /**
+     * returns the correct number of points to award processing every possible combination.
+     * @param map of the table
+     * @param resourceCounters
+     * @throws IllegalArgumentException
+     */
     @Override
     public int calculatePoints(Map<Coordinate, Cell> map,
                                Map<Resource, Integer> resourceCounters) throws  IllegalArgumentException{

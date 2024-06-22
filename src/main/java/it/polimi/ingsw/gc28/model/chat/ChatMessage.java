@@ -50,6 +50,9 @@ public class ChatMessage implements Serializable {
         return sender;
     }
 
+    /**
+     * this method is used to show the timestamp of the message
+     */
     public String getTime(){
         return String.format("[%02d:%02d:%02d] ", this.time.getHour(), this.time.getMinute(), this.time.getSecond());
     }
