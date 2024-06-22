@@ -10,6 +10,7 @@ import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.network.messages.client.*;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
 import it.polimi.ingsw.gc28.network.messages.server.MsgOnGameCreated;
+import it.polimi.ingsw.gc28.network.messages.server.MsgPingS2c;
 import it.polimi.ingsw.gc28.network.rmi.GameStub;
 import it.polimi.ingsw.gc28.network.rmi.VirtualServer;
 import it.polimi.ingsw.gc28.network.rmi.VirtualStub;
@@ -87,13 +88,14 @@ public class ClientHandler implements VirtualView {
     }
 
     @Override
-    public void sendMessage(MessageS2C message) {
+    public void sendMessage(MessageS2C message) throws RemoteException {
         clientProxy.sendMessage(message);
     }
 
     @Override
     public void attachGameStub(VirtualStub gameStub) throws RemoteException {
         this.controller = gameStub.getController();
+        this.server.addController(this, controller);
         System.out.println("Attached controller to socket");
     }
 

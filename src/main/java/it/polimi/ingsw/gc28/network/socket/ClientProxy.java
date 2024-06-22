@@ -15,12 +15,12 @@ public class ClientProxy implements VirtualView {
         this.output = output;
     }
     @Override
-    public void sendMessage(MessageS2C message)  {
+    public void sendMessage(MessageS2C message) throws RemoteException  {
         try{
             output.writeObject(message);
             finishSending();
         }catch (IOException e){
-            System.err.println("Error writing object to output stream: " + e.getMessage());
+            throw new RemoteException();
         }
     }
 

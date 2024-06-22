@@ -396,8 +396,10 @@ public class GameManagerClient {
     }
 
     public void terminateGame(){
-        this.writeInConsole("someone disconnected!! the game ended");
-        this.currentRepresentation = null;
+        if (this.currentRepresentation != null){
+            this.writeInConsole("someone disconnected!! the game ended");
+            this.currentRepresentation = null;
+        }
     }
 
     public String getGameId() {

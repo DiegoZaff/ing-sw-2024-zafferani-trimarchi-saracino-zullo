@@ -14,6 +14,7 @@ public enum MessageTypeC2S {
     ABANDON_GAME,
     JOINABLE_GAMES,
 
+    LEAVEGAME,
     PING
 
 }

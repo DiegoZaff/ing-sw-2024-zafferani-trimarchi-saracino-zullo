@@ -179,6 +179,12 @@ public class MessageUtils {
 
 
             }
+
+            case "leaveGame"-> {
+                MsgLeaveGame msg = new MsgLeaveGame();
+                return Optional.of(msg);
+            }
+
             default -> {
                 System.out.println("Invalid command");
                 return Optional.empty();
