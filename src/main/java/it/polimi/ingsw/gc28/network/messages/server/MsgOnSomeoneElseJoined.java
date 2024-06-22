@@ -1,7 +1,9 @@
 package it.polimi.ingsw.gc28.network.messages.server;
 
 import it.polimi.ingsw.gc28.view.GameManagerClient;
-
+/**
+ * message sent from the server to the client to notify that someone joined the game
+ */
 public class MsgOnSomeoneElseJoined extends MessageS2C{
 
     private final String gameId;

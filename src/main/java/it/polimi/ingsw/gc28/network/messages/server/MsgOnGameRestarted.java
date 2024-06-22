@@ -5,7 +5,9 @@ import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
 import it.polimi.ingsw.gc28.view.utils.InformationType;
 import it.polimi.ingsw.gc28.view.utils.SnackBarMessage;
-
+/**
+ * message sent from the server to the client to notify that the game has restarted
+ */
 public class MsgOnGameRestarted extends MessageS2C{
 
     private final GameRepresentation gameRepresentation;
@@ -16,9 +18,9 @@ public class MsgOnGameRestarted extends MessageS2C{
 
     @Override
     public void update(GameManagerClient gameManagerClient, boolean isCli) {
-        if(isCli) {
-            gameManagerClient.setCurrentRepresentation(gameRepresentation);
+        gameManagerClient.setCurrentRepresentation(gameRepresentation);
 
+        if(isCli) {
             String playerOfTurn = gameRepresentation.getPlayerToPlay();
 
             ActionType actionType = gameRepresentation.getActionExpected();
@@ -33,6 +35,7 @@ public class MsgOnGameRestarted extends MessageS2C{
             gameManagerClient.writeInConsole(text);
         } else {
             SnackBarMessage msg = new SnackBarMessage("Game restarting...", InformationType.GAME_INFO);
+            gameManagerClient.updateSnackBarListener(msg);
             GameManagerClient.getInstance().updateListeners();
         }
     }

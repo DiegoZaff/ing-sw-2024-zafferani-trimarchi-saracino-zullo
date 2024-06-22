@@ -13,6 +13,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+/**
+ * this class represents the personal table of a player, it contains information
+ * about the playable coordinates of the table and the number of resources shown
+ */
 public class Table implements Serializable {
 
 
@@ -50,7 +54,10 @@ public class Table implements Serializable {
         //prova
     }
 
-
+    /**
+     * this method updates the playable coordinates of the table when a card is placed
+     * @param coordinatesToRemove
+     */
     public void removePlayableCoordinate (Coordinate coordinatesToRemove){
         int n = 0;
         if (playableCoords.contains(coordinatesToRemove)){

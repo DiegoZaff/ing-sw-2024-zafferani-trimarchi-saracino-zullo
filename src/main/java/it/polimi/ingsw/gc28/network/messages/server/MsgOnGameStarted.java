@@ -6,7 +6,9 @@ import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.view.utils.InformationType;
 import it.polimi.ingsw.gc28.view.utils.SnackBarMessage;
 
-
+/**
+ * message sent from the server to the client to notify that the game has started
+ */
 public class MsgOnGameStarted extends MessageS2C{
 
     GameRepresentation gameRepresentation;

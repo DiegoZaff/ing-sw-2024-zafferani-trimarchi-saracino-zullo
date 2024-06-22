@@ -10,6 +10,9 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * this class tests more methods from Game
+ */
 public class GameTestGS {
 @Test
     public void getset() throws IOException, PlayerActionError {
@@ -40,8 +43,8 @@ public class GameTestGS {
         assertEquals(p2.isConnected(), true, "id");
         assertEquals(p1.isConnected(), true, "id");
 
-        game2.sendMessage(new ChatMessage( "sium pubblico", p1.getName(), p2.getName(), false));
-        game2.sendMessage(new ChatMessage( "sium privato", p1.getName(), p2.getName(), true));
+        game2.sendMessage(new ChatMessage( "msg pubblico", p1.getName(), p2.getName(), false));
+        game2.sendMessage(new ChatMessage( "msg privato", p1.getName(), p2.getName(), true));
 
         System.out.println("messaggi inviati in chat globale");
         System.out.println(game2.getChat().toString());

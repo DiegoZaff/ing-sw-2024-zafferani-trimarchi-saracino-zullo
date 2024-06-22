@@ -12,6 +12,9 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * this class tests methods from the class Deck
+ */
 public class DeckTest {
 
     private Deck deck;

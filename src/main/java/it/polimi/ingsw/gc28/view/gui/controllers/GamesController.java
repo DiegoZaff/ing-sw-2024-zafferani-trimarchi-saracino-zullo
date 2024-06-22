@@ -71,7 +71,7 @@ public class GamesController implements Initializable, GuiObserver, WrapperContr
         isCreateGameSelected = new SimpleBooleanProperty(true);
         replaceView(isCreateGameSelected.getValue());
         changeButtonWidth(createGameButton, isCreateGameSelected.getValue());
-        GameManagerClient.getInstance().addListeners(this);
+        GameManagerClient.getInstance().addListenerAndRemoveOthers(this);
 
         isCreateGameSelected.addListener(new ChangeListener<Boolean>() {
             @Override

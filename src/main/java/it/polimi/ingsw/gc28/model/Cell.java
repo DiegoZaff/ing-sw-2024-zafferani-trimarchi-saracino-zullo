@@ -7,6 +7,10 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * this class represents a cell, and is used to store information about the card played,
+ * the moment the card was played and the side of the card
+ */
 public class Cell implements Serializable {
 
     private final CardGame card;

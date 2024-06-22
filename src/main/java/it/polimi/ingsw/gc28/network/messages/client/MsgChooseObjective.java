@@ -3,7 +3,9 @@ package it.polimi.ingsw.gc28.network.messages.client;
 import it.polimi.ingsw.gc28.controller.GameController;
 
 import java.rmi.RemoteException;
-
+/**
+ * message sent from the client to the server to choose an objective
+ */
 public class MsgChooseObjective extends MessageC2S {
     private final String playerName;
     private final String cardId;

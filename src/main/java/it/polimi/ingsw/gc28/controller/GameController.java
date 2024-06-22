@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc28.controller;
 import it.polimi.ingsw.gc28.model.errors.types.*;
+import it.polimi.ingsw.gc28.model.utils.GameEndedNotification;
 import it.polimi.ingsw.gc28.model.utils.JoinInfo;
 import it.polimi.ingsw.gc28.network.messages.client.MessageC2S;
 import it.polimi.ingsw.gc28.network.persistence.BackupManager;
@@ -20,6 +21,7 @@ import java.rmi.RemoteException;
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.stream.Collectors;
 
 public class GameController {
     final Game gameModel;
@@ -35,6 +37,9 @@ public class GameController {
         this.processIncomingMessages();
     }
 
+    /**
+     * Starts a new thread to process all the messages inside the queue
+     */
     private void processIncomingMessages() {
         new Thread(() -> {
             while (true) {
@@ -58,7 +63,10 @@ public class GameController {
     }
 
 
-
+    /**
+     *
+     * @param message gets added to the queue
+     */
     public void addMessageToQueue(MessageC2S message){
         try {
             messageQueue.put(message);
@@ -69,6 +77,12 @@ public class GameController {
         }
     }
 
+    /**
+     * adds a player to the game
+     * @param name of the player added
+     * @param client of the player added
+     * @throws RemoteException
+     */
     public boolean addPlayerToGame(String name, VirtualView client) throws RemoteException {
 
         synchronized (gameModel){
@@ -118,10 +132,10 @@ public class GameController {
         }
     }
 
-
-    /**
-     * Overloading, in case we have already calculated Player.
-     */
+//
+//    /**
+//     * Overloading, in case we have already calculated Player.
+//     */
 //    public Optional<ArrayList<CardObjective>> getPersonalObjectives(Player player){
 //        synchronized (gameModel) {
 //            return player.getObjectivesToChoose();
@@ -134,7 +148,12 @@ public class GameController {
 //        }
 //    }
 
-
+    /**
+     * contorls the chooseObjective action
+     * @param name of the player that choose the objective
+     * @param cardId of the card chosen as objective
+     * @throws RemoteException
+     */
     public void chooseObjectivePersonal(String name, String cardId) throws RemoteException {
 
         Optional<CardObjective> chosen = CardsManager.getInstance().getCardObjectiveFromId(cardId);
@@ -159,6 +178,12 @@ public class GameController {
         }
     }
 
+    /**
+     * controls the drawCard action when the card drawn is a hidden card
+     * @param name of the player that has drawn the card
+     * @param fromGoldDeck boolean that tells from which deck to draw the card
+     * @throws RemoteException
+     */
     public void drawCard(String name, boolean fromGoldDeck) throws RemoteException {
         synchronized (gameModel){
             try{
@@ -174,6 +199,12 @@ public class GameController {
         }
     }
 
+    /**
+     * controls the drawCard action when the card drawn is a face-up card
+     * @param playerName of the player that has drawn the card
+     * @param cardId of the face up card to draw
+     * @throws RemoteException
+     */
     public void drawCard(String playerName, String cardId) throws RemoteException {
         Optional<? extends CardResource> cardToDraw = CardsManager.getInstance().getCardResourceFromId(cardId);
 
@@ -196,7 +227,14 @@ public class GameController {
         }
     }
 
-
+    /**
+     * controls the playCard action
+     * @param playerName that played the card
+     * @param cardId to be played
+     * @param isFront side of the card
+     * @param coordinate where the card is being played
+     * @throws RemoteException
+     */
     public void playCard(String playerName, String cardId, boolean isFront, Coordinate coordinate) throws RemoteException {
         Optional<? extends CardGame> cardToPlay = CardsManager.getInstance().getCardGameFromId(cardId);
 
@@ -227,10 +265,21 @@ public class GameController {
                     clients.get(playerName).sendMessage(message);
                     return;
                 } catch (RemoteException ex) {
+                    //TODO : handle better?
                     System.err.println("Could not notify client! Maybe disconnected?");
                     System.err.println(e.getMessage());
                     throw new RuntimeException(ex);
                 }
+            } catch (GameEndedNotification e) {
+
+                notifyOfCardPlayed(playerName, cardToPlay.get().getId());
+
+                ArrayList<String> playersWin = gameModel.getPlayers().stream().filter((Player::isWinner)).map(Player::getName).collect(Collectors.toCollection(ArrayList::new));
+
+                notifyGameEndedWinners(playersWin);
+
+                //delete backUp file
+                deleteBackUpGame(gameModel);
             }
 
         }
@@ -244,7 +293,8 @@ public class GameController {
             if(chatMessage.getReceiver().equals("all")){
                 gameModel.sendMessage(chatMessage);
                 String sender = chatMessage.getSender();
-                notifyChatMessage(sender, false);
+                String receiver = chatMessage.getReceiver();
+                notifyChatMessage(sender, receiver, false);
                 return;
             }
 
@@ -256,7 +306,8 @@ public class GameController {
                 }
                 gameModel.sendMessage(chatMessage);
                 String sender = chatMessage.getSender();
-                notifyChatMessage(sender, true);
+                String rec = chatMessage.getReceiver();
+                notifyChatMessage(sender, rec, true);
             }
         }
 
@@ -264,6 +315,12 @@ public class GameController {
         backUpGame(gameModel);
     }
 
+    /**
+     * contorls the chooseColor action
+     * @param playerName that has chosen the color
+     * @param color chosen from the player
+     * @throws RemoteException
+     */
     public void chooseColor(String playerName, String color) throws RemoteException {
         synchronized (gameModel) {
             try {
@@ -286,7 +343,12 @@ public class GameController {
         }
     }
 
-
+    /**
+     * controls the reconnection of a player
+     * @param playerName that is reconnecting
+     * @param client of the player
+     * @throws RemoteException
+     */
     public boolean reconnect(String playerName, VirtualView client) throws RemoteException {
         synchronized (gameModel){
             try {
@@ -300,6 +362,13 @@ public class GameController {
         }
     }
 
+    /**
+     * notifies the client that the hidden card has been successfully drawn
+     * @param playerName to notify
+     * @param card drawn
+     * @param fromGoldDeck boolean that tells from which deck to draw the card
+     * @throws RemoteException
+     */
     public void notifyOfCardDrawn(String playerName, CardResource card, Boolean fromGoldDeck) throws RemoteException {
 
         GameRepresentation gameRepresentation = getGameRepresentation();
@@ -314,6 +383,12 @@ public class GameController {
         }
     }
 
+    /**
+     * notifies the client that the face-up card has been successfully drawn
+     * @param playerName to notigy
+     * @param card draw
+     * @throws RemoteException
+     */
     public void notifyOfCardDrawn(String playerName, CardResource card) throws RemoteException {
 
         GameRepresentation gameRepresentation = getGameRepresentation();
@@ -329,6 +404,12 @@ public class GameController {
         }
     }
 
+    /**
+     * notifies the client that the card has been successfully played
+     * @param playerWhoPlayed the gard
+     * @param cardPlayedId of the card played
+     * @throws RemoteException
+     */
     public void notifyOfCardPlayed(String playerWhoPlayed, String cardPlayedId) throws RemoteException {
         GameRepresentation gameRepresentation = getGameRepresentation();
 
@@ -342,6 +423,11 @@ public class GameController {
         }
     }
 
+    /**
+     * notifies the client that the objective has been successfully chosen
+     * @param playerName to notify
+     * @throws RemoteException
+     */
     public void notifyObjChosen(String playerName) throws RemoteException {
 
         GameRepresentation gameRepresentation = getGameRepresentation();
@@ -356,6 +442,13 @@ public class GameController {
         }
     }
 
+    /**
+     * notifies the every client that there was an error
+     * @param name of the player to notify
+     * @param e is the error to be notified
+     * @param actionDetails of the error
+     * @throws RemoteException
+     */
     public void notifyError(String name, PlayerActionError e, String actionDetails) throws RemoteException {
         VirtualView clientOfRequest = clients.get(name);
 
@@ -368,11 +461,24 @@ public class GameController {
         clients.get(name).sendMessage(message);
     }
 
+    /**
+     * notifies a specific client that there was an error
+     * @param client to be notified
+     * @param e is the error to be notified
+     * @throws RemoteException
+     */
     public void notifyErrorSpecificClient(VirtualView client, PlayerActionError e) throws RemoteException {
         MsgReportError message = new MsgReportError(e.getMessage());
         client.sendMessage(message);
     }
 
+    /**
+     * notifies the client that the game has been successfully created
+     * @param gameId of the game created
+     * @param name of the player to notify
+     * @param numberOfPlayersLeftToJoin in the game before it starts
+     * @throws RemoteException
+     */
     public void notifyGameCreated(String gameId, String name, int numberOfPlayersLeftToJoin) throws RemoteException {
         VirtualView clientOfRequest = clients.get(name);
 
@@ -388,6 +494,13 @@ public class GameController {
 
     }
 
+    /**
+     * notifies the client that the player has been successfully reconnected
+     * @param gameId of the game
+     * @param playerName to notify
+     * @param playersLeft to reconnect
+     * @throws RemoteException
+     */
     public void notifyPlayerReconnected(String gameId, String playerName, int playersLeft) throws RemoteException {
 
 
@@ -409,7 +522,13 @@ public class GameController {
         }
     }
 
-
+    /**
+     * notifies the client that a player has successfully joined or that he has successfully joined the game
+     * @param gameId it the game
+     * @param playerName that has joined
+     * @param playersLeft to join before the game starts
+     * @throws RemoteException
+     */
     public void notifyPlayerJoined(String gameId, String playerName, int playersLeft) throws RemoteException {
         int nPlayers = this.gameModel.getNPlayers();
 
@@ -439,14 +558,21 @@ public class GameController {
         return gameModel.getPlayersToJoin();
     }
 
-    public void notifyChatMessage(String sender, boolean isPrivate) throws RemoteException {
+    /**
+     * notifies the client that the message has been successfully delivered
+     * @param sender of the message
+     * @param receiver of the message
+     * @param isPrivate boolean that specifies whether the message was public or private
+     * @throws RemoteException
+     */
+    public void notifyChatMessage(String sender, String receiver, boolean isPrivate) throws RemoteException {
         GameRepresentation gameRepresentation = getGameRepresentation();
 
         for(Map.Entry<String, VirtualView> entry : clients.entrySet()){
 
             VirtualView client = entry.getValue();
 
-            MsgOnChatMessage message = new MsgOnChatMessage(gameRepresentation, sender, isPrivate);
+            MsgOnChatMessage message = new MsgOnChatMessage(gameRepresentation, sender, receiver, isPrivate);
 
             client.sendMessage(message);
         }
@@ -454,6 +580,11 @@ public class GameController {
 
     }
 
+    /**
+     * notifies the client that the color has been successfully chosen
+     * @param name of the player to notify
+     * @throws RemoteException
+     */
     public void notifyChooseColor(String name) throws RemoteException {
         GameRepresentation gameRepresentation = getGameRepresentation();
 
@@ -464,6 +595,21 @@ public class GameController {
             MsgOnChooseColor message = new MsgOnChooseColor(name, gameRepresentation);
 
             client.sendMessage(message);
+        }
+    }
+
+    /**
+     * notifies every client that the game has ended, and notifies who has won
+     * @param players inside the game
+     * @throws RemoteException
+     */
+    public void notifyGameEndedWinners(ArrayList<String> players) throws RemoteException {
+        GameRepresentation gameRepresentation = getGameRepresentation();
+        MsgOnGameWinners msg = new MsgOnGameWinners(players, gameRepresentation);
+
+        for(Map.Entry<String, VirtualView> entry : clients.entrySet()){
+            VirtualView client = entry.getValue();
+            client.sendMessage(msg);
         }
     }
 
@@ -482,12 +628,20 @@ public class GameController {
         new BackupManager(game).start();
     }
 
+    private void deleteBackUpGame(Game game){
+        new BackupManager(game, false).start();
+    }
+
     public void sendPing() throws RemoteException {
         for (VirtualView client : clients.values()){
             client.sendMessage(new MsgPingS2c(MessageTypeS2C.PING));
         }
     }
 
+    /**
+     * notifies every client that the game was terminated
+     * @throws RemoteException
+     */
     public void notifyGameTermination() throws RemoteException {
 
         for(Map.Entry<String, VirtualView> entry : clients.entrySet()){
@@ -504,7 +658,8 @@ public class GameController {
 
 
     public Optional<JoinInfo> getJoinInfo(){
-        synchronized (gameModel){return gameModel.getJoinInfo();}
+        synchronized (gameModel){return gameModel.getJoinInfo();
+        }
     }
 
 }

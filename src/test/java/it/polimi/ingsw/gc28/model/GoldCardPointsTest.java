@@ -17,6 +17,9 @@ import javafx.scene.image.ImageView;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 
+/**
+ * this class tests the playability of goldCards and the correct number of points awarded per play
+ */
 public class GoldCardPointsTest {
 
     private String im1;

@@ -9,6 +9,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.CacheHint;
 import javafx.scene.image.Image;
@@ -87,12 +88,12 @@ public class SnackBar extends VBox implements Initializable,InfoObserver {
         Platform.runLater(() -> {
             HBox box = createBox(msg);
 
-            wrapper.getChildren().add(box);
             box.setOpacity(0);
             box.getStyleClass().clear();
             box.getStyleClass().addAll(msg.getStyleClass().split(" "));
 
             box.setTranslateY(-box.getHeight());
+            wrapper.getChildren().add(box);
 
             FadeTransition fadeIn = new FadeTransition(Duration.millis(300), box);
             fadeIn.setFromValue(0.0);
@@ -146,6 +147,8 @@ public class SnackBar extends VBox implements Initializable,InfoObserver {
 
     private HBox createBox(SnackBarMessage msg){
         HBox box = new HBox();
+        Insets insets = new Insets(0,24,0,24);
+        box.setPadding(insets);
 
         ImageView imageView = new ImageView();
         imageView.setFitWidth(36);
@@ -169,7 +172,7 @@ public class SnackBar extends VBox implements Initializable,InfoObserver {
         // Add components to the HBox
         box.getChildren().addAll(imageView, text);
 
-        box.setMinWidth(800);
+        //box.setMinWidth(800);
         box.setMaxHeight(60);
         box.setMinHeight(60);
         box.setSpacing(10);

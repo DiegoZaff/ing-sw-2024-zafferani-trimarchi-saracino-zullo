@@ -28,6 +28,12 @@ public class PositionChallenge extends Challenge implements Serializable {
         return i;
     }
 
+    /**
+     * returns the points to award for the challenge, 2 points for every corner covered
+     * @param table
+     * @param coordinate
+     * @return
+     */
     @Override
     public int challengePoints(Table table, Coordinate coordinate){
         return this.countAdjacent(table, coordinate) * 2;

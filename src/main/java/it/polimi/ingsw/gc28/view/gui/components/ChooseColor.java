@@ -51,7 +51,7 @@ public class ChooseColor extends VBox implements Initializable {
                 name = info.get().getName();
             }
 
-            HBox box = getColoredBox(name, clr);
+            HBox box = getColoredBox(clr, 88 ,88);
             wrapperBox.getChildren().add(box);
 
             if(name != null){
@@ -92,11 +92,11 @@ public class ChooseColor extends VBox implements Initializable {
         }
     }
 
-    public static HBox getColoredBox(String name, PlayerColor color){
+    public static HBox getColoredBox(PlayerColor color, double height, double width){
         VBox box = new VBox();
 
-        box.setPrefHeight(88);
-        box.setPrefWidth(88);
+        box.setPrefHeight(height);
+        box.setPrefWidth(width);
 
         String style = "-fx-background-color:" + color.getHexCodeLight() + ";-fx-background-radius: 24;"+"-fx-border-color:" + color.getHexCodeDark() + "; -fx-border-width: 5px;-fx-border-radius: 16;";
 

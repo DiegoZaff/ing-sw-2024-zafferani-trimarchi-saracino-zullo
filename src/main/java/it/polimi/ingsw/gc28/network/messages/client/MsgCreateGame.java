@@ -2,7 +2,9 @@ package it.polimi.ingsw.gc28.network.messages.client;
 
 import it.polimi.ingsw.gc28.controller.GameController;
 import it.polimi.ingsw.gc28.network.rmi.VirtualView;
-
+/**
+ * message sent from the client to the server to create a game
+ */
 public class MsgCreateGame extends MessageC2S{
     private  VirtualView client;
 

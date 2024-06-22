@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc28.view;
 
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.model.chat.Chat;
+import it.polimi.ingsw.gc28.view.utils.PlayerStatusInfo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -28,10 +29,12 @@ public class GameRepresentation implements Serializable {
 
     private boolean isGameAborted;
 
+    private Integer roundsLeft;
+
     public GameRepresentation (String playerToPlay, ActionType actionExpected, ArrayList<String> nicknames, ArrayList<String> globalObjectives,
                                ArrayList<String> faceUpResourceCards, ArrayList<String> faceUpGoldCards,
                                String nextResourceCard, String nextGoldCard,
-                               Map<String, Integer> points, Map<String, PrivateRepresentation> representations, Chat chat, int nPlayers){
+                               Map<String, Integer> points, Map<String, PrivateRepresentation> representations, Chat chat, int nPlayers, Integer roundsLeft){
         this.playerToPlay = playerToPlay;
         this.actionExpected = actionExpected;
         this.nicknames = nicknames;
@@ -44,7 +47,8 @@ public class GameRepresentation implements Serializable {
         this.representations = representations;
         this.chat = chat;
         this.nPlayers = nPlayers;
-        isGameAborted = false;
+        this.roundsLeft = roundsLeft;
+        this.isGameAborted = false;
     }
 
     /**
@@ -112,5 +116,25 @@ public class GameRepresentation implements Serializable {
 
     public PrivateRepresentation getPrivateRepresentationOf(String name){
         return getRepresentations().get(name);
+    }
+
+    public Integer getRoundsLeft() {
+        return roundsLeft;
+    }
+
+    public PlayerStatusInfo getPlayerStatusInfo(String player){
+        PrivateRepresentation privateRep = getPrivateRepresentationOf(player);
+
+        if(privateRep == null){
+            return null;
+        }
+
+        if(points.get(player) == null){
+            System.err.println("Private repr has bad state! player has null points");
+            return null;
+        }
+
+        return  new PlayerStatusInfo(player, privateRep.getColor(), points.get(player), privateRep.isWinner(), getRoundsLeft(), actionExpected, playerToPlay);
+
     }
 }

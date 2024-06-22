@@ -9,6 +9,8 @@ import it.polimi.ingsw.gc28.view.MessageUtils;
 import it.polimi.ingsw.gc28.network.messages.client.*;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
 import it.polimi.ingsw.gc28.view.gui.GuiCallable;
+import it.polimi.ingsw.gc28.view.utils.InformationType;
+import it.polimi.ingsw.gc28.view.utils.SnackBarMessage;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -26,20 +28,19 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, GuiCa
 
     String id;
 
-
-    String currentNickname;
-
-
     Boolean serverDown = false;
 
+    boolean isCli;
 
 
-    protected RmiClient(VirtualServer server) throws RemoteException {
+
+    protected RmiClient(VirtualServer server, boolean isCli) throws RemoteException {
+        this.isCli = isCli;
         this.server = server;
         this.id = UUID.randomUUID().toString();
     }
 
-    private void run(boolean isCli) throws RemoteException {
+    private void run() throws RemoteException {
 
         new Thread(() -> {
             try {
@@ -54,19 +55,16 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, GuiCa
                     throw new RuntimeException(ex);
                 }
                 try {
-                    this.run(isCli);
+                    this.run();
                 } catch (RemoteException ex) {
                     throw new RuntimeException(ex);
                 }
             }
         }).start();
 
-
         if(isCli){
             runCli();
         }
-
-
     }
     private void sendPing () throws InterruptedException, IOException {
         MessageC2S ping = new MsgPingC2S(MessageTypeC2S.PING);
@@ -77,8 +75,8 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, GuiCa
     }
 
     private void reconnect() throws IOException {
-
-        MsgReconnect msg = new MsgReconnect(GameManagerClient.getInstance().getGameId(), currentNickname, this);
+        String me = GameManagerClient.getInstance().getPlayerName();
+        MsgReconnect msg = new MsgReconnect(GameManagerClient.getInstance().getGameId(), me, this);
         boolean flag = true;
         while (flag){
             try{
@@ -130,12 +128,6 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, GuiCa
             if (message.isPresent()) {
                 MessageC2S messageToSend = message.get();
 
-                if(messageToSend.getType().equals(MessageTypeC2S.CREATE_GAME)){
-                    this.currentNickname = commandsList.get(1);
-                }
-                if (messageToSend.getType().equals(MessageTypeC2S.JOIN_GAME)){
-                    this.currentNickname = commandsList.get(2);
-                }
                 sendMessageToServer(messageToSend);
             }
 
@@ -147,9 +139,9 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, GuiCa
 
         VirtualServer server = (VirtualServer) registry.lookup("VirtualServer");
 
-        RmiClient client = new RmiClient(server);
+        RmiClient client = new RmiClient(server, isCli);
 
-        client.run(isCli);
+        client.run();
 
         return client;
     }
@@ -197,16 +189,28 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, GuiCa
 
                     virtualGameStub.sendMessage(message);
                 }
+            }else{
+                logSnackbarError();
             }
         }catch (RemoteException e){
             // TODO: should we handle this?
             // TODO: maybe log error with snackbar
             // TODO: server crashed, try reconnecting....
             System.err.println("Remote exception while sending message to server in RMI?");
-            throw  new RuntimeException(e);
+            logSnackbarError();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
+    }
+
+
+    private void logSnackbarError(){
+        if(!isCli){
+            SnackBarMessage msg = new SnackBarMessage("Can't talk to server...", InformationType.ERROR);
+            GameManagerClient.getInstance().updateSnackBarListener(msg);
+        }else{
+            System.err.println("unable to reach the server");
+        }
     }
 }

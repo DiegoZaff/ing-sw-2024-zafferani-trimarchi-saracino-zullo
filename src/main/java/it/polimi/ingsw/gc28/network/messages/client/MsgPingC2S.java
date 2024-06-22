@@ -4,7 +4,9 @@ import it.polimi.ingsw.gc28.controller.GameController;
 import it.polimi.ingsw.gc28.model.errors.types.FailedActionManaged;
 
 import java.rmi.RemoteException;
-
+/**
+ * message sent from the client to the server to ping the server
+ */
 public class MsgPingC2S extends MessageC2S{
     public MsgPingC2S(MessageTypeC2S messageType) {
         super(messageType);

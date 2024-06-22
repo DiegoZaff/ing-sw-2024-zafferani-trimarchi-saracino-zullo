@@ -21,6 +21,9 @@ public class Player implements Serializable {
 
     private int points, objectivePoints;
 
+    /**
+     * this becomes false if the player wins the game
+     */
     private boolean winner = false;
 
     private boolean connected;
@@ -85,6 +88,10 @@ public class Player implements Serializable {
 
     public int getObjectivePoints() {return objectivePoints;}
 
+    /**
+     * this method is called when a card is played and needs to be deleted from the hand of the player
+     * @param cardToBeRemoved
+     */
     public void removeCard (CardGame cardToBeRemoved) {
         hand.remove(cardToBeRemoved);
     }
@@ -193,7 +200,7 @@ public class Player implements Serializable {
     }
 
     public PrivateRepresentation getState(){
-        return new PrivateRepresentation(objectiveChosen, table, hand, cardInitial, objectivesToChoose, color);
+        return new PrivateRepresentation(objectiveChosen, table, hand, cardInitial, objectivesToChoose, color, isWinner());
     }
 
     public void setColor(PlayerColor color){

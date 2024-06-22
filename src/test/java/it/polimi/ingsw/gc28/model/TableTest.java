@@ -15,6 +15,9 @@ import org.junit.Test;
 
 import java.util.HashMap;
 
+/**
+ * this class tests the tui of played cards, hand, objectives and table
+ */
 public class TableTest {
 
     private String im1;

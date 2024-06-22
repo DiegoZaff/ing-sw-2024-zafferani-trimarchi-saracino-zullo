@@ -5,6 +5,10 @@ import it.polimi.ingsw.gc28.model.resources.Resource;
 import java.io.Serializable;
 import java.util.Optional;
 
+/**
+ * this class is the corner of a card, it can be empty,
+ * it can contain a resource, or it can be void when a card can not be played on that vertex
+ */
 public class Vertex implements Serializable {
     private final Resource resource;
     private final boolean exists;

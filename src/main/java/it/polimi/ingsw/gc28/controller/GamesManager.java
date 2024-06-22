@@ -66,6 +66,9 @@ public class GamesManager {
         }).start();
     }
 
+    /**
+     * checks if someone disconnected from the game
+     */
     private void sendPing(){
         new Thread(()->{
             while (true){
@@ -128,6 +131,10 @@ public class GamesManager {
     }
     }
 
+    /**
+     * initialises the game with the information inside the message
+     * @param msg that contains info about the game
+     */
     public void createGame(MsgCreateGame msg)  {
         int numberOfPlayers = msg.getNumberOfPlayers();
         String playerName = msg.getUserName();
@@ -161,6 +168,10 @@ public class GamesManager {
         }
     }
 
+    /**
+     * initialises the action with the information inside the message
+     * @param msg that contains info about the action
+     */
     private void joinGame(MsgJoinGame msg)  {
         if(msg.getGameId().isEmpty()){
             System.err.println("No game id in joinGame message!");
@@ -191,6 +202,10 @@ public class GamesManager {
         }
     }
 
+    /**
+     * initialises the action with the information inside the message
+     * @param msg that contains info about the action
+     */
     public void reconnectToGame(MsgReconnect msg){
         if(msg.getGameId().isEmpty()){
             System.err.println("No game id in reconnect message!");
@@ -221,7 +236,10 @@ public class GamesManager {
         }
     }
 
-
+    /**
+     * restores the game
+     * @param game to be restored
+     */
     public void restoreGame(Game game){
 
         if(game == null){
@@ -229,16 +247,16 @@ public class GamesManager {
         }
 
         String gameId = game.getGameId();
-
         GameController controller = new GameController(game);
-
-
         mapGames.put(gameId, controller);
-
         controller.waitForReconnections();
 
     }
 
+    /**
+     * sends the joinable games to the client
+     * @param msg that contains the information about the joinable games
+     */
     private void sendJoinableGames(MsgJoinableGames msg){
         VirtualView client = msg.getClient();
 

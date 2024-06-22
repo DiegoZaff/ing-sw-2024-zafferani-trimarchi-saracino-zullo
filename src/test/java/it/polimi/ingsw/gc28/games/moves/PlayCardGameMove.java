@@ -5,6 +5,7 @@ import it.polimi.ingsw.gc28.model.Coordinate;
 import it.polimi.ingsw.gc28.model.Game;
 import it.polimi.ingsw.gc28.model.cards.CardGame;
 import it.polimi.ingsw.gc28.model.errors.PlayerActionError;
+import it.polimi.ingsw.gc28.model.utils.GameEndedNotification;
 
 import java.util.ArrayList;
 
@@ -43,7 +44,11 @@ public class PlayCardGameMove extends Move{
     @Override
     public void play(Game game) throws PlayerActionError {
 
-        game.playGameCard(super.getPlayerNick(), card, isFront, coord);
+        try {
+            game.playGameCard(super.getPlayerNick(), card, isFront, coord);
+        } catch (GameEndedNotification ignored) {
+
+        }
 
     }
 }

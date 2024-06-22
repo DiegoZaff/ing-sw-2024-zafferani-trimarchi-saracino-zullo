@@ -3,7 +3,9 @@ package it.polimi.ingsw.gc28.network.messages.client;
 import it.polimi.ingsw.gc28.controller.GameController;
 
 import java.rmi.RemoteException;
-
+/**
+ * message sent from the client to the server to draw a face-up card
+ */
 public class MsgDrawnVisibleGameCard extends MessageC2S{
     String playerName;
     String cardId;

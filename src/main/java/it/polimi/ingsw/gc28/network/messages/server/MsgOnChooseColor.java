@@ -5,7 +5,9 @@ import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
 import it.polimi.ingsw.gc28.view.utils.InformationType;
 import it.polimi.ingsw.gc28.view.utils.SnackBarMessage;
-
+/**
+ * message sent from the server to the client to notify that the color has been chosen
+ */
 public class MsgOnChooseColor extends MessageS2C{
 
     private final String playerName;

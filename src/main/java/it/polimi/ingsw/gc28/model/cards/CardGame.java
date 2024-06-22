@@ -84,17 +84,14 @@ public abstract class CardGame extends Card implements Serializable {
 
     /**
      * this method play the card in the front verse
-     *
-     * @param table          indicates the table in which the card is played*
-     * @param playCoordinate indicate the coordinates in which the card should be played
-     * @return
+     * @param table indicates the table in which the card is played
+     * @param playCoordinate indicate the coordinates in which the card should be player
      */
     public abstract int playFront(Table table, Coordinate playCoordinate);
 
     /**
      * this method play the card in the back verse
-     *
-     * @param table          indicates the table in which the card is played
+     * @param table indicates the table in which the card is played
      * @param playCoordinate indicate the coordinates in which the card should be played
      */
     public abstract void playBack(Table table, Coordinate playCoordinate);

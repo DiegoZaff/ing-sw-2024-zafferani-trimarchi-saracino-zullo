@@ -40,7 +40,7 @@ public class LobbyController implements Initializable, GuiObserver, WrapperContr
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        GameManagerClient.getInstance().addListeners(this);
+        GameManagerClient.getInstance().addListenerAndRemoveOthers(this);
         setPlayersLeft();
     }
 

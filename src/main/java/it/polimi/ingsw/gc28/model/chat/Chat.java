@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Chat implements Serializable {
-    private List<ChatMessage> chat;
+    private ArrayList<ChatMessage> chat;
     private final int maxVisibleMessages = 40;
 
     /**
@@ -15,6 +15,10 @@ public class Chat implements Serializable {
         this.chat = new ArrayList<>();
     }
 
+    /**
+     * adds a message to the chat, removes the first message from the chat if there are to many
+     * @param message to add
+     */
     public void addMessage(ChatMessage message){
 
         if(chat.size() > maxVisibleMessages){
@@ -77,7 +81,7 @@ public class Chat implements Serializable {
 
 
 
-    public List<ChatMessage> getChat(){
+    public ArrayList<ChatMessage> getChat(){
         return chat;
     }
 }

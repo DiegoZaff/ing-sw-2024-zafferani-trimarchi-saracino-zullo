@@ -4,7 +4,9 @@ import it.polimi.ingsw.gc28.model.utils.JoinInfo;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
 
 import java.util.ArrayList;
-
+/**
+ * message sent from the server to the client to notify the joinable games
+ */
 public class MsgOnJoinableGames  extends  MessageS2C{
 
     private final ArrayList<JoinInfo> infos;

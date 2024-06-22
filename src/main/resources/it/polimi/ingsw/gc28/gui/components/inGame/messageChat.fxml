@@ -11,6 +11,7 @@
 <fx:root xmlns="http://javafx.com/javafx"
          xmlns:fx="http://javafx.com/fxml"
          type="javafx.scene.layout.VBox">
+    <VBox fx:id="boxMessage">
     <padding>
         <Insets top="16" right="16" bottom="16" left="16"/>
     </padding>
@@ -18,12 +19,13 @@
         <Text fx:id="playerName" style="-fx-font-size: 14"/>
         <Region HBox.hgrow="ALWAYS"/>
     </HBox>
-    <HBox>
-        <Region HBox.hgrow="ALWAYS"/>
+    <HBox alignment="BOTTOM_LEFT">
         <Text fx:id="message" style="-fx-font-size: 14;-fx-background-color: #424242"/>
+        <Region HBox.hgrow="ALWAYS"/>
     </HBox>
     <HBox alignment="TOP_RIGHT">
         <Region HBox.hgrow="ALWAYS"/>
-        <Text fx:id="time" style="-fx-font-size: 14;-fx-background-color: #424242"/>
+        <Text fx:id="time" style="-fx-font-size: 10;-fx-background-color: #424242"/>
     </HBox>
+</VBox>
 </fx:root>
