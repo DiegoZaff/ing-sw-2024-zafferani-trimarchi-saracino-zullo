@@ -3,7 +3,6 @@ import java.io.IOException;
 import java.rmi.registry.LocateRegistry;
 import java.util.*;
 
-import it.polimi.ingsw.gc28.controller.GamesManager;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.MessageUtils;
 import it.polimi.ingsw.gc28.network.messages.client.*;
@@ -74,6 +73,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, GuiCa
         }
     }
 
+    //TODO : riconnettiti solo se il client è dentro una partita
     private void reconnect() throws IOException {
         String me = GameManagerClient.getInstance().getPlayerName();
         MsgReconnect msg = new MsgReconnect(GameManagerClient.getInstance().getGameId(), me, this);

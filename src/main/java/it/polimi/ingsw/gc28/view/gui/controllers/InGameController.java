@@ -142,9 +142,13 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
             int nPlayers = repr.getNPlayers();
 
             if(roundsLeft != null && roundsLeft <= nPlayers - 1){
+                // only play rounds. Action before was play
                 updateTable();
+                updateScoreboard();
                 if(currentTabType.equals(InGameTabType.TABLE)){
                     showTable(false);
+                }else if(currentTabType.equals(InGameTabType.LEADERBOARDS)){
+                    showScoreboards();
                 }
             }else{
                 updateDeck();
@@ -156,14 +160,20 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
                 }
             }
         }else if(act.equals(ActionType.DRAW_CARD)){
+            updateScoreboard();
             updateTable();
             if(currentTabType.equals(InGameTabType.TABLE)){
                 showTable(false);
+            }else if(currentTabType.equals(InGameTabType.LEADERBOARDS)){
+                showScoreboards();
             }
         }else if(act.equals(ActionType.GAME_ENDED)){
             updateTable();
+            updateScoreboard();
             if (currentTabType.equals(InGameTabType.TABLE)){
                 showTable(false);
+            }else if(currentTabType.equals(InGameTabType.LEADERBOARDS)){
+                showScoreboards();
             }
         }
     }
@@ -193,72 +203,43 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
     }
 
     private void setHandImagesCallbacks(){
-        // TODO make nicer using imageViewsHand
-        handOne.setOnMousePressed((event) -> {
-            if(event.getButton().equals(MouseButton.PRIMARY)){
-                isDragStarted = true;
-                onImagePress(event, 0, isHandOneFront);
-            }else{
-                if(!isDragStarted){
-                    showBackFirst(event);
+        for(int i = 0 ; i < imageViewsHand.size(); i++){
+            ImageView view = imageViewsHand.get(i);
+            BooleanProperty isFrontProperty = isFronts.get(i);
+            final int j = i;
+            view.setOnMousePressed((event) -> {
+                if(event.getButton().equals(MouseButton.PRIMARY)){
+                    if(currentTabType.equals(InGameTabType.INITIAL_FLOW)){
+                        return;
+                    }
+                    isDragStarted = true;
+                    onImagePress(event, j, isFrontProperty);
+                }else{
+                    if(!isDragStarted){
+                        showBackFirst(event);
+                    }
                 }
-            }
-        });
-        handTwo.setOnMousePressed((event) -> {
-            if(event.getButton().equals(MouseButton.PRIMARY)){
-                isDragStarted = true;
-                onImagePress(event, 1, isHandTwoFront);
-            }else{
-                if(!isDragStarted){
-                    showBackSecond(event);
+            });
+
+            view.setOnMouseDragged(event -> {
+                if(event.getButton().equals(MouseButton.PRIMARY)){
+                    this.moveDraggableImage(event.getSceneX(), event.getSceneY());
                 }
-            }
-        });
-        handThree.setOnMousePressed((event) -> {
-            if(event.getButton().equals(MouseButton.PRIMARY)){
-                isDragStarted = true;
-                onImagePress(event, 2, isHandThreeFront);}
-            else{
-                if(!isDragStarted){
-                    showBackThird(event);
+            });
+
+            view.setOnMouseReleased(event -> {
+                if(isDragStarted){
+                    this.release();
+                    isDragStarted = false;
                 }
-            }
-        });
-        handOne.setOnMouseDragged(event -> {
-            if(event.getButton().equals(MouseButton.PRIMARY)){
-                this.moveDraggableImage(event.getSceneX(), event.getSceneY());
-            }
-        });
-        handTwo.setOnMouseDragged(event -> {
-            if(event.getButton().equals(MouseButton.PRIMARY)){
-                this.moveDraggableImage(event.getSceneX(), event.getSceneY());
-            }
-        });
-        handThree.setOnMouseDragged(event -> {
-            if(event.getButton().equals(MouseButton.PRIMARY)){
-            this.moveDraggableImage(event.getSceneX(), event.getSceneY());
-            }
-        });
-        handOne.setOnMouseReleased(event -> {
-            if(isDragStarted){
-                this.release();
-                isDragStarted = false;
-            }
-        });
-        handTwo.setOnMouseReleased(event -> {
-            if(isDragStarted){
-                this.release();
-                isDragStarted = false;
-            }
-        });
-        handThree.setOnMouseReleased(event -> {
-            if(isDragStarted){
-                this.release();
-                isDragStarted = false;
-            }
-        });
+            });
+        }
     }
     private void onImagePress(MouseEvent event, int elementId, BooleanProperty prop){
+
+        if(!currentTabType.equals(InGameTabType.TABLE)){
+            return;
+        }
 
         if(elementId >= hand.size()){
             // no card at that position
@@ -357,6 +338,7 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
     }
 
     public void handleScoreboardPress(MouseEvent mouseEvent) {
+        switchTab(InGameTabType.LEADERBOARDS);
     }
 
     public void handleDecksPress(MouseEvent mouseEvent) {
@@ -384,20 +366,28 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
             showChat(false);
         } else if(inGameTabType.equals(InGameTabType.LEADERBOARDS)) {
             currentTabType = inGameTabType;
-            showLeaderboards(false);
+            showScoreboards();
         }
 
     }
 
-    private void showLeaderboards(boolean anew){
-        if(anew || scoreboardComponent == null){
-            updateLeaderboards();
+    private void showScoreboards(){
+        if(scoreboardComponent == null){
+            updateScoreboard();
         }
         innerContent.getChildren().setAll(scoreboardComponent);
     }
 
-    private void updateLeaderboards(){
-        scoreboardComponent = new Scoreboard();
+    private void updateScoreboard(){
+        if(scoreboardComponent != null){
+            Map<String, Integer> oldMap = scoreboardComponent.getPointsPlayers();
+            Map<String, Integer> newMap = GameManagerClient.getInstance().getCurrentRepresentation().getPoints();
+            if(!oldMap.equals(newMap)){
+                scoreboardComponent = new Scoreboard();
+            }
+        }else{
+            scoreboardComponent = new Scoreboard();
+        }
     }
 
     private void updateDeck(){
@@ -512,7 +502,7 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
         AnchorPane.setBottomAnchor(this.draggableImage,bottomDistance);
         AnchorPane.setRightAnchor(this.draggableImage, rightDistance);
 
-        if(tableCardsComponent != null){
+        if(tableCardsComponent != null && currentTabType.equals(InGameTabType.TABLE)){
             tableCardsComponent.checkHighlightPosition(rightDistance, bottomDistance);
         }
     }
@@ -520,7 +510,7 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
     public void release() {
         outerPane.getChildren().remove(this.draggableImage);
 
-        if(tableCardsComponent != null){
+        if(tableCardsComponent != null && currentTabType.equals(InGameTabType.TABLE)){
             tableCardsComponent.tryPlayCard(draggedImageId, isDraggedImageFront);
         }
     }
