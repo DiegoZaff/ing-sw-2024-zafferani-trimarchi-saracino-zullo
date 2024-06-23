@@ -59,9 +59,7 @@ public class Table implements Serializable {
      * @param coordinatesToRemove
      */
     public void removePlayableCoordinate (Coordinate coordinatesToRemove){
-        while (playableCoords.contains(coordinatesToRemove)){
             playableCoords.remove(coordinatesToRemove);
-        }
     }
 
 
@@ -226,7 +224,7 @@ public class Table implements Serializable {
 
     }
     private void hasCornerUpdate(Coordinate c){
-        if (!mapPositions.containsKey(c) && !unplayableCoords.contains(c)){
+        if (!mapPositions.containsKey(c) && !unplayableCoords.contains(c) && !playableCoords.contains(c)){
             playableCoords.add(c);
         }
     }
