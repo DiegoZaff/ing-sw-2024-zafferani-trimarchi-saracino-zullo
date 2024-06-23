@@ -5,5 +5,6 @@ public enum InGameTabType {
     DECKS,
     LEADERBOARDS,
     CHAT,
-    INITIAL_FLOW
+    INITIAL_FLOW,
+    OTHER_TABLE
 }

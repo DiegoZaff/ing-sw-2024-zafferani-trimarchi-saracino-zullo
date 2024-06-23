@@ -8,6 +8,7 @@ import it.polimi.ingsw.gc28.network.messages.client.MsgPlayGameCard;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.PrivateRepresentation;
 import it.polimi.ingsw.gc28.view.gui.GuiApplication;
+import it.polimi.ingsw.gc28.view.gui.controllers.InGameController;
 import it.polimi.ingsw.gc28.view.utils.GuiCell;
 import it.polimi.ingsw.gc28.view.utils.*;
 import javafx.application.Platform;
@@ -36,47 +37,39 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class TableCards extends VBox implements Initializable {
-
     @FXML
     public AnchorPane anchor;
-    private String selectedPlayer;
-
+    private final String selectedPlayer;
     ArrayList<GuiCell> placedImages;
-
-    private static final double ASPECT_RATIO = 1.5;
-
-    private static final double X_VERTEX_ASPECT_RATIO = 0.78;
-    private static final double Y_VERTEX_ASPECT_RATIO = 0.59;
-
-    private static final double IMG_WIDTH_START = 180;
-
-    public static DoubleProperty imgWidth = new SimpleDoubleProperty(IMG_WIDTH_START);
-    public static DoubleProperty imgHeight = new SimpleDoubleProperty(IMG_WIDTH_START * ASPECT_RATIO);
-    private final DoubleProperty xOffset = new SimpleDoubleProperty();
-    private final DoubleProperty yOffset = new SimpleDoubleProperty();
-
-    private static double xBias = 0;
-
-    private static double yBias = 0;
-
-    private ImageView draggableImage;
-
-    private Double anchorHeight;
-
-    private Double screenX;
-    private Double screenY;
+    public static final double ASPECT_RATIO = 1.5;
+    public static final double X_VERTEX_ASPECT_RATIO = 0.78;
+    public static final double Y_VERTEX_ASPECT_RATIO = 0.59;
+    public static final double IMG_WIDTH_START = 180;
+    private final DoubleProperty imgWidth ;
+    private final DoubleProperty imgHeight;
+    private final DoubleProperty xOffset;
+    private final DoubleProperty yOffset;
+    private final DoubleProperty xBias;
+    private final DoubleProperty yBias;
     private Double initialX;
-
     private Double initialY;
-
-    private ArrayList<TablePlayableCell> highlightableCenters;
-
+    private final ArrayList<TablePlayableCell> highlightableCenters;
     private SimpleObjectProperty<TablePlayableCell> highlightedCoord;
-
     private Rectangle yellowRectangle;
-
     private ArrayList<Coordinate> playableCoords;
 
+
+    public Double getCurrentImageWidth(){
+        return imgWidth.getValue();
+    }
+
+    public Double getCurrentXBias(){
+        return xBias.getValue();
+    }
+
+    public Double getCurrentYBias(){
+        return yBias.getValue();
+    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         PrivateRepresentation repr = GameManagerClient.getInstance().getCurrentRepresentation().getRepresentations().get(this.selectedPlayer);
@@ -126,9 +119,23 @@ public class TableCards extends VBox implements Initializable {
         AnchorPane.setBottomAnchor(rectangle, pos.bottomDistance() - imgHeight.getValue() / 2);
         return rectangle;
     }
-    public TableCards(String selectedPlayer){
+    public TableCards(String selectedPlayer, Double imgWidthStart, Double xBiasStart, Double yBiasStart, boolean sync){
+
+        if(!sync){
+            imgWidth = new SimpleDoubleProperty(imgWidthStart != null ? imgWidthStart : IMG_WIDTH_START);
+            xBias = new SimpleDoubleProperty( xBiasStart != null ? xBiasStart : 0);
+            yBias = new SimpleDoubleProperty(  yBiasStart != null ? yBiasStart : 0);
+        }else{
+            imgWidth = InGameController.imgWidthTable;
+            xBias = InGameController.xBiasTable;
+            yBias = InGameController.yBiasTable;
+        }
+        imgHeight = new SimpleDoubleProperty();
+        xOffset = new SimpleDoubleProperty();
+        yOffset = new SimpleDoubleProperty();
+
+
         HBox.setHgrow(this, Priority.ALWAYS);
-        //this.setStyle("-fx-background-color: red");
 
         this.highlightableCenters = new ArrayList<>();
         this.placedImages = new ArrayList<>();
@@ -178,6 +185,9 @@ public class TableCards extends VBox implements Initializable {
     }
 
 
+    /**
+     * This method lays every card down based on image width, coordinates, and center offset.
+     */
     private void applyPositions(Bounds newValue){
         double width = newValue.getWidth();
         double height = newValue.getHeight();
@@ -188,8 +198,8 @@ public class TableCards extends VBox implements Initializable {
 
         for(GuiCell guiCell : placedImages){
             Coordinate coord = guiCell.getCoordinate();
-            double rightDistance = centerWidth - coord.getX() * (xOffset.getValue()) - (imgWidth.getValue() / 2) - xBias;
-            double bottomDistance = centerHeight + coord.getY() * (yOffset.getValue()) - (imgHeight.getValue() / 2) - yBias;
+            double rightDistance = centerWidth - coord.getX() * (xOffset.getValue()) - (imgWidth.getValue() / 2) - xBias.getValue();
+            double bottomDistance = centerHeight + coord.getY() * (yOffset.getValue()) - (imgHeight.getValue() / 2) - yBias.getValue();
 
             AnchorPane.setRightAnchor(guiCell.getImageView(), rightDistance);
             AnchorPane.setBottomAnchor(guiCell.getImageView(), bottomDistance);
@@ -202,9 +212,10 @@ public class TableCards extends VBox implements Initializable {
 
         highlightableCenters.clear();
 
+        // TODO : remove this
         for(Coordinate coord : playableCoords){
-            double rightDistance = centerWidth - coord.getX() * (xOffset.getValue()) -xBias ;
-            double bottomDistance = centerHeight + coord.getY() * (yOffset.getValue()) -yBias;
+            double rightDistance = centerWidth - coord.getX() * (xOffset.getValue()) -xBias.getValue() ;
+            double bottomDistance = centerHeight + coord.getY() * (yOffset.getValue()) -yBias.getValue();
 
             TablePlayableCell coordCentre = new TablePlayableCell(coord, rightDistance, bottomDistance); //Double[]{rightDistance, bottomDistance};
 
@@ -266,14 +277,16 @@ public class TableCards extends VBox implements Initializable {
 
         initialX = event.getSceneX();
         initialY = event.getSceneY();
-        xBias+=dx;
-        yBias+=dy;
+        xBias.setValue(xBias.getValue()+dx);
+        yBias.setValue(yBias.getValue()+dy);
 
         applyPositions(anchor.getLayoutBounds());
     }
 
 
-
+    /**
+     * called on scroll event to implement zoom of table.
+     */
     @FXML
     public void onScroll(ScrollEvent scrollEvent){
         double scrollAmount = scrollEvent.getDeltaY();
