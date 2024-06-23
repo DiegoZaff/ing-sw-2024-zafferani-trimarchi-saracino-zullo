@@ -59,14 +59,7 @@ public class Table implements Serializable {
      * @param coordinatesToRemove
      */
     public void removePlayableCoordinate (Coordinate coordinatesToRemove){
-        if (playableCoords.contains(coordinatesToRemove)){
-            for (Coordinate c : playableCoords){
-                if (c.equals(coordinatesToRemove)){
-                     playableCoords.remove(c);
-                     break;
-                }
-            }
-        }
+        playableCoords.remove(coordinatesToRemove);
     }
 
 
