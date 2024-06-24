@@ -153,8 +153,9 @@ public class ChatView extends VBox implements Initializable, GuiObserver {
         this.receiver = getPlayersNicknames().get(1);
         this.currentChat = receiver;
         int nPlayers = getPlayersNicknames().size();
-        if(nPlayers > 1)
-            this.receiver = getPlayersNicknames().get(1);
+        if(nPlayers > 1) this.receiver = getPlayersNicknames().get(1);
+        ArrayList<ChatMessage> messages = findPrivateMessages(receiver);
+        this.messages.setAll(messages);
     }
 
     private void handleSelectFirstPlayer(MouseEvent mouseEvent) {
