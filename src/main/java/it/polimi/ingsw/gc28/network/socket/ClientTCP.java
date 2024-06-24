@@ -43,6 +43,7 @@ public class ClientTCP implements GuiCallable {
 
 
     protected ClientTCP(ObjectInputStream input, ObjectOutputStream output, boolean isCli) {
+        this.isCli = isCli;
         this.input = input;
         this.server = new ServerProxy(output);
     }

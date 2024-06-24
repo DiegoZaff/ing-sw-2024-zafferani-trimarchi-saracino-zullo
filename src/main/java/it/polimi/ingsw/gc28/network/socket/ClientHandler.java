@@ -40,7 +40,7 @@ public class ClientHandler implements VirtualView {
         try {
             MessageC2S receivedMessage = null;
             while ((receivedMessage = (MessageC2S) input.readObject()) != null) {
-                System.out.println("Received message from client: " + receivedMessage);
+                System.out.printf("Received message %s from client %s%n", receivedMessage.getType(), clientSocket.getInetAddress());
 
                 if(receivedMessage.getType().equals(MessageTypeC2S.CREATE_GAME)){
 
