@@ -168,6 +168,9 @@ public class ActionManager implements Serializable {
                     playerOfTurn = getNextPlayer();
                     updateRoundsLeft();
                 }else{
+                    if(getRoundsLeft().isPresent()){
+                        updateRoundsLeft();
+                    }
                     actionType = ActionType.DRAW_CARD;
                 }
             }
