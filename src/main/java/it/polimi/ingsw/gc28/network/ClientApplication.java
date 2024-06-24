@@ -29,14 +29,6 @@ public class ClientApplication {
         String hostServer = args[0];
         String hostClient = args[1];
 
-        int port;
-        try {
-            port = Integer.parseInt(args[2]);
-        } catch (NumberFormatException e) {
-            System.out.println(e.getMessage());
-            return;
-        }
-
         // defaults to using sockets
         boolean isRmi = false;
         boolean isCli = true;
@@ -52,6 +44,13 @@ public class ClientApplication {
         GameManagerClient.isCli = isCli;
 
         if(isCli){
+            int port;
+            try {
+                port = Integer.parseInt(args[2]);
+            } catch (NumberFormatException e) {
+                System.out.println(e.getMessage());
+                return;
+            }
             if (isRmi) {
                 System.out.println("Starting RMI connection...");
                 try {
