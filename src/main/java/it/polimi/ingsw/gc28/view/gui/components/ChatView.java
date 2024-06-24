@@ -130,7 +130,7 @@ public class ChatView extends VBox implements Initializable, GuiObserver {
         }
         if (nicknames.size() > 2) {
             Button button4 = new Button();
-            button4.setText(nicknames.get(1));
+            button4.setText(nicknames.get(2));
             button4.setPrefWidth(200);
             button4.setPrefHeight(40);
             button4.setStyle("-fx-background-color: #484848; -fx-background-radius: 16; -fx-text-fill: white;");
