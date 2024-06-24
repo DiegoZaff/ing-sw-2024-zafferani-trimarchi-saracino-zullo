@@ -242,7 +242,7 @@ public class ActionManager implements Serializable {
      */
     public void initRoundsLeft(){
 
-        int roundsToFinishCircle = ((indexFirstPlayer - players.indexOf(playerOfTurn) - 1) % players.size()) * 2 + 2;
+        int roundsToFinishCircle = ((indexFirstPlayer - players.indexOf(playerOfTurn) +players.size() - 1) % players.size()) * 2 + 2;
 
         int additionalCircle = players.size();
 
