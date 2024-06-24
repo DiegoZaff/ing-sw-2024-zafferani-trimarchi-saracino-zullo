@@ -282,7 +282,8 @@ public class Game implements Serializable {
             return;
         }
 
-        boolean has20points = playerOfTurn.get().getPoints() >= 20;
+        // TODO : ricorda di mettere a 20
+        boolean has20points = playerOfTurn.get().getPoints() >= 2;
 
         if(has20points){
             actionManager.initRoundsLeft();
