@@ -454,6 +454,7 @@ public class GameManagerClient {
     }
 
     public void updateSnackBarListener(SnackBarMessage msg){
+
         if(this.snackBarListener != null){
             Platform.runLater(() -> {
                 this.snackBarListener.showInSnackBar(msg);

@@ -43,7 +43,7 @@ public class MessageView extends VBox implements Initializable {
     }
     public void setMessage(String text) {
         String newText = text;
-        if(text.length() > 30){
+        if(text.length() > 40){
             newText = insertNewLines(text, 30);
         }
         message.setText(newText);
@@ -61,23 +61,23 @@ public class MessageView extends VBox implements Initializable {
         time.setText(text);
     }
 
-    public void setMyMessage(){
-        this.view.setPadding(new Insets(5,5,5,100));
-        boxMessage.setStyle("-fx-background-color: #60bbce; " +
+    public void setMyMessage(String color){
+        this.view.setPadding(new Insets(5,5,5,200));
+        boxMessage.setStyle("-fx-background-color: " + color +"; " +
                 "-fx-background-radius: 10; " +
                 "-fx-border-radius: 10; " +
                 "-fx-border-color: black; " +
-                "-fx-border-width: 2;"
+                "-fx-border-width: 1;"
         );
     }
 
-    public void setSomeoneElseMessage(){
-        this.view.setPadding(new Insets(5,100,5,5));
-        boxMessage.setStyle("-fx-background-color: #d7d779;" +
+    public void setSomeoneElseMessage(String color){
+        this.view.setPadding(new Insets(5,200,5,5));
+        boxMessage.setStyle("-fx-background-color: " + color +"; " +
                 "-fx-background-radius: 10; " +
                 "-fx-border-radius: 10; " +
                 "-fx-border-color: black; " +
-                "-fx-border-width: 2;"
+                "-fx-border-width: 1;"
         );
     }
 

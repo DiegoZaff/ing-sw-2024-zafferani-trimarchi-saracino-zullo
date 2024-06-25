@@ -28,12 +28,13 @@ public class MsgOnChatMessage extends MessageS2C{
 
         if(!isCli){
             SnackBarMessage msg;
-            if(isPrivate){
-                msg = new SnackBarMessage(sender + "has sent you a private message", InformationType.CHAT_MESSAGE);
-            } else {
-                msg = new SnackBarMessage(sender + "has sent a global message", InformationType.CHAT_MESSAGE);
+            if(isPrivate && receiver.equals(gameManagerClient.getPlayerName())){
+                msg = new SnackBarMessage(sender + " has sent you a private message", InformationType.CHAT_MESSAGE);
+                gameManagerClient.updateSnackBarListener(msg);
+            } else if(!isPrivate && !sender.equals(gameManagerClient.getPlayerName())) {
+                msg = new SnackBarMessage(sender + " has sent a global message", InformationType.CHAT_MESSAGE);
+                gameManagerClient.updateSnackBarListener(msg);
             }
-            gameManagerClient.updateSnackBarListener(msg);
             gameManagerClient.updateListeners(this);
         }
     }

@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc28.view.gui.components;
 
 import it.polimi.ingsw.gc28.model.chat.ChatMessage;
 import it.polimi.ingsw.gc28.model.utils.JoinInfo;
+import it.polimi.ingsw.gc28.model.utils.PlayerColor;
 import it.polimi.ingsw.gc28.network.messages.client.MsgChatMessage;
 import it.polimi.ingsw.gc28.network.messages.client.MsgJoinableGames;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
@@ -274,9 +275,13 @@ public class ChatView extends VBox implements Initializable, GuiObserver {
                 setGraphic(controller.getView());
 
                 if(sender.equals(GameManagerClient.getInstance().getPlayerName())){
-                    controller.setMyMessage();
+                    PlayerColor playerColor = GameManagerClient.getInstance().getMyPrivateRepresentation().getColor();
+                    String colorCode = playerColor.getHexCodeDark();
+                    controller.setMyMessage(colorCode);
                 } else {
-                    controller.setSomeoneElseMessage();
+                    PlayerColor color =  GameManagerClient.getInstance().getCurrentRepresentation().getPrivateRepresentationOf(sender).getColor();
+                    String colorCode = color.getHexCodeDark();
+                    controller.setSomeoneElseMessage(colorCode);
                 }
 
             }
