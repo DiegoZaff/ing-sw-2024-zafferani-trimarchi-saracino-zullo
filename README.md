@@ -1,5 +1,5 @@
 ## ing-sw-2024-zafferani-trimarchi-saracino-zullo
-<img src="C:\Users\zufra\IdeaProjects\ing-sw-2024-zafferani-trimarchi-saracino-zullo\deliverables\Rules and requirements\814qEh0JKdS.jpg"/>
+
 
 ## Software Engineering Project 2024 - Codex Naturalis
 
@@ -12,9 +12,9 @@ This project consists in the realization of a working application about the tabl
 ---
 ## Project specifications and rulebook
 
-Project specifications in [English](deliverables/Rules and requirements/requirements english.pdf) and [Italian](deliverables/Rules and requirements/requirements.pdf).
+Project specifications in [English]()) and [Italian]().
 
-Codex Naturalis rulebook in [English](deliverables/Rules and requirements/CODEX_Rulebook_EN.pdf) and [Italian](deliverables/Rules and requirements/CODEX_Rulebook_IT.pdf).
+Codex Naturalis rulebook in [English]() and [Italian]().
 
 ---
 
