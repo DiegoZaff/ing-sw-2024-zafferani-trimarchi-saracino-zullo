@@ -46,18 +46,23 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, GuiCa
                 TimeUnit.SECONDS.sleep(5);
                 sendPing();
             } catch (InterruptedException | IOException e) {
-                System.err.println("unable to reach the server!");
+                System.out.println("unable to reach the server!");
                 serverDown = true;
-                try {
-                    this.reconnect();
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
+                if (GameManagerClient.getInstance().getCanBeRecreated()){
+                    try {
+                        this.reconnect();
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    try {
+                        this.run();
+                    } catch (RemoteException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }else{
+                    System.out.println("try to reconnect later");
                 }
-                try {
-                    this.run();
-                } catch (RemoteException ex) {
-                    throw new RuntimeException(ex);
-                }
+
             }
         }).start();
 

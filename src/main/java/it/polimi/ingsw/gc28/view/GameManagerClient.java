@@ -38,6 +38,8 @@ public class GameManagerClient {
 
     private Integer playersIn;
 
+    private Boolean canBerecreated = false;
+
 
     private GameManagerClient() {
         this.gameId = null;
@@ -400,6 +402,7 @@ public class GameManagerClient {
         if (this.currentRepresentation != null){
             this.writeInConsole("someone disconnected!! the game ended");
             this.currentRepresentation = null;
+            canBerecreated = false;
         }
     }
 
@@ -484,5 +487,13 @@ public class GameManagerClient {
 
     public PlayerStatusInfo getMyPlayerStatusInfo(){
         return getCurrentRepresentation().getPlayerStatusInfo(playerName);
+    }
+
+    public void setCanBeRecreated(){
+        canBerecreated = true;
+    }
+
+    public Boolean getCanBeRecreated(){
+        return canBerecreated;
     }
 }

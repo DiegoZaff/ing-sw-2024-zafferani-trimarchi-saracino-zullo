@@ -61,19 +61,23 @@ public class ClientTCP implements GuiCallable {
             try {
                 sendPing();
             } catch (Exception e) {
-                System.err.println("Unable to reach the server");
+                System.out.println("Unable to reach the server");
                 serverDown = true;
+                if (GameManagerClient.getInstance().getCanBeRecreated()){
+                    try {
+                        reconnect();
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    try {
+                        this.run();
+                    } catch (RemoteException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }else{
+                    System.out.println("try to reconnect later");
+                }
 
-                try {
-                    reconnect();
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
-                try {
-                    this.run();
-                } catch (RemoteException ex) {
-                    throw new RuntimeException(ex);
-                }
             }
         }).start();
 

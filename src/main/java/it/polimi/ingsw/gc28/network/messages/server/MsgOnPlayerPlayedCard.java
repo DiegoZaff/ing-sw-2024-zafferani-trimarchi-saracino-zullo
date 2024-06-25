@@ -67,6 +67,9 @@ public class MsgOnPlayerPlayedCard extends MessageS2C{
             gameManagerClient.updateSnackBarListener(msg);
             gameManagerClient.updateListeners(this);
         }
+        if (!gameManagerClient.getCanBeRecreated()){
+            gameManagerClient.setCanBeRecreated();
+        }
     }
 
 
