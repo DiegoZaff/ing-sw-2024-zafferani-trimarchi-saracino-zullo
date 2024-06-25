@@ -1,21 +1,23 @@
 ## ing-sw-2024-zafferani-trimarchi-saracino-zullo
-<img src="C:\Users\zufra\OneDrive - Politecnico di Milano\Desktop\814qEh0JKdS.jpg"/>
 
 ## Software Engineering Project 2024 - Codex Naturalis
 
 ---
 ## Project description
 
-text
+This project consists in the realization of a working application about the table game Codex Naturalis on local multiplayer. The network communication  has been implemented in both Socket and RMI
+
 
 ---
 ## Project specifications and rulebook
 
-text
+Project specifications in English and Italian.
+
+Codex Naturalis rulebook in English and Italian.
 
 ---
 
-## How to run 
+## Running the application
 
 text
 
@@ -23,20 +25,64 @@ text
 
 ## Project functionalities
 
-text
+The following table shows the implemented functionalities
 
+| Project Funcionalities   |    |
+|--------------------------|----|
+| Complete Rules           | ✔  |
+| TUI                      | ✔  |
+| GUI                      | ✔  |
+| RMI Connection           | ✔  |
+| Socket COnnection        | ✔  |
+| Chat                     | ✔  |
+| Multiple Games           | ✔  |
+| Server Persistence       |  ✔ |
+| Disconnection Resilience | ❌  |
 ---
 
 ## Documentation
 
-### JavaDoc
+* ### JavaDoc
 
-### Class UML
+* ### UML Class diagram
 
-### Network UML
+* ### UML Network diagram
 
-### Test coverage
+* ### Test coverage report
+
+* ### Jar File
 
 ---
 
 ## Group members
+
+* Diego Zafferani
+
+* Alessandro Trimarchi
+
+* Giacomo Saracino
+
+* Francesco Zullo
+
+---
+
+
+
+## Software used for Project Development
+
+| Software | Description                |
+|----------|----------------------------|
+| Maven    | Dependency Management      |
+| IntelliJ | IDE                        |
+| JSON     | Loading Cards              |
+| JavaFX   | GUI                        |
+| DrawIO   | Class and Network diagrams |
+| JUnit    | Unit Testing               |
+--- 
+## License
+
+* ### Game license
+
+* ### Project License
+
+---
