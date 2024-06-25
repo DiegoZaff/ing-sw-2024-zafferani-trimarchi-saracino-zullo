@@ -24,9 +24,9 @@ public class MsgOnChooseColor extends MessageS2C{
         String text;
 
         if(playerName.equals(gameManagerClient.getPlayerName())){
-            text = "You have chosen your color";
+            text = "You have chosen color";
         }else{
-            text = String.format(" %s has chosen his color!", playerName);
+            text = String.format("%s has chosen the color %s!", playerName, gameRepresentation.getPlayerColor(playerName));
         }
 
         if(isCli){

@@ -207,7 +207,7 @@ public class GameManagerClient {
         try {
             this.writeInConsole(table.toString());
         }catch (NoSuchElementException e){
-            this.writeInConsole(e.getMessage());
+            this.writeInConsole("the table is still empty");
         }
     }
 
@@ -312,7 +312,7 @@ public class GameManagerClient {
         }else{
             cardId = "null";
         }
-        this.writeInConsole(String.format("Your secret objective is %s", cardId));
+        this.writeInConsole(String.format("Your secret objective is %s\n", cardId));
     }
 
     public void showColor(){
@@ -380,7 +380,7 @@ public class GameManagerClient {
 
 
     private PrivateRepresentation getPrivateRepresentation(String name){
-        PrivateRepresentation repr = currentRepresentation.getRepresentations().get(playerName);
+        PrivateRepresentation repr = currentRepresentation.getRepresentations().get(name);
 
         if(repr == null){
             // TODO : why throw exception?

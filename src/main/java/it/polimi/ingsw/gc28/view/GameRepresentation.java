@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc28.view;
 
 import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.model.chat.Chat;
+import it.polimi.ingsw.gc28.model.utils.PlayerColor;
 import it.polimi.ingsw.gc28.view.utils.PlayerStatusInfo;
 
 import java.io.Serializable;
@@ -136,5 +137,9 @@ public class GameRepresentation implements Serializable {
 
         return  new PlayerStatusInfo(player, privateRep.getColor(), points.get(player), privateRep.isWinner(), getRoundsLeft(), actionExpected, playerToPlay);
 
+    }
+
+    public PlayerColor getPlayerColor(String name){
+        return this.getPrivateRepresentationOf(name).getColor();
     }
 }
