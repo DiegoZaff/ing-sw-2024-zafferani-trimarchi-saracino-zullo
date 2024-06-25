@@ -1,5 +1,5 @@
 ## ing-sw-2024-zafferani-trimarchi-saracino-zullo
-<img src="C:\Users\zufra\IdeaProjects\ing-sw-2024-zafferani-trimarchi-saracino-zullo\deliverables\Rules and requirements\814qEh0JKdS.jpg"/>
+
 
 ## Software Engineering Project 2024 - Codex Naturalis
 
