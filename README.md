@@ -1,4 +1,5 @@
 ## ing-sw-2024-zafferani-trimarchi-saracino-zullo
+<img src="C:\Users\zufra\IdeaProjects\ing-sw-2024-zafferani-trimarchi-saracino-zullo\deliverables\Rules and requirements\814qEh0JKdS.jpg"/>
 
 ## Software Engineering Project 2024 - Codex Naturalis
 
@@ -11,9 +12,9 @@ This project consists in the realization of a working application about the tabl
 ---
 ## Project specifications and rulebook
 
-Project specifications in English and Italian.
+Project specifications in [English](deliverables/Rules and requirements/requirements english.pdf) and [Italian](deliverables/Rules and requirements/requirements.pdf).
 
-Codex Naturalis rulebook in English and Italian.
+Codex Naturalis rulebook in [English](deliverables/Rules and requirements/CODEX_Rulebook_EN.pdf) and [Italian](deliverables/Rules and requirements/CODEX_Rulebook_IT.pdf).
 
 ---
 
@@ -42,27 +43,27 @@ The following table shows the implemented functionalities
 
 ## Documentation
 
-* ### JavaDoc
+* ### [JavaDoc]()
 
-* ### UML Class diagram
+* ### [UML Class diagram](https://github.com/DiegoZaff/ing-sw-2024-zafferani-trimarchi-saracino-zullo/blob/a604bbb1bd29c48ee914b22a45e0188c3ddd3fdc/deliverables/UML2/uml%20model%202.png)
 
-* ### UML Network diagram
+* ### [UML Network diagram](https://github.com/DiegoZaff/ing-sw-2024-zafferani-trimarchi-saracino-zullo/blob/a604bbb1bd29c48ee914b22a45e0188c3ddd3fdc/deliverables/UML2/uml%20rete.drawio.png)
 
-* ### Test coverage report
+* ### [Test coverage report]()
 
-* ### Jar File
+* ### [Jar File]()
 
 ---
 
 ## Group members
 
-* Diego Zafferani
+* [Diego Zafferani]()
 
-* Alessandro Trimarchi
+* [Alessandro Trimarchi]()
 
-* Giacomo Saracino
+* [Giacomo Saracino]()
 
-* Francesco Zullo
+* [Francesco Zullo]()
 
 ---
 
@@ -81,8 +82,8 @@ The following table shows the implemented functionalities
 --- 
 ## License
 
-* ### Game license
+* ### Game [License]()
 
-* ### Project License
+* ### Project [License]()
 
 ---
