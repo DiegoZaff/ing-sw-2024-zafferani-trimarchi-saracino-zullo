@@ -3,26 +3,26 @@
 ![Codex Naturalis](https://github.com/DiegoZaff/ing-sw-2024-zafferani-trimarchi-saracino-zullo/blob/a8db7a035c7d94030ae9989600cca92f9ab789fa/deliverables/Rules%20and%20requirements/814qEh0JKdS.jpg)
 ## Software Engineering Project 2024 - Codex Naturalis
 
----
+
 ## Project description
 
 This project consists in the realization of a working application about the table game Codex Naturalis on local multiplayer. The network communication  has been implemented in both Socket and RMI
 
 
----
+
 ## Project specifications and rulebook
 
 Project specifications in [English](https://github.com/DiegoZaff/ing-sw-2024-zafferani-trimarchi-saracino-zullo/blob/a8db7a035c7d94030ae9989600cca92f9ab789fa/deliverables/Rules%20and%20requirements/requirements%20english.pdf) and [Italian](https://github.com/DiegoZaff/ing-sw-2024-zafferani-trimarchi-saracino-zullo/blob/a8db7a035c7d94030ae9989600cca92f9ab789fa/deliverables/Rules%20and%20requirements/requirements.pdf).
 
 Codex Naturalis rulebook in [English](https://github.com/DiegoZaff/ing-sw-2024-zafferani-trimarchi-saracino-zullo/blob/a8db7a035c7d94030ae9989600cca92f9ab789fa/deliverables/Rules%20and%20requirements/CODEX_Rulebook_EN.pdf) and [Italian](https://github.com/DiegoZaff/ing-sw-2024-zafferani-trimarchi-saracino-zullo/blob/a8db7a035c7d94030ae9989600cca92f9ab789fa/deliverables/Rules%20and%20requirements/CODEX_Rulebook_IT.pdf).
 
----
+
 
 ## Running the application
 
 text
 
----
+
 
 ## Project functionalities
 
@@ -39,7 +39,7 @@ The following table shows the implemented functionalities
 | Multiple Games           | ✔  |
 | Server Persistence       |  ✔ |
 | Disconnection Resilience | ❌  |
----
+
 
 ## Documentation
 
@@ -53,19 +53,19 @@ The following table shows the implemented functionalities
 
 * ### [Jar File]()
 
----
+
 
 ## Group members
 
-* [Diego Zafferani]()
+* [Diego Zafferani](https://github.com/DiegoZaff)
 
-* [Alessandro Trimarchi]()
+* [Alessandro Trimarchi](https://github.com/AlessandroTrimarchi)
 
-* [Giacomo Saracino]()
+* [Giacomo Saracino](https://github.com/giasa-poli)
 
-* [Francesco Zullo]()
+* [Francesco Zullo](https://github.com/ZulloFrancesco)
 
----
+
 
 
 
@@ -79,11 +79,11 @@ The following table shows the implemented functionalities
 | JavaFX   | GUI                        |
 | DrawIO   | Class and Network diagrams |
 | JUnit    | Unit Testing               |
---- 
+
 ## License
 
-* ### Game [License]()
+* ### Game [License](https://www.craniocreations.it/prodotto/codex-naturalis)
 
 * ### Project [License]()
 
----
+
