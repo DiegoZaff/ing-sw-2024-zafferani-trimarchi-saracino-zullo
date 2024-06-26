@@ -21,11 +21,18 @@ public class Table implements Serializable {
 
 
     private final Map<Coordinate, Cell> mapPositions;
-
+    /**
+     * is an array that contains all the coordinates where a card can be played
+     */
     private final ArrayList<Coordinate> playableCoords;
-
+    /**
+     * is an array that contains all the coordinates that will never be playable
+     */
     private final ArrayList<Coordinate> unplayableCoords;
 
+    /**
+     * this map contains the current number of every resource
+     */
     private final Map<Resource, Integer> resourceCounters;
 
 

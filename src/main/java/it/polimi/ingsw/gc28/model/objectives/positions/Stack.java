@@ -12,6 +12,11 @@ public class Stack extends PositionType implements Serializable {
 
     public final PositionStackType type;
 
+    /**
+     * this method gets the needed coordinates to check for an objective
+     * @param coord starting coordinate
+     * @return
+     */
     @Override
     public ArrayList<Coordinate> getNeighborsCoordinates(Coordinate coord) {
         ArrayList<Coordinate> coords = new ArrayList<Coordinate>();

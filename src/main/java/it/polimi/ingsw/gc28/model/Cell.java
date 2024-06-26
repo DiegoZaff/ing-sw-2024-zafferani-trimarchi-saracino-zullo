@@ -12,11 +12,19 @@ import java.util.Optional;
  * the moment the card was played and the side of the card
  */
 public class Cell implements Serializable {
-
+    /**
+     * is the card played in the cell
+     */
     private final CardGame card;
 
+    /**
+     * is used to reconstruct the order of play for each table
+     */
     private final int orderPlay;
 
+    /**
+     * gives information of the side the card has been played on
+     */
     private final boolean isPlayedFront;
 
     public boolean getIsPlayedFront(){

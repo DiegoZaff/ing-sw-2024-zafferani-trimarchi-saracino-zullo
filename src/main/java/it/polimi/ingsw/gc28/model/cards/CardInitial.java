@@ -82,6 +82,12 @@ public class CardInitial extends CardGame {
         return Optional.empty();
     }
 
+    /**
+     * this method plays a card with the front facing up
+     * @param table indicates the table in which the card is played
+     * @param playCoordinate indicate the coordinates in which the card should be player
+     * @return
+     */
     @Override
     public int playFront(Table table, Coordinate playCoordinate){
         Cell cell = new Cell(this, 0, true);
@@ -89,6 +95,12 @@ public class CardInitial extends CardGame {
         table.removePlayableCoordinate(playCoordinate);
         return 0;
     }
+
+    /**
+     * this method plays a card facing down
+     * @param table indicates the table in which the card is played
+     * @param playCoordinate indicate the coordinates in which the card should be played
+     */
     @Override
     public void playBack(Table table, Coordinate playCoordinate){
         Cell cell = new Cell(this, 0, false);
@@ -201,6 +213,12 @@ public class CardInitial extends CardGame {
 
     }
 
+    /**
+     * this method is used to check whether a card is in the player's hand
+     * @param hand of the player
+     * @param cardInitial card that the player wants to play
+     * @return
+     */
     @Override
     public boolean checkHand(ArrayList<CardResource> hand, CardInitial cardInitial){
         return !(this.equals(cardInitial));

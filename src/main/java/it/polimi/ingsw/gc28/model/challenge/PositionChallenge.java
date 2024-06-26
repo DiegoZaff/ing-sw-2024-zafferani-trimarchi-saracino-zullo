@@ -11,6 +11,12 @@ public class PositionChallenge extends Challenge implements Serializable {
         super(type);
     }
 
+    /**
+     * this method counts how many vertices it covers, it is used for the covered vertices challenge
+     * @param table of the player
+     * @param coordinate from where to check whether it covers any vertices
+     * @return
+     */
     private int countAdjacent(Table table, Coordinate coordinate){
         int i = 0;
         if (table.CellNWPresent(coordinate)){

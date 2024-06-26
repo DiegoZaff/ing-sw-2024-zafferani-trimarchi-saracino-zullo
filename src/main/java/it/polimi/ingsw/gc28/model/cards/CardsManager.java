@@ -26,6 +26,9 @@ public class CardsManager {
 
     private final Map<String, CardInitial> cardInitialMap;
 
+    /**
+     * this method is used for the initialization of every card by reading a JSON file
+     */
     private CardsManager()  {
         cardResourceMap = new HashMap<>();
         cardGoldMap = new HashMap<>();

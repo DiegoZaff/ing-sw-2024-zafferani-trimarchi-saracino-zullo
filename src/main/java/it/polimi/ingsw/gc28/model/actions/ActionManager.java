@@ -20,11 +20,23 @@ import java.util.Random;
  */
 public class ActionManager implements Serializable {
 
+    /**
+     * Number of players in the game
+     */
     final private int nPlayers;
 
+    /**
+     * Arraylist containing players in the game
+     */
     private ArrayList<Player> players;
 
+    /**
+     * Player expected to play
+     */
     private Player playerOfTurn;
+    /**
+     * initial player of the game, it is important for the flow of the game
+     */
     private Player firstPlayer;
 
 
@@ -226,6 +238,9 @@ public class ActionManager implements Serializable {
         return firstPlayer;
     }
 
+    /**
+     * this method is used for the game flow of the endgame
+     */
     public void updateRoundsLeft(){
         if(getRoundsLeft().isPresent() && roundsLeft > 0){
             roundsLeft -= 1;
@@ -250,6 +265,10 @@ public class ActionManager implements Serializable {
     }
 
 
+    /**
+     * this is used to restore the game in cas eof a crash from the server
+     * @throws UnrestorableGameError
+     */
     public void setWaitForReconnections() throws UnrestorableGameError {
         if(actionType == null){
             // looks like game never started in the first place.

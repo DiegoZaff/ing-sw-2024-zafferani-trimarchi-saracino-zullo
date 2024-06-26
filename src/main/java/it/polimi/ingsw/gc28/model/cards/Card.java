@@ -10,6 +10,9 @@ import java.io.Serializable;
  * a general way.
  */
 public abstract class Card implements Serializable {
+    /**
+     * unique identifier for a card, gives information about its type but not its contents
+     */
     final private String id;
     private final String frontImagePath;
     private final String backImagePath;

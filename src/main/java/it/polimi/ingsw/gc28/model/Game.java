@@ -28,6 +28,9 @@ import java.util.stream.Collectors;
 public class Game implements Serializable {
 
     private ActionManager actionManager;
+    /**
+     * is a list of the public objectives for the game, there are 2 CardObjectives for each game
+     */
     private ArrayList<CardObjective> globalObjectives;
     private ArrayList<CardResource> faceUpResourceCards;
     private ArrayList<CardGold> faceUpGoldCards;
@@ -150,6 +153,9 @@ public class Game implements Serializable {
         return nPlayers;
     }
 
+    /**
+     * this method is used to check when the lobby is full
+     */
     private void checkStartGame(){
         if(players.size() == nPlayers){
             gameStart();
@@ -425,6 +431,7 @@ public class Game implements Serializable {
      * This method take the card from the top of the deck and add that card to the player's hand
      * @param playerName name of playing player
      * @param fromGoldDeck is a boolean that tells from which deck the card needs to be drawn
+     * @return the drawn card
      */
     public CardResource drawGameCard(String playerName, boolean fromGoldDeck) throws PlayerActionError{
 
@@ -735,7 +742,7 @@ public class Game implements Serializable {
 
     /**
      * this method checks if every player in the game is connected and the game can restart
-     * @return
+     * @return a boolean
      */
     public boolean isEveryoneReconnected(){
         return players.stream().allMatch(Player::isConnected);

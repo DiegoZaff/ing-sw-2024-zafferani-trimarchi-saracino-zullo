@@ -19,6 +19,10 @@ public enum ResourcePrimaryType {
         };
     }
 
+    /**
+     * this returns the associated color for each resourceType
+     * @return the color
+     */
     public String getResourceColor() {
         return switch (this) {
             case MUSHROOM -> Colors.RED.getCode();

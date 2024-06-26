@@ -25,6 +25,9 @@ import java.util.Optional;
 
 
 public class CardGold extends CardResource {
+    /**
+     * represents the map of coordinates playable in the table
+     */
     private Map<ResourcePrimary, Integer> playability;
     private Challenge challenge;
 
@@ -79,6 +82,12 @@ public class CardGold extends CardResource {
         return true;
     }
 
+    /**
+     * this plays a face-up card on the player's table
+     * @param table indicates the table in which the card is played
+     * @param playCoordinate indicate the coordinates in which the card should be played
+     * @return
+     */
     @Override
     public int playFront(Table table, Coordinate playCoordinate){
         if (checkCardPlayability(table)){
@@ -92,7 +101,16 @@ public class CardGold extends CardResource {
     public int getPoints(Table table, Coordinate coordinate){
         return getChallenge().map(value -> value.challengePoints(table, coordinate)).orElseGet(() -> super.getPoints(table, coordinate));
     }
-   @Override
+
+    /**
+     * this method draws a card from the deck
+     * @param faceUpResCards
+     * @param faceUpGoldCards
+     * @param deck
+     * @param player
+     * @throws PlayerActionError
+     */
+    @Override
     public void drawFaceUpCard(ArrayList<CardResource> faceUpResCards, ArrayList<CardGold> faceUpGoldCards, Deck deck, Player player) throws PlayerActionError {
         if(!faceUpGoldCards.contains(this)){
             throw new NotDrawableCardError(this.getId());

@@ -13,6 +13,11 @@ public class Diagonal extends PositionType implements Serializable {
         this.diagonalType = diagonalType;
     }
 
+    /**
+     * this method is used to get the diagonal coordinates for each position type
+     * @param coord starting coordinate
+     * @return
+     */
     @Override
     public ArrayList<Coordinate> getNeighborsCoordinates(Coordinate coord){
         ArrayList<Coordinate> coords = new ArrayList<Coordinate>();
