@@ -6,6 +6,7 @@ import javafx.beans.binding.DoubleBinding;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
@@ -25,12 +26,21 @@ public class GuiApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 
+
+        
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/polimi/ingsw/gc28/gui/menu.fxml"));
         Font.loadFont(getClass().getResourceAsStream("/it/polimi/ingsw/gc28/font/lexend/LexendZetta-VariableFont_wght.ttf"), 12);
         Font.loadFont(getClass().getResourceAsStream("/it/polimi/ingsw/gc28/font/lexend/static/LexendZetta-Bold.ttf"), 16);
         Font.loadFont(getClass().getResourceAsStream("/it/polimi/ingsw/gc28/font/lexend/static/LexendZetta-Medium.ttf"), 14);
         Font.loadFont(getClass().getResourceAsStream("/it/polimi/ingsw/gc28/font/lexend/static/LexendZetta-Light.ttf"), 12);
         Font.loadFont(getClass().getResourceAsStream("/it/polimi/ingsw/gc28/font/lexend/static/LexendZetta-Regular.ttf"), 12);
+
+        Image IMAGE = new Image("file:src/main/java/it/polimi/ingsw/gc28/view/gui/icon.png");
+
+        stage.getIcons().add(IMAGE);
+
+        stage.setTitle("Codex Naturalis");
 
         // load fxml
         Parent root = loader.load();
