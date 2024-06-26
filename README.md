@@ -84,6 +84,6 @@ The following table shows the implemented functionalities
 
 * ### Game [License](https://www.craniocreations.it/prodotto/codex-naturalis)
 
-* ### Project [License]()
+* ### Project [License](https://github.com/DiegoZaff/ing-sw-2024-zafferani-trimarchi-saracino-zullo/blob/62c8999c15e8e05dc601cd14efefa12c3c669287/LICENSE)
 
 
