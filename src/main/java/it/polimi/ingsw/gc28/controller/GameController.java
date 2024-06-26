@@ -634,7 +634,7 @@ public class GameController {
 
     public void sendPing() throws RemoteException {
         for (VirtualView client : clients.values()){
-            client.sendMessage(new MsgPingS2c(MessageTypeS2C.PING));
+            client.sendMessage(new msgPingS2C(MessageTypeS2C.PING));
         }
     }
 

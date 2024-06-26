@@ -113,7 +113,7 @@ public class Deck implements Serializable {
      * this method is used only for testing more easily
      */
     public boolean isGoldEmpty(){
-        return cardResourceDeck.isEmpty();
+        return cardGoldDeck.isEmpty();
     }
 
     /**
@@ -219,11 +219,17 @@ public class Deck implements Serializable {
     }*/
 
     public CardGold getNextGoldCard(){
-        return cardGoldDeck.getFirst();
+        if(!cardGoldDeck.isEmpty()){
+            return cardGoldDeck.getFirst();
+        }
+        return null;
     }
 
     public CardResource getNextResourceCard(){
-        return cardResourceDeck.getFirst();
+        if(!cardResourceDeck.isEmpty()){
+            return cardResourceDeck.getFirst();
+        }
+        return null;
     }
 
 

@@ -290,4 +290,12 @@ public class ActionManager implements Serializable {
 
         actionType = ActionType.WAIT_RECONNECTIONS;
     }
+
+    public void initRoundsLeftDecksFinished() {
+        // minus 1 rounds because curr player has already played and now is drawing
+        int roundsToFinishCircle = ((indexFirstPlayer - players.indexOf(playerOfTurn) +players.size() - 1) % players.size()) * 2 + 1;
+
+        int additionalCircle = players.size();
+
+        roundsLeft = additionalCircle + roundsToFinishCircle;    }
 }

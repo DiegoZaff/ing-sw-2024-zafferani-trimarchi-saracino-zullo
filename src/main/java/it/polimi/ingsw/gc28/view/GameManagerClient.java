@@ -6,6 +6,7 @@ import it.polimi.ingsw.gc28.model.utils.PlayerColor;
 import it.polimi.ingsw.gc28.model.Table;
 
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
+import it.polimi.ingsw.gc28.view.utils.InformationType;
 import it.polimi.ingsw.gc28.view.utils.PlayerStatusInfo;
 import it.polimi.ingsw.gc28.view.utils.SnackBarMessage;
 import javafx.application.Platform;
@@ -38,7 +39,7 @@ public class GameManagerClient {
 
     private Integer playersIn;
 
-    private Boolean canBerecreated = false;
+    private Boolean canBeRecreated = false;
 
 
     private GameManagerClient() {
@@ -400,9 +401,14 @@ public class GameManagerClient {
 
     public void terminateGame(){
         if (this.currentRepresentation != null){
-            this.writeInConsole("someone disconnected!! the game ended");
+            if(isCli){
+                this.writeInConsole("someone disconnected!! the game ended");
+            }else{
+                SnackBarMessage msg = new SnackBarMessage("Someone disconnected, Game terminated...", InformationType.ERROR);
+                updateSnackBarListener(msg);
+            }
             this.currentRepresentation = null;
-            canBerecreated = false;
+            canBeRecreated = false;
         }
     }
 
@@ -490,10 +496,10 @@ public class GameManagerClient {
     }
 
     public void setCanBeRecreated(){
-        canBerecreated = true;
+        canBeRecreated = true;
     }
 
     public Boolean getCanBeRecreated(){
-        return canBerecreated;
+        return canBeRecreated;
     }
 }

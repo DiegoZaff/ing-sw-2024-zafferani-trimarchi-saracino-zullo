@@ -82,15 +82,21 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, GuiCa
     private void reconnect() throws IOException {
         String me = GameManagerClient.getInstance().getPlayerName();
         MsgReconnect msg = new MsgReconnect(GameManagerClient.getInstance().getGameId(), me, this);
+        SnackBarMessage msgSnackBar = new SnackBarMessage("Trying to reconnect...", InformationType.ERROR);
         boolean flag = true;
         while (flag){
             try{
                 TimeUnit.SECONDS.sleep(6);
-                System.out.println("trying to reconnect...");
+                if(isCli){
+                    System.out.println("trying to reconnect...");
+                }else{
+                    GameManagerClient.getInstance().updateSnackBarListener(msgSnackBar);
+                }
+                // questo sempre
                 VirtualServer server = (VirtualServer) registry.lookup("VirtualServer");
-
                 this.server = server;
 
+                // questo solo se  if (GameManagerClient.getInstance().getCanBeRecreated()){
                 server.sendMessage(msg);
                 flag = false;
             }catch (Exception ignored){
@@ -151,14 +157,6 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, GuiCa
         return client;
     }
 
-    private void connectToGame(String path) {
-        try {
-            virtualGameStub = (VirtualStub) registry.lookup(path);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     @Override
     public void sendMessage(MessageS2C message) {
         GameManagerClient.getInstance().addMessageToQueue(message);
@@ -168,7 +166,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, GuiCa
     @Override
     public void attachGameStub(VirtualStub gameStub) throws RemoteException {
         virtualGameStub = gameStub;
-        System.out.println("Attached Game Stub To Client RMI|");
+        System.out.println("Attached Game Stub To Client RMI!");
     }
 
 

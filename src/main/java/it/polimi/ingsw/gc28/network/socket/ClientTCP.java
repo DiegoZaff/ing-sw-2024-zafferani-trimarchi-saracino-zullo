@@ -1,9 +1,5 @@
 package it.polimi.ingsw.gc28.network.socket;
 
-import it.polimi.ingsw.gc28.network.messages.server.MessageTypeS2C;
-import it.polimi.ingsw.gc28.network.messages.server.MsgPingS2c;
-import it.polimi.ingsw.gc28.network.rmi.VirtualServer;
-import it.polimi.ingsw.gc28.network.rmi.VirtualView;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.network.messages.client.*;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
@@ -97,13 +93,17 @@ public class ClientTCP implements GuiCallable {
     }
 
     private void reconnect() throws IOException {
-
+        SnackBarMessage msgSnackBar = new SnackBarMessage("Trying to reconnect...", InformationType.ERROR);
         MsgReconnect msg = new MsgReconnect(GameManagerClient.getInstance().getGameId(), GameManagerClient.getInstance().getPlayerName());
         boolean flag = true;
         while (flag){
             try{
                 TimeUnit.SECONDS.sleep(5);
-                System.out.println("trying to reconnect...");
+                if(isCli){
+                    System.out.println("trying to reconnect...");
+                }else{
+                    GameManagerClient.getInstance().updateSnackBarListener(msgSnackBar);
+                }
                 Socket s = new Socket(host,port);
                 ObjectOutputStream socketTx = new ObjectOutputStream(s.getOutputStream());
                 ObjectInputStream socketRx = new ObjectInputStream(s.getInputStream());
@@ -118,7 +118,6 @@ public class ClientTCP implements GuiCallable {
 
         }
 
-        System.out.println("Reconnected");
         server.sendMessage(msg);
 
         serverDown = false;

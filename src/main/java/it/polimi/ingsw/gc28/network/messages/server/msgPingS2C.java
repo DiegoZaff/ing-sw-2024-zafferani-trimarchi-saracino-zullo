@@ -4,9 +4,9 @@ import it.polimi.ingsw.gc28.view.GameManagerClient;
 /**
  * message sent from the server to the client to ping the client
  */
-public class MsgPingS2c extends MessageS2C{
+public class msgPingS2C extends MessageS2C{
 
-    public MsgPingS2c(MessageTypeS2C type) {
+    public msgPingS2C(MessageTypeS2C type) {
         super(type);
     }
 

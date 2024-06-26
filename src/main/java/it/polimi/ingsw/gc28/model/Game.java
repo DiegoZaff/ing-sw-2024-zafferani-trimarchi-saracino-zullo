@@ -289,12 +289,12 @@ public class Game implements Serializable {
         }
 
         // TODO : ricorda di mettere a 20
-        boolean has20points = playerOfTurn.get().getPoints() >= 20;
+        boolean has20points = playerOfTurn.get().getPoints() >= 1;
 
         if(has20points){
             actionManager.initRoundsLeft();
         }else if (this.deck.isResEmpty() && this.deck.isGoldEmpty()){ //implementazione fine partita con 0 carte in entrambi deck
-            actionManager.initRoundsLeft();
+            actionManager.initRoundsLeftDecksFinished();
         }
 
 
@@ -455,7 +455,11 @@ public class Game implements Serializable {
                 cardGold = cardGoldOptional.get();
                 playingPlayer.get().addCardToHand(cardGold);
 
-                actionManager.nextMove();
+                try {
+                    setupNextMove();
+                } catch (GameEndedNotification ignored) {
+                    // this cant happen
+                }
 
                 return cardGold;
             }
@@ -468,12 +472,16 @@ public class Game implements Serializable {
                 cardResource = cardResourceOptional.get();
                 playingPlayer.get().addCardToHand(cardResource);
 
-                actionManager.nextMove();
+                try {
+                    setupNextMove();
+                } catch (GameEndedNotification ignored) {
+                    // this cant happen
+                }
 
                 return cardResource;
             }
 
-            throw new DeckHaveNoMoreCards("gold");
+            throw new DeckHaveNoMoreCards("resource");
         }
 
     }
@@ -498,7 +506,11 @@ public class Game implements Serializable {
 
         cardDrawn.drawFaceUpCard(this.faceUpResourceCards, this.faceUpGoldCards, this.deck, playingPlayer.get());
 
-        actionManager.nextMove();
+        try {
+            setupNextMove();
+        } catch (GameEndedNotification ignored) {
+            // happens only after playing a card
+        }
 
     }
 
@@ -650,9 +662,13 @@ public class Game implements Serializable {
 
         ActionType actionExpected = actionExpected();
 
+        CardResource nextResourceCard = deck.getNextResourceCard();
+
+        CardGold nextGoldCard = deck.getNextGoldCard();
+
         return new GameRepresentation(playerToPlayName, actionExpected ,this.getPlayersNickname(),
                 this.getObjectiveIDs(), this.getFaceUpResourceCardsIDs() ,this.getFaceUpGoldCardsIDs(),
-                deck.getNextResourceCard().getId(), deck.getNextGoldCard().getId(),
+                nextResourceCard != null ? nextResourceCard.getId() : null, nextGoldCard != null ? nextGoldCard.getId() : null,
                 this.getPointsMap(), this.getPrivateRepresentationsMap(), this.getChat(), this.getNPlayers(),
                 this.getRoundsLeft().isPresent() ? this.getRoundsLeft().get() : null);
     }

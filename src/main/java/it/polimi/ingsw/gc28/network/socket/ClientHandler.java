@@ -3,23 +3,14 @@ package it.polimi.ingsw.gc28.network.socket;
 
 import it.polimi.ingsw.gc28.controller.GameController;
 import it.polimi.ingsw.gc28.controller.GamesManager;
-import it.polimi.ingsw.gc28.model.Coordinate;
-import it.polimi.ingsw.gc28.model.Player;
-import it.polimi.ingsw.gc28.model.Table;
-import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
 import it.polimi.ingsw.gc28.network.messages.client.*;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
-import it.polimi.ingsw.gc28.network.messages.server.MsgOnGameCreated;
-import it.polimi.ingsw.gc28.network.messages.server.MsgPingS2c;
-import it.polimi.ingsw.gc28.network.rmi.GameStub;
-import it.polimi.ingsw.gc28.network.rmi.VirtualServer;
 import it.polimi.ingsw.gc28.network.rmi.VirtualStub;
 import it.polimi.ingsw.gc28.network.rmi.VirtualView;
 
 import java.io.*;
 import java.net.Socket;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 
 public class ClientHandler implements VirtualView {
     final ServerTCP server;
