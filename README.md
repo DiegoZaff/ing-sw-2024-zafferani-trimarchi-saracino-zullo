@@ -21,9 +21,17 @@ Codex Naturalis rulebook in [English](https://github.com/DiegoZaff/ing-sw-2024-z
 
 ## Running the application
 
-text
+To run the server:
+/path/to/openjdk21/bin/java -jar ServerApplication.jar 8886 8887
 
+To run the client GUI:
+/path/to/openjdk21/bin/java -jar ClientApplication.jar client-ip --gui
+ex: /path/to/openjdk21/bin/java -jar ClientApplication.jar 127.0.0.1 --gui
 
+To run the client TUI:
+/path/to/openjdk21/bin/java -jar ClientApplication.jar server-ip client-ip port (--rmi)
+ex rmi: /path/to/openjdk21/bin/java -jar ClientApplication.jar 127.0.0.1 127.0.0.1 8887 --rmi
+ex tcp: /path/to/openjdk21/bin/java -jar ClientApplication.jar 127.0.0.1 127.0.0.1 8886
 
 ## Project functionalities
 
