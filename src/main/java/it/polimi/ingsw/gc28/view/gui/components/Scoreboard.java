@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc28.view.gui.components;
 
 import it.polimi.ingsw.gc28.model.utils.PlayerColor;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
+import it.polimi.ingsw.gc28.view.GameRepresentation;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -167,8 +168,13 @@ public class Scoreboard extends VBox implements Initializable {
     }
 
     public void showScoreboard(){
+        GameRepresentation representation = GameManagerClient.getInstance().getCurrentRepresentation();
 
-         this.pointsPlayers =  GameManagerClient.getInstance().getCurrentRepresentation().getPoints();
+         this.pointsPlayers = representation != null ? representation.getPoints() : new HashMap<>();
+
+         if(pointsPlayers.isEmpty()){
+             System.err.println("Error in leaderboards... empty map");
+         }
 
 
         for(Map.Entry<String, Integer> entry : pointsPlayers.entrySet()){

@@ -48,21 +48,16 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, GuiCa
             } catch (InterruptedException | IOException e) {
                 System.out.println("unable to reach the server!");
                 serverDown = true;
-                if (GameManagerClient.getInstance().getCanBeRecreated()){
-                    try {
-                        this.reconnect();
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                    try {
-                        this.run();
-                    } catch (RemoteException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                }else{
-                    System.out.println("try to reconnect later");
+                try {
+                    this.reconnect();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
                 }
-
+                try {
+                    this.run();
+                } catch (RemoteException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         }).start();
 
@@ -97,7 +92,9 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, GuiCa
                 this.server = server;
 
                 // questo solo se  if (GameManagerClient.getInstance().getCanBeRecreated()){
-                server.sendMessage(msg);
+                if (GameManagerClient.getInstance().getCanBeRecreated()){
+                    server.sendMessage(msg);
+                }
                 flag = false;
             }catch (Exception ignored){
             }
@@ -169,9 +166,11 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, GuiCa
         System.out.println("Attached Game Stub To Client RMI!");
     }
 
-
     @Override
-    public void closeConnection() {}
+    public void closeConnectionGame() throws RemoteException {
+        virtualGameStub = null;
+    }
+
 
     @Override
     public void sendMessageToServer(MessageC2S message) {
@@ -187,10 +186,15 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, GuiCa
                     }
                 } else {
                     if (virtualGameStub == null) {
-                        System.out.println("Looks like you're not in a game!");
+                        if(isCli){
+                            System.out.println("Looks like you're not in a game!");
+                        }else{
+                            SnackBarMessage msg = new SnackBarMessage("Looks like you're not in a game!", InformationType.ERROR);
+                            GameManagerClient.getInstance().updateSnackBarListener(msg);
+                        }
+                    }else{
+                        virtualGameStub.sendMessage(message);
                     }
-
-                    virtualGameStub.sendMessage(message);
                 }
             }else{
                 logSnackbarError();
@@ -202,7 +206,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, GuiCa
             System.err.println("Remote exception while sending message to server in RMI?");
             logSnackbarError();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+//            throw new RuntimeException(e);
         }
 
     }

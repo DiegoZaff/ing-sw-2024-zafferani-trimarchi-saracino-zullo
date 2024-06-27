@@ -5,13 +5,16 @@ import it.polimi.ingsw.gc28.model.cards.CardObjective;
 import it.polimi.ingsw.gc28.model.cards.CardResource;
 import it.polimi.ingsw.gc28.model.cards.utils.ParsingHelper;
 import it.polimi.ingsw.gc28.model.utils.PlayerColor;
+import it.polimi.ingsw.gc28.network.messages.client.MsgLeaveGame;
 import it.polimi.ingsw.gc28.network.messages.server.MessageS2C;
 import it.polimi.ingsw.gc28.network.messages.server.MessageTypeS2C;
 import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
 import it.polimi.ingsw.gc28.view.GuiObserver;
 import it.polimi.ingsw.gc28.view.PrivateRepresentation;
+import it.polimi.ingsw.gc28.view.gui.GuiApplication;
 import it.polimi.ingsw.gc28.view.gui.components.*;
+import it.polimi.ingsw.gc28.view.gui.utils.TabType;
 import it.polimi.ingsw.gc28.view.gui.utils.WrapperControllable;
 import it.polimi.ingsw.gc28.view.utils.InGameTabType;
 import it.polimi.ingsw.gc28.view.utils.PlayerColorInfo;
@@ -25,7 +28,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -88,6 +93,11 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
     public void update(MessageS2C message) {
         changeContentBasedOnAction();
         PrivateRepresentation rep = GameManagerClient.getInstance().getMyPrivateRepresentation();
+
+        if(rep == null){
+            return;
+        }
+
         if(message.getType().equals(MessageTypeS2C.CHOOSE_OBJ)){
             CardObjective cardObj = rep.getPrivateObjective();
             if(cardObj != null) {
@@ -125,6 +135,11 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
      */
     private void changeContentBasedOnAction(){
         GameRepresentation repr = GameManagerClient.getInstance().getCurrentRepresentation();
+
+        if(repr == null){
+            return;
+        }
+
         ActionType act = repr.getActionExpected();
 
         if(act == null){
@@ -503,6 +518,24 @@ public class InGameController implements Initializable, GuiObserver, WrapperCont
     }
 
     public void handleQuitPress(MouseEvent mouseEvent) {
+        if(GameManagerClient.getInstance().getGameId() == null){
+            wrapperController.setInnerContent(TabType.GAMES);
+            GameManagerClient.getInstance().resetEndedGameCompletely();
+            return;
+        }
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Quit game?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+        alert.showAndWait();
+
+        if (alert.getResult() == ButtonType.YES) {
+            Platform.runLater(() ->{
+                MsgLeaveGame msg = new MsgLeaveGame();
+                GuiApplication.connection.sendMessageToServer(msg);
+                GameManagerClient.getInstance().resetEndedGameCompletely();
+                wrapperController.setInnerContent(TabType.GAMES);
+            });
+        }
+
     }
 
     public void showBack(int i){

@@ -58,14 +58,4 @@ public class ServerProxy implements VirtualServer {
         output.flush();
         output.reset();
     }
-
-    public void closeConnection(){
-        try {
-            this.output.close();
-        } catch (IOException e) {
-            //TODO : handle better
-            System.err.println("Error while closing?");
-            //throw new RuntimeException(e);
-        }
-    }
 }

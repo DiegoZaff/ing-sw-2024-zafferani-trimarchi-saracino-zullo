@@ -61,6 +61,7 @@ public class WrapperController implements Initializable {
             WrapperControllable controller = loader.getController();
             controller.setWrapperController(this);
 
+            clearPlayerStatusComponent();
             innerContent.getChildren().setAll(node);
             updateGoBackButton(tabType);
             // hide go back button during game

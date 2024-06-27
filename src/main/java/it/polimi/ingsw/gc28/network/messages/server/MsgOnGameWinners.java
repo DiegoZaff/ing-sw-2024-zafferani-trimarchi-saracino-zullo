@@ -39,5 +39,7 @@ public class MsgOnGameWinners extends MessageS2C{
             SnackBarMessage msg = new SnackBarMessage(text, InformationType.GAME_INFO);
             gameManagerClient.updateSnackBarListener(msg);
         }
+
+        gameManagerClient.clearGameInfo();
     }
 }

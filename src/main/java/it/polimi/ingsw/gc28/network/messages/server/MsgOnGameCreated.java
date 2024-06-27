@@ -41,6 +41,7 @@ public class MsgOnGameCreated extends MessageS2C{
         gameManagerClient.setPlayersIn(1);
         gameManagerClient.setGameId(gameId);
         gameManagerClient.setPlayerName(playerName);
+        gameManagerClient.setCanBeRecreated();
 
         if(isCli) {
             String text = String.format("""

@@ -381,14 +381,11 @@ public class GameManagerClient {
 
 
     private PrivateRepresentation getPrivateRepresentation(String name){
-        PrivateRepresentation repr = currentRepresentation.getRepresentations().get(name);
-
-        if(repr == null){
-            // TODO : why throw exception?
-            throw new RuntimeException();
+        if(currentRepresentation == null){
+            return null;
         }
 
-        return repr;
+        return currentRepresentation.getRepresentations().get(name);
     }
 
     public GameRepresentation getCurrentRepresentation() {
@@ -402,13 +399,13 @@ public class GameManagerClient {
     public void terminateGame(){
         if (this.currentRepresentation != null){
             if(isCli){
-                this.writeInConsole("someone disconnected!! the game ended");
+                this.writeInConsole("Someone disconnected! the Game ended...");
             }else{
                 SnackBarMessage msg = new SnackBarMessage("Someone disconnected, Game terminated...", InformationType.ERROR);
                 updateSnackBarListener(msg);
             }
-            this.currentRepresentation = null;
-            canBeRecreated = false;
+
+            clearGameInfo();
         }
     }
 
@@ -501,5 +498,26 @@ public class GameManagerClient {
 
     public Boolean getCanBeRecreated(){
         return canBeRecreated;
+    }
+
+    /**
+     * This is called when the game terminates or end due to someone winning, the game repr is reset after the player quits the game
+     */
+    public void clearGameInfo() {
+        this.gameId = null;
+        this.canBeRecreated = false;
+
+        if(isCli){
+            currentRepresentation = null;
+        }
+    }
+
+    public void resetEndedGameCompletely() {
+        currentRepresentation = null;
+        playerName = null;
+        playersIn = null;
+        gameId = null;
+        canBeRecreated = false;
+        nPlayers = null;
     }
 }

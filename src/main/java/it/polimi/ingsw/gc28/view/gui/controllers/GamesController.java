@@ -67,11 +67,11 @@ public class GamesController implements Initializable, GuiObserver, WrapperContr
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        GameManagerClient.getInstance().addListenerAndRemoveOthers(this);
         loadSubViews();
         isCreateGameSelected = new SimpleBooleanProperty(true);
         replaceView(isCreateGameSelected.getValue());
         changeButtonWidth(createGameButton, isCreateGameSelected.getValue());
-        GameManagerClient.getInstance().addListenerAndRemoveOthers(this);
 
         isCreateGameSelected.addListener(new ChangeListener<Boolean>() {
             @Override
@@ -118,7 +118,6 @@ public class GamesController implements Initializable, GuiObserver, WrapperContr
 
     @Override
     public void update(GameRepresentation gameRepresentation) {
-
         if(gameRepresentation != null){
             if(wrapperController != null){
                 Platform.runLater(() -> wrapperController.setInnerContent(TabType.LOBBY));
@@ -137,6 +136,10 @@ public class GamesController implements Initializable, GuiObserver, WrapperContr
         }else if(message.getType().equals(MessageTypeS2C.GAME_JOINED)){
             if(wrapperController != null){
                 Platform.runLater(() -> wrapperController.setInnerContent(TabType.LOBBY));
+            }
+        }else if(message.getType().equals(MessageTypeS2C.GAME_STARTED)){
+            if(wrapperController != null){
+                wrapperController.setInnerContent(TabType.IN_GAME);
             }
         }
     }

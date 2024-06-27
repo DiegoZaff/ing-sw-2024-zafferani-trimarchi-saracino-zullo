@@ -13,5 +13,6 @@ public class MsgLeaveGame extends MessageC2S{
     @Override
     public void execute(GameController controller) throws RemoteException, FailedActionManaged {
         controller.notifyGameTermination();
+        controller.deleteGameAndBackUp();
     }
 }

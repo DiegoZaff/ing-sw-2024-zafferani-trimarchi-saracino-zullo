@@ -16,7 +16,6 @@ import java.util.ResourceBundle;
 
 public class LobbyController implements Initializable, GuiObserver, WrapperControllable {
     public VBox lobbyBox;
-    public int currentNPlayers;
     public Label playersLeft;
 
     private WrapperController wrapperController;

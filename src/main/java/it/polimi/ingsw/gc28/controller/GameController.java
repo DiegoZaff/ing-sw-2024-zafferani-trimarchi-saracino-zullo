@@ -278,8 +278,16 @@ public class GameController {
 
                 notifyGameEndedWinners(playersWin);
 
+                for(VirtualView client : clients.values()){
+                    client.closeConnectionGame();
+                }
+
+                GamesManager.getInstance().deleteGame(gameModel.getGameId());
+
                 //delete backUp file
                 deleteBackUpGame(gameModel);
+
+
             }
 
         }
@@ -628,7 +636,7 @@ public class GameController {
         new BackupManager(game).start();
     }
 
-    private void deleteBackUpGame(Game game){
+    public void deleteBackUpGame(Game game){
         new BackupManager(game, false).start();
     }
 
@@ -643,17 +651,20 @@ public class GameController {
      * @throws RemoteException
      */
     public void notifyGameTermination() throws RemoteException {
-
         for(Map.Entry<String, VirtualView> entry : clients.entrySet()){
-
             VirtualView client = entry.getValue();
-          try{
-              client.sendMessage(new MsgOnGameTermination(MessageTypeS2C.TERMINATION));
-          }catch (RemoteException ignored){
-
+            try{
+                client.sendMessage(new MsgOnGameTermination(MessageTypeS2C.TERMINATION));
+                client.closeConnectionGame();
+            }catch (RemoteException ignored){
+            }
         }
+    }
 
-        }
+
+    public void deleteGameAndBackUp(){
+        GamesManager.getInstance().deleteGame(gameModel.getGameId());
+        deleteBackUpGame(gameModel);
     }
 
 

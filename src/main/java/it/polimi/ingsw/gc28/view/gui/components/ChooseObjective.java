@@ -93,12 +93,10 @@ public class ChooseObjective extends VBox implements Initializable {
             title.setText("Choose your objective");
             imageView1.addEventHandler(MouseEvent.MOUSE_CLICKED, (event)->{
                 sendChooseCardObjectiveMsg(cardId1, me);
-                System.out.println("choosing obj 1");
             });
 
             imageView2.addEventHandler(MouseEvent.MOUSE_CLICKED, (event)->{
                 sendChooseCardObjectiveMsg(cardId2, me);
-                System.out.println("choosing obj 2");
 
             });
 

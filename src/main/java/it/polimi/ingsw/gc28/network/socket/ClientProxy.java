@@ -29,6 +29,11 @@ public class ClientProxy implements VirtualView {
 
     }
 
+    @Override
+    public void closeConnectionGame() throws RemoteException {
+
+    }
+
    /* @Override
     public void onGameCreated(String gameId, String playerName, int playersLeftToJoin) throws RemoteException {
         sendMessage(new MsgOnGameCreated(gameId, playerName, playersLeftToJoin));

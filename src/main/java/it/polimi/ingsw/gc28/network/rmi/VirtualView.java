@@ -15,4 +15,6 @@ public interface VirtualView extends Remote {
      void sendMessage(MessageS2C message) throws RemoteException;
 
      void attachGameStub(VirtualStub gameStub) throws RemoteException;
+
+     void closeConnectionGame() throws RemoteException;
 }

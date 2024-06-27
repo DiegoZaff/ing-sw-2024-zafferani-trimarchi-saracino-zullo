@@ -22,6 +22,8 @@ public class GamesManager {
 
     private static GamesManager instance;
 
+
+
     public Map<String, GameController> getMapGames() {
         return mapGames;
     }
@@ -83,11 +85,12 @@ public class GamesManager {
                     } catch (RemoteException e) {
                         System.err.println("someone disconnected from game: "+gameId);
                         try {
+                            // closes game connections
                             mapGames.get(gameId).notifyGameTermination();
                         } catch (RemoteException ignored) {
 
                         }
-                        mapGames.remove(gameId);
+                        mapGames.get(gameId).deleteGameAndBackUp();
                     }
                 }
             }
@@ -284,5 +287,13 @@ public class GamesManager {
         GameController controller = mapGames.get(id);
 
         return Optional.ofNullable(controller);
+    }
+
+    public void deleteGame(String gameId) {
+        GameController gameModelRemoved =  mapGames.remove(gameId);
+
+        if(gameModelRemoved != null){
+            System.out.printf("Game deleted successfully with id %s\n", gameModelRemoved.gameModel.getGameId());
+        }
     }
 }

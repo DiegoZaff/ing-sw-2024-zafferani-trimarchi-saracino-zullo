@@ -59,21 +59,16 @@ public class ClientTCP implements GuiCallable {
             } catch (Exception e) {
                 System.out.println("Unable to reach the server");
                 serverDown = true;
-                if (GameManagerClient.getInstance().getCanBeRecreated()){
-                    try {
-                        reconnect();
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                    try {
-                        this.run();
-                    } catch (RemoteException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                }else{
-                    System.out.println("try to reconnect later");
+                try {
+                    reconnect();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
                 }
-
+                try {
+                    this.run();
+                } catch (RemoteException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         }).start();
 
@@ -94,7 +89,6 @@ public class ClientTCP implements GuiCallable {
 
     private void reconnect() throws IOException {
         SnackBarMessage msgSnackBar = new SnackBarMessage("Trying to reconnect...", InformationType.ERROR);
-        MsgReconnect msg = new MsgReconnect(GameManagerClient.getInstance().getGameId(), GameManagerClient.getInstance().getPlayerName());
         boolean flag = true;
         while (flag){
             try{
@@ -118,7 +112,10 @@ public class ClientTCP implements GuiCallable {
 
         }
 
-        server.sendMessage(msg);
+        if (GameManagerClient.getInstance().getCanBeRecreated()) {
+            MsgReconnect msg = new MsgReconnect(GameManagerClient.getInstance().getGameId(), GameManagerClient.getInstance().getPlayerName());
+            server.sendMessage(msg);
+        }
 
         serverDown = false;
     }
@@ -216,11 +213,6 @@ public class ClientTCP implements GuiCallable {
     }
 
     @Override
-    public void closeConnection() {
-        server.closeConnection();
-    }
-
-    @Override
     public void sendMessageToServer(MessageC2S messageToSend) {
         if(!serverDown){
             try {
@@ -228,16 +220,25 @@ public class ClientTCP implements GuiCallable {
                     if (GameManagerClient.getInstance().canICreateOrJoinAGame()) {
                         server.sendMessage(messageToSend);
                     }
-                }
-                else
-                {
+                } else {
+                    if(messageToSend.getType().equals(MessageTypeC2S.PLAY_CARD) || messageToSend.getType().equals(MessageTypeC2S.DRAW_CARD_DECK)
+                    || messageToSend.getType().equals(MessageTypeC2S.DRAW_CARD_VISIBLE)){
+                        if(GameManagerClient.getInstance().getGameId() == null){
+                            if(isCli){
+                                System.out.println("Looks like you're not in a game!");
+                            }else{
+                                SnackBarMessage msg = new SnackBarMessage("Looks like you're not in a game!", InformationType.ERROR);
+                                GameManagerClient.getInstance().updateSnackBarListener(msg);
+
+                            }
+                        }
+                    }
                     server.sendMessage(messageToSend);
                 }
             }catch (IOException e){
                 logSnackbarError();
                 serverDown = true;
             }
-
         }else{
             logSnackbarError();
         }

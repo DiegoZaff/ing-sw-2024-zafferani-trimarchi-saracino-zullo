@@ -90,5 +90,8 @@ public class ClientHandler implements VirtualView {
         System.out.println("Attached controller to socket");
     }
 
-
+    @Override
+    public void closeConnectionGame() throws RemoteException {
+        this.controller = null;
+    }
 }
