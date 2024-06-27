@@ -66,7 +66,6 @@ public class MixedControllerTest {
         MsgReconnect msgReconnect = new MsgReconnect(id, "bbbbb");
         msgReconnect.setClient(mockView2);
         gamesManager.addMessageToQueue(msgReconnect);
-        gamesManager.addMessageToQueue(msgReconnect);
 
 
         MsgJoinableGames msgJoinableGames = new MsgJoinableGames();
