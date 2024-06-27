@@ -85,7 +85,7 @@ public class ObjectiveResources extends Objective implements Serializable {
                 |       %s        |
                 |       %s       |
                 |                |
-                ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+                ------------------
                 """, points, resourceNeededToString());
         StringBuffer show = new StringBuffer(card);
         int offset = resourceNeededCounter();

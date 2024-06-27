@@ -14,14 +14,14 @@ public enum DiagonalType {
                 |         %s[‾]%s    |
                 |      %s[‾]%s       |
                 |   %s[‾]%s          |
-                ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+                ------------------
                 """,color3, Colors.RESET.getCode(), color2, Colors.RESET.getCode(),color1, Colors.RESET.getCode());
             case SECONDARY_DIAGONAL -> String.format("""
                 __________________
                 |   %s[‾]%s          |
                 |      %s[‾]%s       |
                 |         %s[‾]%s    |
-                ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+                ------------------
                 """,color1, Colors.RESET.getCode(), color2, Colors.RESET.getCode(),color3, Colors.RESET.getCode());
         };
     }

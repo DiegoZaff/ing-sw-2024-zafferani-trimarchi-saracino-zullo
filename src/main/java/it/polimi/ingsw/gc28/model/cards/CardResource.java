@@ -114,7 +114,7 @@ public class CardResource extends CardGame {
                 %s|%s     %s      %s|
                 %s|       %s       |
                 %s|%s            %s|
-                %s‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾%s
+                %s------------------%s
                 """,color, color, verticesStrings.get(0),""+pointsPerPlay ,verticesStrings.get(1)+color,color,centralRes+color,color,
                 verticesStrings.get(3), verticesStrings.get(2)+color,color,Colors.RESET.getCode());
 

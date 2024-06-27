@@ -188,7 +188,7 @@ public class CardInitial extends CardGame {
                         |%s            %s|
                         |       %s       |
                         |%s            %s|
-                        ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+                        ------------------
                         """, verticesStrings.get(0), verticesStrings.get(1), this.getCentralResourceStringInfo(isFront),
                 verticesStrings.get(3), verticesStrings.get(2));
 
