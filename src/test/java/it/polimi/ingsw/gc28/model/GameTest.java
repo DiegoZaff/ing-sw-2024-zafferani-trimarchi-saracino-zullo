@@ -347,7 +347,6 @@ public class GameTest {
             try {
                 move.play(game);
             } catch (PlayerActionError e) {
-                // TODO: add assertions for exceptions!
                 fail("Exception thrown from Game: " + e.getError());
                 System.out.println(e.getError());
             }

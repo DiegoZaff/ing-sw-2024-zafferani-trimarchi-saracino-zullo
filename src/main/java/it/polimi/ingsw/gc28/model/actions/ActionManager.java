@@ -174,7 +174,6 @@ public class ActionManager implements Serializable {
 
             }
             case PLAY_CARD -> {
-                // TODO DONE : if roundsLeft <= numberOfPlayers - 1 => actionType = PLAY_CARD & nextPlayer aggiornato
                 if(getRoundsLeft().isPresent() && roundsLeft <= nPlayers){
                     // actionType remains PLAY_CARD
                     playerOfTurn = getNextPlayer();

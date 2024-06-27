@@ -288,7 +288,7 @@ public class Game implements Serializable {
             return;
         }
 
-        // TODO : ricorda di mettere a 20
+
         boolean has20points = playerOfTurn.get().getPoints() >= 20;
 
         if(has20points){
@@ -302,8 +302,9 @@ public class Game implements Serializable {
     }
 
     /**
-     * ! TODO : make it work also when deck is finished and no player has reached 20 points. IMPLEMENTED! LOOK ABOVE
-     **/
+     * this method starts the final part of the game when the objective points are calculated and the winner is announced
+     * @throws GameEndedNotification
+     */
     private void endGame() throws GameEndedNotification {
         calculateObjectivePoints();
         calculateWinner();
@@ -361,7 +362,7 @@ public class Game implements Serializable {
         int maxPoints = 0;
         ArrayList<Player> winners = new ArrayList<>();
 
-        // TODO: does this work if all players have 0 points? YES
+
         for (Player player : players ) {
             if (player.getPoints() > maxPoints) {
                 maxPoints = player.getPoints();
