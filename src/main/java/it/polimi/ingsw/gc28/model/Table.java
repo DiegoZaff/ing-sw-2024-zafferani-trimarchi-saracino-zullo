@@ -383,18 +383,18 @@ public class Table implements Serializable {
             //4th and 5th layer
             if(SWCell.isEmpty() || SWCell.get().getOrderPlay() < currPlayOrder){
                 fourthLayer1 = String.format("|%s   ", verticesStrings.get(3));
-                fifthLayer1 = "‾‾‾‾‾‾";
+                fifthLayer1 = "------";
             }else{
                 fourthLayer1 = "  ";
-                fifthLayer1 = "‾‾";
+                fifthLayer1 = "--";
             }
 
             if(SECell.isEmpty() || SECell.get().getOrderPlay() < currPlayOrder){
                 fourthLayer2 = String.format("   %s|", verticesStrings.get(2));
-                fifthLayer2 = "‾‾‾‾‾‾";
+                fifthLayer2 = "------";
             }else{
                 fourthLayer2 = "  ";
-                fifthLayer2 = "‾‾";
+                fifthLayer2 = "--";
             }
 
             firstLayer = firstLayer1 + "_" + firstLayer2;
@@ -418,7 +418,7 @@ public class Table implements Serializable {
             int rightPadding = 11 - leftPadding - lengthResString;
             thirdLayer ="|" + " ".repeat(leftPadding) + centralRes + " ".repeat(rightPadding) + "|" ;
             fourthLayer = fourthLayer1 + " " + fourthLayer2;
-            fifthLayer = fifthLayer1 + "‾" + fifthLayer2;
+            fifthLayer = fifthLayer1 + "-" + fifthLayer2;
 
             String[] cardLayers = {firstLayer, secondLayer, thirdLayer, fourthLayer, fifthLayer};
 

@@ -12,33 +12,33 @@ public enum PositionStackType{
         return switch (this){
             case N_E_STACK -> String.format("""
                 __________________
-                |         %s[‾]%s    |
-                |      %s[‾]%s       |
-                |      %s[‾]%s       |
+                |         %s[ ]%s    |
+                |      %s[ ]%s       |
+                |      %s[ ]%s       |
                 ------------------
                 """,color3, Colors.RESET.getCode(), color2, Colors.RESET.getCode(),color1, Colors.RESET.getCode());
 
             case S_E_STACK -> String.format("""
                 __________________
-                |      %s[‾]%s       |
-                |      %s[‾]%s       |
-                |         %s[‾]%s    |
+                |      %s[ ]%s       |
+                |      %s[ ]%s       |
+                |         %s[ ]%s    |
                 ------------------
                 """,color2, Colors.RESET.getCode(), color1, Colors.RESET.getCode(),color3, Colors.RESET.getCode());
 
             case S_W_STACK -> String.format("""
                 __________________
-                |      %s[‾]%s       |
-                |      %s[‾]%s       |
-                |   %s[‾]%s          |
+                |      %s[ ]%s       |
+                |      %s[ ]%s       |
+                |   %s[ ]%s          |
                 ------------------
                 """,color1, Colors.RESET.getCode(), color2, Colors.RESET.getCode(),color3, Colors.RESET.getCode());
 
             case N_W_STACK -> String.format("""
                 __________________
-                |   %s[‾]%s          |
-                |      %s[‾]%s       |
-                |      %s[‾]%s       |
+                |   %s[ ]%s          |
+                |      %s[ ]%s       |
+                |      %s[ ]%s       |
                 ------------------
                 """,color1, Colors.RESET.getCode(), color3, Colors.RESET.getCode(),color2, Colors.RESET.getCode());
         };
