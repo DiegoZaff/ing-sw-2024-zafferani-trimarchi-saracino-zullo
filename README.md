@@ -43,7 +43,7 @@ The following table shows the implemented functionalities
 
 ## Documentation
 
-* ### [JavaDoc]([https://github.com/DiegoZaff/ing-sw-2024-zafferani-trimarchi-saracino-zullo/blob/aa95aa47891b8427266208948ac40113e138091c/JavaDoc/index.html](https://gc28project.netlify.app/it.polimi.ingsw.gc28/module-summary.html)
+* ### [JavaDoc]([https://github.com/DiegoZaff/ing-sw-2024-zafferani-trimarchi-saracino-zullo/blob/aa95aa47891b8427266208948ac40113e138091c/JavaDoc/index.html](https://gc28project.netlify.app/it.polimi.ingsw.gc28/module-summary.html))
 
 * ### [UML Class diagram](https://github.com/DiegoZaff/ing-sw-2024-zafferani-trimarchi-saracino-zullo/blob/a604bbb1bd29c48ee914b22a45e0188c3ddd3fdc/deliverables/UML2/uml%20model%202.png)
 
