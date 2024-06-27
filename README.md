@@ -40,6 +40,8 @@ The game can be played both with RMI and TCP connection, the choice in embeded i
       ex rmi: /path/to/openjdk21/bin/java -jar ClientApplication.jar 127.0.0.1 127.0.0.1 8887 --rmi
       ex tcp: /path/to/openjdk21/bin/java -jar ClientApplication.jar 127.0.0.1 127.0.0.1 8886
 
+For a list of all the TUI commands digit "?" in the terminal after the application starts.
+
 For the best UI experience for the TUI it is recommanded to use Unix terminals.
 For the best UI experience for the GUI is recommanded a resolution on 1920x1080 and for Windows users a 100% zoom.
 
