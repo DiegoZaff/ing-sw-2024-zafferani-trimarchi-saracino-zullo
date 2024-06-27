@@ -18,7 +18,7 @@
         </HBox>
         <HBox fx:id="container" alignment="TOP_RIGHT" spacing="64" AnchorPane.leftAnchor="400" AnchorPane.topAnchor="80" AnchorPane.rightAnchor="80" />
         <VBox fx:id="messageSpace" style="-fx-background-color: #EDEDED;-fx-background-radius: 16; -fx-border-color: #484848; -fx-border-width: 1px; -fx-border-radius: 8;"
-              AnchorPane.leftAnchor="280" AnchorPane.topAnchor="32" AnchorPane.rightAnchor="400" alignment="BOTTOM_LEFT" prefHeight="400.0" prefWidth="500.0">
+              AnchorPane.leftAnchor="180" AnchorPane.topAnchor="32" AnchorPane.rightAnchor="460" alignment="BOTTOM_LEFT" prefHeight="400.0" prefWidth="500.0">
             <padding>
                 <Insets bottom="16" left="16" right="16" top="16"/>
             </padding>

@@ -1,0 +1,273 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > CardGame</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.gc28.model.cards</a>
+</div>
+
+<h1>Coverage Summary for Class: CardGame (it.polimi.ingsw.gc28.model.cards)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CardGame</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    83,3%
+  </span>
+  <span class="absValue">
+    (5/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    95,7%
+  </span>
+  <span class="absValue">
+    (44/46)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.polimi.ingsw.gc28.model.cards;
+&nbsp;
+&nbsp;import it.polimi.ingsw.gc28.model.Coordinate;
+&nbsp;import it.polimi.ingsw.gc28.model.Table;
+&nbsp;import it.polimi.ingsw.gc28.model.Vertex;
+&nbsp;import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
+&nbsp;import it.polimi.ingsw.gc28.model.resources.Resource;
+&nbsp;import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
+&nbsp;import it.polimi.ingsw.gc28.model.resources.ResourceSpecial;
+&nbsp;import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
+&nbsp;import it.polimi.ingsw.gc28.model.resources.utils.ResourceSpecialType;
+&nbsp;import it.polimi.ingsw.gc28.model.resources.utils.ResourceType;
+&nbsp;import it.polimi.ingsw.gc28.view.utils.TuiStringHelper;
+&nbsp;import javafx.scene.image.ImageView;
+&nbsp;import org.jetbrains.annotations.NotNull;
+&nbsp;
+&nbsp;import java.io.Serializable;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.Map;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;public abstract class CardGame extends Card implements Serializable {
+&nbsp;    private final Vertex[] verticesFront;
+&nbsp;
+&nbsp;
+&nbsp;    public CardGame(String id, ResourceType[] resourcesFront, String frontImg, String backImg){
+<b class="fc">&nbsp;        super(id, frontImg, backImg);</b>
+&nbsp;
+<b class="fc">&nbsp;        Resource[] resourceInCard = new Resource[4];</b>
+<b class="fc">&nbsp;        Vertex[] vertices = new Vertex[4];</b>
+<b class="fc">&nbsp;        int[] hasVertex = new int[4];</b>
+&nbsp;
+<b class="fc">&nbsp;        for (int i=0; i&lt;resourcesFront.length; i++) {</b>
+<b class="fc">&nbsp;            hasVertex[i] = 0;</b>
+<b class="fc">&nbsp;            if(resourcesFront[i] == ResourceType.FOX) {</b>
+<b class="fc">&nbsp;                resourceInCard[i] = new ResourcePrimary(ResourcePrimaryType.FOX);</b>
+<b class="fc">&nbsp;            } else if (resourcesFront[i] == ResourceType.LEAF) {</b>
+<b class="fc">&nbsp;                resourceInCard[i] = new ResourcePrimary(ResourcePrimaryType.LEAF);</b>
+<b class="fc">&nbsp;            } else if (resourcesFront[i] == ResourceType.BUTTERFLY) {</b>
+<b class="fc">&nbsp;                resourceInCard[i] = new ResourcePrimary(ResourcePrimaryType.BUTTERFLY);</b>
+<b class="fc">&nbsp;            } else if (resourcesFront[i] == ResourceType.MUSHROOM) {</b>
+<b class="fc">&nbsp;                resourceInCard[i] = new ResourcePrimary(ResourcePrimaryType.MUSHROOM);</b>
+<b class="fc">&nbsp;            } else if (resourcesFront[i] == ResourceType.FEATHER) {</b>
+<b class="fc">&nbsp;                resourceInCard[i] = new ResourceSpecial(ResourceSpecialType.FEATHER);</b>
+<b class="fc">&nbsp;            } else if (resourcesFront[i] == ResourceType.PARCHMENT) {</b>
+<b class="fc">&nbsp;                resourceInCard[i] = new ResourceSpecial(ResourceSpecialType.PARCHMENT);</b>
+<b class="fc">&nbsp;            } else if (resourcesFront[i] == ResourceType.POTION) {</b>
+<b class="fc">&nbsp;                resourceInCard[i] = new ResourceSpecial(ResourceSpecialType.POTION);</b>
+<b class="fc">&nbsp;            } else if (resourcesFront[i] == ResourceType.noResource) {</b>
+<b class="fc">&nbsp;                resourceInCard[i] = null;</b>
+<b class="fc">&nbsp;                hasVertex[i] = 1;</b>
+&nbsp;            } else {
+<b class="fc">&nbsp;                resourceInCard[i] = null;</b>
+<b class="fc">&nbsp;                hasVertex[i] = 2;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        for (int i=0; i&lt; resourceInCard.length; i++){</b>
+<b class="fc">&nbsp;            if(hasVertex[i] == 0) {</b>
+<b class="fc">&nbsp;                vertices[i] = new Vertex(resourceInCard[i]);</b>
+&nbsp;            }
+<b class="fc">&nbsp;            else if(hasVertex[i] == 1){</b>
+<b class="fc">&nbsp;                vertices[i] = new Vertex(true);</b>
+&nbsp;            }
+<b class="fc">&nbsp;            else vertices[i] = new Vertex(false);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        this.verticesFront = vertices;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public CardGame(String id, Vertex[] vertices, String frontImg, String backImg){
+<b class="nc">&nbsp;        super(id, frontImg, backImg);</b>
+<b class="nc">&nbsp;        this.verticesFront = vertices;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This method provides the resource primary of the card for counting the points
+&nbsp;     * of the position objectives. Its implementation will return Null inside InitialCard.
+&nbsp;     */
+&nbsp;    public abstract Optional&lt;ResourcePrimary&gt; getObjectiveResource();
+&nbsp;
+&nbsp;    // ? maybe we can merge playFront and playBack by passing an attribute isFront, since
+&nbsp;    // ? some of their logic is overlapping. let&#39;s see if there&#39;s a lot of overlap.
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method play the card in the front verse
+&nbsp;     * @param table indicates the table in which the card is played
+&nbsp;     * @param playCoordinate indicate the coordinates in which the card should be player
+&nbsp;     */
+&nbsp;    public abstract int playFront(Table table, Coordinate playCoordinate);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method play the card in the back verse
+&nbsp;     * @param table indicates the table in which the card is played
+&nbsp;     * @param playCoordinate indicate the coordinates in which the card should be played
+&nbsp;     */
+&nbsp;    public abstract void playBack(Table table, Coordinate playCoordinate);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method provides a map that contains the number of resource in the vertex in the front of the card
+&nbsp;     * @return  Map&lt;Resource, Integer&gt; Integer: the number of a resource in a card
+&nbsp;     */
+&nbsp;    public Map&lt;Resource,Integer&gt; getFrontCardResource(){
+<b class="fc">&nbsp;        return getResourceIntegerMap(verticesFront);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @NotNull
+&nbsp;    protected static Map&lt;Resource, Integer&gt; getResourceIntegerMap(Vertex[] verticesFront) {
+<b class="fc">&nbsp;        Map&lt;Resource,Integer&gt; mapResource = new HashMap&lt;&gt;();</b>
+&nbsp;        int temp;
+<b class="fc">&nbsp;        for (Vertex v : verticesFront){</b>
+<b class="fc">&nbsp;            if (v.isExists()){</b>
+<b class="fc">&nbsp;                if (v.getResource().isPresent()){</b>
+<b class="fc">&nbsp;                    if (!mapResource.containsKey(v.getResource().get())){</b>
+<b class="fc">&nbsp;                        mapResource.put(v.getResource().get(), 1);</b>
+&nbsp;                    }else {
+<b class="fc">&nbsp;                        temp = mapResource.get(v.getResource().get()) +1;</b>
+<b class="fc">&nbsp;                        mapResource.replace(v.getResource().get(), temp);</b>
+&nbsp;                    }
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+<b class="fc">&nbsp;        return mapResource;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public abstract int getPoints(Table table, Coordinate coordinate);
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method return a map with the central resources of the card
+&nbsp;     * @return a map &lt;Resource, Integer&gt;&lt;the resource/ the number of that resource&gt;
+&nbsp;     */
+&nbsp;    public abstract Map&lt;Resource,Integer&gt; getBackCardResource();
+&nbsp;
+&nbsp;    public Vertex[] getVerticesFront() {
+<b class="fc">&nbsp;        return verticesFront;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public abstract Vertex[] getVerticesBack();
+&nbsp;
+&nbsp;
+&nbsp;    public ActionType getIntendedAction(){
+<b class="fc">&nbsp;        return ActionType.PLAY_CARD;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    public abstract String getCentralResourceStringInfo(boolean isFront);
+&nbsp;
+&nbsp;    /*
+&nbsp;    public String toString(boolean isFront){
+&nbsp;        ArrayList&lt;String&gt; verticesStrings = TuiStringHelper.getVerticesStringInfo(this, isFront);
+&nbsp;
+&nbsp;        String show = String.format(&quot;&quot;&quot;
+&nbsp;                __________________
+&nbsp;                |%s            %s|
+&nbsp;                |                |
+&nbsp;                |%s            %s|
+&nbsp;                ??????????????????
+&nbsp;                &quot;&quot;&quot;, verticesStrings.get(0), verticesStrings.get(1),
+&nbsp;                verticesStrings.get(3), verticesStrings.get(2));
+&nbsp;        return show;
+&nbsp;    }
+&nbsp;     */
+&nbsp;
+&nbsp;    public abstract boolean checkHand(ArrayList&lt;CardResource&gt; hand, CardInitial cardInitial);
+&nbsp;
+&nbsp;
+&nbsp;}
+&nbsp;
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-06-27 15:29</div>
+</div>
+</body>
+</html>

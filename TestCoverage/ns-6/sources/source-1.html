@@ -1,0 +1,375 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ParsingHelper</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.gc28.model.cards.utils</a>
+</div>
+
+<h1>Coverage Summary for Class: ParsingHelper (it.polimi.ingsw.gc28.model.cards.utils)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ParsingHelper</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    78,6%
+  </span>
+  <span class="absValue">
+    (11/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    77,9%
+  </span>
+  <span class="absValue">
+    (116/149)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.polimi.ingsw.gc28.model.cards.utils;
+&nbsp;
+&nbsp;import it.polimi.ingsw.gc28.model.cards.CardGold;
+&nbsp;import it.polimi.ingsw.gc28.model.cards.CardInitial;
+&nbsp;import it.polimi.ingsw.gc28.model.cards.CardObjective;
+&nbsp;import it.polimi.ingsw.gc28.model.cards.CardResource;
+&nbsp;import it.polimi.ingsw.gc28.model.challenge.utils.ChallengeType;
+&nbsp;import it.polimi.ingsw.gc28.model.objectives.positions.utils.GeneralPositionType;
+&nbsp;import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
+&nbsp;import it.polimi.ingsw.gc28.model.resources.utils.ResourceSpecialType;
+&nbsp;import it.polimi.ingsw.gc28.model.resources.utils.ResourceType;
+&nbsp;import javafx.scene.effect.ImageInput;
+&nbsp;import javafx.scene.image.Image;
+&nbsp;import javafx.scene.image.ImageView;
+&nbsp;import org.json.simple.JSONObject;
+&nbsp;
+&nbsp;import java.io.FileInputStream;
+&nbsp;import java.io.FileNotFoundException;
+&nbsp;import java.util.Objects;
+&nbsp;
+<b class="nc">&nbsp;public class ParsingHelper {</b>
+&nbsp;    public static void stringToResourceType(String[] str, ResourceType[] res){
+<b class="fc">&nbsp;        for(int a=0; a&lt;res.length;a++){</b>
+<b class="fc">&nbsp;            if(str[a]!= null){</b>
+<b class="fc">&nbsp;                res[a] = ResourceType.valueOf(str[a]);</b>
+&nbsp;            }
+&nbsp;            else{
+<b class="fc">&nbsp;                res[a]=null;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;    public static void stringToResourcePrimaryType(String[] str, ResourcePrimaryType[] res){
+<b class="fc">&nbsp;        for(int a=0; a&lt;res.length;a++){</b>
+<b class="fc">&nbsp;            if(str[a]!= null){</b>
+<b class="fc">&nbsp;                res[a] = ResourcePrimaryType.valueOf(str[a]);</b>
+&nbsp;            }
+&nbsp;            else{
+<b class="fc">&nbsp;                res[a]=null;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public static String idToFrontPath(String id){
+<b class="fc">&nbsp;        return (&quot;/it/polimi/ingsw/gc28/img/cards/fronts/&quot; + id + &quot;.png&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static String idToBackPath(String id){
+<b class="fc">&nbsp;        return (&quot;/it/polimi/ingsw/gc28/img/cards/backs/&quot; + id + &quot;.png&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static String idAndIsFrontToPath(String id, boolean isFront){
+<b class="nc">&nbsp;        if(id.startsWith(&quot;OBJ&quot;)){</b>
+<b class="nc">&nbsp;            if(isFront){</b>
+<b class="nc">&nbsp;                return idToFrontPath(id);</b>
+&nbsp;            }else{
+<b class="nc">&nbsp;                return idToBackPath(&quot;OBJ&quot;);</b>
+&nbsp;            }
+<b class="nc">&nbsp;        }else if(id.startsWith(&quot;INI&quot;)){</b>
+<b class="nc">&nbsp;            if(isFront){</b>
+<b class="nc">&nbsp;                return idToFrontPath(id);</b>
+&nbsp;            }else{
+<b class="nc">&nbsp;                return idToBackPath(id);</b>
+&nbsp;            }
+&nbsp;        }else{
+<b class="nc">&nbsp;            if(isFront){</b>
+<b class="nc">&nbsp;                return idToFrontPath(id);</b>
+&nbsp;            }else{
+<b class="nc">&nbsp;                return idToBackResGoldPath(id);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public static String idToBackResPath(String resourceType){
+<b class="fc">&nbsp;        return switch (resourceType) {</b>
+<b class="fc">&nbsp;            case &quot;FOX&quot; -&gt; (&quot;/it/polimi/ingsw/gc28/img/cards/backs/RES_F.png&quot;);</b>
+<b class="fc">&nbsp;            case &quot;MUSHROOM&quot; -&gt; (&quot;/it/polimi/ingsw/gc28/img/cards/backs/RES_M.png&quot;);</b>
+<b class="fc">&nbsp;            case &quot;LEAF&quot; -&gt; (&quot;/it/polimi/ingsw/gc28/img/cards/backs/RES_L.png&quot;);</b>
+<b class="fc">&nbsp;            default -&gt; (&quot;/it/polimi/ingsw/gc28/img/cards/backs/RES_B.png&quot;);</b>
+&nbsp;        };
+&nbsp;    }
+&nbsp;
+&nbsp;    public static String idToBackGoldPath(String resourceType){
+<b class="fc">&nbsp;        return switch (resourceType) {</b>
+<b class="fc">&nbsp;            case &quot;FOX&quot; -&gt; (&quot;/it/polimi/ingsw/gc28/img/cards/backs/GOLD_F.png&quot;);</b>
+<b class="fc">&nbsp;            case &quot;MUSHROOM&quot; -&gt; (&quot;/it/polimi/ingsw/gc28/img/cards/backs/GOLD_M.png&quot;);</b>
+<b class="fc">&nbsp;            case &quot;LEAF&quot; -&gt; (&quot;/it/polimi/ingsw/gc28/img/cards/backs/GOLD_L.png&quot;);</b>
+<b class="fc">&nbsp;            default -&gt; (&quot;/it/polimi/ingsw/gc28/img/cards/backs/GOLD_B.png&quot;);</b>
+&nbsp;        };
+&nbsp;    }
+&nbsp;
+&nbsp;    public static String idToBackResGoldPath(String id){
+<b class="nc">&nbsp;        if(id.startsWith(&quot;RES&quot;)){</b>
+<b class="nc">&nbsp;            int num = Integer.parseInt(id.substring(4));</b>
+&nbsp;
+<b class="nc">&nbsp;            if(num &lt;= 10){</b>
+<b class="nc">&nbsp;                return idToBackResPath(ResourceType.LEAF.toString());</b>
+<b class="nc">&nbsp;            }else if(num &lt;= 20){</b>
+<b class="nc">&nbsp;                return idToBackResPath(ResourceType.MUSHROOM.toString());</b>
+<b class="nc">&nbsp;            }else if(num &lt;= 30){</b>
+<b class="nc">&nbsp;                return idToBackResPath(ResourceType.BUTTERFLY.toString());</b>
+<b class="nc">&nbsp;            }else if(num &lt;= 40){</b>
+<b class="nc">&nbsp;                return idToBackResPath(ResourceType.FOX.toString());</b>
+&nbsp;            }
+<b class="nc">&nbsp;        }else if(id.startsWith(&quot;GOLD&quot;)){</b>
+<b class="nc">&nbsp;            int num = Integer.parseInt(id.substring(5));</b>
+&nbsp;
+<b class="nc">&nbsp;            if(num &lt;= 10){</b>
+<b class="nc">&nbsp;                return idToBackGoldPath(ResourceType.LEAF.toString());</b>
+<b class="nc">&nbsp;            }else if(num &lt;= 20){</b>
+<b class="nc">&nbsp;                return idToBackGoldPath(ResourceType.FOX.toString());</b>
+<b class="nc">&nbsp;            }else if(num &lt;= 30){</b>
+<b class="nc">&nbsp;                return idToBackGoldPath(ResourceType.MUSHROOM.toString());</b>
+<b class="nc">&nbsp;            }else if(num &lt;= 40){</b>
+<b class="nc">&nbsp;                return idToBackGoldPath(ResourceType.BUTTERFLY.toString());</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        throw new RuntimeException(&quot;Only GOLD or RES cards allowed&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    public static CardResource parseCardResource(JSONObject obj){
+<b class="fc">&nbsp;        String[] resourceCard = new String[4];</b>
+<b class="fc">&nbsp;        ResourceType[] resources = new ResourceType[4];</b>
+&nbsp;
+<b class="fc">&nbsp;        resourceCard[0] = (String) obj.get(&quot;vertexOne&quot;);</b>
+<b class="fc">&nbsp;        resourceCard[1] = (String) obj.get(&quot;vertexTwo&quot;);</b>
+<b class="fc">&nbsp;        resourceCard[2] = (String) obj.get(&quot;vertexThree&quot;);</b>
+<b class="fc">&nbsp;        resourceCard[3] = (String) obj.get(&quot;vertexFour&quot;);</b>
+<b class="fc">&nbsp;        String resourcePrimary = (String) obj.get(&quot;resourcePrimary&quot;);</b>
+<b class="fc">&nbsp;        String pointsPerPlay = (String) obj.get(&quot;pointsPerPlay&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        ParsingHelper.stringToResourceType(resourceCard, resources);</b>
+<b class="fc">&nbsp;        ResourcePrimaryType resPrimary = ResourcePrimaryType.valueOf(resourcePrimary);</b>
+<b class="fc">&nbsp;        int points = Integer.parseInt(pointsPerPlay);</b>
+&nbsp;
+<b class="fc">&nbsp;        String id = (String) obj.get(&quot;id&quot;);</b>
+<b class="fc">&nbsp;        String frontImgPath = idToFrontPath(id);</b>
+<b class="fc">&nbsp;        String backImgPath = idToBackResPath(resourcePrimary);</b>
+&nbsp;
+<b class="fc">&nbsp;        return new CardResource(id, resources, resPrimary, points, frontImgPath, backImgPath);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    public static CardGold parseGoldCard(JSONObject obj){
+<b class="fc">&nbsp;        String[] resourceCard = new String[4];</b>
+<b class="fc">&nbsp;        String[] resourceNeeded = new String[5];</b>
+<b class="fc">&nbsp;        ResourceType[] resources = new ResourceType[4];</b>
+<b class="fc">&nbsp;        ResourcePrimaryType[] resNeeded = new ResourcePrimaryType[5];</b>
+&nbsp;        ChallengeType cha;
+&nbsp;        ResourceSpecialType resChallenge;
+&nbsp;
+<b class="fc">&nbsp;        resourceCard[0] = (String) obj.get(&quot;vertexOne&quot;);</b>
+<b class="fc">&nbsp;        resourceCard[1] = (String) obj.get(&quot;vertexTwo&quot;);</b>
+<b class="fc">&nbsp;        resourceCard[2] = (String) obj.get(&quot;vertexThree&quot;);</b>
+<b class="fc">&nbsp;        resourceCard[3] = (String) obj.get(&quot;vertexFour&quot;);</b>
+<b class="fc">&nbsp;        String resourcePrimary = (String) obj.get(&quot;resourcePrimary&quot;);</b>
+<b class="fc">&nbsp;        String pointsPerPlay = (String) obj.get(&quot;pointsPerPlay&quot;);</b>
+<b class="fc">&nbsp;        resourceNeeded[0] = (String) obj.get(&quot;resourceNeededOne&quot;);</b>
+<b class="fc">&nbsp;        resourceNeeded[1] = (String) obj.get(&quot;resourceNeededTwo&quot;);</b>
+<b class="fc">&nbsp;        resourceNeeded[2] = (String) obj.get(&quot;resourceNeededThree&quot;);</b>
+<b class="fc">&nbsp;        resourceNeeded[3] = (String) obj.get(&quot;resourceNeededFour&quot;);</b>
+<b class="fc">&nbsp;        resourceNeeded[4] = (String) obj.get(&quot;resourceNeededFive&quot;);</b>
+<b class="fc">&nbsp;        String challenge= (String) obj.get(&quot;challenge&quot;);</b>
+<b class="fc">&nbsp;        String resourceChallenge = (String) obj.get(&quot;resourceChallenge&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        ParsingHelper.stringToResourceType(resourceCard, resources);</b>
+<b class="fc">&nbsp;        ResourcePrimaryType resPrimary = ResourcePrimaryType.valueOf(resourcePrimary);</b>
+<b class="fc">&nbsp;        int points = Integer.parseInt(pointsPerPlay);</b>
+<b class="fc">&nbsp;        ParsingHelper.stringToResourcePrimaryType(resourceNeeded, resNeeded);</b>
+<b class="fc">&nbsp;        if(challenge!= null){</b>
+<b class="fc">&nbsp;            cha = ChallengeType.valueOf(challenge);</b>
+&nbsp;        }
+&nbsp;        else{
+<b class="fc">&nbsp;            cha = null;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if(resourceChallenge!= null){</b>
+<b class="fc">&nbsp;            resChallenge = ResourceSpecialType.valueOf(resourceChallenge);</b>
+&nbsp;        }
+&nbsp;        else{
+<b class="fc">&nbsp;            resChallenge = null;</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        String id = (String) obj.get(&quot;id&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        String frontImgPath = idToFrontPath(id);</b>
+<b class="fc">&nbsp;        String backImgPath = idToBackGoldPath(resourcePrimary);</b>
+&nbsp;
+<b class="fc">&nbsp;        return new CardGold(id, resources, resPrimary, points, resNeeded, cha, resChallenge, frontImgPath, backImgPath);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static CardInitial parseCardInitial(JSONObject obj){
+<b class="fc">&nbsp;        String[] resourceBack = new String[4];</b>
+<b class="fc">&nbsp;        String[] resourceFront = new String[4];</b>
+<b class="fc">&nbsp;        String[] resourceCenter = new String[3];</b>
+&nbsp;
+<b class="fc">&nbsp;        ResourceType[] resBack = new ResourceType[4];</b>
+<b class="fc">&nbsp;        ResourceType[] resFront = new ResourceType[4];</b>
+<b class="fc">&nbsp;        ResourceType[] resCenter = new ResourceType[3];</b>
+&nbsp;
+<b class="fc">&nbsp;        resourceBack[0] = (String) obj.get(&quot;vertexBackOne&quot;);</b>
+<b class="fc">&nbsp;        resourceBack[1] = (String) obj.get(&quot;vertexBackTwo&quot;);</b>
+<b class="fc">&nbsp;        resourceBack[2] = (String) obj.get(&quot;vertexBackThree&quot;);</b>
+<b class="fc">&nbsp;        resourceBack[3] = (String) obj.get(&quot;vertexBackFour&quot;);</b>
+<b class="fc">&nbsp;        resourceFront[0] = (String) obj.get(&quot;vertexFrontOne&quot;);</b>
+<b class="fc">&nbsp;        resourceFront[1] = (String) obj.get(&quot;vertexFrontTwo&quot;);</b>
+<b class="fc">&nbsp;        resourceFront[2] = (String) obj.get(&quot;vertexFrontThree&quot;);</b>
+<b class="fc">&nbsp;        resourceFront[3] = (String) obj.get(&quot;vertexFrontFour&quot;);</b>
+<b class="fc">&nbsp;        resourceCenter[0] = (String) obj.get(&quot;centralResourceOne&quot;);</b>
+<b class="fc">&nbsp;        resourceCenter[1] = (String) obj.get(&quot;centralResourceTwo&quot;);</b>
+<b class="fc">&nbsp;        resourceCenter[2] = (String) obj.get(&quot;centralResourceThree&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        ParsingHelper.stringToResourceType(resourceBack, resBack);</b>
+<b class="fc">&nbsp;        ParsingHelper.stringToResourceType(resourceFront, resFront);</b>
+<b class="fc">&nbsp;        ParsingHelper.stringToResourceType(resourceCenter, resCenter);</b>
+&nbsp;
+<b class="fc">&nbsp;        String id = (String) obj.get(&quot;id&quot;);</b>
+<b class="fc">&nbsp;        String frontImgPath = idToFrontPath(id);</b>
+<b class="fc">&nbsp;        String backImgPath = idToBackPath(id);</b>
+&nbsp;
+<b class="fc">&nbsp;        return new CardInitial(id, resBack, resFront, resCenter, frontImgPath, backImgPath);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static CardObjective parseObjectivePositional(JSONObject obj){
+<b class="fc">&nbsp;        String[] resourcePosition = new String[3];</b>
+<b class="fc">&nbsp;        ResourcePrimaryType[] resPosition = new ResourcePrimaryType[3];</b>
+&nbsp;
+&nbsp;        ImageView frontImg;
+&nbsp;        ImageView backImg;
+&nbsp;
+<b class="fc">&nbsp;        String pointsCard = (String) obj.get(&quot;points&quot;);</b>
+<b class="fc">&nbsp;        String positionType = (String) obj.get(&quot;positionType&quot;);</b>
+<b class="fc">&nbsp;        resourcePosition[0] = (String) obj.get(&quot;resourcePrimaryOne&quot;);</b>
+<b class="fc">&nbsp;        resourcePosition[1] = (String) obj.get(&quot;resourcePrimaryTwo&quot;);</b>
+<b class="fc">&nbsp;        resourcePosition[2] = (String) obj.get(&quot;resourcePrimaryThree&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int points = Integer.parseInt(pointsCard);</b>
+<b class="fc">&nbsp;        GeneralPositionType posType = GeneralPositionType.valueOf(positionType);</b>
+<b class="fc">&nbsp;        ParsingHelper.stringToResourcePrimaryType(resourcePosition, resPosition);</b>
+&nbsp;
+<b class="fc">&nbsp;        String id = (String) obj.get(&quot;id&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        String frontImgPath = idToFrontPath(id);</b>
+<b class="fc">&nbsp;        String backImgPath = &quot;/it/polimi/ingsw/gc28/img/cards/backs/OBJ.png&quot;;</b>
+&nbsp;
+<b class="fc">&nbsp;        return new CardObjective(id, posType, points, resPosition, frontImgPath, backImgPath);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static CardObjective parseObjectiveResources(JSONObject obj){
+<b class="fc">&nbsp;        String[] resourceNeeded = new String[3];</b>
+<b class="fc">&nbsp;        ResourceType[] resNeeded = new ResourceType[3];</b>
+&nbsp;
+&nbsp;        ImageView frontImg;
+&nbsp;        ImageView backImg;
+&nbsp;
+<b class="fc">&nbsp;        String pointsCard = (String) obj.get(&quot;points&quot;);</b>
+<b class="fc">&nbsp;        resourceNeeded[0] = (String) obj.get(&quot;resourceNeededOne&quot;);</b>
+<b class="fc">&nbsp;        resourceNeeded[1] = (String) obj.get(&quot;resourceNeededTwo&quot;);</b>
+<b class="fc">&nbsp;        resourceNeeded[2] = (String) obj.get(&quot;resourceNeededThree&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int points = Integer.parseInt(pointsCard);</b>
+<b class="fc">&nbsp;        ParsingHelper.stringToResourceType(resourceNeeded, resNeeded);</b>
+&nbsp;
+<b class="fc">&nbsp;        String id = (String) obj.get(&quot;id&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        String frontImgPath = idToFrontPath(id);</b>
+<b class="fc">&nbsp;        String backImgPath = &quot;/it/polimi/ingsw/gc28/img/cards/backs/OBJ.png&quot;;</b>
+&nbsp;
+<b class="fc">&nbsp;        return new CardObjective(id, points, resNeeded, frontImgPath, backImgPath);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-06-27 15:29</div>
+</div>
+</body>
+</html>

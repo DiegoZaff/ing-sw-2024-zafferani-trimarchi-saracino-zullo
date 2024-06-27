@@ -1,0 +1,340 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > Deck</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.gc28.model</a>
+</div>
+
+<h1>Coverage Summary for Class: Deck (it.polimi.ingsw.gc28.model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Deck</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    91,7%
+  </span>
+  <span class="absValue">
+    (11/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    89%
+  </span>
+  <span class="absValue">
+    (65/73)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.polimi.ingsw.gc28.model;
+&nbsp;
+&nbsp;import it.polimi.ingsw.gc28.model.cards.*;
+&nbsp;import it.polimi.ingsw.gc28.model.cards.utils.ParsingHelper;
+&nbsp;import it.polimi.ingsw.gc28.model.challenge.utils.ChallengeType;
+&nbsp;import it.polimi.ingsw.gc28.model.objectives.positions.utils.GeneralPositionType;
+&nbsp;import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
+&nbsp;import it.polimi.ingsw.gc28.model.resources.utils.ResourceSpecialType;
+&nbsp;import it.polimi.ingsw.gc28.model.resources.utils.ResourceType;
+&nbsp;import org.json.simple.JSONArray;
+&nbsp;import org.json.simple.JSONObject;
+&nbsp;import org.json.simple.parser.JSONParser;
+&nbsp;import org.json.simple.parser.ParseException;
+&nbsp;
+&nbsp;import java.io.FileReader;
+&nbsp;import java.io.IOException;
+&nbsp;import java.io.Serializable;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.Optional;
+&nbsp;import java.util.Random;
+&nbsp;
+&nbsp;/**
+&nbsp; * Class that represents the deck of cards.
+&nbsp; */
+&nbsp;public class Deck implements Serializable {
+&nbsp;    private final ArrayList&lt;CardResource&gt; cardResourceDeck;
+&nbsp;    private final ArrayList&lt;CardGold&gt; cardGoldDeck;
+&nbsp;    private final ArrayList&lt;CardInitial&gt; cardInitialDeck;
+&nbsp;    private final ArrayList&lt;CardObjective&gt; cardObjectiveDeck;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method shuffles the deck inside the parameter
+&nbsp;     * @param card is the deck to be shuffled
+&nbsp;     */
+&nbsp;    public &lt;T extends Card&gt; void shuffle(ArrayList&lt;T &gt; card){
+<b class="fc">&nbsp;        Random random = new Random();</b>
+&nbsp;        T tmp;
+&nbsp;        int j;
+<b class="fc">&nbsp;        for(int i=card.size()-1; i&gt;0; i--){</b>
+<b class="fc">&nbsp;            j= random.nextInt(card.size());</b>
+<b class="fc">&nbsp;            tmp = card.get(i);</b>
+<b class="fc">&nbsp;            card.set(i, card.get(j));</b>
+<b class="fc">&nbsp;            card.set(j, tmp);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * shuffles all the decks of the game
+&nbsp;     */
+&nbsp;    public void shuffleAll(){
+<b class="fc">&nbsp;       shuffle(this.cardResourceDeck);</b>
+<b class="fc">&nbsp;       shuffle((this.cardGoldDeck));</b>
+<b class="fc">&nbsp;       shuffle(this.cardObjectiveDeck);</b>
+<b class="fc">&nbsp;       shuffle(this.cardInitialDeck);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This method is responsible for drawing the card.
+&nbsp;     * @return the card on top of the card resource deck, if the array is not empty, removing it from the array.
+&nbsp;     * Otherwise, it returns null.
+&nbsp;     */
+&nbsp;    public Optional&lt;CardResource&gt; nextResource() {
+<b class="fc">&nbsp;        if(cardResourceDeck.isEmpty()){</b>
+<b class="fc">&nbsp;            return Optional.empty();</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return Optional.ofNullable(cardResourceDeck.removeFirst());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This method is responsible for drawing the card.
+&nbsp;     * @return the card on top of the card gold deck, if the array is not empty, removing it from the array.
+&nbsp;     * Otherwise, it returns null.
+&nbsp;     * */
+&nbsp;    public Optional&lt;CardGold&gt; nextGold() {
+<b class="fc">&nbsp;        if(cardGoldDeck.isEmpty()) {</b>
+<b class="nc">&nbsp;            return Optional.empty();</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return Optional.ofNullable(cardGoldDeck.removeFirst());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This method is responsible for drawing the card.
+&nbsp;     * @return the card on top of the card objective deck, if the array is not empty, removing it from the array.
+&nbsp;     * Otherwise, it returns null.
+&nbsp;     */
+&nbsp;    public Optional&lt;CardObjective&gt; nextObjective() {
+<b class="fc">&nbsp;        if(cardObjectiveDeck.isEmpty()) {</b>
+<b class="nc">&nbsp;            return Optional.empty();</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return Optional.ofNullable(cardObjectiveDeck.removeFirst());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This method is responsible for drawing the card.
+&nbsp;     * @return the card on top of the card initial deck, if the array is not empty, removing it from the array.
+&nbsp;     * Otherwise, it returns null.
+&nbsp;     */
+&nbsp;    public Optional&lt;CardInitial&gt; nextInitial() {
+<b class="fc">&nbsp;        if(cardInitialDeck.isEmpty()) {</b>
+<b class="nc">&nbsp;            return Optional.empty();</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return Optional.ofNullable(cardInitialDeck.removeFirst());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method is used only for testing more easily
+&nbsp;     */
+&nbsp;    public boolean isResEmpty(){
+<b class="fc">&nbsp;        return cardResourceDeck.isEmpty();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method is used only for testing more easily
+&nbsp;     */
+&nbsp;    public boolean isGoldEmpty(){
+<b class="nc">&nbsp;        return cardGoldDeck.isEmpty();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;      This constructor generates a deck of cards
+&nbsp;     */
+<b class="fc">&nbsp;    public Deck() throws IOException {</b>
+<b class="fc">&nbsp;        cardResourceDeck = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        cardGoldDeck = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        cardInitialDeck = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        cardObjectiveDeck = new ArrayList&lt;&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;        JSONParser jsonParser = new JSONParser();</b>
+<b class="fc">&nbsp;        String path = &quot;./src/main/java/it/polimi/ingsw/gc28/Cards.json&quot;;</b>
+<b class="fc">&nbsp;        FileReader reader = new FileReader(path);</b>
+&nbsp;
+&nbsp;        Object obj;
+&nbsp;        try {
+<b class="fc">&nbsp;            obj = jsonParser.parse(reader);</b>
+<b class="fc">&nbsp;            JSONObject card = (JSONObject) obj;</b>
+&nbsp;
+<b class="fc">&nbsp;            JSONArray deckResources =(JSONArray)card.get(&quot;CardResource&quot;);</b>
+<b class="fc">&nbsp;            for(int i = 0; i&lt;deckResources.size(); i++){</b>
+<b class="fc">&nbsp;                JSONObject cardResource = (JSONObject) deckResources.get(i);</b>
+&nbsp;
+<b class="fc">&nbsp;                CardResource cardI = ParsingHelper.parseCardResource(cardResource);</b>
+&nbsp;
+<b class="fc">&nbsp;                cardResourceDeck.add(cardI);</b>
+&nbsp;            }
+&nbsp;
+<b class="fc">&nbsp;            JSONArray deckGold = (JSONArray)card.get(&quot;CardGold&quot;);</b>
+<b class="fc">&nbsp;            for(int i = 0; i&lt; deckGold.size(); i++) {</b>
+<b class="fc">&nbsp;                JSONObject cardGold = (JSONObject) deckGold.get(i);</b>
+&nbsp;
+<b class="fc">&nbsp;                CardGold cardI = ParsingHelper.parseGoldCard(cardGold);</b>
+&nbsp;
+<b class="fc">&nbsp;                cardGoldDeck.add(cardI);</b>
+&nbsp;            }
+&nbsp;
+<b class="fc">&nbsp;            JSONArray deckInitial = (JSONArray)card.get(&quot;CardInitial&quot;);</b>
+<b class="fc">&nbsp;            for(int i = 0; i&lt;deckInitial.size(); i++){</b>
+<b class="fc">&nbsp;                JSONObject cardInitial = (JSONObject) deckInitial.get(i);</b>
+&nbsp;
+<b class="fc">&nbsp;                CardInitial cardI = ParsingHelper.parseCardInitial(cardInitial);</b>
+&nbsp;
+<b class="fc">&nbsp;                cardInitialDeck.add(cardI);</b>
+&nbsp;            }
+&nbsp;
+<b class="fc">&nbsp;            JSONArray deckObjective = (JSONArray)card.get(&quot;CardObjective&quot;);</b>
+<b class="fc">&nbsp;            int j = 2;</b>
+<b class="fc">&nbsp;            for(int i = 0; i&lt; deckObjective.size()/j; i++) {</b>
+<b class="fc">&nbsp;                JSONObject cardObjective = (JSONObject) deckObjective.get(i);</b>
+&nbsp;
+<b class="fc">&nbsp;                CardObjective cardI = ParsingHelper.parseObjectiveResources(cardObjective);</b>
+&nbsp;
+<b class="fc">&nbsp;                cardObjectiveDeck.add(cardI);</b>
+&nbsp;            }
+<b class="fc">&nbsp;            for(int i = deckObjective.size()/j; i&lt;deckObjective.size(); i++) {</b>
+<b class="fc">&nbsp;                JSONObject cardObjective = (JSONObject) deckObjective.get(i);</b>
+&nbsp;
+<b class="fc">&nbsp;                CardObjective cardI = ParsingHelper.parseObjectivePositional(cardObjective);</b>
+&nbsp;
+<b class="fc">&nbsp;                cardObjectiveDeck.add(cardI);</b>
+&nbsp;            }
+<b class="nc">&nbsp;        } catch (IOException | ParseException e) {</b>
+<b class="nc">&nbsp;            throw new RuntimeException(e);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This method is used for testing purposes to make decks with known ordered cards
+&nbsp;     * due to applied permutations.
+&nbsp;     */
+&nbsp;    public Deck(ArrayList&lt;CardResource&gt; deckCardResources,
+&nbsp;                ArrayList&lt;CardGold&gt; deckCardGold,
+&nbsp;                ArrayList&lt;CardInitial&gt; deckCardInitial,
+<b class="fc">&nbsp;                ArrayList&lt;CardObjective&gt; deckCardObjective) throws  IOException{</b>
+<b class="fc">&nbsp;        this.cardResourceDeck = deckCardResources;</b>
+<b class="fc">&nbsp;        this.cardGoldDeck = deckCardGold;</b>
+<b class="fc">&nbsp;        this.cardInitialDeck = deckCardInitial;</b>
+<b class="fc">&nbsp;        this.cardObjectiveDeck = deckCardObjective;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This method applies a permutation to the deck of cards.
+&nbsp;     * Used only for testing purposes inside the special constructor.
+&nbsp;     */
+&nbsp;    /*private &lt;T&gt; void mixFromPermutation(ArrayList&lt;T&gt; deck, ArrayList&lt;String&gt; deck) throws  IllegalArgumentException{
+&nbsp;        if (deck.size() != permutation.size()){
+&nbsp;            throw new IllegalArgumentException();
+&nbsp;        }
+&nbsp;
+&nbsp;        ArrayList&lt;T&gt; newDeck = new ArrayList&lt;&gt;(deck);
+&nbsp;
+&nbsp;        for(int i = 0; i &lt; deck.size(); i++){
+&nbsp;            int nextId = deck.;
+&nbsp;            newDeck.set(nextIndex, deck.get(i));
+&nbsp;        }
+&nbsp;
+&nbsp;        for (int i = 0; i &lt; deck.size(); i++) {
+&nbsp;            int nextIndex = permutation.get(i);
+&nbsp;            deck.set(nextIndex, newDeck.get(i));
+&nbsp;        }
+&nbsp;    }*/
+&nbsp;
+&nbsp;    public CardGold getNextGoldCard(){
+<b class="fc">&nbsp;        if(!cardGoldDeck.isEmpty()){</b>
+<b class="fc">&nbsp;            return cardGoldDeck.getFirst();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public CardResource getNextResourceCard(){
+<b class="fc">&nbsp;        if(!cardResourceDeck.isEmpty()){</b>
+<b class="fc">&nbsp;            return cardResourceDeck.getFirst();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-06-27 15:29</div>
+</div>
+</body>
+</html>

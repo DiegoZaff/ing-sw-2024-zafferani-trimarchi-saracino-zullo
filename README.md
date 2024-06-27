@@ -1,7 +1,8 @@
-## ing-sw-2024-zafferani-trimarchi-saracino-zullo
+##### ing-sw-2024-zafferani-trimarchi-saracino-zullo
 
+# Software Engineering Project 2024 - Codex Naturalis
 ![Codex Naturalis](https://github.com/DiegoZaff/ing-sw-2024-zafferani-trimarchi-saracino-zullo/blob/a8db7a035c7d94030ae9989600cca92f9ab789fa/deliverables/Rules%20and%20requirements/814qEh0JKdS.jpg)
-## Software Engineering Project 2024 - Codex Naturalis
+
 
 
 ## Project description
@@ -43,13 +44,12 @@ The following table shows the implemented functionalities
 
 ## Documentation
 
-* ### [JavaDoc]()
-
+* ### [JavaDoc](https://gc28project.netlify.app/it.polimi.ingsw.gc28/module-summary.html)
 * ### [UML Class diagram](https://github.com/DiegoZaff/ing-sw-2024-zafferani-trimarchi-saracino-zullo/blob/a604bbb1bd29c48ee914b22a45e0188c3ddd3fdc/deliverables/UML2/uml%20model%202.png)
 
 * ### [UML Network diagram](https://github.com/DiegoZaff/ing-sw-2024-zafferani-trimarchi-saracino-zullo/blob/a604bbb1bd29c48ee914b22a45e0188c3ddd3fdc/deliverables/UML2/uml%20rete.drawio.png)
 
-* ### [Test coverage report]()
+* ### [Test coverage report](https://gc28testcoverage.netlify.app/)
 
 * ### [Jar File]()
 

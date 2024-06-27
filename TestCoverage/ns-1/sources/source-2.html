@@ -1,0 +1,404 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > GamesManager</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.gc28.controller</a>
+</div>
+
+<h1>Coverage Summary for Class: GamesManager (it.polimi.ingsw.gc28.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GamesManager</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    94,1%
+  </span>
+  <span class="absValue">
+    (16/17)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    60,7%
+  </span>
+  <span class="absValue">
+    (82/135)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.polimi.ingsw.gc28.controller;
+&nbsp;
+&nbsp;import it.polimi.ingsw.gc28.model.Game;
+&nbsp;import it.polimi.ingsw.gc28.model.errors.types.FailedActionManaged;
+&nbsp;import it.polimi.ingsw.gc28.model.utils.JoinInfo;
+&nbsp;import it.polimi.ingsw.gc28.network.messages.client.*;
+&nbsp;import it.polimi.ingsw.gc28.network.messages.server.*;
+&nbsp;import it.polimi.ingsw.gc28.network.rmi.GameStub;
+&nbsp;import it.polimi.ingsw.gc28.network.rmi.VirtualStub;
+&nbsp;import it.polimi.ingsw.gc28.network.rmi.VirtualView;
+&nbsp;
+&nbsp;import java.io.IOException;
+&nbsp;import java.rmi.RemoteException;
+&nbsp;import java.util.*;
+&nbsp;import java.util.concurrent.BlockingQueue;
+&nbsp;import java.util.concurrent.LinkedBlockingQueue;
+&nbsp;import java.util.concurrent.TimeUnit;
+&nbsp;
+&nbsp;public class GamesManager {
+&nbsp;
+&nbsp;    private final BlockingQueue&lt;MessageC2S&gt; messageQueue;
+&nbsp;
+&nbsp;    private static GamesManager instance;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    public Map&lt;String, GameController&gt; getMapGames() {
+<b class="fc">&nbsp;        return mapGames;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private final Map&lt;String, GameController&gt; mapGames;
+&nbsp;
+<b class="fc">&nbsp;    private GamesManager() {</b>
+<b class="fc">&nbsp;        mapGames = new HashMap&lt;&gt;();</b>
+<b class="fc">&nbsp;        messageQueue = new LinkedBlockingQueue&lt;&gt;();</b>
+<b class="fc">&nbsp;        this.sendPing();</b>
+<b class="fc">&nbsp;        this.processIncomingMessages();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static GamesManager getInstance() {
+<b class="fc">&nbsp;        if (instance == null) {</b>
+<b class="fc">&nbsp;            instance = new GamesManager();</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return instance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This method creates and starts a thread which is responsible for popping messages from the queue
+&nbsp;     * and processing theme.
+&nbsp;     */
+&nbsp;    private void processIncomingMessages() {
+<b class="fc">&nbsp;        new Thread(() -&gt; {</b>
+&nbsp;            while (true) {
+&nbsp;                try {
+<b class="fc">&nbsp;                    MessageC2S message = messageQueue.take(); // Blocking call</b>
+&nbsp;                    try{
+<b class="fc">&nbsp;                        this.executeClientMessage(message);</b>
+<b class="nc">&nbsp;                    }catch (RemoteException e){</b>
+<b class="nc">&nbsp;                        System.err.println(&quot;Remote Exception while creating a game!&quot;);</b>
+<b class="nc">&nbsp;                        System.err.println(e.getMessage());</b>
+<b class="fc">&nbsp;                    }</b>
+<b class="nc">&nbsp;                } catch (InterruptedException e) {</b>
+<b class="nc">&nbsp;                    System.err.println(&quot;Thread was interrupted while taking a message!&quot;);</b>
+<b class="nc">&nbsp;                    System.err.println(e.getMessage());</b>
+<b class="nc">&nbsp;                    throw new RuntimeException(e);</b>
+<b class="fc">&nbsp;                }</b>
+&nbsp;            }
+<b class="fc">&nbsp;        }).start();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * checks if someone disconnected from the game
+&nbsp;     */
+&nbsp;    private void sendPing(){
+<b class="fc">&nbsp;        new Thread(()-&gt;{</b>
+&nbsp;            while (true){
+&nbsp;                try {
+<b class="fc">&nbsp;                    TimeUnit.SECONDS.sleep(5);</b>
+<b class="nc">&nbsp;                } catch (InterruptedException e) {</b>
+<b class="nc">&nbsp;                    throw new RuntimeException(e);</b>
+<b class="nc">&nbsp;                }</b>
+<b class="nc">&nbsp;                System.out.println(&quot;Server pinging clients in game...&quot;);</b>
+<b class="nc">&nbsp;                for(String gameId : mapGames.keySet()){</b>
+&nbsp;                    try {
+<b class="nc">&nbsp;                        mapGames.get(gameId).sendPing();</b>
+<b class="nc">&nbsp;                    } catch (RemoteException e) {</b>
+<b class="nc">&nbsp;                        System.err.println(&quot;someone disconnected from game: &quot;+ gameId);</b>
+&nbsp;                        try {
+&nbsp;                            // closes game connections
+<b class="nc">&nbsp;                            mapGames.get(gameId).notifyGameTermination();</b>
+<b class="nc">&nbsp;                        } catch (RemoteException ignored) {</b>
+&nbsp;
+<b class="nc">&nbsp;                        }</b>
+<b class="nc">&nbsp;                        mapGames.get(gameId).deleteGameAndBackUp();</b>
+<b class="nc">&nbsp;                    }</b>
+<b class="nc">&nbsp;                }</b>
+&nbsp;            }
+<b class="fc">&nbsp;        }).start();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This method adds a message to the queue
+&nbsp;     */
+&nbsp;    public void addMessageToQueue(MessageC2S message){
+&nbsp;        try {
+<b class="fc">&nbsp;            messageQueue.put(message);</b>
+<b class="nc">&nbsp;        } catch (InterruptedException e) {</b>
+<b class="nc">&nbsp;            System.err.println(&quot;Thread was interrupted while inserting a message!&quot;);</b>
+<b class="nc">&nbsp;            System.err.println(e.getMessage());</b>
+<b class="nc">&nbsp;            throw new RuntimeException(e);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The method receives a message from the client and call a controller&#39;s method to execute the client&#39;s request.
+&nbsp;     * @param message is the message coming from the client.
+&nbsp;     */
+&nbsp;    private void executeClientMessage(MessageC2S message) throws RemoteException {
+<b class="fc">&nbsp;        if(message.getType().equals(MessageTypeC2S.CREATE_GAME)){</b>
+<b class="nc">&nbsp;            MsgCreateGame msg = (MsgCreateGame) message;</b>
+<b class="nc">&nbsp;            createGame(msg);</b>
+<b class="nc">&nbsp;        }else if(message.getType().equals(MessageTypeC2S.JOIN_GAME)){</b>
+<b class="fc">&nbsp;            MsgJoinGame msg = (MsgJoinGame) message;</b>
+<b class="fc">&nbsp;            joinGame(msg);</b>
+<b class="fc">&nbsp;        }else if(message.getType().equals(MessageTypeC2S.RECONNECT)){</b>
+<b class="fc">&nbsp;            MsgReconnect msg = (MsgReconnect) message;</b>
+<b class="fc">&nbsp;            reconnectToGame(msg);}</b>
+<b class="fc">&nbsp;        else if(message.getType().equals(MessageTypeC2S.JOINABLE_GAMES)){</b>
+<b class="fc">&nbsp;            MsgJoinableGames msg = (MsgJoinableGames) message;</b>
+<b class="fc">&nbsp;            sendJoinableGames(msg);</b>
+<b class="fc">&nbsp;        } else if (message.getType().equals(MessageTypeC2S.PING)) {</b>
+&nbsp;//            System.out.println(&quot;ping&quot;);
+&nbsp;        } else {
+<b class="nc">&nbsp;            System.err.printf(&quot;Message of type %s directed to gamesManager!%n&quot;, message.getType());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * initialises the game with the information inside the message
+&nbsp;     * @param msg that contains info about the game
+&nbsp;     */
+&nbsp;    public void createGame(MsgCreateGame msg)  {
+<b class="fc">&nbsp;        int numberOfPlayers = msg.getNumberOfPlayers();</b>
+<b class="fc">&nbsp;        String playerName = msg.getUserName();</b>
+<b class="fc">&nbsp;        VirtualView client = msg.getClient();</b>
+&nbsp;
+<b class="fc">&nbsp;        String gameId = UUID.randomUUID().toString();</b>
+<b class="fc">&nbsp;        GameController newController = null;</b>
+&nbsp;        try {
+<b class="fc">&nbsp;            newController = new GameController(new Game(numberOfPlayers, gameId));</b>
+<b class="nc">&nbsp;        } catch (IOException e) {</b>
+<b class="nc">&nbsp;            System.err.println(&quot;Error in creating a GameController: &quot; + e.getMessage());</b>
+<b class="nc">&nbsp;            throw new RuntimeException(e);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        try{
+<b class="fc">&nbsp;            newController.addPlayerToGame(playerName, client);</b>
+<b class="fc">&nbsp;            VirtualStub stub = new GameStub(newController, playerName, gameId);</b>
+<b class="fc">&nbsp;            client.attachGameStub(stub);</b>
+<b class="nc">&nbsp;        } catch (Exception e){</b>
+<b class="nc">&nbsp;            System.err.println(e.getMessage());</b>
+&nbsp;            return;
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        mapGames.put(gameId, newController);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            newController.notifyGameCreated(gameId, playerName, numberOfPlayers - 1);</b>
+<b class="nc">&nbsp;        } catch (RemoteException e) {</b>
+<b class="nc">&nbsp;            System.err.println(e.getMessage());</b>
+<b class="nc">&nbsp;            throw new RuntimeException(e);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * initialises the action with the information inside the message
+&nbsp;     * @param msg that contains info about the action
+&nbsp;     */
+&nbsp;    private void joinGame(MsgJoinGame msg)  {
+<b class="fc">&nbsp;        if(msg.getGameId().isEmpty()){</b>
+<b class="nc">&nbsp;            System.err.println(&quot;No game id in joinGame message!&quot;);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        Optional&lt;GameController&gt; controller = getGameController(msg.getGameId().get());</b>
+&nbsp;
+<b class="fc">&nbsp;        if(controller.isEmpty()) {</b>
+<b class="nc">&nbsp;            System.err.println(&quot;Error&quot;);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;        try{
+&nbsp;            // TODO : mayber should separate these block of instructions in different try catchs
+<b class="fc">&nbsp;            msg.execute(controller.get());</b>
+&nbsp;
+<b class="fc">&nbsp;            VirtualStub stub = new GameStub(controller.get(), msg.getUserName(), msg.getGameId().get());</b>
+<b class="fc">&nbsp;            msg.getClient().attachGameStub(stub);</b>
+&nbsp;
+<b class="fc">&nbsp;            int playersLeft = controller.get().getPlayersToJoin();</b>
+<b class="fc">&nbsp;            controller.get().notifyPlayerJoined(msg.getGameId().get(), msg.getUserName(), playersLeft);</b>
+&nbsp;
+<b class="fc">&nbsp;            controller.get().hasGameStarted();</b>
+<b class="nc">&nbsp;        }catch (RemoteException e){</b>
+<b class="nc">&nbsp;            System.err.println(e.getMessage());</b>
+<b class="nc">&nbsp;        } catch (FailedActionManaged e) {</b>
+<b class="nc">&nbsp;            System.err.println(&quot;Error already managed by controller: &quot; + e.getMessage());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * initialises the action with the information inside the message
+&nbsp;     * @param msg that contains info about the action
+&nbsp;     */
+&nbsp;    public void reconnectToGame(MsgReconnect msg){
+<b class="fc">&nbsp;        if(msg.getGameId().isEmpty()){</b>
+<b class="nc">&nbsp;            System.err.println(&quot;No game id in reconnect message!&quot;);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        Optional&lt;GameController&gt; controller = getGameController(msg.getGameId().get());</b>
+&nbsp;
+<b class="fc">&nbsp;        if(controller.isEmpty()) {</b>
+<b class="nc">&nbsp;            System.err.println(&quot;Error, no controller associated to gameId &quot; + msg.getGameId().get());</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+&nbsp;        try{
+<b class="fc">&nbsp;            msg.execute(controller.get());</b>
+&nbsp;
+<b class="fc">&nbsp;            VirtualStub stub = new GameStub(controller.get(), msg.getPlayerName(), msg.getGameId().get());</b>
+<b class="fc">&nbsp;            msg.getClient().attachGameStub(stub);</b>
+&nbsp;
+<b class="fc">&nbsp;            int playersLeft = controller.get().getPlayersToReconnect();</b>
+<b class="fc">&nbsp;            controller.get().notifyPlayerReconnected(msg.getGameId().get(), msg.getPlayerName(), playersLeft);</b>
+&nbsp;
+<b class="fc">&nbsp;            controller.get().hasGameRestarted();</b>
+<b class="nc">&nbsp;        }catch (RemoteException e){</b>
+<b class="nc">&nbsp;            System.err.println(e.getMessage());</b>
+<b class="fc">&nbsp;        } catch (FailedActionManaged e) {</b>
+<b class="fc">&nbsp;            System.err.println(&quot;Error already managed by controller: &quot; + e.getMessage());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * restores the game
+&nbsp;     * @param game to be restored
+&nbsp;     */
+&nbsp;    public void restoreGame(Game game){
+&nbsp;
+<b class="fc">&nbsp;        if(game == null){</b>
+<b class="nc">&nbsp;            throw new RuntimeException(&quot;Game is null, wake up!&quot;);</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        String gameId = game.getGameId();</b>
+<b class="fc">&nbsp;        GameController controller = new GameController(game);</b>
+<b class="fc">&nbsp;        mapGames.put(gameId, controller);</b>
+<b class="fc">&nbsp;        controller.waitForReconnections();</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * sends the joinable games to the client
+&nbsp;     * @param msg that contains the information about the joinable games
+&nbsp;     */
+&nbsp;    private void sendJoinableGames(MsgJoinableGames msg){
+<b class="fc">&nbsp;        VirtualView client = msg.getClient();</b>
+&nbsp;
+<b class="fc">&nbsp;        if(client == null){</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        ArrayList&lt;JoinInfo&gt; res = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        mapGames.forEach((id, controller) -&gt; {</b>
+<b class="fc">&nbsp;            Optional&lt;JoinInfo&gt; info = controller.getJoinInfo();</b>
+<b class="fc">&nbsp;            info.ifPresent(res::add);</b>
+&nbsp;        });
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;        MsgOnJoinableGames msgToSend = new MsgOnJoinableGames(res);</b>
+&nbsp;        try {
+<b class="fc">&nbsp;            client.sendMessage(msgToSend);</b>
+<b class="nc">&nbsp;        } catch (RemoteException e) {</b>
+<b class="nc">&nbsp;            System.err.println(e.getMessage());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    public Optional&lt;GameController&gt; getGameController(String id){
+<b class="fc">&nbsp;        GameController controller = mapGames.get(id);</b>
+&nbsp;
+<b class="fc">&nbsp;        return Optional.ofNullable(controller);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void deleteGame(String gameId) {
+<b class="nc">&nbsp;        GameController gameModelRemoved =  mapGames.remove(gameId);</b>
+&nbsp;
+<b class="nc">&nbsp;        if(gameModelRemoved != null){</b>
+<b class="nc">&nbsp;            System.out.printf(&quot;Game deleted successfully with id %s\n&quot;, gameModelRemoved.gameModel.getGameId());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-06-27 15:29</div>
+</div>
+</body>
+</html>

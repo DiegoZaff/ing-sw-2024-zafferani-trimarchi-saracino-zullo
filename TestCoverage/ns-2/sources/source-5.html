@@ -1,0 +1,325 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > Player</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.gc28.model</a>
+</div>
+
+<h1>Coverage Summary for Class: Player (it.polimi.ingsw.gc28.model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Player</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    92,6%
+  </span>
+  <span class="absValue">
+    (25/27)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    87,9%
+  </span>
+  <span class="absValue">
+    (51/58)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.polimi.ingsw.gc28.model;
+&nbsp;
+&nbsp;import it.polimi.ingsw.gc28.model.errors.types.NotOwnedCard;
+&nbsp;import it.polimi.ingsw.gc28.model.utils.PlayerColor;
+&nbsp;import it.polimi.ingsw.gc28.view.PrivateRepresentation;
+&nbsp;import it.polimi.ingsw.gc28.model.cards.CardGame;
+&nbsp;import it.polimi.ingsw.gc28.model.cards.CardInitial;
+&nbsp;import it.polimi.ingsw.gc28.model.cards.CardObjective;
+&nbsp;import it.polimi.ingsw.gc28.model.cards.CardResource;
+&nbsp;import it.polimi.ingsw.gc28.model.errors.PlayerActionError;
+&nbsp;import it.polimi.ingsw.gc28.model.errors.types.NotPlayableGoldCard;
+&nbsp;import it.polimi.ingsw.gc28.model.errors.types.UnplayableCoordinate;
+&nbsp;import it.polimi.ingsw.gc28.model.objectives.Objective;
+&nbsp;
+&nbsp;import java.io.Serializable;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;
+&nbsp;public class Player implements Serializable {
+&nbsp;
+&nbsp;    private int points, objectivePoints;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this becomes false if the player wins the game
+&nbsp;     */
+<b class="fc">&nbsp;    private boolean winner = false;</b>
+&nbsp;
+&nbsp;    private boolean connected;
+&nbsp;
+&nbsp;    private final String name;
+&nbsp;    private PlayerColor color;
+&nbsp;    private CardObjective objectiveChosen;
+&nbsp;
+&nbsp;    private  ArrayList&lt;CardObjective&gt; objectivesToChoose;
+&nbsp;
+&nbsp;    private ArrayList&lt;CardResource&gt; hand;
+&nbsp;    private CardInitial cardInitial;
+&nbsp;
+&nbsp;    private Table table;
+&nbsp;
+&nbsp;    private PlayerActionError error;
+&nbsp;
+<b class="fc">&nbsp;    public Player(String name) {</b>
+<b class="fc">&nbsp;        this.name = name;</b>
+<b class="fc">&nbsp;        this.points = 0;</b>
+<b class="fc">&nbsp;        this.objectivePoints = 0;</b>
+<b class="fc">&nbsp;        this.hand = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        this.table = new Table();</b>
+<b class="fc">&nbsp;        this.connected = true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Optional&lt;ArrayList&lt;CardObjective&gt;&gt; getObjectivesToChoose(){
+<b class="fc">&nbsp;        return Optional.ofNullable(objectivesToChoose);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setObjectivesToChoose(ArrayList&lt;CardObjective&gt; objectivesToChoose) {
+<b class="fc">&nbsp;        this.objectivesToChoose = objectivesToChoose;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setObjectiveChosen(CardObjective card){
+<b class="fc">&nbsp;        objectiveChosen = card;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Optional&lt;CardObjective&gt; getObjectiveChosen(){
+<b class="fc">&nbsp;        return Optional.ofNullable(objectiveChosen) ;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setError(PlayerActionError error) {
+<b class="nc">&nbsp;        this.error = error;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Optional&lt;PlayerActionError&gt; getError(){
+<b class="nc">&nbsp;        return Optional.ofNullable(error);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public ArrayList&lt;CardResource&gt; gethand (){
+<b class="fc">&nbsp;        return hand;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public int getPoints(){
+<b class="fc">&nbsp;        return points + objectivePoints;</b>
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public void setWinner(){winner = true;}</b>
+&nbsp;
+<b class="fc">&nbsp;    public boolean isWinner() {return winner;}</b>
+&nbsp;
+<b class="fc">&nbsp;    public int getObjectivePoints() {return objectivePoints;}</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method is called when a card is played and needs to be deleted from the hand of the player
+&nbsp;     * @param cardToBeRemoved
+&nbsp;     */
+&nbsp;    public void removeCard (CardGame cardToBeRemoved) {
+<b class="fc">&nbsp;        hand.remove(cardToBeRemoved);</b>
+&nbsp;    }
+&nbsp;    public void addCardToHand(CardResource drawnCard){
+<b class="fc">&nbsp;        hand.add(drawnCard);</b>
+&nbsp;    }
+<b class="fc">&nbsp;    public Table getTable () {return table;}</b>
+&nbsp;
+&nbsp;    public String getName() {
+<b class="fc">&nbsp;        return name;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method update the points when a card is played
+&nbsp;     * @param coordinate the coordinate of the played card
+&nbsp;     */
+&nbsp;    public void updatePoints(Coordinate coordinate){
+<b class="fc">&nbsp;        points += table.getCell(coordinate).points(table, coordinate);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method play a card in the table of a player, checking if the coordinate and the card can be played.
+&nbsp;     * if the card is played increments points and modify table resources counters.
+&nbsp;     * if the card is played it removes it from hand
+&nbsp;     * it throws an IrregularCardException if the card can not be played.
+&nbsp;     * it throws an IrregularCoordinateException if the coordinated can not be played.
+&nbsp;     * @param playedCard the card to be played
+&nbsp;     * @param isFront indicate how the card has to be played, front if True, back if False
+&nbsp;     * @param coordinates indicates the coordinate where the card has to be played
+&nbsp;     */
+&nbsp;    public void playCard(CardGame playedCard, boolean isFront, Coordinate coordinates) throws PlayerActionError {
+<b class="fc">&nbsp;        if (playedCard.checkHand(hand, cardInitial)){</b>
+<b class="nc">&nbsp;            throw new NotOwnedCard(playedCard);</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        if (!table.checkPlayability(coordinates)){</b>
+&nbsp;            // TODO : maybe make more granular, why cant be played...
+<b class="nc">&nbsp;            throw new UnplayableCoordinate(coordinates);</b>
+&nbsp;        }else {
+<b class="fc">&nbsp;            int flag = 0;</b>
+<b class="fc">&nbsp;            if (isFront){</b>
+<b class="fc">&nbsp;                flag = playedCard.playFront(table, coordinates);</b>
+&nbsp;            } else {
+<b class="fc">&nbsp;                playedCard.playBack(table, coordinates);</b>
+&nbsp;            }
+<b class="fc">&nbsp;            if (flag != 0){</b>
+<b class="nc">&nbsp;                throw new NotPlayableGoldCard(playedCard.getId());</b>
+&nbsp;            }
+&nbsp;
+<b class="fc">&nbsp;            table.updateCounters(coordinates);</b>
+&nbsp;
+<b class="fc">&nbsp;            this.updatePoints(coordinates);</b>
+&nbsp;
+<b class="fc">&nbsp;            table.updateCoordinate(coordinates);</b>
+&nbsp;
+<b class="fc">&nbsp;            removeCard(playedCard);</b>
+&nbsp;            
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This method adds points of the objectives to the player&#39;s score at the end of the game
+&nbsp;     * @param objectives globalObjectives (newly created list)
+&nbsp;     * @requires objective.isPresent()
+&nbsp;     */
+&nbsp;    public void calculateObjectivePoints(ArrayList&lt;Objective&gt; objectives){
+<b class="fc">&nbsp;        Optional&lt;CardObjective&gt; objChosen = getObjectiveChosen();</b>
+&nbsp;
+<b class="fc">&nbsp;        if(objChosen.isPresent()){</b>
+&nbsp;            // I can add to this array since we pass a newly created ArrayList.
+<b class="fc">&nbsp;            objectives.add(objChosen.get().getObjective());</b>
+&nbsp;        }else{
+<b class="nc">&nbsp;            System.err.println(&quot;Objective not set&quot;);</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        for(Objective obj: objectives){</b>
+<b class="fc">&nbsp;            objectivePoints += obj.calculatePoints(table.getMapPositions(),table.getResourceCounters());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;    public Optional&lt;CardInitial&gt; getCardInitial(){
+<b class="fc">&nbsp;        return Optional.ofNullable(cardInitial);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setCardInitial(CardInitial card){
+<b class="fc">&nbsp;        this.cardInitial = card;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public boolean equals(Object obj) {
+<b class="fc">&nbsp;        if (this == obj) {</b>
+<b class="fc">&nbsp;            return true;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (obj == null || getClass() != obj.getClass()) {</b>
+<b class="nc">&nbsp;            return false;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        Player other = (Player) obj;</b>
+<b class="fc">&nbsp;        return name.equals(other.name);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public PrivateRepresentation getState(){
+<b class="fc">&nbsp;        return new PrivateRepresentation(objectiveChosen, table, hand, cardInitial, objectivesToChoose, color, isWinner());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setColor(PlayerColor color){
+<b class="fc">&nbsp;        this.color = color;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public PlayerColor getColor(){
+<b class="fc">&nbsp;        return color;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean isConnected() {
+<b class="fc">&nbsp;        return connected;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setConnected(boolean connected) {
+<b class="fc">&nbsp;        this.connected = connected;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-06-27 15:29</div>
+</div>
+</body>
+</html>

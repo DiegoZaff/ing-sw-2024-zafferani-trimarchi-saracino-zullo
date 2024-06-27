@@ -1,0 +1,780 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > GameController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.gc28.controller</a>
+</div>
+
+<h1>Coverage Summary for Class: GameController (it.polimi.ingsw.gc28.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GameController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    86,1%
+  </span>
+  <span class="absValue">
+    (31/36)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    74,8%
+  </span>
+  <span class="absValue">
+    (184/246)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.polimi.ingsw.gc28.controller;
+&nbsp;import it.polimi.ingsw.gc28.model.errors.types.*;
+&nbsp;import it.polimi.ingsw.gc28.model.utils.GameEndedNotification;
+&nbsp;import it.polimi.ingsw.gc28.model.utils.JoinInfo;
+&nbsp;import it.polimi.ingsw.gc28.network.messages.client.MessageC2S;
+&nbsp;import it.polimi.ingsw.gc28.network.persistence.BackupManager;
+&nbsp;import it.polimi.ingsw.gc28.view.GameRepresentation;
+&nbsp;import it.polimi.ingsw.gc28.model.Coordinate;
+&nbsp;import it.polimi.ingsw.gc28.model.Game;
+&nbsp;import it.polimi.ingsw.gc28.model.Player;
+&nbsp;import it.polimi.ingsw.gc28.model.cards.CardGame;
+&nbsp;import it.polimi.ingsw.gc28.model.cards.CardObjective;
+&nbsp;import it.polimi.ingsw.gc28.model.cards.CardResource;
+&nbsp;import it.polimi.ingsw.gc28.model.cards.CardsManager;
+&nbsp;import it.polimi.ingsw.gc28.model.chat.ChatMessage;
+&nbsp;import it.polimi.ingsw.gc28.model.errors.PlayerActionError;
+&nbsp;import it.polimi.ingsw.gc28.network.messages.server.*;
+&nbsp;import it.polimi.ingsw.gc28.network.rmi.VirtualView;
+&nbsp;
+&nbsp;import java.rmi.RemoteException;
+&nbsp;import java.util.*;
+&nbsp;import java.util.concurrent.BlockingQueue;
+&nbsp;import java.util.concurrent.LinkedBlockingQueue;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;
+&nbsp;public class GameController {
+&nbsp;    final Game gameModel;
+&nbsp;
+&nbsp;    private final Map&lt;String, VirtualView&gt; clients;
+&nbsp;
+&nbsp;    private final BlockingQueue&lt;MessageC2S&gt; messageQueue;
+&nbsp;
+<b class="fc">&nbsp;    public GameController(Game gameModel) {</b>
+<b class="fc">&nbsp;        this.gameModel = gameModel;</b>
+<b class="fc">&nbsp;        this.clients = new HashMap&lt;&gt;();</b>
+<b class="fc">&nbsp;        messageQueue = new LinkedBlockingQueue&lt;&gt;();</b>
+<b class="fc">&nbsp;        this.processIncomingMessages();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Starts a new thread to process all the messages inside the queue
+&nbsp;     */
+&nbsp;    private void processIncomingMessages() {
+<b class="fc">&nbsp;        new Thread(() -&gt; {</b>
+&nbsp;            while (true) {
+&nbsp;                try {
+<b class="fc">&nbsp;                    MessageC2S message = messageQueue.take(); // Blocking call</b>
+&nbsp;                    try{
+<b class="fc">&nbsp;                        message.execute(this);</b>
+<b class="nc">&nbsp;                    }catch (RemoteException e){</b>
+<b class="nc">&nbsp;                        System.err.println(&quot;Remote Exception while executing a message!&quot;);</b>
+<b class="nc">&nbsp;                        System.err.println(e.getMessage());</b>
+<b class="nc">&nbsp;                    } catch (PlayerActionError e) {</b>
+<b class="nc">&nbsp;                        System.err.println(&quot;Error should be already managed!&quot;);</b>
+<b class="fc">&nbsp;                    }</b>
+<b class="nc">&nbsp;                } catch (InterruptedException e) {</b>
+<b class="nc">&nbsp;                    System.err.println(&quot;Thread was interrupted while taking a message!&quot;);</b>
+<b class="nc">&nbsp;                    System.err.println(e.getMessage());</b>
+<b class="nc">&nbsp;                    throw new RuntimeException(e);</b>
+<b class="fc">&nbsp;                }</b>
+&nbsp;            }
+<b class="fc">&nbsp;        }).start();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     *
+&nbsp;     * @param message gets added to the queue
+&nbsp;     */
+&nbsp;    public void addMessageToQueue(MessageC2S message){
+&nbsp;        try {
+<b class="fc">&nbsp;            messageQueue.put(message);</b>
+<b class="nc">&nbsp;        } catch (InterruptedException e) {</b>
+<b class="nc">&nbsp;            System.err.println(&quot;Thread was interrupted while inserting a message!&quot;);</b>
+<b class="nc">&nbsp;            System.err.println(e.getMessage());</b>
+<b class="nc">&nbsp;            throw new RuntimeException(e);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * adds a player to the game
+&nbsp;     * @param name of the player added
+&nbsp;     * @param client of the player added
+&nbsp;     * @throws RemoteException
+&nbsp;     */
+&nbsp;    public boolean addPlayerToGame(String name, VirtualView client) throws RemoteException {
+&nbsp;
+<b class="fc">&nbsp;        synchronized (gameModel){</b>
+&nbsp;            try{
+<b class="fc">&nbsp;                this.gameModel.addPlayerToGame(name);</b>
+<b class="fc">&nbsp;                this.clients.put(name, client);</b>
+<b class="nc">&nbsp;            }catch (PlayerActionError e){</b>
+&nbsp;                // notify error to player
+<b class="nc">&nbsp;                MsgReportError message = new MsgReportError(e.getError());</b>
+<b class="nc">&nbsp;                client.sendMessage(message);</b>
+<b class="nc">&nbsp;                return false;</b>
+<b class="fc">&nbsp;            }</b>
+&nbsp;
+<b class="fc">&nbsp;            return true;</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This is called after a player has joined. If the game has started this method notifies all client.
+&nbsp;     */
+&nbsp;    public void hasGameStarted() throws RemoteException {
+<b class="fc">&nbsp;        synchronized (gameModel){</b>
+<b class="fc">&nbsp;            if (gameModel.getHasGameStarted()){</b>
+<b class="fc">&nbsp;                GameRepresentation representation = getGameRepresentation();</b>
+<b class="fc">&nbsp;                for(Map.Entry&lt;String, VirtualView&gt; entry : clients.entrySet()){</b>
+<b class="fc">&nbsp;                    VirtualView cli = entry.getValue();</b>
+<b class="fc">&nbsp;                    MsgOnGameStarted m = new MsgOnGameStarted(representation);</b>
+<b class="fc">&nbsp;                    cli.sendMessage(m);</b>
+<b class="fc">&nbsp;                }</b>
+&nbsp;            }
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This is called after a player has joined. If the game has started this method notifies all client.
+&nbsp;     */
+&nbsp;    public void hasGameRestarted() throws RemoteException {
+<b class="fc">&nbsp;        synchronized (gameModel){</b>
+<b class="fc">&nbsp;            if (gameModel.isEveryoneReconnected()){</b>
+<b class="fc">&nbsp;                GameRepresentation representation = getGameRepresentation();</b>
+<b class="fc">&nbsp;                for(Map.Entry&lt;String, VirtualView&gt; entry : clients.entrySet()){</b>
+<b class="fc">&nbsp;                    VirtualView cli = entry.getValue();</b>
+<b class="fc">&nbsp;                    MsgOnGameRestarted m = new MsgOnGameRestarted(representation);</b>
+<b class="fc">&nbsp;                    cli.sendMessage(m);</b>
+<b class="fc">&nbsp;                }</b>
+&nbsp;            }
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;//
+&nbsp;//    /**
+&nbsp;//     * Overloading, in case we have already calculated Player.
+&nbsp;//     */
+&nbsp;//    public Optional&lt;ArrayList&lt;CardObjective&gt;&gt; getPersonalObjectives(Player player){
+&nbsp;//        synchronized (gameModel) {
+&nbsp;//            return player.getObjectivesToChoose();
+&nbsp;//        }
+&nbsp;//    }
+&nbsp;//
+&nbsp;//    public ArrayList&lt;CardResource&gt; getPlayerHand(Player player){
+&nbsp;//        synchronized (gameModel) {
+&nbsp;//            return player.gethand();
+&nbsp;//        }
+&nbsp;//    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * contorls the chooseObjective action
+&nbsp;     * @param name of the player that choose the objective
+&nbsp;     * @param cardId of the card chosen as objective
+&nbsp;     * @throws RemoteException
+&nbsp;     */
+&nbsp;    public void chooseObjectivePersonal(String name, String cardId) throws RemoteException {
+&nbsp;
+<b class="fc">&nbsp;        Optional&lt;CardObjective&gt; chosen = CardsManager.getInstance().getCardObjectiveFromId(cardId);</b>
+&nbsp;
+<b class="fc">&nbsp;        if(chosen.isEmpty()){</b>
+<b class="nc">&nbsp;            notifyError(name, new NoSuchCardId(cardId), &quot;ChooseObjective&quot;);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        synchronized (gameModel){</b>
+&nbsp;
+&nbsp;            try{
+<b class="fc">&nbsp;                gameModel.chooseObjective(name, chosen.get());</b>
+&nbsp;
+<b class="fc">&nbsp;                notifyObjChosen(name);</b>
+&nbsp;
+&nbsp;                // back up game
+<b class="fc">&nbsp;                backUpGame(gameModel);</b>
+<b class="fc">&nbsp;            }catch (PlayerActionError e){</b>
+<b class="fc">&nbsp;                notifyError(name, e, &quot;ChooseObjective&quot;);</b>
+<b class="fc">&nbsp;            }</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * controls the drawCard action when the card drawn is a hidden card
+&nbsp;     * @param name of the player that has drawn the card
+&nbsp;     * @param fromGoldDeck boolean that tells from which deck to draw the card
+&nbsp;     * @throws RemoteException
+&nbsp;     */
+&nbsp;    public void drawCard(String name, boolean fromGoldDeck) throws RemoteException {
+<b class="fc">&nbsp;        synchronized (gameModel){</b>
+&nbsp;            try{
+<b class="fc">&nbsp;                CardResource card = gameModel.drawGameCard(name, fromGoldDeck);</b>
+&nbsp;
+<b class="fc">&nbsp;                notifyOfCardDrawn(name, card, fromGoldDeck);</b>
+&nbsp;
+&nbsp;                // back up game
+<b class="fc">&nbsp;                backUpGame(gameModel);</b>
+<b class="nc">&nbsp;            }catch (PlayerActionError e){</b>
+<b class="nc">&nbsp;                notifyError(name, e, &quot;DrawCardFromDeck&quot;);</b>
+<b class="fc">&nbsp;            }</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * controls the drawCard action when the card drawn is a face-up card
+&nbsp;     * @param playerName of the player that has drawn the card
+&nbsp;     * @param cardId of the face up card to draw
+&nbsp;     * @throws RemoteException
+&nbsp;     */
+&nbsp;    public void drawCard(String playerName, String cardId) throws RemoteException {
+<b class="fc">&nbsp;        Optional&lt;? extends CardResource&gt; cardToDraw = CardsManager.getInstance().getCardResourceFromId(cardId);</b>
+&nbsp;
+<b class="fc">&nbsp;        if(cardToDraw.isEmpty()){</b>
+<b class="fc">&nbsp;            notifyError(playerName, new NoSuchCardId(cardId), &quot;DrawCardFromCardId&quot;);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        synchronized (gameModel){</b>
+&nbsp;            try {
+<b class="fc">&nbsp;                gameModel.drawGameCard(playerName, cardToDraw.get());</b>
+&nbsp;
+<b class="fc">&nbsp;                notifyOfCardDrawn(playerName, cardToDraw.get());</b>
+&nbsp;
+&nbsp;                // back up game
+<b class="fc">&nbsp;                backUpGame(gameModel);</b>
+<b class="fc">&nbsp;            } catch (PlayerActionError e) {</b>
+<b class="fc">&nbsp;                notifyError(playerName, e, &quot;DrawCardFromCardId&quot;);</b>
+<b class="fc">&nbsp;            }</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * controls the playCard action
+&nbsp;     * @param playerName that played the card
+&nbsp;     * @param cardId to be played
+&nbsp;     * @param isFront side of the card
+&nbsp;     * @param coordinate where the card is being played
+&nbsp;     * @throws RemoteException
+&nbsp;     */
+&nbsp;    public void playCard(String playerName, String cardId, boolean isFront, Coordinate coordinate) throws RemoteException {
+<b class="fc">&nbsp;        Optional&lt;? extends CardGame&gt; cardToPlay = CardsManager.getInstance().getCardGameFromId(cardId);</b>
+&nbsp;
+<b class="fc">&nbsp;        if(cardToPlay.isEmpty()){</b>
+<b class="fc">&nbsp;            notifyError(playerName, new NoSuchCardId(cardId), &quot;PlayCard&quot;);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        synchronized (gameModel){</b>
+&nbsp;            try{
+<b class="fc">&nbsp;                gameModel.playGameCard(playerName, cardToPlay.get(), isFront, coordinate);</b>
+&nbsp;
+<b class="fc">&nbsp;                Optional&lt;Player&gt; playerWhoPlayed = gameModel.getPlayerOfName(playerName);</b>
+&nbsp;
+<b class="fc">&nbsp;                if(playerWhoPlayed.isEmpty()){</b>
+&nbsp;                    // TODO: handle this... should not happen
+<b class="nc">&nbsp;                    throw new RuntimeException(&quot;Something went seriously wrong!&quot;);</b>
+&nbsp;                }
+&nbsp;
+<b class="fc">&nbsp;                notifyOfCardPlayed(playerName, cardToPlay.get().getId());</b>
+&nbsp;
+&nbsp;                // back up game
+<b class="fc">&nbsp;                backUpGame(gameModel);</b>
+&nbsp;
+<b class="fc">&nbsp;            }catch (PlayerActionError e){</b>
+<b class="fc">&nbsp;                MsgReportError message = new MsgReportError(e.getError());</b>
+&nbsp;                try {
+<b class="fc">&nbsp;                    clients.get(playerName).sendMessage(message);</b>
+<b class="fc">&nbsp;                    return;</b>
+<b class="nc">&nbsp;                } catch (RemoteException ex) {</b>
+&nbsp;                    //TODO : handle better?
+<b class="nc">&nbsp;                    System.err.println(&quot;Could not notify client! Maybe disconnected?&quot;);</b>
+<b class="nc">&nbsp;                    System.err.println(e.getMessage());</b>
+<b class="nc">&nbsp;                    throw new RuntimeException(ex);</b>
+&nbsp;                }
+<b class="nc">&nbsp;            } catch (GameEndedNotification e) {</b>
+&nbsp;
+<b class="nc">&nbsp;                notifyOfCardPlayed(playerName, cardToPlay.get().getId());</b>
+&nbsp;
+<b class="nc">&nbsp;                ArrayList&lt;String&gt; playersWin = gameModel.getPlayers().stream().filter((Player::isWinner)).map(Player::getName).collect(Collectors.toCollection(ArrayList::new));</b>
+&nbsp;
+<b class="nc">&nbsp;                notifyGameEndedWinners(playersWin);</b>
+&nbsp;
+<b class="nc">&nbsp;                for(VirtualView client : clients.values()){</b>
+<b class="nc">&nbsp;                    client.closeConnectionGame();</b>
+<b class="nc">&nbsp;                }</b>
+&nbsp;
+<b class="nc">&nbsp;                GamesManager.getInstance().deleteGame(gameModel.getGameId());</b>
+&nbsp;
+&nbsp;                //delete backUp file
+<b class="nc">&nbsp;                deleteBackUpGame(gameModel);</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;            }</b>
+&nbsp;
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This method is for sending chat messages
+&nbsp;     */
+&nbsp;    public void sendMessage(ChatMessage chatMessage) throws RemoteException {
+<b class="fc">&nbsp;        synchronized (gameModel) {</b>
+<b class="fc">&nbsp;            if(chatMessage.getReceiver().equals(&quot;all&quot;)){</b>
+<b class="fc">&nbsp;                gameModel.sendMessage(chatMessage);</b>
+<b class="fc">&nbsp;                String sender = chatMessage.getSender();</b>
+<b class="fc">&nbsp;                String receiver = chatMessage.getReceiver();</b>
+<b class="fc">&nbsp;                notifyChatMessage(sender, receiver, false);</b>
+<b class="fc">&nbsp;                return;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            else {
+<b class="fc">&nbsp;                Optional&lt;Player&gt; receiver = gameModel.getPlayerOfName(chatMessage.getReceiver());</b>
+<b class="fc">&nbsp;                if (receiver.isEmpty()){</b>
+<b class="fc">&nbsp;                    notifyError(chatMessage.getSender(), new InvalidReceiverName(), &quot;choose a correct player name to send the message&quot;);</b>
+<b class="fc">&nbsp;                    return;</b>
+&nbsp;                }
+<b class="fc">&nbsp;                gameModel.sendMessage(chatMessage);</b>
+<b class="fc">&nbsp;                String sender = chatMessage.getSender();</b>
+<b class="fc">&nbsp;                String rec = chatMessage.getReceiver();</b>
+<b class="fc">&nbsp;                notifyChatMessage(sender, rec, true);</b>
+&nbsp;            }
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        // back up game
+<b class="fc">&nbsp;        backUpGame(gameModel);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * contorls the chooseColor action
+&nbsp;     * @param playerName that has chosen the color
+&nbsp;     * @param color chosen from the player
+&nbsp;     * @throws RemoteException
+&nbsp;     */
+&nbsp;    public void chooseColor(String playerName, String color) throws RemoteException {
+<b class="fc">&nbsp;        synchronized (gameModel) {</b>
+&nbsp;            try {
+<b class="fc">&nbsp;                gameModel.chooseColor(playerName, color);</b>
+<b class="fc">&nbsp;                notifyChooseColor(playerName);</b>
+<b class="fc">&nbsp;            } catch (PlayerActionError e) {</b>
+<b class="fc">&nbsp;                notifyError(playerName, e, &quot;Error in choosing color&quot;);</b>
+<b class="fc">&nbsp;            }</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    public void waitForReconnections(){
+<b class="fc">&nbsp;        synchronized (gameModel){</b>
+&nbsp;            try {
+<b class="fc">&nbsp;                gameModel.setWaitForReconnections();</b>
+<b class="nc">&nbsp;            } catch (UnrestorableGameError e) {</b>
+<b class="nc">&nbsp;                System.err.printf(&quot;Game %s could not be restored!\n%s%n&quot;, gameModel.getGameId(), e.getMessage());</b>
+<b class="fc">&nbsp;            }</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * controls the reconnection of a player
+&nbsp;     * @param playerName that is reconnecting
+&nbsp;     * @param client of the player
+&nbsp;     * @throws RemoteException
+&nbsp;     */
+&nbsp;    public boolean reconnect(String playerName, VirtualView client) throws RemoteException {
+<b class="fc">&nbsp;        synchronized (gameModel){</b>
+&nbsp;            try {
+<b class="fc">&nbsp;                gameModel.reconnectPlayer(playerName);</b>
+<b class="fc">&nbsp;                this.clients.put(playerName, client);</b>
+<b class="fc">&nbsp;                return true;</b>
+<b class="fc">&nbsp;            } catch (PlayerActionError e) {</b>
+<b class="fc">&nbsp;                notifyErrorSpecificClient(client, e);</b>
+&nbsp;            }
+<b class="fc">&nbsp;            return false;</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * notifies the client that the hidden card has been successfully drawn
+&nbsp;     * @param playerName to notify
+&nbsp;     * @param card drawn
+&nbsp;     * @param fromGoldDeck boolean that tells from which deck to draw the card
+&nbsp;     * @throws RemoteException
+&nbsp;     */
+&nbsp;    public void notifyOfCardDrawn(String playerName, CardResource card, Boolean fromGoldDeck) throws RemoteException {
+&nbsp;
+<b class="fc">&nbsp;        GameRepresentation gameRepresentation = getGameRepresentation();</b>
+&nbsp;
+<b class="fc">&nbsp;        for(Map.Entry&lt;String, VirtualView&gt; entry : clients.entrySet()){</b>
+&nbsp;
+<b class="fc">&nbsp;            VirtualView client = entry.getValue();</b>
+&nbsp;
+<b class="fc">&nbsp;            MsgOnPlayerDrawnCard message = new MsgOnPlayerDrawnCard(gameRepresentation,playerName, card.getId(), fromGoldDeck);</b>
+&nbsp;
+<b class="fc">&nbsp;            client.sendMessage(message);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * notifies the client that the face-up card has been successfully drawn
+&nbsp;     * @param playerName to notigy
+&nbsp;     * @param card draw
+&nbsp;     * @throws RemoteException
+&nbsp;     */
+&nbsp;    public void notifyOfCardDrawn(String playerName, CardResource card) throws RemoteException {
+&nbsp;
+<b class="fc">&nbsp;        GameRepresentation gameRepresentation = getGameRepresentation();</b>
+&nbsp;
+<b class="fc">&nbsp;        for(Map.Entry&lt;String, VirtualView&gt; entry : clients.entrySet()){</b>
+&nbsp;
+<b class="fc">&nbsp;            VirtualView client = entry.getValue();</b>
+&nbsp;
+<b class="fc">&nbsp;            MsgOnPlayerDrawnCard message = new MsgOnPlayerDrawnCard(gameRepresentation,playerName, card.getId(), null);</b>
+&nbsp;
+<b class="fc">&nbsp;            client.sendMessage(message);</b>
+&nbsp;
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * notifies the client that the card has been successfully played
+&nbsp;     * @param playerWhoPlayed the gard
+&nbsp;     * @param cardPlayedId of the card played
+&nbsp;     * @throws RemoteException
+&nbsp;     */
+&nbsp;    public void notifyOfCardPlayed(String playerWhoPlayed, String cardPlayedId) throws RemoteException {
+<b class="fc">&nbsp;        GameRepresentation gameRepresentation = getGameRepresentation();</b>
+&nbsp;
+<b class="fc">&nbsp;        for(Map.Entry&lt;String, VirtualView&gt; entry : clients.entrySet()){</b>
+&nbsp;
+<b class="fc">&nbsp;            VirtualView client = entry.getValue();</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;            MsgOnPlayerPlayedCard message = new MsgOnPlayerPlayedCard(gameRepresentation, cardPlayedId, playerWhoPlayed);</b>
+<b class="fc">&nbsp;            client.sendMessage(message);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * notifies the client that the objective has been successfully chosen
+&nbsp;     * @param playerName to notify
+&nbsp;     * @throws RemoteException
+&nbsp;     */
+&nbsp;    public void notifyObjChosen(String playerName) throws RemoteException {
+&nbsp;
+<b class="fc">&nbsp;        GameRepresentation gameRepresentation = getGameRepresentation();</b>
+&nbsp;
+<b class="fc">&nbsp;        for(Map.Entry&lt;String, VirtualView&gt; entry : clients.entrySet()){</b>
+&nbsp;
+<b class="fc">&nbsp;            VirtualView client = entry.getValue();</b>
+&nbsp;
+<b class="fc">&nbsp;            MsgOnPlayerChooseObjective message = new MsgOnPlayerChooseObjective(playerName, gameRepresentation);</b>
+&nbsp;
+<b class="fc">&nbsp;            client.sendMessage(message);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * notifies the every client that there was an error
+&nbsp;     * @param name of the player to notify
+&nbsp;     * @param e is the error to be notified
+&nbsp;     * @param actionDetails of the error
+&nbsp;     * @throws RemoteException
+&nbsp;     */
+&nbsp;    public void notifyError(String name, PlayerActionError e, String actionDetails) throws RemoteException {
+<b class="fc">&nbsp;        VirtualView clientOfRequest = clients.get(name);</b>
+&nbsp;
+<b class="fc">&nbsp;        if(clientOfRequest == null){</b>
+<b class="nc">&nbsp;            System.err.println(actionDetails + &quot; from non existent player!&quot;);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        MsgReportError message = new MsgReportError(e.getError());</b>
+<b class="fc">&nbsp;        clients.get(name).sendMessage(message);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * notifies a specific client that there was an error
+&nbsp;     * @param client to be notified
+&nbsp;     * @param e is the error to be notified
+&nbsp;     * @throws RemoteException
+&nbsp;     */
+&nbsp;    public void notifyErrorSpecificClient(VirtualView client, PlayerActionError e) throws RemoteException {
+<b class="fc">&nbsp;        MsgReportError message = new MsgReportError(e.getMessage());</b>
+<b class="fc">&nbsp;        client.sendMessage(message);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * notifies the client that the game has been successfully created
+&nbsp;     * @param gameId of the game created
+&nbsp;     * @param name of the player to notify
+&nbsp;     * @param numberOfPlayersLeftToJoin in the game before it starts
+&nbsp;     * @throws RemoteException
+&nbsp;     */
+&nbsp;    public void notifyGameCreated(String gameId, String name, int numberOfPlayersLeftToJoin) throws RemoteException {
+<b class="fc">&nbsp;        VirtualView clientOfRequest = clients.get(name);</b>
+&nbsp;
+<b class="fc">&nbsp;        if(clientOfRequest == null){</b>
+<b class="nc">&nbsp;            System.err.println(&quot; from non existent player!&quot;);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        int nPlayers = gameModel.getNPlayers();</b>
+<b class="fc">&nbsp;        MsgOnGameCreated message = new MsgOnGameCreated(gameId, name, numberOfPlayersLeftToJoin, nPlayers);</b>
+&nbsp;
+<b class="fc">&nbsp;        clients.get(name).sendMessage(message);</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * notifies the client that the player has been successfully reconnected
+&nbsp;     * @param gameId of the game
+&nbsp;     * @param playerName to notify
+&nbsp;     * @param playersLeft to reconnect
+&nbsp;     * @throws RemoteException
+&nbsp;     */
+&nbsp;    public void notifyPlayerReconnected(String gameId, String playerName, int playersLeft) throws RemoteException {
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;        for(Map.Entry&lt;String, VirtualView&gt; entry : clients.entrySet()){</b>
+&nbsp;
+<b class="fc">&nbsp;            VirtualView client = entry.getValue();</b>
+&nbsp;
+<b class="fc">&nbsp;            String name = entry.getKey();</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;            if(name.equals(playerName)){</b>
+<b class="fc">&nbsp;                MsgOnPlayerReconnected msg = new MsgOnPlayerReconnected(gameId, playerName, playersLeft);</b>
+<b class="fc">&nbsp;                client.sendMessage(msg);</b>
+<b class="fc">&nbsp;            }else{</b>
+<b class="nc">&nbsp;                MsgOnSomeoneElseReconnected msg= new MsgOnSomeoneElseReconnected(playerName, playersLeft);</b>
+<b class="nc">&nbsp;                client.sendMessage(msg);</b>
+&nbsp;            }
+&nbsp;
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * notifies the client that a player has successfully joined or that he has successfully joined the game
+&nbsp;     * @param gameId it the game
+&nbsp;     * @param playerName that has joined
+&nbsp;     * @param playersLeft to join before the game starts
+&nbsp;     * @throws RemoteException
+&nbsp;     */
+&nbsp;    public void notifyPlayerJoined(String gameId, String playerName, int playersLeft) throws RemoteException {
+<b class="fc">&nbsp;        int nPlayers = this.gameModel.getNPlayers();</b>
+&nbsp;
+<b class="fc">&nbsp;        for(Map.Entry&lt;String, VirtualView&gt; entry : clients.entrySet()){</b>
+&nbsp;
+<b class="fc">&nbsp;            VirtualView client = entry.getValue();</b>
+&nbsp;
+<b class="fc">&nbsp;            String name = entry.getKey();</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;            if(name.equals(playerName)){</b>
+<b class="fc">&nbsp;                MsgOnGameJoined msg = new MsgOnGameJoined(gameId, playerName, playersLeft, nPlayers );</b>
+<b class="fc">&nbsp;                client.sendMessage(msg);</b>
+<b class="fc">&nbsp;            }else{</b>
+<b class="fc">&nbsp;                MsgOnSomeoneElseJoined msg= new MsgOnSomeoneElseJoined(gameId, playerName, playersLeft);</b>
+<b class="fc">&nbsp;                client.sendMessage(msg);</b>
+&nbsp;            }
+&nbsp;
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public int getPlayersToReconnect(){
+<b class="fc">&nbsp;        return gameModel.getNPlayersToReconnect();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public int getPlayersToJoin(){
+<b class="fc">&nbsp;        return gameModel.getPlayersToJoin();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * notifies the client that the message has been successfully delivered
+&nbsp;     * @param sender of the message
+&nbsp;     * @param receiver of the message
+&nbsp;     * @param isPrivate boolean that specifies whether the message was public or private
+&nbsp;     * @throws RemoteException
+&nbsp;     */
+&nbsp;    public void notifyChatMessage(String sender, String receiver, boolean isPrivate) throws RemoteException {
+<b class="fc">&nbsp;        GameRepresentation gameRepresentation = getGameRepresentation();</b>
+&nbsp;
+<b class="fc">&nbsp;        for(Map.Entry&lt;String, VirtualView&gt; entry : clients.entrySet()){</b>
+&nbsp;
+<b class="fc">&nbsp;            VirtualView client = entry.getValue();</b>
+&nbsp;
+<b class="fc">&nbsp;            MsgOnChatMessage message = new MsgOnChatMessage(gameRepresentation, sender, receiver, isPrivate);</b>
+&nbsp;
+<b class="fc">&nbsp;            client.sendMessage(message);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * notifies the client that the color has been successfully chosen
+&nbsp;     * @param name of the player to notify
+&nbsp;     * @throws RemoteException
+&nbsp;     */
+&nbsp;    public void notifyChooseColor(String name) throws RemoteException {
+<b class="fc">&nbsp;        GameRepresentation gameRepresentation = getGameRepresentation();</b>
+&nbsp;
+<b class="fc">&nbsp;        for(Map.Entry&lt;String, VirtualView&gt; entry : clients.entrySet()){</b>
+&nbsp;
+<b class="fc">&nbsp;            VirtualView client = entry.getValue();</b>
+&nbsp;
+<b class="fc">&nbsp;            MsgOnChooseColor message = new MsgOnChooseColor(name, gameRepresentation);</b>
+&nbsp;
+<b class="fc">&nbsp;            client.sendMessage(message);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * notifies every client that the game has ended, and notifies who has won
+&nbsp;     * @param players inside the game
+&nbsp;     * @throws RemoteException
+&nbsp;     */
+&nbsp;    public void notifyGameEndedWinners(ArrayList&lt;String&gt; players) throws RemoteException {
+<b class="nc">&nbsp;        GameRepresentation gameRepresentation = getGameRepresentation();</b>
+<b class="nc">&nbsp;        MsgOnGameWinners msg = new MsgOnGameWinners(players, gameRepresentation);</b>
+&nbsp;
+<b class="nc">&nbsp;        for(Map.Entry&lt;String, VirtualView&gt; entry : clients.entrySet()){</b>
+<b class="nc">&nbsp;            VirtualView client = entry.getValue();</b>
+<b class="nc">&nbsp;            client.sendMessage(msg);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    public GameRepresentation getGameRepresentation(){
+<b class="fc">&nbsp;        synchronized (gameModel){return gameModel.getGameRepresentation();}</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This method starts a thread using [BackUpManager]
+&nbsp;     * @param game the game to be back-upped
+&nbsp;     */
+&nbsp;    private void backUpGame(Game game){
+<b class="fc">&nbsp;        new BackupManager(game).start();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void deleteBackUpGame(Game game){
+<b class="nc">&nbsp;        new BackupManager(game, false).start();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void sendPing() throws RemoteException {
+<b class="nc">&nbsp;        for (VirtualView client : clients.values()){</b>
+<b class="nc">&nbsp;            client.sendMessage(new msgPingS2C(MessageTypeS2C.PING));</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * notifies every client that the game was terminated
+&nbsp;     * @throws RemoteException
+&nbsp;     */
+&nbsp;    public void notifyGameTermination() throws RemoteException {
+<b class="nc">&nbsp;        for(Map.Entry&lt;String, VirtualView&gt; entry : clients.entrySet()){</b>
+<b class="nc">&nbsp;            VirtualView client = entry.getValue();</b>
+&nbsp;            try{
+<b class="nc">&nbsp;                client.sendMessage(new MsgOnGameTermination(MessageTypeS2C.TERMINATION));</b>
+<b class="nc">&nbsp;                client.closeConnectionGame();</b>
+<b class="nc">&nbsp;            }catch (RemoteException ignored){</b>
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    public void deleteGameAndBackUp(){
+<b class="nc">&nbsp;        GamesManager.getInstance().deleteGame(gameModel.getGameId());</b>
+<b class="nc">&nbsp;        deleteBackUpGame(gameModel);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    public Optional&lt;JoinInfo&gt; getJoinInfo(){
+<b class="fc">&nbsp;        synchronized (gameModel){return gameModel.getJoinInfo();</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-06-27 15:29</div>
+</div>
+</body>
+</html>
