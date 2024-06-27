@@ -12,10 +12,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 
@@ -125,12 +124,12 @@ public class Deck implements Serializable {
         cardInitialDeck = new ArrayList<>();
         cardObjectiveDeck = new ArrayList<>();
 
-        JSONParser jsonParser = new JSONParser();
-        String path = "./src/main/java/it/polimi/ingsw/gc28/Cards.json";
-        FileReader reader = new FileReader(path);
+        InputStream inputStream = Deck.class.getClassLoader().getResourceAsStream("/Cards.json");
 
+        InputStreamReader reader = new InputStreamReader(Objects.requireNonNull(inputStream));
         Object obj;
         try {
+            JSONParser jsonParser = new JSONParser();
             obj = jsonParser.parse(reader);
             JSONObject card = (JSONObject) obj;
 
