@@ -1,0 +1,882 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > Game</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.gc28.model</a>
+</div>
+
+<h1>Coverage Summary for Class: Game (it.polimi.ingsw.gc28.model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Game</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    95,9%
+  </span>
+  <span class="absValue">
+    (47/49)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    82,8%
+  </span>
+  <span class="absValue">
+    (231/279)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.polimi.ingsw.gc28.model;
+&nbsp;
+&nbsp;import it.polimi.ingsw.gc28.model.utils.GameEndedNotification;
+&nbsp;import it.polimi.ingsw.gc28.model.utils.JoinInfo;
+&nbsp;import it.polimi.ingsw.gc28.model.utils.PlayerColor;
+&nbsp;import it.polimi.ingsw.gc28.view.GameRepresentation;
+&nbsp;import it.polimi.ingsw.gc28.view.PrivateRepresentation;
+&nbsp;import it.polimi.ingsw.gc28.model.actions.ActionManager;
+&nbsp;import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
+&nbsp;import it.polimi.ingsw.gc28.model.cards.*;
+&nbsp;import it.polimi.ingsw.gc28.model.chat.Chat;
+&nbsp;import it.polimi.ingsw.gc28.model.chat.ChatMessage;
+&nbsp;import it.polimi.ingsw.gc28.model.errors.PlayerActionError;
+&nbsp;import it.polimi.ingsw.gc28.model.errors.types.*;
+&nbsp;
+&nbsp;
+&nbsp;import java.io.IOException;
+&nbsp;import java.io.Serializable;
+&nbsp;import java.util.*;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;
+&nbsp;/**
+&nbsp; * this is the most important class of the project, it contains the methods
+&nbsp; * that make playing the game possible, every game ha shis own game class and there
+&nbsp; * are a minimum of 2 to maximum of 4 players per game.
+&nbsp; * In this class there are methods for every phase of the game from start to finish.
+&nbsp; */
+&nbsp;public class Game implements Serializable {
+&nbsp;
+&nbsp;    private ActionManager actionManager;
+&nbsp;    /**
+&nbsp;     * is a list of the public objectives for the game, there are 2 CardObjectives for each game
+&nbsp;     */
+&nbsp;    private ArrayList&lt;CardObjective&gt; globalObjectives;
+&nbsp;    private ArrayList&lt;CardResource&gt; faceUpResourceCards;
+&nbsp;    private ArrayList&lt;CardGold&gt; faceUpGoldCards;
+&nbsp;
+&nbsp;    private final Deck deck;
+&nbsp;
+&nbsp;    private ArrayList&lt;Player&gt; players;
+&nbsp;
+&nbsp;    private Integer firstPlayerIndex;
+&nbsp;
+&nbsp;    public Integer getFirstPlayerIndex(){
+<b class="nc">&nbsp;        return firstPlayerIndex;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public ArrayList&lt;Player&gt; getPlayers(){
+<b class="fc">&nbsp;        return players;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * it&#39;s an alphanumerical string randomly generated and unique for every game
+&nbsp;     */
+&nbsp;    private String gameId;
+&nbsp;
+&nbsp;
+&nbsp;    private int nPlayers;
+&nbsp;
+<b class="fc">&nbsp;    private boolean hasGameStarted = false;</b>
+&nbsp;
+&nbsp;    public boolean getHasGameStarted(){
+<b class="fc">&nbsp;        return this.hasGameStarted;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Optional&lt;Integer&gt; getRoundsLeft(){
+<b class="fc">&nbsp;        return actionManager.getRoundsLeft();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public ArrayList&lt;CardResource&gt; getFaceUpResourceCards() {
+<b class="fc">&nbsp;        return faceUpResourceCards;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public ArrayList&lt;CardGold&gt; getFaceUpGoldCards() {
+<b class="fc">&nbsp;        return faceUpGoldCards;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public ArrayList&lt;CardObjective&gt; getGlobalObjectives() {
+<b class="fc">&nbsp;        return globalObjectives;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private Chat chat;
+&nbsp;
+<b class="fc">&nbsp;    public Game(int nPlayers, String gameId) throws IOException, IllegalArgumentException, IllegalStateException {</b>
+&nbsp;
+<b class="fc">&nbsp;        this.nPlayers = nPlayers;</b>
+&nbsp;
+<b class="fc">&nbsp;        this.deck = new Deck();</b>
+&nbsp;
+<b class="fc">&nbsp;        this.deck.shuffleAll();</b>
+&nbsp;
+<b class="fc">&nbsp;        this.players = new ArrayList&lt;&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;        this.actionManager = new ActionManager(nPlayers, this.players);</b>
+&nbsp;
+<b class="fc">&nbsp;        if(gameId != null){</b>
+<b class="fc">&nbsp;            this.gameId = gameId;</b>
+&nbsp;        }else{
+<b class="nc">&nbsp;            this.gameId = generateRandomGameId();</b>
+&nbsp;        }
+<b class="fc">&nbsp;        this.chat = new Chat();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This constructor is used only for testing purposes, because a know deck
+&nbsp;     * is passed as a parameter.
+&nbsp;     */
+<b class="fc">&nbsp;    public Game(int nPlayers, Deck deck, int firstPlayerIndex, String gameId) throws IllegalStateException{</b>
+<b class="fc">&nbsp;        if(gameId != null){</b>
+<b class="fc">&nbsp;            this.gameId = gameId;</b>
+&nbsp;        }else{
+<b class="nc">&nbsp;            this.gameId = generateRandomGameId();</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        this.firstPlayerIndex = firstPlayerIndex;</b>
+&nbsp;
+<b class="fc">&nbsp;        this.nPlayers = nPlayers;</b>
+&nbsp;
+<b class="fc">&nbsp;        this.deck = deck;</b>
+&nbsp;
+<b class="fc">&nbsp;        this.players = new ArrayList&lt;&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;        this.actionManager = new ActionManager(nPlayers, this.players, firstPlayerIndex);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method adds the player in the parameter in the game only if there are still available spots in the game.
+&nbsp;     * it also checks whether the nickname is already taken in the game.
+&nbsp;     * @param name
+&nbsp;     * @throws PlayerActionError
+&nbsp;     */
+&nbsp;    public void addPlayerToGame(String name) throws PlayerActionError {
+<b class="fc">&nbsp;        if(players.size() &gt;= nPlayers){</b>
+<b class="nc">&nbsp;            throw new LobbyFullError();</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        if(players.stream().map(Player::getName).anyMatch(pName -&gt; pName.equals(name))){</b>
+<b class="nc">&nbsp;            throw new NameAlreadyChosenError();</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        players.add(new Player(name));</b>
+&nbsp;
+<b class="fc">&nbsp;        actionManager.nextMove();</b>
+&nbsp;
+<b class="fc">&nbsp;        checkStartGame();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public int getActualNumPlayers(){
+<b class="fc">&nbsp;        return players.size();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public int getNPlayers(){
+<b class="fc">&nbsp;        return nPlayers;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method is used to check when the lobby is full
+&nbsp;     */
+&nbsp;    private void checkStartGame(){
+<b class="fc">&nbsp;        if(players.size() == nPlayers){</b>
+<b class="fc">&nbsp;            gameStart();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method starts the game calling all the initialization methods for players, deck, and the
+&nbsp;     * flow of the game.
+&nbsp;     * @throws IllegalStateException
+&nbsp;     */
+&nbsp;    private void gameStart() throws IllegalStateException {
+&nbsp;
+&nbsp;        // initialize global objectives
+<b class="fc">&nbsp;        this.initGlobalObjectives();</b>
+&nbsp;
+&nbsp;        // initialize personal objectives
+<b class="fc">&nbsp;        for(Player player : players){</b>
+<b class="fc">&nbsp;            Optional&lt;CardObjective&gt;  obj1 = deck.nextObjective();</b>
+<b class="fc">&nbsp;            Optional&lt;CardObjective&gt; obj2 = deck.nextObjective();</b>
+&nbsp;
+<b class="fc">&nbsp;            if(obj1.isEmpty() || obj2.isEmpty()){</b>
+<b class="nc">&nbsp;                throw new IllegalStateException();</b>
+&nbsp;            }
+&nbsp;
+<b class="fc">&nbsp;            ArrayList&lt;CardObjective&gt; objectives = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;            objectives.add(obj1.get());</b>
+<b class="fc">&nbsp;            objectives.add(obj2.get());</b>
+&nbsp;
+<b class="fc">&nbsp;            player.setObjectivesToChoose(objectives);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        //initialize visible cards
+<b class="fc">&nbsp;        this.initFaceUpGoldCards();</b>
+<b class="fc">&nbsp;        this.initFaceUpResourceCards();</b>
+&nbsp;
+&nbsp;        // initialize players hands
+<b class="fc">&nbsp;        for(Player player : players) {</b>
+<b class="fc">&nbsp;            Optional&lt;CardResource&gt; cResource1 = deck.nextResource();</b>
+<b class="fc">&nbsp;            Optional&lt;CardResource&gt; cResource2 = deck.nextResource();</b>
+<b class="fc">&nbsp;            Optional&lt;CardGold&gt; cGold = deck.nextGold();</b>
+&nbsp;
+<b class="fc">&nbsp;            if(cResource1.isEmpty() || cResource2.isEmpty() || cGold.isEmpty()){</b>
+<b class="nc">&nbsp;                throw new IllegalStateException();</b>
+&nbsp;            }
+<b class="fc">&nbsp;            CardResource cardResource1 = cResource1.get();</b>
+<b class="fc">&nbsp;            CardResource cardResource2 = cResource2.get();</b>
+<b class="fc">&nbsp;            CardGold cardGold = cGold.get();</b>
+&nbsp;
+<b class="fc">&nbsp;            player.addCardToHand(cardResource1);</b>
+<b class="fc">&nbsp;            player.addCardToHand(cardResource2);</b>
+<b class="fc">&nbsp;            player.addCardToHand(cardGold);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        for(Player player : players){</b>
+<b class="fc">&nbsp;            Optional&lt;CardInitial&gt; cInitial1 = deck.nextInitial();</b>
+&nbsp;
+<b class="fc">&nbsp;            if(cInitial1.isEmpty()){</b>
+<b class="nc">&nbsp;                throw new IllegalStateException();</b>
+&nbsp;            }
+<b class="fc">&nbsp;            player.setCardInitial(cInitial1.get());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        actionManager.initFirstPlayer();</b>
+<b class="fc">&nbsp;        actionManager.initPlayerOfTurn();  //aggiunta inizializzazione</b>
+&nbsp;
+<b class="fc">&nbsp;        hasGameStarted = true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This method initializes the global objectives.
+&nbsp;     */
+&nbsp;    private void initGlobalObjectives() throws IllegalStateException{
+<b class="fc">&nbsp;        Optional&lt;CardObjective&gt; globObj1 = this.deck.nextObjective();</b>
+<b class="fc">&nbsp;        Optional&lt;CardObjective&gt; globObj2 = this.deck.nextObjective();</b>
+&nbsp;
+<b class="fc">&nbsp;        if(globObj1.isEmpty() || globObj2.isEmpty()){</b>
+<b class="nc">&nbsp;            throw new IllegalStateException();</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        this.globalObjectives = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        this.globalObjectives.add(globObj1.get());</b>
+<b class="fc">&nbsp;        this.globalObjectives.add(globObj2.get());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This method initializes the two face-up resource cards.
+&nbsp;     */
+&nbsp;    private void initFaceUpResourceCards() throws IllegalStateException{
+<b class="fc">&nbsp;        Optional&lt;CardResource&gt; faceUpResource1 = this.deck.nextResource();</b>
+<b class="fc">&nbsp;        Optional&lt;CardResource&gt; faceUpResource2 = this.deck.nextResource();</b>
+&nbsp;
+<b class="fc">&nbsp;        if(faceUpResource1.isEmpty() || faceUpResource2.isEmpty()){</b>
+<b class="nc">&nbsp;            throw new IllegalStateException();</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        this.faceUpResourceCards = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        this.faceUpResourceCards.add(faceUpResource1.get());</b>
+<b class="fc">&nbsp;        this.faceUpResourceCards.add(faceUpResource2.get());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This method initializes the two face-up gold cards.
+&nbsp;     */
+&nbsp;    private void initFaceUpGoldCards() throws IllegalStateException{
+<b class="fc">&nbsp;        Optional&lt;CardGold&gt; faceUpGold1 = this.deck.nextGold();</b>
+<b class="fc">&nbsp;        Optional&lt;CardGold&gt; faceUpGold2 = this.deck.nextGold();</b>
+&nbsp;
+<b class="fc">&nbsp;        if(faceUpGold1.isEmpty() || faceUpGold2.isEmpty()){</b>
+<b class="nc">&nbsp;            throw new IllegalStateException();</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        this.faceUpGoldCards = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        this.faceUpGoldCards.add(faceUpGold1.get());</b>
+<b class="fc">&nbsp;        this.faceUpGoldCards.add(faceUpGold2.get());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This method is responsible for checking if the player who has just
+&nbsp;     * placed a card has reached 20 points and in that case it sets up a counter
+&nbsp;     * which counts the rounds left.
+&nbsp;     */
+&nbsp;    private void checkEndGame() {
+&nbsp;
+<b class="fc">&nbsp;        Optional&lt;Player&gt; playerOfTurn = actionManager.getPlayerOfTurn();</b>
+&nbsp;
+<b class="fc">&nbsp;        if(playerOfTurn.isEmpty()){</b>
+&nbsp;            // still in the phase of choosing objectives
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;        boolean has20points = playerOfTurn.get().getPoints() &gt;= 20;</b>
+&nbsp;
+<b class="fc">&nbsp;        if(has20points){</b>
+<b class="fc">&nbsp;            actionManager.initRoundsLeft();</b>
+<b class="fc">&nbsp;        }else if (this.deck.isResEmpty() &amp;&amp; this.deck.isGoldEmpty()){ //implementazione fine partita con 0 carte in entrambi deck</b>
+<b class="nc">&nbsp;            actionManager.initRoundsLeftDecksFinished();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method starts the final part of the game when the objective points are calculated and the winner is announced
+&nbsp;     * @throws GameEndedNotification
+&nbsp;     */
+&nbsp;    private void endGame() throws GameEndedNotification {
+<b class="fc">&nbsp;        calculateObjectivePoints();</b>
+<b class="fc">&nbsp;        calculateWinner();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method plays a card in a player table, checks wheather the action requested is valid and
+&nbsp;     * sets up the next move to be played
+&nbsp;     * @param playerName who is playing the card
+&nbsp;     * @param playedCard the card to be played
+&nbsp;     * @param isFront indicate how the card has to be played, front if True, back if False
+&nbsp;     * @param coordinates indicates the coordinate where the card has to be played
+&nbsp;     */
+&nbsp;    public void playGameCard (String playerName, CardGame playedCard, boolean isFront, Coordinate coordinates ) throws PlayerActionError, GameEndedNotification {
+&nbsp;
+<b class="fc">&nbsp;        Optional&lt;Player&gt; player = getPlayerOfName(playerName);</b>
+&nbsp;
+<b class="fc">&nbsp;        if(player.isEmpty()){</b>
+<b class="nc">&nbsp;            throw new NoSuchPlayerError();</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        ActionType actionRequested = playedCard.getIntendedAction();</b>
+&nbsp;
+&nbsp;        // this throws errors if move is not valid
+<b class="fc">&nbsp;        actionManager.validatesMove(player.get(), actionRequested);</b>
+&nbsp;
+&nbsp;        // this can throw errors.
+&nbsp;        try {
+<b class="fc">&nbsp;            player.get().playCard(playedCard, isFront, coordinates);</b>
+<b class="nc">&nbsp;        } catch (PlayerActionError e){</b>
+<b class="nc">&nbsp;            throw new PlayerActionError (e.getError());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;        // set up attributes for next turn.
+<b class="fc">&nbsp;        setupNextMove();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This method is responsible for calling &#39;.calculatePoints(objs)&#39; on every player when the game
+&nbsp;     * is finished. This is a callback of &#39;endGame()&#39;
+&nbsp;     */
+&nbsp;    private void calculateObjectivePoints(){
+<b class="fc">&nbsp;        for(Player player : players){</b>
+<b class="fc">&nbsp;            player.calculateObjectivePoints(globalObjectives.stream()</b>
+<b class="fc">&nbsp;                    .map((CardObjective::getObjective))</b>
+<b class="fc">&nbsp;                    .collect(Collectors.toCollection(ArrayList::new)));</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This method calculates who&#39;s the winner at the end of the game.
+&nbsp;     * ? maybe add a winner attribute Optional&lt;Player&gt; and set winner player.
+&nbsp;     */
+&nbsp;    private void calculateWinner() throws GameEndedNotification {
+<b class="fc">&nbsp;        int maxPoints = 0;</b>
+<b class="fc">&nbsp;        ArrayList&lt;Player&gt; winners = new ArrayList&lt;&gt;();</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;        for (Player player : players ) {</b>
+<b class="fc">&nbsp;            if (player.getPoints() &gt; maxPoints) {</b>
+<b class="fc">&nbsp;                maxPoints = player.getPoints();</b>
+<b class="fc">&nbsp;                winners.clear();</b>
+<b class="fc">&nbsp;                winners.add(player);</b>
+<b class="nc">&nbsp;            } else if (player.getPoints() == maxPoints) {</b>
+<b class="nc">&nbsp;                winners.add(player);</b>
+&nbsp;            }
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        ArrayList&lt;Player&gt; winnersAfterObjectivePointsCheck = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        if (winners.size() &gt; 1)</b>
+&nbsp;        {
+<b class="nc">&nbsp;            int maxObjectivePoints = 0;</b>
+<b class="nc">&nbsp;            for (Player player : winners)</b>
+&nbsp;            {
+<b class="nc">&nbsp;                if (player.getObjectivePoints() &gt; maxObjectivePoints)</b>
+&nbsp;                {
+<b class="nc">&nbsp;                    maxObjectivePoints = player.getObjectivePoints();</b>
+<b class="nc">&nbsp;                    winnersAfterObjectivePointsCheck.clear();</b>
+<b class="nc">&nbsp;                    winnersAfterObjectivePointsCheck.add(player);</b>
+&nbsp;                }
+<b class="nc">&nbsp;                else if (player.getObjectivePoints() == maxObjectivePoints)</b>
+&nbsp;                {
+<b class="nc">&nbsp;                    winnersAfterObjectivePointsCheck.add(player);</b>
+&nbsp;                }
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;        }else{</b>
+<b class="fc">&nbsp;            winnersAfterObjectivePointsCheck.add(winners.getFirst());</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        for (Player player : winnersAfterObjectivePointsCheck)</b>
+&nbsp;        {
+<b class="fc">&nbsp;            player.setWinner();</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        //posso farlo con functional
+&nbsp;
+<b class="fc">&nbsp;        throw new GameEndedNotification();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This method sets everything up for the next turn by calling checkEndGame() if
+&nbsp;     * roundsLeft has not been set, or endGame() if roundsLeft is zero.
+&nbsp;     * It also calls actionManager.nextMove() which updates the next turn&#39;s expected action and
+&nbsp;     * playerOfTurn.
+&nbsp;     */
+&nbsp;    private void setupNextMove() throws GameEndedNotification {
+<b class="fc">&nbsp;        Optional&lt;Integer&gt; roundsLeft = getRoundsLeft();</b>
+&nbsp;
+<b class="fc">&nbsp;        if(roundsLeft.isEmpty()) {</b>
+<b class="fc">&nbsp;            checkEndGame();</b>
+<b class="fc">&nbsp;            actionManager.nextMove();</b>
+&nbsp;        }else{
+<b class="fc">&nbsp;            actionManager.nextMove();</b>
+&nbsp;
+<b class="fc">&nbsp;            boolean hasEnded = actionManager.getActionType() == ActionType.GAME_ENDED;</b>
+&nbsp;
+<b class="fc">&nbsp;            if(hasEnded){</b>
+<b class="fc">&nbsp;                endGame();</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This method take the card from the top of the deck and add that card to the player&#39;s hand
+&nbsp;     * @param playerName name of playing player
+&nbsp;     * @param fromGoldDeck is a boolean that tells from which deck the card needs to be drawn
+&nbsp;     * @return the drawn card
+&nbsp;     */
+&nbsp;    public CardResource drawGameCard(String playerName, boolean fromGoldDeck) throws PlayerActionError{
+&nbsp;
+<b class="fc">&nbsp;        Optional&lt;Player&gt; playingPlayer = getPlayerOfName(playerName);</b>
+&nbsp;
+<b class="fc">&nbsp;        if(playingPlayer.isEmpty()){</b>
+<b class="nc">&nbsp;            throw new NoSuchPlayerError();</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        ActionType actionRequested = ActionType.DRAW_CARD;</b>
+&nbsp;        Optional&lt;CardResource&gt; cardResourceOptional;
+&nbsp;        CardResource cardResource;
+&nbsp;        Optional&lt;CardGold&gt; cardGoldOptional;
+&nbsp;        CardGold cardGold;
+&nbsp;
+<b class="fc">&nbsp;        actionManager.validatesMove(playingPlayer.get(), actionRequested);</b>
+&nbsp;
+<b class="fc">&nbsp;        if(fromGoldDeck) {</b>
+<b class="fc">&nbsp;            cardGoldOptional = deck.nextGold();</b>
+<b class="fc">&nbsp;            if(cardGoldOptional.isPresent()){</b>
+<b class="fc">&nbsp;                cardGold = cardGoldOptional.get();</b>
+<b class="fc">&nbsp;                playingPlayer.get().addCardToHand(cardGold);</b>
+&nbsp;
+&nbsp;                try {
+<b class="fc">&nbsp;                    setupNextMove();</b>
+<b class="nc">&nbsp;                } catch (GameEndedNotification ignored) {</b>
+&nbsp;                    // this cant happen
+<b class="fc">&nbsp;                }</b>
+&nbsp;
+<b class="fc">&nbsp;                return cardGold;</b>
+&nbsp;            }
+&nbsp;
+<b class="nc">&nbsp;            throw new DeckHaveNoMoreCards(&quot;gold&quot;);</b>
+&nbsp;        }
+&nbsp;        else {
+<b class="fc">&nbsp;            cardResourceOptional = deck.nextResource();</b>
+<b class="fc">&nbsp;            if(cardResourceOptional.isPresent()){</b>
+<b class="fc">&nbsp;                cardResource = cardResourceOptional.get();</b>
+<b class="fc">&nbsp;                playingPlayer.get().addCardToHand(cardResource);</b>
+&nbsp;
+&nbsp;                try {
+<b class="fc">&nbsp;                    setupNextMove();</b>
+<b class="nc">&nbsp;                } catch (GameEndedNotification ignored) {</b>
+&nbsp;                    // this cant happen
+<b class="fc">&nbsp;                }</b>
+&nbsp;
+<b class="fc">&nbsp;                return cardResource;</b>
+&nbsp;            }
+&nbsp;
+<b class="nc">&nbsp;            throw new DeckHaveNoMoreCards(&quot;resource&quot;);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method draws a face up card form the table
+&nbsp;     * @param playerName that draws the card
+&nbsp;     * @param cardDrawn is the chosen card from the player to draw
+&nbsp;     * @throws PlayerActionError
+&nbsp;     */
+&nbsp;    public void drawGameCard(String playerName, CardResource cardDrawn) throws PlayerActionError{
+&nbsp;
+<b class="fc">&nbsp;        Optional&lt;Player&gt; playingPlayer = getPlayerOfName(playerName);</b>
+&nbsp;
+<b class="fc">&nbsp;        if(playingPlayer.isEmpty()){</b>
+<b class="nc">&nbsp;            throw new NoSuchPlayerError();</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        ActionType actionRequested = ActionType.DRAW_CARD;</b>
+&nbsp;
+<b class="fc">&nbsp;        actionManager.validatesMove(playingPlayer.get(), actionRequested);</b>
+&nbsp;
+<b class="fc">&nbsp;        cardDrawn.drawFaceUpCard(this.faceUpResourceCards, this.faceUpGoldCards, this.deck, playingPlayer.get());</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            setupNextMove();</b>
+<b class="nc">&nbsp;        } catch (GameEndedNotification ignored) {</b>
+&nbsp;            // happens only after playing a card
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This method is called when the user selects a personal objective card.
+&nbsp;     *
+&nbsp;     * @param playerName that has chosen the objective
+&nbsp;     * @param card objective chosen
+&nbsp;     * @throws PlayerActionError
+&nbsp;     */
+&nbsp;    public void chooseObjective(String playerName, CardObjective card) throws PlayerActionError{
+<b class="fc">&nbsp;        Optional&lt;Player&gt; playingPlayer = getPlayerOfName(playerName);</b>
+&nbsp;
+<b class="fc">&nbsp;        if(playingPlayer.isEmpty()){</b>
+<b class="nc">&nbsp;            throw new NoSuchPlayerError();</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        ActionType actionRequested = ActionType.CHOOSE_OBJ;</b>
+&nbsp;
+<b class="fc">&nbsp;        actionManager.validatesMove(playingPlayer.get(), actionRequested);</b>
+&nbsp;
+<b class="fc">&nbsp;        Optional&lt;ArrayList&lt;CardObjective&gt;&gt; options = playingPlayer.get().getObjectivesToChoose();</b>
+&nbsp;
+&nbsp;        //check that player has that card
+<b class="fc">&nbsp;        if(options.isPresent() &amp;&amp; options.get().contains(card)){</b>
+<b class="fc">&nbsp;            playingPlayer.get().setObjectiveChosen(card);</b>
+&nbsp;
+&nbsp;        }else{
+<b class="nc">&nbsp;            throw new InvalidObjectiveChoiceError();</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        actionManager.nextMove();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method is used to inform clients whose turn is it.
+&nbsp;     */
+&nbsp;    public Optional&lt;Player&gt;  playerToPlay(){
+<b class="fc">&nbsp;        return actionManager.getPlayerOfTurn();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method is used to inform clients the expected action form the player of turn.
+&nbsp;     */
+&nbsp;    public ActionType actionExpected(){
+<b class="fc">&nbsp;        return actionManager.getActionType();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns array of winners. If array is empty, then the game is still on going.
+&nbsp;     * If there&#39;s more than one winner, then the game ended in a draw.
+&nbsp;     */
+&nbsp;    public ArrayList&lt;Player&gt; getWinners(){
+<b class="fc">&nbsp;        return players.stream().filter(Player::isWinner).collect(Collectors.toCollection(ArrayList::new));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the player randomly selected as the firstPlayer
+&nbsp;     */
+&nbsp;    public Player getFirstPlayer(){
+<b class="fc">&nbsp;        return actionManager.getFirstPlayer();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Optional&lt;Player&gt; getPlayerOfName(String name){
+<b class="fc">&nbsp;            return getPlayers().stream().filter((player -&gt; player.getName().equals(name))).findFirst();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This method generates a random id associated to a new game.
+&nbsp;     * @return game id converted to a string.
+&nbsp;     */
+&nbsp;    public String generateRandomGameId(){
+&nbsp;        // TODO : use same method of other!! uuid
+<b class="fc">&nbsp;        Random random = new Random();</b>
+<b class="fc">&nbsp;        int id = random.nextInt(1000000000);</b>
+<b class="fc">&nbsp;        return Integer.toString(id);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    public String getGameId(){
+<b class="fc">&nbsp;        return gameId;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private ArrayList&lt;String&gt; getPlayersNickname(){
+<b class="fc">&nbsp;        ArrayList&lt;String&gt; nicknames = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        for (Player p : players){</b>
+<b class="fc">&nbsp;            nicknames.add(p.getName());</b>
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;        return nicknames;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    private Map&lt;String, Integer&gt; getPointsMap(){
+<b class="fc">&nbsp;        Map&lt;String, Integer&gt; points = new HashMap&lt;&gt;();</b>
+<b class="fc">&nbsp;        for (Player p : players){</b>
+<b class="fc">&nbsp;            points.put(p.getName(), p.getPoints());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        return points;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Map&lt;String, PrivateRepresentation&gt; getPrivateRepresentationsMap(){
+<b class="fc">&nbsp;        Map&lt;String, PrivateRepresentation&gt; privateRepresentations = new HashMap&lt;&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;        for (Player p : players){</b>
+<b class="fc">&nbsp;            privateRepresentations.put(p.getName(), p.getState());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        return privateRepresentations;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private ArrayList&lt;String&gt; getFaceUpGoldCardsIDs(){
+<b class="fc">&nbsp;        ArrayList&lt;String&gt; faceUpCards = new ArrayList&lt;&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;        for (Card c : faceUpGoldCards){</b>
+<b class="fc">&nbsp;            faceUpCards.add(c.getId());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        return faceUpCards;</b>
+&nbsp;    }
+&nbsp;    private ArrayList&lt;String&gt; getFaceUpResourceCardsIDs(){
+<b class="fc">&nbsp;        ArrayList&lt;String&gt; faceUpCards = new ArrayList&lt;&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;        for (Card c : faceUpResourceCards){</b>
+<b class="fc">&nbsp;            faceUpCards.add(c.getId());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        return faceUpCards;</b>
+&nbsp;    }
+&nbsp;    private ArrayList&lt;String&gt; getObjectiveIDs(){
+<b class="fc">&nbsp;        ArrayList&lt;String&gt; faceUpCards = new ArrayList&lt;&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;        for (Card c : globalObjectives){</b>
+<b class="fc">&nbsp;            faceUpCards.add(c.getId());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        return faceUpCards;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    public GameRepresentation getGameRepresentation(){
+&nbsp;
+<b class="fc">&nbsp;        Optional&lt;Player&gt; playerOfTurn = actionManager.getPlayerOfTurn();</b>
+&nbsp;
+&nbsp;        String playerToPlayName;
+&nbsp;
+<b class="fc">&nbsp;        playerToPlayName = playerOfTurn.map(Player::getName).orElse(null);</b>
+&nbsp;
+<b class="fc">&nbsp;        ActionType actionExpected = actionExpected();</b>
+&nbsp;
+<b class="fc">&nbsp;        CardResource nextResourceCard = deck.getNextResourceCard();</b>
+&nbsp;
+<b class="fc">&nbsp;        CardGold nextGoldCard = deck.getNextGoldCard();</b>
+&nbsp;
+<b class="fc">&nbsp;        return new GameRepresentation(playerToPlayName, actionExpected ,this.getPlayersNickname(),</b>
+<b class="fc">&nbsp;                this.getObjectiveIDs(), this.getFaceUpResourceCardsIDs() ,this.getFaceUpGoldCardsIDs(),</b>
+<b class="fc">&nbsp;                nextResourceCard != null ? nextResourceCard.getId() : null, nextGoldCard != null ? nextGoldCard.getId() : null,</b>
+<b class="fc">&nbsp;                this.getPointsMap(), this.getPrivateRepresentationsMap(), this.getChat(), this.getNPlayers(),</b>
+<b class="fc">&nbsp;                this.getRoundsLeft().isPresent() ? this.getRoundsLeft().get() : null);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void sendMessage(ChatMessage chatMessage){
+<b class="fc">&nbsp;        chat.addMessage(chatMessage);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Chat getChat(){
+<b class="fc">&nbsp;        return chat;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method chooses the color specified to the player passed as a parameter
+&nbsp;     * @param playerName that has chosen the color
+&nbsp;     * @param color chosen from the player
+&nbsp;     * @throws PlayerActionError
+&nbsp;     */
+&nbsp;    public void chooseColor(String playerName, String color) throws PlayerActionError {
+&nbsp;        Optional&lt;Player&gt; player;
+<b class="fc">&nbsp;        player = getPlayerOfName(playerName);</b>
+&nbsp;
+<b class="fc">&nbsp;        if(player.isEmpty()){</b>
+<b class="nc">&nbsp;            throw new NoSuchPlayerError();</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        ActionType actionRequested =  ActionType.CHOOSE_COLOR;</b>
+&nbsp;
+&nbsp;        // this throws errors if move is not valid
+<b class="fc">&nbsp;        actionManager.validatesMove(player.get(), actionRequested);</b>
+&nbsp;
+&nbsp;        PlayerColor col;
+&nbsp;        try{
+<b class="fc">&nbsp;            col = PlayerColor.customValueOf(color);</b>
+<b class="nc">&nbsp;        } catch (IllegalArgumentException e){</b>
+<b class="nc">&nbsp;            throw new InvalidColor(color);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        boolean isColorTaken = this.players.stream().anyMatch(p -&gt; col.equals(p.getColor()));</b>
+<b class="fc">&nbsp;        if(isColorTaken){</b>
+<b class="nc">&nbsp;            throw new ColorTakenError();</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        if(player.get().getColor() != null){</b>
+<b class="nc">&nbsp;            throw new PlayerAlreadyChoseColorError(player.get().getName());</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        player.get().setColor(col);</b>
+<b class="fc">&nbsp;        actionManager.nextMove();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setWaitForReconnections() throws UnrestorableGameError {
+<b class="fc">&nbsp;        actionManager.setWaitForReconnections();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method is called when a player reconnects to he game and needs to be added back
+&nbsp;     * @param name
+&nbsp;     * @throws NoSuchPlayerError
+&nbsp;     * @throws PlayerIsAlreadyConnectedError
+&nbsp;     */
+&nbsp;    public void reconnectPlayer(String name) throws NoSuchPlayerError, PlayerIsAlreadyConnectedError {
+<b class="fc">&nbsp;        Optional&lt;Player&gt; player = getPlayerOfName(name);</b>
+&nbsp;
+<b class="fc">&nbsp;        if(player.isEmpty()){</b>
+<b class="nc">&nbsp;            throw new NoSuchPlayerError();</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        if(player.get().isConnected()){</b>
+<b class="nc">&nbsp;            throw new PlayerIsAlreadyConnectedError(name);</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        player.get().setConnected(true);</b>
+&nbsp;
+<b class="fc">&nbsp;        actionManager.nextMove();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    public int getNPlayersToReconnect(){
+<b class="fc">&nbsp;        return (int) players.stream().filter(p -&gt; !p.isConnected()).count();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public int getPlayersToJoin(){
+<b class="fc">&nbsp;        return getNPlayers() - getActualNumPlayers();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method checks if every player in the game is connected and the game can restart
+&nbsp;     * @return a boolean
+&nbsp;     */
+&nbsp;    public boolean isEveryoneReconnected(){
+<b class="fc">&nbsp;        return players.stream().allMatch(Player::isConnected);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Optional&lt;JoinInfo&gt; getJoinInfo(){
+<b class="nc">&nbsp;        if(!actionExpected().equals(ActionType.JOIN_GAME)){</b>
+<b class="nc">&nbsp;            return Optional.empty();</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        ArrayList&lt;String&gt; playersIn = getPlayersNickname();</b>
+<b class="nc">&nbsp;        JoinInfo info = new JoinInfo(getGameId(), playersIn, nPlayers);</b>
+<b class="nc">&nbsp;        return Optional.of(info);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-06-27 15:29</div>
+</div>
+</body>
+</html>

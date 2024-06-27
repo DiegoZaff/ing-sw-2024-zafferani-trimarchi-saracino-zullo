@@ -1,0 +1,431 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ActionManager</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.gc28.model.actions</a>
+</div>
+
+<h1>Coverage Summary for Class: ActionManager (it.polimi.ingsw.gc28.model.actions)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ActionManager</td>
+<td class="coverageStat">
+  <span class="percent">
+    93,8%
+  </span>
+  <span class="absValue">
+    (15/16)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    83,7%
+  </span>
+  <span class="absValue">
+    (77/92)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ActionManager$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    94,1%
+  </span>
+  <span class="absValue">
+    (16/17)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    83,9%
+  </span>
+  <span class="absValue">
+    (78/93)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.polimi.ingsw.gc28.model.actions;
+&nbsp;
+&nbsp;import it.polimi.ingsw.gc28.model.Player;
+&nbsp;import it.polimi.ingsw.gc28.model.actions.utils.ActionType;
+&nbsp;import it.polimi.ingsw.gc28.model.errors.types.AlreadyChoseObjectiveError;
+&nbsp;import it.polimi.ingsw.gc28.model.errors.types.NotYourTurnError;
+&nbsp;import it.polimi.ingsw.gc28.model.errors.PlayerActionError;
+&nbsp;import it.polimi.ingsw.gc28.model.errors.types.UnexpectedMoveError;
+&nbsp;import it.polimi.ingsw.gc28.model.errors.types.UnrestorableGameError;
+&nbsp;
+&nbsp;import java.io.Serializable;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.Optional;
+&nbsp;import java.util.Random;
+&nbsp;
+&nbsp;/**
+&nbsp; * This class manages the playerOfTurn and actionType lifecycle.
+&nbsp; * It&#39;s responsible for updating them accordingly so that it simplifies the
+&nbsp; * Game Class considerably
+&nbsp; */
+&nbsp;public class ActionManager implements Serializable {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Number of players in the game
+&nbsp;     */
+&nbsp;    final private int nPlayers;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Arraylist containing players in the game
+&nbsp;     */
+&nbsp;    private ArrayList&lt;Player&gt; players;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Player expected to play
+&nbsp;     */
+&nbsp;    private Player playerOfTurn;
+&nbsp;    /**
+&nbsp;     * initial player of the game, it is important for the flow of the game
+&nbsp;     */
+&nbsp;    private Player firstPlayer;
+&nbsp;
+&nbsp;
+&nbsp;    private Integer indexFirstPlayer;
+&nbsp;
+&nbsp;    public Optional&lt;Player&gt; getPlayerOfTurn(){
+<b class="fc">&nbsp;        return Optional.ofNullable(playerOfTurn);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private ActionType actionType;
+&nbsp;
+&nbsp;    private ActionType savedAction;
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This attribute is null until a player reaches 20 points, counting
+&nbsp;     * the number of rounds left to play. (it could be less if the deck finishes
+&nbsp;     * the cards).
+&nbsp;     */
+&nbsp;    private Integer roundsLeft;
+&nbsp;
+&nbsp;    public Optional&lt;Integer&gt; getRoundsLeft(){
+<b class="fc">&nbsp;        return Optional.ofNullable(roundsLeft);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public ActionType getActionType(){
+<b class="fc">&nbsp;        return actionType;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initialize first Action.
+&nbsp;     * @param players must be of length &gt; 0
+&nbsp;     */
+<b class="fc">&nbsp;    public ActionManager(int nPlayers, ArrayList&lt;Player&gt; players, Integer i){</b>
+<b class="fc">&nbsp;        this.nPlayers = nPlayers;</b>
+<b class="fc">&nbsp;        this.players = players;</b>
+<b class="fc">&nbsp;        this.actionType = ActionType.JOIN_GAME;</b>
+<b class="fc">&nbsp;        this.indexFirstPlayer = i;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;    public ActionManager(int nPlayers, ArrayList&lt;Player&gt; players){</b>
+<b class="fc">&nbsp;        this.nPlayers = nPlayers;</b>
+<b class="fc">&nbsp;        this.players = players;</b>
+<b class="fc">&nbsp;        this.actionType = ActionType.JOIN_GAME;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This method checks weather player &#39;p&#39; can perform action &#39;a&#39;.
+&nbsp;     * @param p is the player that wants to do something
+&nbsp;     * @param a is the action that &#39;p&#39; wants to perform
+&nbsp;     * @return true is it is the expected action from the expected player.
+&nbsp;     */
+&nbsp;    public void validatesMove(Player p, ActionType a) throws PlayerActionError {
+&nbsp;
+&nbsp;        // when actionType is CHOOSE_OBJ check is different.
+<b class="fc">&nbsp;        if(actionType == ActionType.CHOOSE_OBJ ){</b>
+<b class="fc">&nbsp;            if (!a.equals(ActionType.CHOOSE_OBJ) || p.getObjectiveChosen().isPresent()) {</b>
+<b class="nc">&nbsp;                if(!a.equals(ActionType.CHOOSE_OBJ)){</b>
+<b class="nc">&nbsp;                    throw new NotYourTurnError();</b>
+<b class="nc">&nbsp;                }else if(p.getObjectiveChosen().isPresent()){</b>
+<b class="nc">&nbsp;                    throw new AlreadyChoseObjectiveError();</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        if (!playerOfTurn.equals(p) || !a.equals(actionType)) {</b>
+<b class="nc">&nbsp;            if(!p.equals(playerOfTurn)){</b>
+<b class="nc">&nbsp;                throw new NotYourTurnError();</b>
+<b class="nc">&nbsp;            }else if(!a.equals(actionType)){</b>
+<b class="nc">&nbsp;                throw new UnexpectedMoveError();</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method checks if the current player is the last player to perform the action
+&nbsp;     * @return boolean
+&nbsp;     */
+&nbsp;    private boolean isCurrentPlayerTheLastOneForTheAction(){
+&nbsp;
+<b class="fc">&nbsp;        int lastPlayerIndex = ((indexFirstPlayer - 1) % players.size());</b>
+&nbsp;
+<b class="fc">&nbsp;        if (lastPlayerIndex &lt; 0) {</b>
+<b class="fc">&nbsp;            lastPlayerIndex += players.size();</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return players.indexOf(playerOfTurn) == lastPlayerIndex;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This method calculates the next expected actionType and playerOfTurn based
+&nbsp;     * on the current ones.
+&nbsp;     */
+&nbsp;    public void nextMove(){
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;        switch (actionType){</b>
+&nbsp;            case JOIN_GAME -&gt; {
+<b class="fc">&nbsp;                if(players.size() == nPlayers){</b>
+<b class="fc">&nbsp;                    actionType = ActionType.CHOOSE_COLOR;</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;            case CHOOSE_COLOR -&gt; {
+<b class="fc">&nbsp;                if(isCurrentPlayerTheLastOneForTheAction()) {</b>
+&nbsp;
+<b class="fc">&nbsp;                    actionType = ActionType.PLAY_INITIAL_CARD;</b>
+<b class="fc">&nbsp;                    playerOfTurn = getFirstPlayer();</b>
+<b class="fc">&nbsp;                    break;</b>
+&nbsp;                }
+<b class="fc">&nbsp;                playerOfTurn = getNextPlayer();</b>
+<b class="fc">&nbsp;            }</b>
+&nbsp;            case PLAY_INITIAL_CARD -&gt; {
+<b class="fc">&nbsp;                if(isCurrentPlayerTheLastOneForTheAction()) {</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;                    actionType = ActionType.CHOOSE_OBJ;</b>
+<b class="fc">&nbsp;                    playerOfTurn = getFirstPlayer();</b>
+<b class="fc">&nbsp;                    break;</b>
+&nbsp;                }
+<b class="fc">&nbsp;                playerOfTurn = getNextPlayer();</b>
+&nbsp;
+<b class="fc">&nbsp;            }</b>
+&nbsp;            case CHOOSE_OBJ -&gt; {
+<b class="fc">&nbsp;                if(isCurrentPlayerTheLastOneForTheAction()) {</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;                    actionType = ActionType.PLAY_CARD;</b>
+<b class="fc">&nbsp;                    playerOfTurn = getFirstPlayer();</b>
+<b class="fc">&nbsp;                    break;</b>
+&nbsp;                }
+<b class="fc">&nbsp;                playerOfTurn = getNextPlayer();</b>
+&nbsp;
+<b class="fc">&nbsp;            }</b>
+&nbsp;            case PLAY_CARD -&gt; {
+&nbsp;
+<b class="fc">&nbsp;                if(getRoundsLeft().isPresent() &amp;&amp; roundsLeft &lt;= nPlayers){</b>
+&nbsp;                    // actionType remains PLAY_CARD
+<b class="fc">&nbsp;                    playerOfTurn = getNextPlayer();</b>
+<b class="fc">&nbsp;                    updateRoundsLeft();</b>
+&nbsp;                }else{
+<b class="fc">&nbsp;                    if(getRoundsLeft().isPresent()){</b>
+<b class="fc">&nbsp;                        updateRoundsLeft();</b>
+&nbsp;                    }
+<b class="fc">&nbsp;                    actionType = ActionType.DRAW_CARD;</b>
+&nbsp;                }
+<b class="fc">&nbsp;            }</b>
+&nbsp;            case DRAW_CARD -&gt; {
+<b class="fc">&nbsp;                actionType = ActionType.PLAY_CARD;</b>
+<b class="fc">&nbsp;                playerOfTurn = getNextPlayer();</b>
+<b class="fc">&nbsp;                updateRoundsLeft();</b>
+<b class="fc">&nbsp;            }</b>
+&nbsp;            case  WAIT_RECONNECTIONS -&gt; {
+<b class="fc">&nbsp;                boolean isAllReconnected = players.stream().allMatch(Player::isConnected);</b>
+&nbsp;
+<b class="fc">&nbsp;                if(isAllReconnected){</b>
+<b class="fc">&nbsp;                    if(savedAction != null){</b>
+<b class="fc">&nbsp;                        actionType = savedAction;</b>
+&nbsp;                    }else{
+&nbsp;                        // should not happen
+<b class="nc">&nbsp;                        throw  new RuntimeException();</b>
+&nbsp;                    }
+&nbsp;
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Helper method
+&nbsp;     * @return the next player in the order of play.
+&nbsp;     */
+&nbsp;    private Player getNextPlayer(){
+<b class="fc">&nbsp;        int indexOfCurr = players.indexOf(playerOfTurn);</b>
+&nbsp;
+<b class="fc">&nbsp;        return players.get((indexOfCurr + 1) % players.size());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This method chooses randomly the first player.
+&nbsp;     */
+&nbsp;    public void initFirstPlayer(){
+<b class="fc">&nbsp;        if(indexFirstPlayer == null){</b>
+&nbsp;
+<b class="fc">&nbsp;            Random rand = new Random();</b>
+<b class="fc">&nbsp;            indexFirstPlayer = rand.nextInt(players.size());</b>
+&nbsp;        }
+<b class="fc">&nbsp;        this.firstPlayer = players.get(indexFirstPlayer);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void initPlayerOfTurn(){             //aggiunta inizializzazione playerOfTurn
+<b class="fc">&nbsp;        this.playerOfTurn = firstPlayer;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Player getFirstPlayer(){
+<b class="fc">&nbsp;        return firstPlayer;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method is used for the game flow of the endgame
+&nbsp;     */
+&nbsp;    public void updateRoundsLeft(){
+<b class="fc">&nbsp;        if(getRoundsLeft().isPresent() &amp;&amp; roundsLeft &gt; 0){</b>
+<b class="fc">&nbsp;            roundsLeft -= 1;</b>
+&nbsp;
+<b class="fc">&nbsp;            if(roundsLeft == 0){</b>
+<b class="fc">&nbsp;                actionType = ActionType.GAME_ENDED;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method gets called when a player has reached 20 points
+&nbsp;     * or there are no more cards to be drawn
+&nbsp;     */
+&nbsp;    public void initRoundsLeft(){
+&nbsp;
+<b class="fc">&nbsp;        int roundsToFinishCircle = ((indexFirstPlayer - players.indexOf(playerOfTurn) +players.size() - 1) % players.size()) * 2 + 2;</b>
+&nbsp;
+<b class="fc">&nbsp;        int additionalCircle = players.size();</b>
+&nbsp;
+<b class="fc">&nbsp;        roundsLeft = additionalCircle + roundsToFinishCircle;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this is used to restore the game in cas eof a crash from the server
+&nbsp;     * @throws UnrestorableGameError
+&nbsp;     */
+&nbsp;    public void setWaitForReconnections() throws UnrestorableGameError {
+<b class="fc">&nbsp;        if(actionType == null){</b>
+&nbsp;            // looks like game never started in the first place.
+<b class="nc">&nbsp;            throw new UnrestorableGameError(actionType);</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        if(!actionType.equals(ActionType.WAIT_RECONNECTIONS)){</b>
+<b class="fc">&nbsp;            savedAction = actionType;</b>
+<b class="nc">&nbsp;        }else if(savedAction == null){</b>
+&nbsp;            // this is weird and should never happen.
+<b class="nc">&nbsp;            throw new UnrestorableGameError(savedAction);</b>
+&nbsp;
+&nbsp;        }
+&nbsp;        // else branch: game crashed after crashing, start reconnection process again
+&nbsp;
+<b class="fc">&nbsp;        for(Player p : players){</b>
+<b class="fc">&nbsp;            p.setConnected(false);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        actionType = ActionType.WAIT_RECONNECTIONS;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void initRoundsLeftDecksFinished() {
+&nbsp;        // minus 1 rounds because curr player has already played and now is drawing
+<b class="nc">&nbsp;        int roundsToFinishCircle = ((indexFirstPlayer - players.indexOf(playerOfTurn) +players.size() - 1) % players.size()) * 2 + 1;</b>
+&nbsp;
+<b class="nc">&nbsp;        int additionalCircle = players.size();</b>
+&nbsp;
+<b class="nc">&nbsp;        roundsLeft = additionalCircle + roundsToFinishCircle;    }</b>
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-06-27 15:29</div>
+</div>
+</body>
+</html>

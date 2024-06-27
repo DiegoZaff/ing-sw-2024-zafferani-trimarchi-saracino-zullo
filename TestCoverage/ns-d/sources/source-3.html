@@ -1,0 +1,154 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > Stack</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.gc28.model.objectives.positions</a>
+</div>
+
+<h1>Coverage Summary for Class: Stack (it.polimi.ingsw.gc28.model.objectives.positions)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Stack</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    47,6%
+  </span>
+  <span class="absValue">
+    (10/21)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.polimi.ingsw.gc28.model.objectives.positions;
+&nbsp;import it.polimi.ingsw.gc28.model.Coordinate;
+&nbsp;import it.polimi.ingsw.gc28.model.objectives.positions.utils.PositionStackType;
+&nbsp;
+&nbsp;import java.io.Serializable;
+&nbsp;import java.util.ArrayList;
+&nbsp;
+&nbsp;public class Stack extends PositionType implements Serializable {
+<b class="fc">&nbsp;    public Stack(PositionStackType type) {</b>
+<b class="fc">&nbsp;        this.type = type;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public final PositionStackType type;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method gets the needed coordinates to check for an objective
+&nbsp;     * @param coord starting coordinate
+&nbsp;     * @return
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public ArrayList&lt;Coordinate&gt; getNeighborsCoordinates(Coordinate coord) {
+<b class="fc">&nbsp;        ArrayList&lt;Coordinate&gt; coords = new ArrayList&lt;Coordinate&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;        if (type == PositionStackType.S_E_STACK){</b>
+<b class="nc">&nbsp;            coords.add(coord);</b>
+<b class="nc">&nbsp;            coords.add(new Coordinate(coord.x(), coord.y() + 2));</b>
+<b class="nc">&nbsp;            coords.add(new Coordinate(coord.x() + 1, coord.y() - 1));</b>
+<b class="fc">&nbsp;        }else if (type == PositionStackType.S_W_STACK){</b>
+<b class="fc">&nbsp;            coords.add(new Coordinate(coord.x() - 1, coord.y() - 1));</b>
+<b class="fc">&nbsp;            coords.add(coord);</b>
+<b class="fc">&nbsp;            coords.add(new Coordinate(coord.x(), coord.y() + 2));</b>
+<b class="nc">&nbsp;        }else if (type == PositionStackType.N_E_STACK){</b>
+<b class="nc">&nbsp;            coords.add(new Coordinate(coord.x(), coord.y() - 2));</b>
+<b class="nc">&nbsp;            coords.add(coord);</b>
+<b class="nc">&nbsp;            coords.add(new Coordinate(coord.x() + 1, coord.y() + 1));</b>
+<b class="nc">&nbsp;        }else if (type == PositionStackType.N_W_STACK){</b>
+<b class="nc">&nbsp;            coords.add(new Coordinate(coord.x() - 1, coord.y() + 1));</b>
+<b class="nc">&nbsp;            coords.add(new Coordinate(coord.x(), coord.y() - 2));</b>
+<b class="nc">&nbsp;            coords.add(coord);</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        return coords;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String toString(String color1, String color2, String color3){
+<b class="fc">&nbsp;        return type.toString(color1, color2, color3);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-06-27 15:29</div>
+</div>
+</body>
+</html>

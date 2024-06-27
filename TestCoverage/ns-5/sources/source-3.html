@@ -1,0 +1,271 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > CardGold</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.gc28.model.cards</a>
+</div>
+
+<h1>Coverage Summary for Class: CardGold (it.polimi.ingsw.gc28.model.cards)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CardGold</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (10/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    92,9%
+  </span>
+  <span class="absValue">
+    (39/42)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.polimi.ingsw.gc28.model.cards;
+&nbsp;
+&nbsp;import it.polimi.ingsw.gc28.model.Coordinate;
+&nbsp;import it.polimi.ingsw.gc28.model.Deck;
+&nbsp;import it.polimi.ingsw.gc28.model.Player;
+&nbsp;import it.polimi.ingsw.gc28.model.Table;
+&nbsp;import it.polimi.ingsw.gc28.model.challenge.Challenge;
+&nbsp;import it.polimi.ingsw.gc28.model.challenge.PositionChallenge;
+&nbsp;import it.polimi.ingsw.gc28.model.challenge.ResourceChallenge;
+&nbsp;import it.polimi.ingsw.gc28.model.challenge.utils.ChallengeType;
+&nbsp;import it.polimi.ingsw.gc28.model.errors.types.NotDrawableCardError;
+&nbsp;import it.polimi.ingsw.gc28.model.errors.PlayerActionError;
+&nbsp;import it.polimi.ingsw.gc28.model.resources.Resource;
+&nbsp;import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
+&nbsp;import it.polimi.ingsw.gc28.model.resources.ResourceSpecial;
+&nbsp;import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
+&nbsp;import it.polimi.ingsw.gc28.model.resources.utils.ResourceSpecialType;
+&nbsp;import it.polimi.ingsw.gc28.model.resources.utils.ResourceType;
+&nbsp;import javafx.scene.image.ImageView;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.Map;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;
+&nbsp;public class CardGold extends CardResource {
+&nbsp;    /**
+&nbsp;     * represents the map of coordinates playable in the table
+&nbsp;     */
+&nbsp;    private Map&lt;ResourcePrimary, Integer&gt; playability;
+&nbsp;    private Challenge challenge;
+&nbsp;
+&nbsp;    public Optional&lt;Challenge&gt; getChallenge(){
+<b class="fc">&nbsp;        return Optional.ofNullable(challenge);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    public CardGold(String id, ResourceType[] resourceCard, ResourcePrimaryType resourcePrimary, int pointsPerPlay,
+&nbsp;                    ResourcePrimaryType[] resourceNeeded, ChallengeType challenge, ResourceSpecialType resourceChallenge,
+&nbsp;                    String frontImg, String backImg){
+<b class="fc">&nbsp;        super(id, resourceCard, resourcePrimary, pointsPerPlay, frontImg, backImg);</b>
+<b class="fc">&nbsp;        createPlayabilityMap(resourceNeeded);</b>
+<b class="fc">&nbsp;        if(challenge != null){</b>
+<b class="fc">&nbsp;            if(challenge.equals(ChallengeType.POINTS_PER_COVER)){</b>
+<b class="fc">&nbsp;                this.challenge = new PositionChallenge(challenge);</b>
+&nbsp;            }else{
+<b class="fc">&nbsp;                this.challenge = new ResourceChallenge(challenge, new ResourceSpecial(resourceChallenge));</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;        //this.resourceChallenge =Optional.of(new ResourceSpecial(resourceChallenge));
+&nbsp;        //this.challenge = new Challenge(challenge, resourceChallenge);
+&nbsp;        }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method create the hashMap to keep information about card&#39;s playability
+&nbsp;     * @param resourceNeeded is the array related to the json file
+&nbsp;     */
+&nbsp;    public void createPlayabilityMap(ResourcePrimaryType[] resourceNeeded){
+<b class="fc">&nbsp;        playability = new HashMap&lt;&gt;();</b>
+<b class="fc">&nbsp;        for(ResourcePrimaryType resourceType : resourceNeeded){</b>
+<b class="fc">&nbsp;            if (resourceType != null) {</b>
+<b class="fc">&nbsp;                ResourcePrimary res = new ResourcePrimary(resourceType);</b>
+<b class="fc">&nbsp;                if (playability.containsKey(res)) {</b>
+<b class="fc">&nbsp;                    playability.put(res, playability.get(res) + 1);</b>
+<b class="fc">&nbsp;                } else playability.put(res, 1);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method checks whether the table has enough resources for a card to be played
+&nbsp;     * @param table
+&nbsp;     * @return
+&nbsp;     */
+&nbsp;    private  boolean checkCardPlayability(Table table){
+<b class="fc">&nbsp;        for (ResourcePrimary r : playability.keySet()){</b>
+<b class="fc">&nbsp;            if (playability.get(r) &gt; table.getResourceCounters().get(r)){</b>
+<b class="nc">&nbsp;                return false;</b>
+&nbsp;            }
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this plays a face-up card on the player&#39;s table
+&nbsp;     * @param table indicates the table in which the card is played
+&nbsp;     * @param playCoordinate indicate the coordinates in which the card should be played
+&nbsp;     * @return
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public int playFront(Table table, Coordinate playCoordinate){
+<b class="fc">&nbsp;        if (checkCardPlayability(table)){</b>
+<b class="fc">&nbsp;            return super.playFront(table, playCoordinate);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return -1;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public int getPoints(Table table, Coordinate coordinate){
+<b class="fc">&nbsp;        return getChallenge().map(value -&gt; value.challengePoints(table, coordinate)).orElseGet(() -&gt; super.getPoints(table, coordinate));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method draws a card from the deck
+&nbsp;     * @param faceUpResCards
+&nbsp;     * @param faceUpGoldCards
+&nbsp;     * @param deck
+&nbsp;     * @param player
+&nbsp;     * @throws PlayerActionError
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void drawFaceUpCard(ArrayList&lt;CardResource&gt; faceUpResCards, ArrayList&lt;CardGold&gt; faceUpGoldCards, Deck deck, Player player) throws PlayerActionError {
+<b class="fc">&nbsp;        if(!faceUpGoldCards.contains(this)){</b>
+<b class="nc">&nbsp;            throw new NotDrawableCardError(this.getId());</b>
+&nbsp;        }
+<b class="fc">&nbsp;        faceUpGoldCards.remove(this);</b>
+&nbsp;
+<b class="fc">&nbsp;        Optional&lt;CardGold&gt; cardGoldAddToVisible = deck.nextGold();</b>
+&nbsp;
+<b class="fc">&nbsp;       cardGoldAddToVisible.ifPresent(faceUpGoldCards::add);</b>
+&nbsp;
+<b class="fc">&nbsp;       player.addCardToHand(this);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    private String resourceNeededToString (){
+&nbsp;        int i;
+<b class="fc">&nbsp;        StringBuffer s = new StringBuffer();</b>
+<b class="fc">&nbsp;        for (ResourcePrimary r : playability.keySet()){</b>
+<b class="fc">&nbsp;            for (i = 0; i&lt; playability.get(r); i++){</b>
+<b class="fc">&nbsp;                s.append(r.toString());</b>
+&nbsp;            }
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;        return s.toString();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public String toString(boolean isFront){
+<b class="fc">&nbsp;        StringBuffer show = new StringBuffer(super.toString(isFront));</b>
+&nbsp;        /*
+&nbsp;        for (int i = 0; i&lt;show.length(); i++){
+&nbsp;            System.out.println(&quot;char at &quot;+i+&quot;: &quot;+show.charAt(i));
+&nbsp;        }
+&nbsp;
+&nbsp;        punteggio a 46
+&nbsp;         */
+<b class="fc">&nbsp;        if (getChallenge().isPresent() &amp;&amp; isFront){</b>
+<b class="fc">&nbsp;            show.replace(45,50, challenge.toString());</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (!isFront){</b>
+<b class="fc">&nbsp;            show.replace(45, 49, &quot;gold&quot;);</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        return show.toString();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public String toString(){
+<b class="fc">&nbsp;        return super.toString()+&quot;, resource needed: &quot;+resourceNeededToString();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;}
+&nbsp;
+&nbsp;
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-06-27 15:29</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,720 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > Table</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.gc28.model</a>
+</div>
+
+<h1>Coverage Summary for Class: Table (it.polimi.ingsw.gc28.model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Table</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    97%
+  </span>
+  <span class="absValue">
+    (32/33)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    97,1%
+  </span>
+  <span class="absValue">
+    (235/242)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.polimi.ingsw.gc28.model;
+&nbsp;
+&nbsp;import it.polimi.ingsw.gc28.view.utils.TuiStringHelper;
+&nbsp;import it.polimi.ingsw.gc28.model.resources.Resource;
+&nbsp;import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
+&nbsp;import it.polimi.ingsw.gc28.model.resources.ResourceSpecial;
+&nbsp;import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
+&nbsp;import it.polimi.ingsw.gc28.model.resources.utils.ResourceSpecialType;
+&nbsp;
+&nbsp;import java.io.Serializable;
+&nbsp;import java.util.*;
+&nbsp;import java.util.regex.Matcher;
+&nbsp;import java.util.regex.Pattern;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;
+&nbsp;/**
+&nbsp; * this class represents the personal table of a player, it contains information
+&nbsp; * about the playable coordinates of the table and the number of resources shown
+&nbsp; */
+&nbsp;public class Table implements Serializable {
+&nbsp;
+&nbsp;
+&nbsp;    private final Map&lt;Coordinate, Cell&gt; mapPositions;
+&nbsp;    /**
+&nbsp;     * is an array that contains all the coordinates where a card can be played
+&nbsp;     */
+&nbsp;    private final ArrayList&lt;Coordinate&gt; playableCoords;
+&nbsp;    /**
+&nbsp;     * is an array that contains all the coordinates that will never be playable
+&nbsp;     */
+&nbsp;    private final ArrayList&lt;Coordinate&gt; unplayableCoords;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this map contains the current number of every resource
+&nbsp;     */
+&nbsp;    private final Map&lt;Resource, Integer&gt; resourceCounters;
+&nbsp;
+&nbsp;
+&nbsp;    public Map&lt;Coordinate, Cell&gt; getMapPositions(){
+<b class="fc">&nbsp;        return mapPositions;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Map&lt;Resource, Integer&gt; getResourceCounters() {
+<b class="fc">&nbsp;        return resourceCounters;</b>
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public Table(){</b>
+<b class="fc">&nbsp;        mapPositions = new HashMap&lt;&gt;();</b>
+<b class="fc">&nbsp;        resourceCounters = new HashMap&lt;&gt;();</b>
+<b class="fc">&nbsp;        playableCoords = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        unplayableCoords = new ArrayList&lt;&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;        playableCoords.add(new Coordinate(0,0));</b>
+&nbsp;
+<b class="fc">&nbsp;        for (ResourcePrimaryType r : ResourcePrimaryType.values()){</b>
+<b class="fc">&nbsp;            resourceCounters.put(new ResourcePrimary(r), 0);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        for (ResourceSpecialType r : ResourceSpecialType.values()){</b>
+<b class="fc">&nbsp;            resourceCounters.put(new ResourceSpecial(r), 0);</b>
+&nbsp;        }
+&nbsp;        //prova
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method updates the playable coordinates of the table when a card is placed
+&nbsp;     * @param coordinatesToRemove
+&nbsp;     */
+&nbsp;    public void removePlayableCoordinate (Coordinate coordinatesToRemove){
+<b class="fc">&nbsp;            playableCoords.remove(coordinatesToRemove);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method checks if the given coordinate can be played
+&nbsp;     * @param coordinate the coordinate to be checked
+&nbsp;     * @return true if the coordinate can be played,
+&nbsp;     * false if not
+&nbsp;     */
+&nbsp;    public boolean checkPlayability(Coordinate coordinate){
+<b class="fc">&nbsp;        if (mapPositions.containsKey(coordinate)){</b>
+<b class="nc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;        // ? I would replace this two checks with isPlayable(Coordinate coord).
+&nbsp;        // ? see comment above.
+<b class="fc">&nbsp;        if (unplayableCoords.contains(coordinate)){</b>
+<b class="nc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;        // a questo punto non basta fare if (!playableCoords.contains(coordinate)){return true} e toglier ela riga sotto
+<b class="fc">&nbsp;        return playableCoords.contains(coordinate);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void addMapPosition(Coordinate playCoordinate, Cell cell){
+<b class="fc">&nbsp;        mapPositions.put(playCoordinate, cell);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     *
+&nbsp;     * @param coordinate the coordinate of the cell
+&nbsp;     * @return the cell, or null if the coordinate are not mapped
+&nbsp;     */
+&nbsp;    public Cell getCell(Coordinate coordinate){
+<b class="fc">&nbsp;        return mapPositions.get(coordinate);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private Optional&lt;Cell&gt; getNWCell (Coordinate coordinate) {
+<b class="fc">&nbsp;        Coordinate x = new Coordinate(coordinate.getX() - 1, coordinate.getY() + 1);</b>
+<b class="fc">&nbsp;        return Optional.ofNullable(getCell(x));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean CellNWPresent(Coordinate coordinate){
+<b class="fc">&nbsp;        return this.getNWCell(coordinate).isPresent();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private Optional&lt;Resource&gt; getNWCoveredResource(Coordinate coordinate){
+<b class="fc">&nbsp;        if (this.getNWCell(coordinate).isPresent()){</b>
+<b class="fc">&nbsp;            return this.getNWCell(coordinate).get().getSEResource();</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            return Optional.empty();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    private Optional&lt;Cell&gt; getNECell (Coordinate coordinate) {
+<b class="fc">&nbsp;        Coordinate x = new Coordinate(coordinate.getX() + 1, coordinate.getY() + 1);</b>
+<b class="fc">&nbsp;        return Optional.ofNullable(getCell(x));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean CellNEPresent(Coordinate coordinate){
+<b class="fc">&nbsp;        return this.getNECell(coordinate).isPresent();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    private Optional&lt;Resource&gt; getNECoveredResource(Coordinate coordinate){
+<b class="fc">&nbsp;        if (this.getNECell(coordinate).isPresent()){</b>
+<b class="fc">&nbsp;            return this.getNECell(coordinate).get().getSWResource();</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            return Optional.empty();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    private Optional&lt;Cell&gt; getSECell (Coordinate coordinate) {
+<b class="fc">&nbsp;        Coordinate x = new Coordinate(coordinate.getX() + 1, coordinate.getY() - 1);</b>
+<b class="fc">&nbsp;        return Optional.ofNullable(getCell(x));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean CellSEPresent(Coordinate coordinate){
+<b class="fc">&nbsp;        return this.getSECell(coordinate).isPresent();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private Optional&lt;Resource&gt; getSECoveredResource(Coordinate coordinate){
+<b class="fc">&nbsp;        if (this.getSECell(coordinate).isPresent()){</b>
+<b class="fc">&nbsp;            return this.getSECell(coordinate).get().getNWResource();</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            return Optional.empty();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    private Optional&lt;Cell&gt; getSWCell (Coordinate coordinate) {
+<b class="fc">&nbsp;        Coordinate x = new Coordinate(coordinate.getX() - 1, coordinate.getY() - 1);</b>
+<b class="fc">&nbsp;        return Optional.ofNullable(getCell(x));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean CellSWPresent(Coordinate coordinate){
+<b class="fc">&nbsp;        return this.getSWCell(coordinate).isPresent();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private Optional&lt;Resource&gt; getSWCoveredResource(Coordinate coordinate){
+<b class="fc">&nbsp;        if (this.getSWCell(coordinate).isPresent()){</b>
+<b class="fc">&nbsp;            return this.getSWCell(coordinate).get().getNEResource();</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            return Optional.empty();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method return the resource that are covered when a card is played
+&nbsp;     * @param coordinate te coordinate where the card is played
+&nbsp;     * @return an ArrayList of Optional resource, containing the covered resources
+&nbsp;     */
+&nbsp;    public ArrayList&lt;Optional&lt;Resource&gt;&gt;  getCoveredResource (Coordinate coordinate){
+<b class="fc">&nbsp;        ArrayList&lt;Optional&lt;Resource&gt;&gt; a = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        a.add(getNWCoveredResource(coordinate));</b>
+<b class="fc">&nbsp;        a.add(getNECoveredResource(coordinate));</b>
+<b class="fc">&nbsp;        a.add(getSECoveredResource(coordinate));</b>
+<b class="fc">&nbsp;        a.add(getSWCoveredResource(coordinate));</b>
+&nbsp;
+<b class="fc">&nbsp;        return a;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method add the resources of a played card
+&nbsp;     * @param coordinate the coordinate of the played card
+&nbsp;     */
+&nbsp;    private void sumResources(Coordinate coordinate){
+&nbsp;        Map&lt;Resource, Integer&gt; mapResource;
+&nbsp;        int temp;
+&nbsp;
+<b class="fc">&nbsp;        mapResource = getCell(coordinate).getResources();</b>
+&nbsp;
+<b class="fc">&nbsp;        for (Resource key : mapResource.keySet()){</b>
+<b class="fc">&nbsp;            temp = resourceCounters.get(key) + mapResource.get(key);</b>
+&nbsp;
+<b class="fc">&nbsp;            resourceCounters.replace(key, temp);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method removes from the counter the covered vertex
+&nbsp;     * @param coordinate the cordinate of the played card
+&nbsp;     */
+&nbsp;    private void subResources (Coordinate coordinate){
+&nbsp;        int temp;
+<b class="fc">&nbsp;        for (Optional&lt;Resource&gt; a : this.getCoveredResource(coordinate)){</b>
+<b class="fc">&nbsp;            if (a.isPresent()){</b>
+<b class="fc">&nbsp;                temp = resourceCounters.get(a.get()) - 1;</b>
+<b class="fc">&nbsp;                resourceCounters.replace(a.get(), temp);</b>
+&nbsp;            }
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method updates resource counter, based on how and where the card has been played
+&nbsp;     * @param coordinate the coordinate where the card has been played
+&nbsp;     */
+&nbsp;    public void updateCounters (Coordinate coordinate){
+&nbsp;
+<b class="fc">&nbsp;        sumResources(coordinate);</b>
+&nbsp;
+<b class="fc">&nbsp;        subResources(coordinate);</b>
+&nbsp;
+&nbsp;    }
+&nbsp;    private void hasCornerUpdate(Coordinate c){
+<b class="fc">&nbsp;        if (!mapPositions.containsKey(c) &amp;&amp; !unplayableCoords.contains(c) &amp;&amp; !playableCoords.contains(c)){</b>
+<b class="fc">&nbsp;            playableCoords.add(c);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    private void hasNotCornerUpdate(Coordinate c){
+<b class="fc">&nbsp;        unplayableCoords.add(c);</b>
+<b class="fc">&nbsp;        removePlayableCoordinate(c);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void updateNWCoordinate(Coordinate coordinate){
+<b class="fc">&nbsp;        Coordinate c = new Coordinate(coordinate.getX()-1, coordinate.getY()+1);</b>
+<b class="fc">&nbsp;        if(getCell(coordinate).getNWExists()){</b>
+&nbsp;            //se ha angolo
+<b class="fc">&nbsp;            hasCornerUpdate(c);</b>
+&nbsp;        } else {
+&nbsp;            //se non ha angolo
+<b class="fc">&nbsp;            hasNotCornerUpdate(c);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    private void updateNECoordinate(Coordinate coordinate){
+<b class="fc">&nbsp;        Coordinate c = new Coordinate(coordinate.getX()+1, coordinate.getY()+1);</b>
+<b class="fc">&nbsp;        if(getCell(coordinate).getNEExists()){</b>
+&nbsp;            //se ha angolo
+<b class="fc">&nbsp;            hasCornerUpdate(c);</b>
+&nbsp;        } else {
+&nbsp;            //se non ha angolo
+<b class="fc">&nbsp;            hasNotCornerUpdate(c);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    private void updateSECoordinate(Coordinate coordinate){
+<b class="fc">&nbsp;        Coordinate c = new Coordinate(coordinate.getX()+1, coordinate.getY()-1);</b>
+<b class="fc">&nbsp;        if(getCell(coordinate).getSEExists()){</b>
+&nbsp;            //se ha angolo
+<b class="fc">&nbsp;            hasCornerUpdate(c);</b>
+&nbsp;        } else {
+&nbsp;            //se non ha angolo
+<b class="fc">&nbsp;            hasNotCornerUpdate(c);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    private void updateSWCoordinate(Coordinate coordinate){
+<b class="fc">&nbsp;        Coordinate c = new Coordinate(coordinate.getX()-1, coordinate.getY()-1);</b>
+<b class="fc">&nbsp;        if(getCell(coordinate).getSWExists()){</b>
+&nbsp;            //se ha angolo
+<b class="fc">&nbsp;            hasCornerUpdate(c);</b>
+&nbsp;        } else {
+&nbsp;            //se non ha angolo
+<b class="fc">&nbsp;            hasNotCornerUpdate(c);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method updates playable and unplayable coordinate in table, based on how and where the card is played
+&nbsp;     * @param coordinate the coordinate where the card has been played
+&nbsp;     */
+&nbsp;    public void updateCoordinate (Coordinate coordinate){
+<b class="fc">&nbsp;        updateNWCoordinate(coordinate);</b>
+<b class="fc">&nbsp;        updateNECoordinate(coordinate);</b>
+<b class="fc">&nbsp;        updateSECoordinate(coordinate);</b>
+<b class="fc">&nbsp;        updateSWCoordinate(coordinate);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public ArrayList&lt;Coordinate&gt; getPlayableCoords(){
+<b class="nc">&nbsp;        return playableCoords;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public String toString () throws NoSuchElementException{
+<b class="fc">&nbsp;        ArrayList&lt;Coordinate&gt; coords = new ArrayList&lt;&gt;(mapPositions.keySet());</b>
+&nbsp;
+&nbsp;        // TODO : useless, remember to remove this
+&nbsp;        // decreasing y order, increasing x order
+<b class="fc">&nbsp;        ArrayList&lt;Coordinate&gt; orderedCoords = coords.stream()</b>
+<b class="fc">&nbsp;                .sorted((o1, o2) -&gt; {</b>
+<b class="fc">&nbsp;                    if (o1.getY() == o2.getY()) {</b>
+&nbsp;                        // If y values are equal, compare by x in ascending order
+<b class="fc">&nbsp;                        return Integer.compare(o1.getX(), o2.getX());</b>
+&nbsp;                    } else {
+&nbsp;                        // Otherwise, compare by y in descending order
+<b class="fc">&nbsp;                        return Integer.compare(o2.getY(), o1.getY());</b>
+&nbsp;                    }
+&nbsp;                })
+<b class="fc">&nbsp;                .collect(Collectors.toCollection(ArrayList::new));</b>
+&nbsp;
+&nbsp;
+&nbsp;        /*
+&nbsp;
+&nbsp;            &lt;-----13----&gt;&lt;-5-&gt;&lt;------13---&gt;&lt;-5-&gt;&lt;-----13----&gt;&lt;-5-&gt;
+&nbsp;
+&nbsp;            _____________     _____________     &lt;---- firstLayer
+&nbsp;            |%s       %s|     |%s       %s|     &lt;---- secondLayer
+&nbsp;            |     %s    |     |     %s    |     &lt;---- thirdLayer
+&nbsp;            |%s      _____________        |     &lt;---- fourthLayer
+&nbsp;            ?????????|%s       %s|?????????     &lt;---- fifthLayer
+&nbsp;            &lt;---9---&gt;|     %s    |&lt;---9---&gt;
+&nbsp;                     |%s       %s|
+&nbsp;                     ?????????????
+&nbsp;                            x=0 y=0
+&nbsp;         */
+&nbsp;
+<b class="fc">&nbsp;        Map&lt;Coordinate, String[]&gt; mapLayers = new HashMap&lt;&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;        for(Coordinate coord : orderedCoords){</b>
+<b class="fc">&nbsp;            Cell cell = mapPositions.get(coord);</b>
+<b class="fc">&nbsp;            int currPlayOrder = cell.getOrderPlay();</b>
+&nbsp;
+<b class="fc">&nbsp;            ArrayList&lt;String&gt; verticesStrings= TuiStringHelper.getVerticesStringInfo(cell.getCard(), cell.getIsPlayedFront());</b>
+<b class="fc">&nbsp;            String centralRes = cell.getCard().getCentralResourceStringInfo(cell.getIsPlayedFront());</b>
+&nbsp;
+<b class="fc">&nbsp;            Optional&lt;Cell&gt; NECell = getNECell(coord);</b>
+<b class="fc">&nbsp;            Optional&lt;Cell&gt; NWCell = getNWCell(coord);</b>
+<b class="fc">&nbsp;            Optional&lt;Cell&gt; SECell = getSECell(coord);</b>
+<b class="fc">&nbsp;            Optional&lt;Cell&gt; SWCell = getSWCell(coord);</b>
+&nbsp;
+&nbsp;            String firstLayer;
+&nbsp;            String firstLayer1;
+&nbsp;            String firstLayer2;
+&nbsp;            String secondLayer;
+&nbsp;            String secondLayer1;
+&nbsp;            String secondLayer2;
+&nbsp;            String thirdLayer;
+&nbsp;            String fourthLayer;
+&nbsp;            String fourthLayer1;
+&nbsp;            String fourthLayer2;
+&nbsp;            String fifthLayer;
+&nbsp;            String fifthLayer1;
+&nbsp;            String fifthLayer2;
+&nbsp;
+&nbsp;            //1st and 2nd layer
+<b class="fc">&nbsp;            if(NWCell.isEmpty() || NWCell.get().getOrderPlay() &lt; currPlayOrder){</b>
+<b class="fc">&nbsp;                firstLayer1 = &quot;______&quot;;</b>
+<b class="fc">&nbsp;                secondLayer1 = String.format(&quot;|%s   &quot;, verticesStrings.getFirst());</b>
+&nbsp;            }else{
+<b class="fc">&nbsp;                firstLayer1 = &quot;__&quot;;</b>
+<b class="fc">&nbsp;                secondLayer1 = &quot;  &quot;;</b>
+&nbsp;            }
+&nbsp;
+<b class="fc">&nbsp;            if(NECell.isEmpty() || NECell.get().getOrderPlay() &lt; currPlayOrder){</b>
+<b class="fc">&nbsp;                firstLayer2 = &quot;______&quot;;</b>
+<b class="fc">&nbsp;                secondLayer2 = String.format(&quot;   %s|&quot;, verticesStrings.get(1));</b>
+&nbsp;            }else{
+<b class="fc">&nbsp;                firstLayer2 = &quot;__&quot;;</b>
+<b class="fc">&nbsp;                secondLayer2 = &quot;  &quot;;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            //4th and 5th layer
+<b class="fc">&nbsp;            if(SWCell.isEmpty() || SWCell.get().getOrderPlay() &lt; currPlayOrder){</b>
+<b class="fc">&nbsp;                fourthLayer1 = String.format(&quot;|%s   &quot;, verticesStrings.get(3));</b>
+<b class="fc">&nbsp;                fifthLayer1 = &quot;??????&quot;;</b>
+&nbsp;            }else{
+<b class="fc">&nbsp;                fourthLayer1 = &quot;  &quot;;</b>
+<b class="fc">&nbsp;                fifthLayer1 = &quot;??&quot;;</b>
+&nbsp;            }
+&nbsp;
+<b class="fc">&nbsp;            if(SECell.isEmpty() || SECell.get().getOrderPlay() &lt; currPlayOrder){</b>
+<b class="fc">&nbsp;                fourthLayer2 = String.format(&quot;   %s|&quot;, verticesStrings.get(2));</b>
+<b class="fc">&nbsp;                fifthLayer2 = &quot;??????&quot;;</b>
+&nbsp;            }else{
+<b class="fc">&nbsp;                fourthLayer2 = &quot;  &quot;;</b>
+<b class="fc">&nbsp;                fifthLayer2 = &quot;??&quot;;</b>
+&nbsp;            }
+&nbsp;
+<b class="fc">&nbsp;            firstLayer = firstLayer1 + &quot;_&quot; + firstLayer2;</b>
+<b class="fc">&nbsp;            secondLayer = secondLayer1 + &quot; &quot; + secondLayer2;</b>
+&nbsp;
+&nbsp;            //Match something like: \u1490[32mLu\u1404[0m
+<b class="fc">&nbsp;            String regex = &quot;\\X\\[\\d{2}m([a-zA-Z\\s]+)\\X\\[0m&quot;; //</b>
+&nbsp;
+&nbsp;            // Compile the pattern
+<b class="fc">&nbsp;            Pattern pattern = Pattern.compile(regex);</b>
+&nbsp;
+&nbsp;            // Create a matcher for the input string
+<b class="fc">&nbsp;            Matcher matcher = pattern.matcher(centralRes);</b>
+&nbsp;
+<b class="fc">&nbsp;            int lengthResString = 0;</b>
+<b class="fc">&nbsp;            while(matcher.find()){</b>
+<b class="fc">&nbsp;                lengthResString += 2;</b>
+&nbsp;            }
+&nbsp;
+<b class="fc">&nbsp;            int leftPadding = (11 - lengthResString) / 2;</b>
+<b class="fc">&nbsp;            int rightPadding = 11 - leftPadding - lengthResString;</b>
+<b class="fc">&nbsp;            thirdLayer =&quot;|&quot; + &quot; &quot;.repeat(leftPadding) + centralRes + &quot; &quot;.repeat(rightPadding) + &quot;|&quot; ;</b>
+<b class="fc">&nbsp;            fourthLayer = fourthLayer1 + &quot; &quot; + fourthLayer2;</b>
+<b class="fc">&nbsp;            fifthLayer = fifthLayer1 + &quot;?&quot; + fifthLayer2;</b>
+&nbsp;
+<b class="fc">&nbsp;            String[] cardLayers = {firstLayer, secondLayer, thirdLayer, fourthLayer, fifthLayer};</b>
+&nbsp;
+<b class="fc">&nbsp;            mapLayers.put(coord, cardLayers);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;        String emptySpace5 = &quot;     &quot;;</b>
+<b class="fc">&nbsp;        String emptySpace13 = &quot;             &quot;;</b>
+<b class="fc">&nbsp;        String emptySpace9 = &quot;         &quot;;</b>
+<b class="fc">&nbsp;        String emptySpace4 = &quot;    &quot;;</b>
+&nbsp;
+<b class="fc">&nbsp;        StringBuilder result = new StringBuilder();</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;        int minX = orderedCoords.stream().min(Comparator.comparingInt(Coordinate::getX)).orElseThrow().getX();</b>
+<b class="fc">&nbsp;        int maxX = orderedCoords.stream().max(Comparator.comparingInt(Coordinate::getX)).orElseThrow().getX();</b>
+<b class="fc">&nbsp;        int minY = orderedCoords.stream().min(Comparator.comparingInt(Coordinate::getY)).orElseThrow().getY();</b>
+<b class="fc">&nbsp;        int maxY = orderedCoords.stream().max(Comparator.comparingInt(Coordinate::getY)).orElseThrow().getY();</b>
+&nbsp;
+&nbsp;        Coordinate curr;
+&nbsp;
+<b class="fc">&nbsp;        int startingK = 0;</b>
+&nbsp;
+&nbsp;        // these are just to keep track of coordinates whose cell&#39;s first and second layer were already printed.
+<b class="fc">&nbsp;        ArrayList&lt;Coordinate&gt; firstLayerAlreadyPrinted = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        ArrayList&lt;Coordinate&gt; secondLayerAlreadyPrinted = new ArrayList&lt;&gt;();</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;        for (int j = maxY; j &gt; minY - 1 ; j--){</b>
+<b class="fc">&nbsp;            for (int k = startingK; k &lt; 5; k++){</b>
+<b class="fc">&nbsp;                for (int i = minX ; i &lt; maxX + 1; i++){</b>
+&nbsp;
+<b class="fc">&nbsp;                    curr = new Coordinate(i, j);</b>
+&nbsp;
+<b class="fc">&nbsp;                    if((Math.abs(curr.getX()) + Math.abs(curr.getY()))% 2 != 0){</b>
+&nbsp;
+<b class="fc">&nbsp;                        if(k == 0 || k == 1 || k == 2){</b>
+<b class="fc">&nbsp;                            if(i == minX){</b>
+<b class="fc">&nbsp;                                result.append(emptySpace9);</b>
+&nbsp;                            }else{
+<b class="fc">&nbsp;                                result.append(emptySpace5);</b>
+&nbsp;                            }
+&nbsp;                        }else{
+<b class="fc">&nbsp;                            Coordinate downCoord = new Coordinate(curr.getX(), curr.getY() - 1);</b>
+&nbsp;
+<b class="fc">&nbsp;                            String[] downCoordStrings = mapLayers.get(downCoord);</b>
+&nbsp;
+<b class="fc">&nbsp;                            if(downCoordStrings == null){</b>
+<b class="fc">&nbsp;                                if(i == minX){</b>
+<b class="fc">&nbsp;                                    result.append(emptySpace9);</b>
+&nbsp;                                }else{
+<b class="fc">&nbsp;                                    result.append(emptySpace5);</b>
+&nbsp;                                }
+&nbsp;                            }
+&nbsp;                            //else do nothing
+<b class="fc">&nbsp;                        }</b>
+&nbsp;
+&nbsp;                    }else{
+<b class="fc">&nbsp;                        String[] currStrings = mapLayers.get(curr);</b>
+&nbsp;
+<b class="fc">&nbsp;                        if(currStrings == null){</b>
+<b class="fc">&nbsp;                            if(k == 0 || k == 1 || k == 2){</b>
+<b class="fc">&nbsp;                                result.append(emptySpace13);</b>
+&nbsp;                            }else{
+<b class="fc">&nbsp;                                if(k == 3){</b>
+<b class="fc">&nbsp;                                    Coordinate adjacentCoordLeft = new Coordinate(curr.getX() - 1, curr.getY() - 1);</b>
+&nbsp;
+<b class="fc">&nbsp;                                    String[] stringsAdjLeft = mapLayers.get(adjacentCoordLeft);</b>
+&nbsp;
+<b class="fc">&nbsp;                                    if(stringsAdjLeft != null){</b>
+<b class="fc">&nbsp;                                        if(!firstLayerAlreadyPrinted.contains(adjacentCoordLeft)){</b>
+<b class="fc">&nbsp;                                            result.append(stringsAdjLeft[0]);</b>
+<b class="fc">&nbsp;                                            firstLayerAlreadyPrinted.add(adjacentCoordLeft);</b>
+&nbsp;                                        }
+<b class="fc">&nbsp;                                        result.append(emptySpace5);</b>
+&nbsp;                                    }else{
+<b class="fc">&nbsp;                                        result.append(emptySpace9);</b>
+&nbsp;                                    }
+&nbsp;
+<b class="fc">&nbsp;                                    Coordinate adjacentCoordRight = new Coordinate(curr.getX() + 1, curr.getY() - 1);</b>
+&nbsp;
+<b class="fc">&nbsp;                                    String[] stringsAdjRight = mapLayers.get(adjacentCoordRight);</b>
+&nbsp;
+<b class="fc">&nbsp;                                    if(stringsAdjRight != null){</b>
+<b class="fc">&nbsp;                                        if(!firstLayerAlreadyPrinted.contains(adjacentCoordRight)){</b>
+<b class="fc">&nbsp;                                            result.append(stringsAdjRight[0]);</b>
+<b class="fc">&nbsp;                                            firstLayerAlreadyPrinted.add(adjacentCoordRight);</b>
+&nbsp;                                        }
+&nbsp;                                    }else{
+<b class="fc">&nbsp;                                        result.append(emptySpace4);</b>
+&nbsp;                                    }
+<b class="fc">&nbsp;                                }else{</b>
+<b class="fc">&nbsp;                                    Coordinate adjacentCoordLeft = new Coordinate(curr.getX() - 1, curr.getY() - 1);</b>
+&nbsp;
+<b class="fc">&nbsp;                                    String[] stringsAdjLeft = mapLayers.get(adjacentCoordLeft);</b>
+&nbsp;
+<b class="fc">&nbsp;                                    if(stringsAdjLeft != null){</b>
+<b class="fc">&nbsp;                                        if(!secondLayerAlreadyPrinted.contains(adjacentCoordLeft)){</b>
+<b class="fc">&nbsp;                                            result.append(stringsAdjLeft[1]);</b>
+<b class="fc">&nbsp;                                            secondLayerAlreadyPrinted.add(adjacentCoordLeft);</b>
+&nbsp;                                        }
+<b class="fc">&nbsp;                                        result.append(emptySpace5);</b>
+&nbsp;                                    }else{
+<b class="fc">&nbsp;                                        result.append(emptySpace9);</b>
+&nbsp;                                    }
+&nbsp;
+<b class="fc">&nbsp;                                    Coordinate adjacentCoordRight = new Coordinate(curr.getX() + 1, curr.getY() - 1);</b>
+&nbsp;
+<b class="fc">&nbsp;                                    String[] stringsAdjRight = mapLayers.get(adjacentCoordRight);</b>
+&nbsp;
+<b class="fc">&nbsp;                                    if(stringsAdjRight != null){</b>
+<b class="fc">&nbsp;                                        if(!secondLayerAlreadyPrinted.contains(adjacentCoordRight)){</b>
+<b class="fc">&nbsp;                                            result.append(stringsAdjRight[1]);</b>
+<b class="fc">&nbsp;                                            secondLayerAlreadyPrinted.add(adjacentCoordRight);</b>
+&nbsp;                                        }
+&nbsp;                                    }else{
+<b class="fc">&nbsp;                                        result.append(emptySpace4);</b>
+&nbsp;                                    }
+<b class="fc">&nbsp;                                }</b>
+&nbsp;                            }
+&nbsp;
+&nbsp;                        }else{
+&nbsp;                            //first layer
+<b class="fc">&nbsp;                            if(k == 0){</b>
+<b class="fc">&nbsp;                                result.append(currStrings[0]);</b>
+<b class="fc">&nbsp;                            }else if(k == 1){</b>
+<b class="fc">&nbsp;                                result.append(currStrings[1]);</b>
+<b class="fc">&nbsp;                            }else if(k == 2){</b>
+<b class="fc">&nbsp;                                result.append(currStrings[2]);</b>
+<b class="fc">&nbsp;                            }else if(k == 3){</b>
+<b class="fc">&nbsp;                                Coordinate adjacentCoordLeft = new Coordinate(curr.getX() - 1, curr.getY() - 1);</b>
+&nbsp;
+<b class="fc">&nbsp;                                String[] stringsAdjLeft = mapLayers.get(adjacentCoordLeft);</b>
+&nbsp;
+<b class="fc">&nbsp;                                if(stringsAdjLeft == null){</b>
+<b class="fc">&nbsp;                                    result.append(currStrings[3]);</b>
+&nbsp;                                }else{
+<b class="fc">&nbsp;                                    if(!firstLayerAlreadyPrinted.contains(adjacentCoordLeft)){</b>
+<b class="nc">&nbsp;                                        result.append(stringsAdjLeft[0]);</b>
+<b class="nc">&nbsp;                                        firstLayerAlreadyPrinted.add(adjacentCoordLeft);</b>
+&nbsp;                                    }
+&nbsp;
+<b class="fc">&nbsp;                                    result.append(currStrings[3]);</b>
+&nbsp;                                }
+&nbsp;
+<b class="fc">&nbsp;                                Coordinate adjacentCoordRight = new Coordinate(curr.getX() + 1, curr.getY() - 1);</b>
+&nbsp;
+<b class="fc">&nbsp;                                String[] stringsAdjRight = mapLayers.get(adjacentCoordRight);</b>
+&nbsp;
+<b class="fc">&nbsp;                                if (stringsAdjRight != null) {</b>
+<b class="fc">&nbsp;                                    result.append(stringsAdjRight[0]);</b>
+<b class="fc">&nbsp;                                    firstLayerAlreadyPrinted.add(adjacentCoordRight);</b>
+&nbsp;                                }
+<b class="fc">&nbsp;                            }else {</b>
+<b class="fc">&nbsp;                                Coordinate adjacentCoordLeft = new Coordinate(curr.getX() - 1, curr.getY() - 1);</b>
+&nbsp;
+<b class="fc">&nbsp;                                String[] stringsAdjLeft = mapLayers.get(adjacentCoordLeft);</b>
+&nbsp;
+<b class="fc">&nbsp;                                if(stringsAdjLeft == null){</b>
+<b class="fc">&nbsp;                                    result.append(currStrings[4]);</b>
+&nbsp;                                }else{
+<b class="fc">&nbsp;                                    if(!secondLayerAlreadyPrinted.contains(adjacentCoordLeft)){</b>
+<b class="nc">&nbsp;                                        result.append(stringsAdjLeft[1]);</b>
+<b class="nc">&nbsp;                                        secondLayerAlreadyPrinted.add(adjacentCoordLeft);</b>
+&nbsp;                                    }
+<b class="fc">&nbsp;                                    result.append(currStrings[4]);</b>
+&nbsp;                                }
+&nbsp;
+<b class="fc">&nbsp;                                Coordinate adjacentCoordRight = new Coordinate(curr.getX() + 1, curr.getY() - 1);</b>
+&nbsp;
+<b class="fc">&nbsp;                                String[] stringsAdjRight = mapLayers.get(adjacentCoordRight);</b>
+&nbsp;
+<b class="fc">&nbsp;                                if (stringsAdjRight != null) {</b>
+<b class="fc">&nbsp;                                    result.append(stringsAdjRight[1]);</b>
+<b class="fc">&nbsp;                                    secondLayerAlreadyPrinted.add(adjacentCoordRight);</b>
+&nbsp;
+&nbsp;                                }
+&nbsp;                            }
+&nbsp;                        }
+&nbsp;
+&nbsp;                    }
+&nbsp;
+&nbsp;                }
+&nbsp;
+<b class="fc">&nbsp;                result.append(&quot;\n&quot;);</b>
+&nbsp;            }
+<b class="fc">&nbsp;            startingK = 2;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;        return result.toString();</b>
+&nbsp;
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-06-27 15:29</div>
+</div>
+</body>
+</html>

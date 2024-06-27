@@ -1,0 +1,143 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > JoinInfo</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.gc28.model.utils</a>
+</div>
+
+<h1>Coverage Summary for Class: JoinInfo (it.polimi.ingsw.gc28.model.utils)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">JoinInfo</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/9)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.polimi.ingsw.gc28.model.utils;
+&nbsp;
+&nbsp;import java.io.Serializable;
+&nbsp;import java.util.ArrayList;
+&nbsp;
+&nbsp;public class JoinInfo implements Serializable {
+&nbsp;    private final String gameId;
+&nbsp;
+&nbsp;    private final ArrayList&lt;String&gt; playersAlreadyIn;
+&nbsp;
+&nbsp;    private final Integer nPlayers;
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;    public JoinInfo(String gameId, ArrayList&lt;String&gt; playersAlreadyIn, Integer nPlayers) {</b>
+<b class="nc">&nbsp;        this.gameId = gameId;</b>
+<b class="nc">&nbsp;        this.playersAlreadyIn = playersAlreadyIn;</b>
+<b class="nc">&nbsp;        this.nPlayers = nPlayers;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getGameId() {
+<b class="nc">&nbsp;        return gameId;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public ArrayList&lt;String&gt; getPlayersAlreadyIn() {
+<b class="nc">&nbsp;        return playersAlreadyIn;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public String toString() {
+&nbsp;
+<b class="nc">&nbsp;        String players = String.join(&quot;, &quot;, playersAlreadyIn);</b>
+&nbsp;
+<b class="nc">&nbsp;        return String.format(&quot;Game id: %s --- Players in: %s\n&quot;, gameId, players);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Integer getnPlayers() {
+<b class="nc">&nbsp;        return nPlayers;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-06-27 15:29</div>
+</div>
+</body>
+</html>

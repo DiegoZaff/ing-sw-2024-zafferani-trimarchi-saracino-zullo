@@ -1,0 +1,164 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ChatMessage</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.gc28.model.chat</a>
+</div>
+
+<h1>Coverage Summary for Class: ChatMessage (it.polimi.ingsw.gc28.model.chat)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ChatMessage</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85,7%
+  </span>
+  <span class="absValue">
+    (6/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    94,7%
+  </span>
+  <span class="absValue">
+    (18/19)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.polimi.ingsw.gc28.model.chat;
+&nbsp;
+&nbsp;import java.io.Serializable;
+&nbsp;import java.time.LocalTime;
+&nbsp;
+&nbsp;public class ChatMessage implements Serializable {
+&nbsp;    private String text;
+&nbsp;    private String sender;
+&nbsp;    private String receiver;
+&nbsp;    private LocalTime time;
+&nbsp;    private boolean isPrivate;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructor.
+&nbsp;     * @param text is the body of the message.
+&nbsp;     * @param sender is the player who sent the message.
+&nbsp;     */
+<b class="fc">&nbsp;    public ChatMessage(String text, String sender, String receiver, boolean isPrivate){</b>
+<b class="fc">&nbsp;        this.text = text;</b>
+<b class="fc">&nbsp;        this.sender = sender;</b>
+<b class="fc">&nbsp;        this.receiver = receiver;</b>
+<b class="fc">&nbsp;        this.time = java.time.LocalTime.now();</b>
+<b class="fc">&nbsp;        this.isPrivate = isPrivate;</b>
+&nbsp;    }
+&nbsp;    public String getText(){
+<b class="fc">&nbsp;        return text;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String toString(int i, int len, boolean isPrivate){
+<b class="fc">&nbsp;        String priv = &quot;[Private] &quot;;</b>
+<b class="fc">&nbsp;        if (!isPrivate){</b>
+<b class="fc">&nbsp;            priv = &quot;&quot;;</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        String time = String.format(&quot;[%02d:%02d:%02d] &quot;, this.time.getHour(), this.time.getMinute(), this.time.getSecond());</b>
+<b class="fc">&nbsp;        String messageText = priv + time + sender + &quot;: &quot; + this.text;</b>
+<b class="fc">&nbsp;        int paddingLength = Math.max(0, len - messageText.length());</b>
+<b class="fc">&nbsp;        String padding = &quot; &quot;.repeat(paddingLength);</b>
+<b class="fc">&nbsp;        return messageText + padding;</b>
+&nbsp;    }
+&nbsp;    public boolean isPrivate() {
+<b class="fc">&nbsp;        return isPrivate;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getReceiver() {
+<b class="fc">&nbsp;        return receiver;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getSender() {
+<b class="fc">&nbsp;        return sender;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method is used to show the timestamp of the message
+&nbsp;     */
+&nbsp;    public String getTime(){
+<b class="nc">&nbsp;        return String.format(&quot;[%02d:%02d:%02d] &quot;, this.time.getHour(), this.time.getMinute(), this.time.getSecond());</b>
+&nbsp;    }
+&nbsp;}
+&nbsp;
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-06-27 15:29</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,234 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ObjectivePosition</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.gc28.model.objectives</a>
+</div>
+
+<h1>Coverage Summary for Class: ObjectivePosition (it.polimi.ingsw.gc28.model.objectives)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ObjectivePosition</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (40/40)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.polimi.ingsw.gc28.model.objectives;
+&nbsp;import it.polimi.ingsw.gc28.model.Cell;
+&nbsp;import it.polimi.ingsw.gc28.model.Coordinate;
+&nbsp;import it.polimi.ingsw.gc28.model.cards.CardGame;
+&nbsp;import it.polimi.ingsw.gc28.model.objectives.positions.PositionType;
+&nbsp;import it.polimi.ingsw.gc28.model.resources.Resource;
+&nbsp;import it.polimi.ingsw.gc28.model.resources.ResourcePrimary;
+&nbsp;
+&nbsp;import java.io.Serializable;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.Map;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;
+&nbsp;public class ObjectivePosition extends Objective implements Serializable {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this generalizes position patterns.
+&nbsp;     * It describes the resource that each card must satisfy, from bottom left to top right.
+&nbsp;     * for example, for a main diagonal it would be:
+&nbsp;     *  [RED, RED, RED]
+&nbsp;     */
+&nbsp;    public final ResourcePrimary[] patternPosition;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this attribute stores the getNeighbors() function that generalizes different kinds of positions.
+&nbsp;     */
+&nbsp;    public final PositionType positionType;
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;    public ObjectivePosition(PositionType positionType, int points, ResourcePrimary[] patternPosition) {</b>
+<b class="fc">&nbsp;        this.patternPosition = patternPosition;</b>
+<b class="fc">&nbsp;        this.points = points;</b>
+<b class="fc">&nbsp;        this.positionType = positionType;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * returns the correct number of points to award processing every possible combination.
+&nbsp;     * @param map of the table
+&nbsp;     * @param resourceCounters
+&nbsp;     * @throws IllegalArgumentException
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public int calculatePoints(Map&lt;Coordinate, Cell&gt; map,
+&nbsp;                               Map&lt;Resource, Integer&gt; resourceCounters) throws  IllegalArgumentException{
+&nbsp;
+<b class="fc">&nbsp;        ArrayList&lt;ArrayList&lt;Coordinate&gt;&gt; combinationList = new ArrayList&lt;&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;        for(Coordinate coordinate : map.keySet()){</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;            ArrayList&lt;Coordinate&gt; neighborsCoordinates = positionType.getNeighborsCoordinates(coordinate);</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;            ArrayList&lt;CardGame&gt; cardsNeighbors = neighborsCoordinates.stream()</b>
+<b class="fc">&nbsp;                    .filter(map::containsKey)</b>
+<b class="fc">&nbsp;                    .map(coord -&gt; map.get(coord).getCard())</b>
+<b class="fc">&nbsp;                    .collect(Collectors.toCollection(ArrayList::new));</b>
+&nbsp;
+<b class="fc">&nbsp;            boolean isValid = validateNeighbors(cardsNeighbors, patternPosition);</b>
+&nbsp;
+<b class="fc">&nbsp;            if(isValid){</b>
+<b class="fc">&nbsp;                combinationList.add(neighborsCoordinates);</b>
+&nbsp;            }
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        ArrayList&lt;ArrayList&lt;Coordinate&gt;&gt; bestCombinations = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        for (int i = 0; i &lt; combinationList.size(); i++){</b>
+<b class="fc">&nbsp;            ArrayList&lt;ArrayList&lt;Coordinate&gt;&gt; tempCombinations = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;            tempCombinations.add(combinationList.get(i));</b>
+<b class="fc">&nbsp;            for(int j = 0; j &lt; combinationList.size(); j++){</b>
+<b class="fc">&nbsp;                if(i == j){</b>
+<b class="fc">&nbsp;                    continue;</b>
+&nbsp;                }
+<b class="fc">&nbsp;                if(!areCombinationsOverlapping(combinationList.get(i), combinationList.get(j))){</b>
+<b class="fc">&nbsp;                    tempCombinations.add(combinationList.get(j));</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+<b class="fc">&nbsp;            if(tempCombinations.size() &gt; bestCombinations.size()){</b>
+&nbsp;                // change pointer, tempCombinations will get reassigned.
+<b class="fc">&nbsp;                bestCombinations = tempCombinations;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        return bestCombinations.size() * points;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * validates card combination against objective pattern.
+&nbsp;     *
+&nbsp;     * @param cards cards of a combination
+&nbsp;     * @param pattern resources that the cards must match
+&nbsp;     * @return true if combination satisfies the pattern;
+&nbsp;     * @example
+&nbsp;     * pattern = [RED, RED, RED]
+&nbsp;     * cards = [card1 with resourceType red,
+&nbsp;     *          card2 with resourceType red,
+&nbsp;     *          card3 with resourceType red]
+&nbsp;     * return true.
+&nbsp;     */
+&nbsp;    public boolean validateNeighbors(ArrayList&lt;CardGame&gt; cards, ResourcePrimary[] pattern){
+<b class="fc">&nbsp;        if(cards.size() != pattern.length){</b>
+<b class="fc">&nbsp;            return false;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        for(int i = 0; i &lt; cards.size(); i++){</b>
+<b class="fc">&nbsp;            if(cards.get(i).getObjectiveResource().isEmpty() ||</b>
+<b class="fc">&nbsp;                    (cards.get(i).getObjectiveResource().isPresent() &amp;&amp;</b>
+<b class="fc">&nbsp;                            !pattern[i].type.equals(cards.get(i).getObjectiveResource().get().type ))){</b>
+<b class="fc">&nbsp;                return false;</b>
+&nbsp;            }
+&nbsp;        }
+<b class="fc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public String toString(){
+<b class="fc">&nbsp;         StringBuffer show = new StringBuffer(positionType.toString(patternPosition[0].getType().getResourceColor(),</b>
+<b class="fc">&nbsp;                 patternPosition[1].getType().getResourceColor(),</b>
+<b class="fc">&nbsp;                 patternPosition[2].getType().getResourceColor()));</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;         show.replace(20,21, &quot;&quot;+points);</b>
+&nbsp;
+<b class="fc">&nbsp;         return show.toString();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-06-27 15:29</div>
+</div>
+</body>
+</html>
