@@ -48,7 +48,7 @@ The following table shows the implemented functionalities
 
 * ### [UML Network diagram](https://github.com/DiegoZaff/ing-sw-2024-zafferani-trimarchi-saracino-zullo/blob/a604bbb1bd29c48ee914b22a45e0188c3ddd3fdc/deliverables/UML2/uml%20rete.drawio.png)
 
-* ### [Test coverage report]()
+* ### [Test coverage report](https://gc28testcoverage.netlify.app/)
 
 * ### [Jar File]()
 
