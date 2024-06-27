@@ -28,7 +28,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
 import java.io.IOException;
@@ -219,11 +218,11 @@ public class TableCards extends VBox implements Initializable {
 
             TablePlayableCell coordCentre = new TablePlayableCell(coord, rightDistance, bottomDistance); //Double[]{rightDistance, bottomDistance};
 
-            Circle circle = new Circle(5); // Center at (100, 100), radius 5
-            circle.setFill(Color.RED); // Set fill color to red
-            AnchorPane.setRightAnchor(circle,rightDistance);
-            AnchorPane.setBottomAnchor(circle, bottomDistance);
-            anchor.getChildren().add(circle);
+//            Circle circle = new Circle(5); // Center at (100, 100), radius 5
+//            circle.setFill(Color.RED); // Set fill color to red
+//            AnchorPane.setRightAnchor(circle,rightDistance);
+//            AnchorPane.setBottomAnchor(circle, bottomDistance);
+//            anchor.getChildren().add(circle);
 
             highlightableCenters.add(coordCentre);
         }

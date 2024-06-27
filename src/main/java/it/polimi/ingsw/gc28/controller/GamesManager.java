@@ -79,11 +79,12 @@ public class GamesManager {
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
+                System.out.println("Server pinging clients in game...");
                 for(String gameId : mapGames.keySet()){
                     try {
                         mapGames.get(gameId).sendPing();
                     } catch (RemoteException e) {
-                        System.err.println("someone disconnected from game: "+gameId);
+                        System.err.println("someone disconnected from game: "+ gameId);
                         try {
                             // closes game connections
                             mapGames.get(gameId).notifyGameTermination();
@@ -128,10 +129,10 @@ public class GamesManager {
             MsgJoinableGames msg = (MsgJoinableGames) message;
             sendJoinableGames(msg);
         } else if (message.getType().equals(MessageTypeC2S.PING)) {
-            System.out.println("ping");
+//            System.out.println("ping");
         } else {
-        System.err.printf("Message of type %s directed to gamesManager!%n", message.getType());
-    }
+            System.err.printf("Message of type %s directed to gamesManager!%n", message.getType());
+        }
     }
 
     /**

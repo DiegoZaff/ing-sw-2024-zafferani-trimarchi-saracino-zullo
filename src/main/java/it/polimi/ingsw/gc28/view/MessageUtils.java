@@ -156,7 +156,7 @@ public class MessageUtils {
                 StringBuilder builder = new StringBuilder();
                 commandsList.removeFirst();
                 String receiver = commandsList.getFirst();
-                //TODO: verificare che esista un gicatore con tale nome.
+
                 commandsList.removeFirst();
 
                 for (String str : commandsList) {
@@ -222,7 +222,7 @@ public class MessageUtils {
                 GameManagerClient.getInstance().showHand(isFront);
                 return true;
             }
-            case "showCardInitial" : { //TODO:  show back initial?
+            case "showCardInitial" : {
                 if (commandsList.size()!= 1) {
                     System.out.println("No parameters are needed after 'showCardInitial'\n");
                     return true;
@@ -232,7 +232,7 @@ public class MessageUtils {
             }
             case "showTable" : {
                 if (commandsList.size() == 2) {
-                    String player = commandsList.get(1); //TODO: check the player exists
+                    String player = commandsList.get(1);
                     GameManagerClient.getInstance().showTable(player);
                     return true;
                 } else {
@@ -304,11 +304,11 @@ public class MessageUtils {
             }
             case "showPrivateChat" : {
                 if (commandsList.size() == 2) {
-                    String player = commandsList.get(1);//TODO: check the player exists
+                    String player = commandsList.get(1);
                     GameManagerClient.getInstance().showPrivateChat(player);
                     return true;
                 } else {
-                    System.out.println("Too many arguments\n");
+                    System.out.println("No parameters are needed after 'showChat playerName'\n");
                     return true;
                 }
             }
@@ -318,24 +318,34 @@ public class MessageUtils {
                 return true;
             }
             case "?" :{
-                System.out.println("command List:\n" +
-                        "-showCardInitial: print your initial card  \n" +
-                        "-showHand: print your hand, add 'back' to the command to print the cards' backs\n" +
-                        "-showTable: print your table, add a player nickname to print his table\n" +
-                        "-showPoints: print the players points\n" +
-                        "-showPlayerAndAction: print the next expected move and who is due do play\n" +
-                        "-showDrawableCards: print the current drawable card from all the decks\n" +
-                        "-showGlobalObjectives: print the global objectives\n" +
-                        "-showObjective: print your private objective\n" +
-                        "-showObjectivesToChoose: print the objectives that you can choose\n" +
-                        "-showChat: show the global chat\n" +
-                        "-showPrivateChat: show the private chat, add a player nickname to print his table\n" +
+                System.out.println("Command List:\n" +
                         "-joinGame gameId myNickname: join the game that has the selected gameId\n" +
-                        "-createGame myNickname numberOfPlayers: create a new game\n" +
+                        "-createGame myNickname numberOfPlayers[2-4]: create a new game\n" +
                         "-chooseObj OBJ_id: choose the selected objective\n" +
                         "-chooseColor COLOR: choose the selected color\n" +
-                        "-drawCard: draw a card, add goldDeck/resourceDeck to draw a random card from the selected deck or the cardId to draw the selected card\n" +
+                        "-drawCard goldDeck/resourceDeck/RES_id/GOLD_id: draw a card, add goldDeck/resourceDeck to draw a random card from the selected deck or the cardId to draw the selected card\n" +
+                        "-reconnect gameId myNickname: reconnects to the game as the player myNickname\n" +
+                        "-sendChatMessage myMessage: sends myMessage in the global chat\n" +
+                        "-sendPrivateChatMessage receiver myMessage: sends myMessage privately to receiver\n" +
+                        "-sendGames: sends the ids of joinable games\n" +
+                        "-leaveGame: leaves the game\n" +
+
+                        "-showColor: shows your color\n" +
+                        "-showCardInitial: prints front and back of your initial card  \n" +
+                        "-showHand back(optional): print your hand, add 'back' to the command to print the cards' backs\n" +
+                        "-showTable playerName(optional): print your table, add a player nickname to print his table\n" +
+                        "-showPoints: prints points of each player\n" +
+                        "-showPlayerAndAction: prints the next expected move and who is due do play\n" +
+                        "-showDrawableCards: prints the current drawable card from all the decks\n" +
+                        "-showGlobalObjectives: prints the global objectives\n" +
+                        "-showObjective: prints your private objective\n" +
+                        "-showObjectivesToChoose: prints the objectives that you can choose\n" +
+                        "-showChat: shows the global chat\n" +
+                        "-showPrivateChat playerName: shows the private chat with the playerName player\n" +
+                        "-whoami: prints your nickname\n" +
+
                         "-playCard cardId up/down x y: play the card at the specified coordinate\n");
+
                 return true;
             }
             default: {

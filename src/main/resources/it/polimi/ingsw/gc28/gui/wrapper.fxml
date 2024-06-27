@@ -34,5 +34,5 @@
         <Label fx:id="labelGoBack" style="-fx-font-size: 36" text="Games" />
     </HBox>
     <AnchorPane AnchorPane.topAnchor="64" fx:id="innerContent"  AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0"/>
-    <SnackBar AnchorPane.rightAnchor="32" />
+    <SnackBar fx:id="snackBarComponent" AnchorPane.rightAnchor="32" />
 </AnchorPane>
