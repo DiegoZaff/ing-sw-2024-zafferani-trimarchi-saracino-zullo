@@ -1,7 +1,8 @@
-## ing-sw-2024-zafferani-trimarchi-saracino-zullo
+##### ing-sw-2024-zafferani-trimarchi-saracino-zullo
 
+# Software Engineering Project 2024 - Codex Naturalis
 ![Codex Naturalis](https://github.com/DiegoZaff/ing-sw-2024-zafferani-trimarchi-saracino-zullo/blob/a8db7a035c7d94030ae9989600cca92f9ab789fa/deliverables/Rules%20and%20requirements/814qEh0JKdS.jpg)
-## Software Engineering Project 2024 - Codex Naturalis
+
 
 
 ## Project description
