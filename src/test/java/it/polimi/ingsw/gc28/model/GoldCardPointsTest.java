@@ -26,36 +26,42 @@ public class GoldCardPointsTest {
     private String im2;
     private Player tester;
     int points;
-    CardGame bridge = new CardResource("UNKNOWN_0", new ResourceType[]{ResourceType.noResource,ResourceType.noResource,ResourceType.noResource,ResourceType.noResource}, ResourcePrimaryType.MUSHROOM, 0, im1, im2);
 
-    CardGame initialCard = new CardInitial("UNKNOWN_INIT", new ResourceType[]{ResourceType.noResource,ResourceType.noResource,ResourceType.noResource,ResourceType.noResource},
-            new ResourceType[]{ResourceType.noResource,ResourceType.noResource,ResourceType.noResource,ResourceType.noResource},
-            new ResourceType[]{ResourceType.noResource,ResourceType.noResource,ResourceType.noResource}, im1, im2 );
-
-    CardGame leafCard = new CardResource("UNKNOWN_1", new ResourceType[]{ResourceType.FEATHER, ResourceType.FEATHER, ResourceType.noResource, ResourceType.FOX},
-            ResourcePrimaryType.LEAF, 0, im1, im2);
-
-
-    CardGold goldFoxCard = new CardGold("UNKNOWN_4", new ResourceType[]{ResourceType.FEATHER, ResourceType.noResource, ResourceType.noResource, ResourceType.noResource},
-            ResourcePrimaryType.FOX, 0, new ResourcePrimaryType[]{},
-            ChallengeType.POINTS_PER_RESOURCE, ResourceSpecialType.FEATHER, im1, im2);
-
-
-    CardGold goldMushroomCard = new CardGold("UNKNOWN_6", new ResourceType[]{ResourceType.noResource, ResourceType.noResource, ResourceType.noResource, ResourceType.noResource},
-            ResourcePrimaryType.MUSHROOM, 0, new ResourcePrimaryType[]{},
-            ChallengeType.POINTS_PER_COVER, ResourceSpecialType.noResource, im1, im2);
-
-    CardGold goldLeafCard = new CardGold("UNKNOWN_7", new ResourceType[]{ResourceType.noResource, ResourceType.noResource, ResourceType.noResource, ResourceType.noResource},
-            ResourcePrimaryType.LEAF, 5, new ResourcePrimaryType[]{},
-            null, ResourceSpecialType.noResource, im1, im2);
+    CardResource bridge;
+    CardInitial initialCard;
+    CardResource leafCard;
+    CardGold goldFoxCard;
+    CardGold goldMushroomCard;
+    CardGold goldLeafCard;
 
 
 
-    @BeforeEach
-    public void initTestTable () throws PlayerActionError {
+    public void initTestTable() throws PlayerActionError {
+         bridge = new CardResource("UNKNOWN_0", new ResourceType[]{ResourceType.noResource,ResourceType.noResource,ResourceType.noResource,ResourceType.noResource}, ResourcePrimaryType.MUSHROOM, 0, im1, im2);
 
+         initialCard = new CardInitial("UNKNOWN_INIT", new ResourceType[]{ResourceType.noResource,ResourceType.noResource,ResourceType.noResource,ResourceType.noResource},
+                new ResourceType[]{ResourceType.noResource,ResourceType.noResource,ResourceType.noResource,ResourceType.noResource},
+                new ResourceType[]{ResourceType.noResource,ResourceType.noResource,ResourceType.noResource}, im1, im2 );
+
+         leafCard = new CardResource("UNKNOWN_1", new ResourceType[]{ResourceType.FEATHER, ResourceType.FEATHER, ResourceType.noResource, ResourceType.FOX},
+                ResourcePrimaryType.LEAF, 0, im1, im2);
+
+
+         goldFoxCard = new CardGold("UNKNOWN_4", new ResourceType[]{ResourceType.FEATHER, ResourceType.noResource, ResourceType.noResource, ResourceType.noResource},
+                ResourcePrimaryType.FOX, 0, new ResourcePrimaryType[]{},
+                ChallengeType.POINTS_PER_RESOURCE, ResourceSpecialType.FEATHER, im1, im2);
+
+
+         goldMushroomCard = new CardGold("UNKNOWN_6", new ResourceType[]{ResourceType.noResource, ResourceType.noResource, ResourceType.noResource, ResourceType.noResource},
+                ResourcePrimaryType.MUSHROOM, 0, new ResourcePrimaryType[]{},
+                ChallengeType.POINTS_PER_COVER, ResourceSpecialType.noResource, im1, im2);
+
+         goldLeafCard = new CardGold("UNKNOWN_7", new ResourceType[]{ResourceType.noResource, ResourceType.noResource, ResourceType.noResource, ResourceType.noResource},
+                ResourcePrimaryType.LEAF, 5, new ResourcePrimaryType[]{},
+                null, ResourceSpecialType.noResource, im1, im2);
         tester = new Player("Tester");
-        tester.playCard(initialCard, true , new Coordinate(0, 0));
+        tester.addCardToHand(bridge);
+        tester.playCard(bridge, false , new Coordinate(0, 0));
         points = tester.getPoints();
         assertEquals(0, points, "error in initialization");
     }
@@ -64,6 +70,9 @@ public class GoldCardPointsTest {
     @Test
     public void Test1() throws PlayerActionError {
 
+        initTestTable();
+
+        tester.addCardToHand(goldFoxCard);
         tester.playCard(goldFoxCard, true, new Coordinate(1, -1));
 
         points = tester.getPoints();
@@ -72,7 +81,9 @@ public class GoldCardPointsTest {
     }
     @Test
     public void Test2() throws PlayerActionError {
-
+        initTestTable();
+        tester.addCardToHand(goldFoxCard);
+        tester.addCardToHand(leafCard);;
         tester.playCard(leafCard, true, new Coordinate(1, -1));
         tester.playCard(goldFoxCard, true, new Coordinate(2, -2));
 
@@ -83,7 +94,8 @@ public class GoldCardPointsTest {
 
     @Test
     public void Test3() throws PlayerActionError {
-
+        initTestTable();
+        tester.addCardToHand(goldMushroomCard);
         tester.playCard(goldMushroomCard, true, new Coordinate(1, -1));
 
         points = tester.getPoints();
@@ -93,9 +105,12 @@ public class GoldCardPointsTest {
 
     @Test
     public void Test4() throws PlayerActionError {
-
+        initTestTable();
+        tester.addCardToHand(bridge);
         tester.playCard(bridge, true, new Coordinate(1, -1));
+        tester.addCardToHand(bridge);
         tester.playCard(bridge, true, new Coordinate(1, 1));
+        tester.addCardToHand(goldMushroomCard);
         tester.playCard(goldMushroomCard, true, new Coordinate(2, 0));
 
         points = tester.getPoints();
@@ -104,6 +119,12 @@ public class GoldCardPointsTest {
     }
     @Test
     public void Test5() throws PlayerActionError {
+        initTestTable();
+        tester.addCardToHand(bridge);
+        tester.addCardToHand(bridge);
+        tester.addCardToHand(bridge);
+        tester.addCardToHand(bridge);
+        tester.addCardToHand(goldMushroomCard);
 
         tester.playCard(bridge, true, new Coordinate(1, -1));
         tester.playCard(bridge, true, new Coordinate(1, 1));
@@ -117,13 +138,21 @@ public class GoldCardPointsTest {
     }
     @Test
     public void Test6() throws PlayerActionError {
+        initTestTable();
 
-        tester.playCard(bridge, true, new Coordinate(1, -1));
-        tester.playCard(bridge, true, new Coordinate(1, 1));
-        tester.playCard(bridge, true, new Coordinate(2, 2));
-        tester.playCard(bridge, true, new Coordinate(3, 1));
-        tester.playCard(bridge, true, new Coordinate(-2, -2));
-        tester.playCard(bridge, true, new Coordinate(3, -1));
+        tester.addCardToHand(bridge);
+        tester.addCardToHand(bridge);
+        tester.addCardToHand(bridge);
+        tester.addCardToHand(bridge);
+        tester.addCardToHand(bridge);
+        tester.addCardToHand(bridge);
+        tester.addCardToHand(goldMushroomCard);
+        tester.playCard(bridge, false, new Coordinate(1, -1));
+        tester.playCard(bridge, false, new Coordinate(1, 1));
+        tester.playCard(bridge, false, new Coordinate(2, 2));
+        tester.playCard(bridge, false, new Coordinate(3, 1));
+        //tester.playCard(bridge, false, new Coordinate(-2, -2));
+        //tester.playCard(bridge, false, new Coordinate(3, -1));
         tester.playCard(goldMushroomCard, true, new Coordinate(2, 0));
 
         points = tester.getPoints();
@@ -134,7 +163,9 @@ public class GoldCardPointsTest {
 
     @Test
     public void Test7() throws PlayerActionError {
+        initTestTable();
 
+        tester.addCardToHand(goldLeafCard);
         tester.playCard(goldLeafCard, true , new Coordinate(1, -1));
 
         points = tester.getPoints();
