@@ -4,6 +4,7 @@ import it.polimi.ingsw.gc28.view.GameManagerClient;
 import it.polimi.ingsw.gc28.view.GameRepresentation;
 import it.polimi.ingsw.gc28.view.gui.GuiApplication;
 import it.polimi.ingsw.gc28.view.gui.components.PlayerStatus;
+import it.polimi.ingsw.gc28.view.gui.components.SnackBar;
 import it.polimi.ingsw.gc28.view.gui.utils.TabType;
 import it.polimi.ingsw.gc28.view.gui.utils.WrapperControllable;
 import it.polimi.ingsw.gc28.view.utils.PlayerStatusInfo;
@@ -33,6 +34,7 @@ public class WrapperController implements Initializable {
     public HBox goBackContainer;
     @FXML
     public AnchorPane outerAnchorPane;
+    public SnackBar snackBarComponent;
     TabType currentTab;
     @FXML
     public AnchorPane innerContent;
@@ -111,6 +113,7 @@ public class WrapperController implements Initializable {
         clearPlayerStatusComponent();
         playerStatusComponent = new PlayerStatus(info);
         outerAnchorPane.getChildren().add(playerStatusComponent);
+        snackBarComponent.toFront();
     }
 
     public void updatePlayerStatus(PlayerStatusInfo info){

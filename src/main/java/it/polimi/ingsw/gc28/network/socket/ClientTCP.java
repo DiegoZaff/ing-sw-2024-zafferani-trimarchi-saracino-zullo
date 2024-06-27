@@ -154,7 +154,7 @@ public class ClientTCP implements GuiCallable {
             ArrayList<String> commandsList = new ArrayList<>(Arrays.asList(commands));
 
             if (commandsList.isEmpty()) {
-                System.out.println("Give me a valid command plz.");
+                System.out.println("Give me a valid command.");
                 continue;
             }
 

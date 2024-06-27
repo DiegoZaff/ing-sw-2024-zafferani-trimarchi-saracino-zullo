@@ -74,6 +74,7 @@
             </Button>
         </VBox>
     </HBox>
+    <HBox fx:id="innerContent" AnchorPane.leftAnchor="312" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="216"/>
     <HBox fx:id="cards" prefHeight="160" AnchorPane.bottomAnchor="16" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" spacing="16" HBox.hgrow="ALWAYS">
         <padding>
             <Insets  left="16"/>
@@ -120,5 +121,4 @@
         </VBox>
         <Pane prefWidth="70" />
     </HBox>
-    <HBox fx:id="innerContent" AnchorPane.leftAnchor="312" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="216"/>
 </AnchorPane>

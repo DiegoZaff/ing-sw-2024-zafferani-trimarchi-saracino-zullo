@@ -46,7 +46,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, GuiCa
                 TimeUnit.SECONDS.sleep(5);
                 sendPing();
             } catch (InterruptedException | IOException e) {
-                System.out.println("unable to reach the server!");
+                System.out.println("Unable to reach the server");
                 serverDown = true;
                 try {
                     this.reconnect();
@@ -115,7 +115,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, GuiCa
             ArrayList<String> commandsList = new ArrayList<>(Arrays.asList(commands));
 
             if (commandsList.isEmpty()) {
-                System.out.println("Give me a valid command plz.");
+                System.out.println("Give me a valid command.");
                 continue;
             }
 
