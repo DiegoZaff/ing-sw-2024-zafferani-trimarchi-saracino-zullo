@@ -21,20 +21,20 @@ Codex Naturalis rulebook in [English](https://github.com/DiegoZaff/ing-sw-2024-z
 
 ## Running the application
 
-Download the [jar files](), they consist in a ServerApplication and a ClientApplication.
-Run from command line the ServerApplication, default ports are specified below.
+- To start download the [jar files](), you will find a ServerApplication and a ClientApplication.
+- Run from command line the ServerApplication, default ports are specified below.
 
       /path/to/openjdk21/bin/java -jar ServerApplication.jar 8886 8887
       
-Run from command line the ClientApplication, the game can be run in local using the localhost ip address or the ip addres of network the device hosting the server application is connected to.
+- Run from command line the ClientApplication, the game can be run in local using the localhost ip address or the ip addres of network the device hosting the server application is connected to.
 The game can be played both with RMI and TCP connection, the choice in embeded in the GUI, while for the TUI you have to add --rmi at the end of the command.
 
-To run the client GUI:
+- To run the client GUI:
 
       /path/to/openjdk21/bin/java -jar ClientApplication.jar client-ip --gui
       ex: /path/to/openjdk21/bin/java -jar ClientApplication.jar 127.0.0.1 --gui
 
-To run the client TUI:
+- To run the client TUI:
 
       /path/to/openjdk21/bin/java -jar ClientApplication.jar server-ip client-ip port (--rmi)
       ex rmi: /path/to/openjdk21/bin/java -jar ClientApplication.jar 127.0.0.1 127.0.0.1 8887 --rmi
