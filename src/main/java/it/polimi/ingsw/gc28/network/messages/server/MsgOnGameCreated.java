@@ -55,7 +55,7 @@ public class MsgOnGameCreated extends MessageS2C{
             gameManagerClient.writeInConsole(text);
         } else {
             SnackBarMessage msg = new SnackBarMessage("You have successfully created the game!", InformationType.GAME_INFO);
-            System.out.println(gameId);
+//            System.out.println(gameId);
             gameManagerClient.updateSnackBarListener(msg);
             GameManagerClient.getInstance().updateListeners(this);
         }

@@ -20,21 +20,13 @@ import java.util.Arrays;
  */
 public class ClientApplication {
     public static void main(String[] args) {
-        // for now, it's always CLI
-
-        if(args.length < 3){
-            System.err.println("You need to supply three arguments: [ip-server] [ip-client] [port]");
-        }
-
-        String hostServer = args[0];
-        String hostClient = args[1];
-
         // defaults to using sockets
         boolean isRmi = false;
         boolean isCli = true;
 
-        for (String arg : Arrays.stream(args).skip(2).toList()) {
+        for (String arg : Arrays.stream(args).toList()) {
             if (arg.equals("--rmi")) {
+                // only for cli
                 isRmi = true;
             }else if(arg.equals("--gui") || arg.equals("-g") || arg.equals("-G")){
                 isCli = false;
@@ -44,6 +36,11 @@ public class ClientApplication {
         GameManagerClient.isCli = isCli;
 
         if(isCli){
+            if(args.length < 3){
+                System.err.println("You need to supply three arguments: [ip-server] [ip-client] [port]");
+            }
+            String hostServer = args[0];
+            String hostClient = args[1];
             int port;
             try {
                 port = Integer.parseInt(args[2]);
@@ -70,6 +67,11 @@ public class ClientApplication {
                 }
             }
         }else{
+            if(args.length < 2){
+                System.err.println("You need to supply at least two arguments: [ip-client] --gui");
+            }
+            String hostClient = args[0];
+            System.setProperty("java.rmi.server.hostname", hostClient);
             Application.launch(GuiApplication.class);
         }
     }
