@@ -2,11 +2,6 @@ package it.polimi.ingsw.gc28.model;
 
 import it.polimi.ingsw.gc28.model.cards.*;
 import it.polimi.ingsw.gc28.model.cards.utils.ParsingHelper;
-import it.polimi.ingsw.gc28.model.challenge.utils.ChallengeType;
-import it.polimi.ingsw.gc28.model.objectives.positions.utils.GeneralPositionType;
-import it.polimi.ingsw.gc28.model.resources.utils.ResourcePrimaryType;
-import it.polimi.ingsw.gc28.model.resources.utils.ResourceSpecialType;
-import it.polimi.ingsw.gc28.model.resources.utils.ResourceType;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -124,7 +119,11 @@ public class Deck implements Serializable {
         cardInitialDeck = new ArrayList<>();
         cardObjectiveDeck = new ArrayList<>();
 
-        InputStream inputStream = Deck.class.getClassLoader().getResourceAsStream("/Cards.json");
+        InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("Cards.json");
+
+        if(inputStream == null){
+            throw new RuntimeException("Could not read Cards.json");
+        }
 
         InputStreamReader reader = new InputStreamReader(Objects.requireNonNull(inputStream));
         Object obj;

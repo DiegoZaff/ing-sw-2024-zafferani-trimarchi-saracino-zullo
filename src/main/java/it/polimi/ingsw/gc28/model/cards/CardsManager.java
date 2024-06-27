@@ -7,11 +7,10 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 public class CardsManager {
@@ -36,14 +35,13 @@ public class CardsManager {
         cardObjectiveMap = new HashMap<>();
 
         JSONParser jsonParser = new JSONParser();
-        String path = "./src/main/java/it/polimi/ingsw/gc28/Cards.json";
-        FileReader reader = null;
-        try {
-            reader = new FileReader(path);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+        InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("Cards.json");
+
+        if(inputStream == null){
+            throw new RuntimeException("Could not read Cards.json");
         }
 
+        InputStreamReader reader = new InputStreamReader(Objects.requireNonNull(inputStream));
         Object obj;
         try {
             obj = jsonParser.parse(reader);
