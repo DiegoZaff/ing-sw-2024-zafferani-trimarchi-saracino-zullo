@@ -21,7 +21,7 @@ Codex Naturalis rulebook in [English](https://github.com/DiegoZaff/ing-sw-2024-z
 
 ## Running the application
 
-- To start download the [jar files](https://github.com/DiegoZaff/ing-sw-2024-zafferani-trimarchi-saracino-zullo/tree/main/out/artifacts/GC28_jar), you will find a ServerApplication and a ClientApplication.
+- To start download the [jar files](https://github.com/DiegoZaff/ing-sw-2024-zafferani-trimarchi-saracino-zullo/tree/main/deliverables/jars), you will find a ServerApplication and a ClientApplication.
 - Run from command line the ServerApplication, default ports are specified below.
 
       /path/to/openjdk21/bin/java -jar ServerApplication.jar 8886 8887
@@ -71,8 +71,7 @@ The following table shows the implemented functionalities
 
 * ### [Test coverage report](https://gc28testcoverage.netlify.app/)
 
-* ### [Jar File](https://github.com/DiegoZaff/ing-sw-2024-zafferani-trimarchi-saracino-zullo/tree/main/out/artifacts/GC28_jar)
-
+* ### [Jar File](https://github.com/DiegoZaff/ing-sw-2024-zafferani-trimarchi-saracino-zullo/tree/main/deliverables/jars)
 
 
 ## Group members
